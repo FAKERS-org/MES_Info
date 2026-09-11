@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { LanguageProvider } from "@/lib/i18n";
 import RootLayout from "./pages/layout";
-import DashboardPage from "./pages/dashboard/page";
+import DashboardPage from "./pages/overview/page";
 import ComingSoonPage from "./pages/coming-soon/page";
 import InstitutePage from "./pages/info/institute/page";
 import ErrorPage from "./pages/error/page";
@@ -16,7 +16,6 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardPage /> },
       { path: "info", element: <ComingSoonPage /> },
       { path: "info/:institution", element: <InstitutePage /> },
-      { path: "profile", element: <ComingSoonPage /> },
       { path: "*", element: <ErrorPage /> },
     ],
   },

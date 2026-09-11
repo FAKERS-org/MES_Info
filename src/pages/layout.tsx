@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { FileText, LayoutGrid, User } from "lucide-react";
+import { FileText, LayoutGrid } from "lucide-react";
 import Sidebar, { type NavItem } from "@/components/shared/sidebar";
 import TopBar from "@/components/shared/top-bar";
 import Breadcrumbs from "@/components/shared/breadcrumbs";
@@ -17,14 +17,13 @@ function RootLayout() {
   const isInfo = pathname === "/info" || pathname.startsWith("/info/");
 
   const navItems: NavItem[] = [
-    { icon: <LayoutGrid className="size-4" />, label: t("nav.dashboard"), active: isDashboard, to: "/" },
+    { icon: <LayoutGrid className="size-4" />, label: t("nav.overview"), active: isDashboard, to: "/" },
     { icon: <FileText className="size-4" />, label: t("nav.info"), active: isInfo, to: "/info" },
-    { icon: <User className="size-4" />, label: t("nav.profile"), active: pathname === "/profile", to: "/profile", comingSoon: true },
   ];
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} navItems={navItems} />
+      <Sidebar open={sidebarOpen} navItems={navItems} />
 
       <div
         className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden ${

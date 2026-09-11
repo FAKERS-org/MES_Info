@@ -1,9 +1,6 @@
 {
-"nav.dashboard": "ផ្ទាំងព័ត៌មាន",
+"nav.overview": "ទំព័រដើម",
   "nav.info": "ព័ត៌មាន",
-  "nav.account": "គណនី",
-  "nav.profile": "ប្រវត្តិរូប",
-  "sidebar.logout": "ចាកចេញ",
   "topbar.searchPlaceholder": "ស្វែងរក...",
   "filter.all": "ទាំងអស់",
   "topbar.toggleMenu": "ប្តូរម៉ឺនុយ",

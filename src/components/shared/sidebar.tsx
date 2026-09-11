@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -14,7 +13,6 @@ export interface NavItem {
 
 export interface SidebarProps {
   open: boolean;
-  onClose: () => void;
   navItems: NavItem[];
   logoSrc?: string;
   logoAlt?: string;
@@ -23,7 +21,6 @@ export interface SidebarProps {
 
 function Sidebar({
   open,
-  onClose,
   navItems,
   logoSrc = "/images/MES-logo-horizontal.png",
   logoAlt = "MES Logo",
@@ -74,17 +71,6 @@ function Sidebar({
             </button>
           ))}
         </nav>
-
-        <div className="mt-auto px-3 pb-6">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            <LogOut className="size-5" />
-            <span>{t("sidebar.logout")}</span>
-          </button>
-        </div>
       </div>
     </aside>
   );

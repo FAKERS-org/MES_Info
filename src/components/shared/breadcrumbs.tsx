@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useLanguage, type TranslationKey } from "@/lib/i18n";
 import { institutionLabels } from "@/data/institutions";
-import { findSubject } from "@/data/subjects";
 import { cn } from "@/lib/utils";
 
 export interface Crumb {
@@ -20,50 +19,44 @@ function useDefaultCrumbs(): Crumb[] {
   const { pathname } = useLocation();
   const { t } = useLanguage();
   const segments = pathname.split("/").filter(Boolean);
-  const crumbs: Crumb[] = [];
 
   if (segments.length === 0) {
-    crumbs.push({ label: t("nav.dashboard") });
-  } else if (segments[0] === "history") {
-    crumbs.push({ label: t("nav.history") });
-  } else if (segments[0] === "info") {
-    const institution = segments[1];
-    if (institution) {
-      crumbs.push({ label: t("nav.info"), to: "/info" });
-      const instKey = institutionLabels[institution] as TranslationKey | undefined;
-      crumbs.push({
-        label: instKey ? t(instKey) : decodeURIComponent(institution),
-      });
-    } else {
-      crumbs.push({ label: t("nav.info") });
+    return [{ label: t("nav.overview") }];
+  }
+
+  const [section] = segments;
+
+  if (section === "info") {
+    if (segments.length === 1) {
+      return [{ label: t("nav.info") }];
     }
-  } else if (segments[0] === "exam") {
-    crumbs.push({ label: t("nav.exam"), to: "/exam" });
-    const [institution, subjectId, action] = segments.slice(1);
 
-    if (institution) {
-      const instKey = institutionLabels[institution] as TranslationKey | undefined;
-      crumbs.push({
-        label: instKey ? t(instKey) : decodeURIComponent(institution),
-        to: `/exam/${institution}`,
-      });
+    if (segments.length === 2) {
+      const institutionId = segments[1]!;
+      const institutionKey = institutionLabels[institutionId];
 
-      const found = subjectId ? findSubject(institution, subjectId) : null;
-      if (found) {
-        if (action === "take") {
-          crumbs.push({
-            label: t(found.subject.titleKey),
-            to: `/exam/${institution}/${subjectId}`,
-          });
-          crumbs.push({ label: t("breadcrumbs.taking") });
-        } else {
-          crumbs.push({ label: t(found.subject.titleKey) });
-        }
-      }
+      return [
+        {
+          label: t("nav.info"),
+          to: "/info",
+        },
+        {
+          label: institutionKey
+            ? t(institutionKey)
+            : institutionId,
+        },
+      ];
     }
   }
 
-  return crumbs;
+  return [
+    {
+      label: t("nav.overview"),
+    },
+    {
+      label: t("error.heading"),
+    },
+  ];
 }
 
 function Breadcrumbs({ crumbs, className }: BreadcrumbsProps) {

@@ -1,8 +1,6 @@
 {
-  "nav.dashboard": "Dashboard",
+  "nav.overview": "Overview",
   "nav.info": "Information",
-  "nav.profile": "Profile",
-  "nav.account": "Account",
   "topbar.searchPlaceholder": "Search...",
   "topbar.toggleMenu": "Toggle menu",
   "lang.kh": "Khmer",
