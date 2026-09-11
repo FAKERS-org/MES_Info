@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLanguage } from "@/lib/i18n";
-import { supportedInstitutions } from "@/data/subjects";
-import InstitutionCard from "@/components/dashboard/institution-card";
+import { institutions } from "@/data/institutions";
+import UniInfoCard from "@/components/info/uni-info-card";
 
 function ProfileCard() {
   const { t } = useLanguage();
@@ -25,9 +25,9 @@ export default function DashboardOverviewPage() {
     <div className="space-y-6">
       <ProfileCard />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {supportedInstitutions.map((institution) => (
-          <InstitutionCard key={institution.id} institution={institution} />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {institutions.map((institution) => (
+          <UniInfoCard key={institution.id} institution={institution} />
         ))}
       </div>
     </div>

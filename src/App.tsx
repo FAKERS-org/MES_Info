@@ -9,11 +9,8 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<DashboardPage />} />
-      <Route path="/exam" element={<ComingSoonPage />} />
-      <Route path="/exam/*" element={<ComingSoonPage />} />
       <Route path="/info" element={<ComingSoonPage />} />
       <Route path="/info/:institution" element={<InstitutePage />} />
-      <Route path="/history" element={<ComingSoonPage />} />
       <Route path="/profile" element={<ComingSoonPage />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>

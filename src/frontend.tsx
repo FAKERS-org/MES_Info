@@ -14,11 +14,6 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <DashboardPage /> },
-      { path: "exam", children: [
-        { index: true, element: <ComingSoonPage /> },
-        { path: "*", element: <ComingSoonPage /> },
-      ]},
-      { path: "history", element: <ComingSoonPage /> },
       { path: "info", element: <ComingSoonPage /> },
       { path: "info/:institution", element: <InstitutePage /> },
       { path: "profile", element: <ComingSoonPage /> },
