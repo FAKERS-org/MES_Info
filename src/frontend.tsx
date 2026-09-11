@@ -1,25 +1,12 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 import { LanguageProvider } from "@/lib/i18n";
-import RootLayout from "./pages/layout";
-import DashboardPage from "./pages/overview/page";
-import ComingSoonPage from "./pages/coming-soon/page";
-import InstitutePage from "./pages/info/institute/page";
-import ErrorPage from "./pages/error/page";
-import "./index.css";
 
-const router = createBrowserRouter([
-  {
-    element: <RootLayout />,
-    children: [
-      { index: true, element: <DashboardPage /> },
-      { path: "info", element: <ComingSoonPage /> },
-      { path: "info/:institution", element: <InstitutePage /> },
-      { path: "*", element: <ErrorPage /> },
-    ],
-  },
-]);
+// style
+import "./index.css";
+// router 
+import router from "./router";
 
 const element = document.getElementById("root");
 if (!element) throw new Error("Root element #root not found");
