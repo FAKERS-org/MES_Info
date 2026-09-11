@@ -15,8 +15,6 @@ interface TopBarProps {
   onSearch?: (query: string) => void;
   onLanguageChange?: (lang: string) => void;
   onThemeToggle?: () => void;
-  onNotificationsClick?: () => void;
-  notificationCount?: number;
   onOpenSidebar?: () => void;
   isDark?: boolean;
 }
@@ -30,8 +28,6 @@ function TopBar({
   onSearch,
   onLanguageChange,
   onThemeToggle,
-  onNotificationsClick,
-  notificationCount = 5,
   onOpenSidebar,
   isDark = false,
 }: TopBarProps) {
@@ -114,20 +110,6 @@ function TopBar({
           aria-label="Toggle theme"
         >
           {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
-        </button>
-
-        <button
-          type="button"
-          onClick={onNotificationsClick}
-          className={`relative ${iconButton}`}
-          aria-label="Notifications"
-        >
-          <Bell className="size-5" />
-          {notificationCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-pink-500 px-1.5 text-xs font-bold text-white">
-              {notificationCount > 99 ? "99+" : notificationCount}
-            </span>
-          )}
         </button>
       </div>
     </header>
