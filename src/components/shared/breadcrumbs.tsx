@@ -27,21 +27,29 @@ function useDefaultCrumbs(): Crumb[] {
   // jab route
   const [section, param] = segments;
 
-  if (section === "explore-universities") {
-    if (param) {
-      const universityLabel = universityLabels[param]
-        ? t(universityLabels[param])
-        : param
+  const sectionLabels: Record<string, string> = {
+    "explore-universities": t("nav.exploreUniversities"),
+    "majors-and-careers": t("nav.majors&Careers"),
+    scholarships: t("nav.scholarships"),
+    compare: t("nav.compare"),
+  };
 
-      return [
-        { label: t("nav.exploreUniversities"), to: "/explore-universities" },
-        { label: universityLabel },
-      ]
+  const sectionLabel = sectionLabels[section] as string | undefined;
+
+  if (sectionLabel) {
+    let paramLabel = param;
+    if (section === "explore-universities" && param && universityLabels[param]) {
+      paramLabel = t(universityLabels[param]);
     }
 
-    return [
-      { label: t("nav.exploreUniversities") },
-    ];
+    if (param) {
+      return [
+        { label: sectionLabel, to: `/${section}` },
+        { label: paramLabel },
+      ];
+    }
+
+    return [{ label: sectionLabel }];
   }
 
   return [
