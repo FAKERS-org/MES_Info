@@ -1,1 +1,1 @@
-export { universities, universityLabels } from "./universities";
+export type { University, Department, NamespacedText } from "./universities";

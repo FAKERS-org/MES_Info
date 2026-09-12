@@ -1,48 +1,67 @@
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { universities } from "@/data/universities";
+import { useUniversities } from "@/hooks/use-universities";
 import UniInfoCard from "@/components/info/uni-info-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
+import { SkeletonGrid } from "@/components/shared/skeleton";
+import { ErrorState } from "@/components/shared/error-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type SortKey = "name-asc" | "name-desc" | "departments-desc";
 
 export default function ExploreUniversitiesPage() {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
+  const { universities, status, refresh } = useUniversities();
 
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>("name-asc");
 
-  const categories = useMemo(
-    () =>
-      Array.from(
-        new Set(universities.flatMap((u) => u.departments.map((d) => d.categoryKey))),
-      ),
-    [],
-  );
+  const categories = useMemo(() => {
+    const seen = new Map<string, { id: string; label: string }>();
+    for (const u of universities) {
+      for (const d of u.departments) {
+        const label = d.category[lang] ?? d.category.en;
+        if (!seen.has(label)) seen.set(label, { id: label, label });
+      }
+    }
+    return [...seen.values()];
+  }, [universities, lang]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     let items = universities.filter((u) => {
+      const name = u.name[lang] ?? u.name.en;
+      const address = u.address ? u.address[lang] ?? u.address.en : "";
       const matchesQuery =
         !q ||
-        t(u.nameKey).toLowerCase().includes(q) ||
-        (u.address ?? "").toLowerCase().includes(q);
+        name.toLowerCase().includes(q) ||
+        address.toLowerCase().includes(q);
       const matchesCategory =
-        !category || u.departments.some((d) => d.categoryKey === category);
+        !category ||
+        u.departments.some((d) => (d.category[lang] ?? d.category.en) === category);
       return matchesQuery && matchesCategory;
     });
 
     items = [...items].sort((a, b) => {
-      if (sort === "name-asc") return t(a.nameKey).localeCompare(t(b.nameKey));
-      if (sort === "name-desc") return t(b.nameKey).localeCompare(t(a.nameKey));
+      const nameA = a.name[lang] ?? a.name.en;
+      const nameB = b.name[lang] ?? b.name.en;
+      if (sort === "name-asc") return nameA.localeCompare(nameB);
+      if (sort === "name-desc") return nameB.localeCompare(nameA);
       return b.departments.length - a.departments.length;
     });
 
     return items;
-  }, [query, category, sort, t]);
+  }, [universities, lang, query, category, sort]);
+
+  if (status === "loading") {
+    return <SkeletonGrid count={8} />;
+  }
+
+  if (status === "error") {
+    return <ErrorState onRetry={refresh} />;
+  }
 
   return (
     <div className="space-y-6">
@@ -82,11 +101,11 @@ export default function ExploreUniversitiesPage() {
           </FilterChip>
           {categories.map((cat) => (
             <FilterChip
-              key={cat}
-              active={category === cat}
-              onClick={() => setCategory(category === cat ? null : cat)}
+              key={cat.id}
+              active={category === cat.id}
+              onClick={() => setCategory(category === cat.id ? null : cat.id)}
             >
-              {t(cat)}
+              {cat.label}
             </FilterChip>
           ))}
         </div>

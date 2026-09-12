@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { useUniversities } from "@/hooks/use-universities";
 import { cn } from "@/lib/utils";
-import { universityLabels } from "@/data";
 
 export interface Crumb {
   label: string;
@@ -17,7 +17,8 @@ export interface BreadcrumbsProps {
 
 function useDefaultCrumbs(): Crumb[] {
   const { pathname } = useLocation();
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
+  const { universities } = useUniversities();
   const segments = pathname.split("/").filter(Boolean);
 
   if (segments.length === 0) {
@@ -26,6 +27,7 @@ function useDefaultCrumbs(): Crumb[] {
 
   // jab route
   const [section, param] = segments;
+  const safeSection = section ?? "";
 
   const sectionLabels: Record<string, string> = {
     "explore-universities": t("nav.exploreUniversities"),
@@ -34,18 +36,21 @@ function useDefaultCrumbs(): Crumb[] {
     compare: t("nav.compare"),
   };
 
-  const sectionLabel = sectionLabels[section] as string | undefined;
+  const sectionLabel = sectionLabels[safeSection] as string | undefined;
 
   if (sectionLabel) {
     let paramLabel = param;
-    if (section === "explore-universities" && param && universityLabels[param]) {
-      paramLabel = t(universityLabels[param]);
+    if (safeSection === "explore-universities" && param) {
+      const university = universities.find((u) => u.id === param);
+      if (university) {
+        paramLabel = university.name[lang] ?? university.name.en;
+      }
     }
 
     if (param) {
       return [
-        { label: sectionLabel, to: `/${section}` },
-        { label: paramLabel },
+        { label: sectionLabel, to: `/${safeSection}` },
+        { label: paramLabel ?? param },
       ];
     }
 

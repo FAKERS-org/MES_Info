@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { Department } from "@/data/universities";
+import type { Department } from "@/data";
 
 export interface DepartementInfoCardProps {
   department: Department;
@@ -18,7 +18,8 @@ const DepartementInfoCard: React.FC<DepartementInfoCardProps> = ({
   onToggle,
   className,
 }) => {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
+  const name = department.name[lang] ?? department.name.en;
 
   return (
     <div
@@ -33,15 +34,17 @@ const DepartementInfoCard: React.FC<DepartementInfoCardProps> = ({
         <div className="flex items-center gap-4">
           <img
             src={department.logo}
-            alt={t(department.nameKey)}
+            alt={name}
             className="shrink-0 object-contain"
             style={{ height: logoSize, width: "auto" }}
           />
           <div className="flex flex-col">
             <h3 className="text-lg font-semibold leading-tight text-foreground">
-              {t(department.nameKey)}
+              {name}
             </h3>
-            <span className="text-sm text-muted-foreground">{t(department.enNameKey)}</span>
+            <span className="text-sm text-muted-foreground">
+              {department.category[lang] ?? department.category.en}
+            </span>
           </div>
         </div>
         <ChevronDown
@@ -62,8 +65,8 @@ const DepartementInfoCard: React.FC<DepartementInfoCardProps> = ({
               {t("info.department.requirements.heading")}
             </h4>
             <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-              {department.requirementKeys.map((key, index) => (
-                <li key={index}>{t(key)}</li>
+              {department.requirements.map((requirement, index) => (
+                <li key={index}>{requirement[lang] ?? requirement.en}</li>
               ))}
             </ul>
           </div>

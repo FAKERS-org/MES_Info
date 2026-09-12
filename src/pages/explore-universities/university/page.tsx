@@ -1,16 +1,19 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useLanguage, getTranslations } from "@/lib/i18n";
-import { universities } from "@/data/universities";
+import { useLanguage } from "@/lib/i18n";
+import { useUniversities } from "@/hooks/use-universities";
 import DepartementInfoCard from "@/components/info/departement-info-card";
 import UniInfoSecondCard from "@/components/info/uni-info-second-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
+import { SkeletonGrid } from "@/components/shared/skeleton";
+import { ErrorState } from "@/components/shared/error-state";
 
 export default function UniversityPage() {
   const { university = "" } = useParams();
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
+  const { universities, status, refresh } = useUniversities();
   const data = universities.find((u) => u.id === university);
 
   const [query, setQuery] = useState("");
@@ -19,35 +22,45 @@ export default function UniversityPage() {
 
   const categories = useMemo(() => {
     if (!data) return [];
-    return Array.from(new Set(data.departments.map((d) => d.categoryKey)));
-  }, [data]);
+    const seen = new Map<string, { id: string; label: string }>();
+    for (const d of data.departments) {
+      const label = d.category[lang] ?? d.category.en;
+      if (!seen.has(label)) seen.set(label, { id: label, label });
+    }
+    return [...seen.values()];
+  }, [data, lang]);
 
   const filteredDepartments = useMemo(() => {
     if (!data) return [];
     const q = query.trim().toLowerCase();
     return data.departments.filter((dept) => {
-      const matchesCategory = !categoryFilter || dept.categoryKey === categoryFilter;
-      const name = t(dept.nameKey).toLowerCase();
-      const enName = t(dept.enNameKey).toLowerCase();
+      const matchesCategory =
+        !categoryFilter || (dept.category[lang] ?? dept.category.en) === categoryFilter;
+      const name = (dept.name[lang] ?? dept.name.en).toLowerCase();
+      const enName = dept.name.en.toLowerCase();
       const matchesQuery = !q || name.includes(q) || enName.includes(q);
       return matchesCategory && matchesQuery;
     });
-  }, [data, query, categoryFilter, t]);
+  }, [data, lang, query, categoryFilter]);
+
+  if (status === "loading") {
+    return <SkeletonGrid count={2} />;
+  }
+
+  if (status === "error") {
+    return <ErrorState onRetry={refresh} />;
+  }
 
   if (!data) {
     return (
       <div className="flex flex-col items-center gap-4 py-16 text-center">
-        <p className="text-sm text-muted-foreground">{t("exam.subjectNotFound")}</p>
+        <p className="text-sm text-muted-foreground">{t("explore.universityNotFound")}</p>
         <Link to="/explore-universities" className="text-sm font-medium text-primary hover:underline">
           {t("nav.exploreUniversities")}
         </Link>
       </div>
     );
   }
-
-  const translations = getTranslations();
-  const khName = translations.kh[data.nameKey] ?? t(data.nameKey);
-  const enName = translations.en[data.nameKey] ?? t(data.nameKey);
 
   const totalExpanded = filteredDepartments.length > 0 && expandedIds.size === filteredDepartments.length;
 
@@ -86,12 +99,12 @@ export default function UniversityPage() {
           <div className="flex items-center gap-4">
             <img
               src={data.logo}
-              alt={t(data.nameKey)}
+              alt={data.name[lang] ?? data.name.en}
               className="h-16 w-16 rounded-full object-cover border-4 border-white bg-white shrink-0"
             />
             <div className="flex flex-col gap-1">
-              <h1 className="text-2xl font-bold leading-tight text-white">{khName}</h1>
-              <p className="text-sm font-medium text-white/80">{enName}</p>
+              <h1 className="text-2xl font-bold leading-tight text-white">{data.name.kh}</h1>
+              <p className="text-sm font-medium text-white/80">{data.name.en}</p>
             </div>
           </div>
         </div>
@@ -124,11 +137,11 @@ export default function UniversityPage() {
                 </FilterChip>
                 {categories.map((cat) => (
                   <FilterChip
-                    key={cat}
-                    active={categoryFilter === cat}
-                    onClick={() => setCategoryFilter(categoryFilter === cat ? null : cat)}
+                    key={cat.id}
+                    active={categoryFilter === cat.id}
+                    onClick={() => setCategoryFilter(categoryFilter === cat.id ? null : cat.id)}
                   >
-                    {t(cat)}
+                    {cat.label}
                   </FilterChip>
                 ))}
               </div>

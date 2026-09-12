@@ -8,25 +8,7 @@ export type Lang = typeof LANGUAGE_CONFIG.supportedLanguages[number];
 type TranslationMap = Record<string, string>;
 export type Translations = Record<Lang, TranslationMap>;
 
-// Mutable translation store — populated from locale JSON by default,
-// replaceable with API data via setTranslations().
-const translationStore: Translations = {
-  kh: { ...kh },
-  en: { ...en },
-};
-
-export const getTranslations = (): Translations => ({
-  kh: { ...translationStore.kh },
-  en: { ...translationStore.en },
-});
-
-export const setTranslations = (translations: Translations) => {
-  Object.assign(translationStore, translations);
-};
-
-export const loadTranslations = setTranslations;
-
-export type TranslationKey = keyof typeof kh;
+export type TranslationKey = keyof typeof kh | keyof typeof en;
 
 export type TranslateFn = (
   key: TranslationKey,
@@ -41,6 +23,11 @@ interface LanguageContextValue {
 }
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
+
+const translations: Translations = {
+  kh: kh,
+  en: en,
+};
 
 const LANG_KEY = LANGUAGE_CONFIG.storageKey;
 
@@ -67,7 +54,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t: TranslateFn = (key, params) => {
     let str =
-      translationStore[lang][key] ?? translationStore[LANGUAGE_CONFIG.defaultLanguage][key] ?? key;
+      translations[lang][key] ?? translations[LANGUAGE_CONFIG.defaultLanguage][key] ?? key;
     if (params) {
       for (const [k, v] of Object.entries(params)) {
         str = str.replace(`{${k}}`, String(v));

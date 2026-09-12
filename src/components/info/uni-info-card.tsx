@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Globe, MapPin } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { University } from "@/data/universities";
+import type { University } from "@/data";
 
 export interface UniInfoCardProps {
   university: University;
@@ -10,8 +10,8 @@ export interface UniInfoCardProps {
 }
 
 const UniInfoCard = ({ university, className }: UniInfoCardProps) => {
-  const { t } = useLanguage();
-  const name = t(university.nameKey);
+  const { lang } = useLanguage();
+  const name = university.name[lang] ?? university.name.en;
 
   return (
     <Link
@@ -47,7 +47,7 @@ const UniInfoCard = ({ university, className }: UniInfoCardProps) => {
           <div className="flex items-start gap-3">
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <span className="text-sm leading-relaxed text-muted-foreground">
-              {university.address}
+              {university.address[lang] ?? university.address.en}
             </span>
           </div>
         )}

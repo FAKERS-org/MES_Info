@@ -1,9 +1,9 @@
 import { Building2, Globe, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useLanguage, getTranslations } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { InfoRow } from "@/components/info/info-row";
-import type { University } from "@/data/universities";
+import type { University } from "@/data";
 
 export interface UniInfoSecondCardProps {
   university: University;
@@ -11,11 +11,9 @@ export interface UniInfoSecondCardProps {
 }
 
 const UniInfoSecondCard = ({ university, className }: UniInfoSecondCardProps) => {
-  const { t } = useLanguage();
-  const translations = getTranslations();
-  const name = t(university.nameKey);
-  const khName = translations.kh[university.nameKey] ?? name;
-  const enName = translations.en[university.nameKey] ?? name;
+  const { lang, t } = useLanguage();
+  const khName = university.name.kh;
+  const enName = university.name.en;
 
   return (
     <Card className={cn("h-fit w-full overflow-hidden rounded-xl", className)}>
@@ -23,7 +21,7 @@ const UniInfoSecondCard = ({ university, className }: UniInfoSecondCardProps) =>
         <div className="flex items-center gap-4">
           <img
             src={university.logo}
-            alt={name}
+            alt={khName}
             className="h-14 w-14 shrink-0 rounded-full border-4 border-white bg-white object-cover"
           />
           <div className="flex flex-col gap-0.5">
@@ -47,7 +45,7 @@ const UniInfoSecondCard = ({ university, className }: UniInfoSecondCardProps) =>
         <div className="flex flex-col gap-2">
           <h4 className="text-sm font-semibold text-foreground">{t("info.detail.about")}</h4>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            {t(university.descriptionKey)}
+            {university.description[lang] ?? university.description.en}
           </p>
         </div>
 
@@ -62,7 +60,7 @@ const UniInfoSecondCard = ({ university, className }: UniInfoSecondCardProps) =>
           {university.address && (
             <InfoRow
               icon={<MapPin className="h-4 w-4" />}
-              value={university.address}
+              value={university.address[lang] ?? university.address.en}
             />
           )}
         </div>

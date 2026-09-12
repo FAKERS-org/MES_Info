@@ -29,26 +29,11 @@ const server = serve({
     "/icons/*": (req) => serveStaticFile(req, ICONS_DIR, "/icons/"),
     "/*": index,
 
-    "/api/hello": {
-      async GET(_req) {
-        return Response.json({
-          message: "Hello, world!",
-          method: "GET",
-        });
+    "/api/universities": {
+      async GET() {
+        const { universities } = await import("./data/universities");
+        return Response.json(universities);
       },
-      async PUT(_req) {
-        return Response.json({
-          message: "Hello, world!",
-          method: "PUT",
-        });
-      },
-    },
-
-    "/api/hello/:name": async (req) => {
-      const name = req.params.name;
-      return Response.json({
-        message: `Hello, ${name}!`,
-      });
     },
   },
 
