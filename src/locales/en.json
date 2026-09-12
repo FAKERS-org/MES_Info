@@ -81,5 +81,10 @@
   "comingSoon.profile.description": "Manage your account, personal information, and preferences in one place.",
   "comingSoon.profile.features.account": "Account",
   "comingSoon.profile.features.info": "Personal Info",
-  "comingSoon.profile.features.settings": "Preferences"
+  "comingSoon.profile.features.settings": "Preferences",
+  "miscellaneous.university": "University",
+  "miscellaneous.universities": "Universities",
+  "miscellaneous.faculty": "Faculty",
+  "miscellaneous.faculties": "Faculties",
+  "miscellaneous.location": "Phnom Penh & Provinces"
 }

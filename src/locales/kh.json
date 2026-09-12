@@ -11,7 +11,7 @@
   "lang.kh": "ភាសាខ្មែរ",
   "lang.en": "English",
   "explore.title": "ស្វែងរកសាកលវិទ្យាល័យ",
-  "explore.subtitle": "ស្វែងរក និងសិក្សាសាកលវិទ្យាល័យនៅកម្ពុជា រួមទាំងដេប៉ាតឺម៉ង់ និងតម្រូវការប្រឡង។",
+  "explore.subtitle": "ស្វែងរកព័ត៌មានលម្អិតអំពីសាកលវិទ្យាល័យ ដេប៉ាតឺម៉ង់ និងតម្រូវការប្រឡងនៅកម្ពុជា។",
   "explore.sortLabel": "រៀបទៅតាម",
   "explore.sortNameAsc": "ឈ្មោះ (អ–ជ)",
   "explore.sortNameDesc": "ឈ្មោះ (ជ–អ)",
@@ -81,5 +81,10 @@
   "comingSoon.profile.description": "គ្រប់គ្រងគណនី ព័ត៌មានផ្ទាល់ខ្លួន និងការកំណត់ការប្រឡងនៅកន្លែងតែមួយ។",
   "comingSoon.profile.features.account": "គណនី",
   "comingSoon.profile.features.info": "ព័ត៌មានផ្ទាល់ខ្លួន",
-  "comingSoon.profile.features.settings": "ការកំណត់"
+  "comingSoon.profile.features.settings": "ការកំណត់",
+  "miscellaneous.university": "សាកលវិទ្យាល័យ",
+  "miscellaneous.universities": "សាកលវិទ្យាល័យ",
+  "miscellaneous.faculty": "ដេប៉ាតឺម៉ង់",
+  "miscellaneous.faculties": "ដេប៉ាតឺម៉ង់",
+  "miscellaneous.location": "រាជធានីភ្នំពេញ & បណ្តាខេត្ត"
 }

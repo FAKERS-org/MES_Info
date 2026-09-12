@@ -7,6 +7,7 @@ import { FilterChip } from "@/components/shared/filter-chip";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 import { ErrorState } from "@/components/shared/error-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import UniversityHero from "@/components/universities/university-hero";
 
 type SortKey = "name-asc" | "name-desc" | "departments-desc";
 
@@ -65,14 +66,9 @@ export default function ExploreUniversitiesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          {t("explore.title")}
-        </h1>
-        <p className="mx-auto mt-1 max-w-2xl text-sm text-muted-foreground md:text-base">
-          {t("explore.subtitle")}
-        </p>
-      </div>
+      
+      {/* Hero */}
+      <UniversityHero />
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <SearchInput
