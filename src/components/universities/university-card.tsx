@@ -22,7 +22,7 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
   return (
     <Card padding="none" className={cn("w-full overflow-hidden rounded-3xl border-slate-200 shadow-xl flex flex-col", className)}>
       {/* Header */}
-      <div className="relative rounded-t-3xl bg-gradient-to-br from-[#0a3d62] to-[#1e5f8e] pb-16">
+      <div className="relative rounded-t-3xl bg-gradient-to-br from-[#0a3d62] to-[#1e5f8e] pt-4 pb-16">
         <div className="flex items-center justify-between px-5">
           <Badge
             variant="secondary"
@@ -64,20 +64,16 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
           {description}
         </p>
 
-        {/* Info rows */}
+        {/* Info rows - always 3 rows for consistent layout */}
         <div className="mt-4 space-y-2.5">
-          {university.website && (
-            <div className="flex items-center gap-2.5 text-slate-600 text-sm">
-              <Globe className="w-4 h-4 text-slate-400 shrink-0" />
-              <span className="truncate">{university.website}</span>
-            </div>
-          )}
-          {address && (
-            <div className="flex items-center gap-2.5 text-slate-600 text-sm">
-              <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-              <span className="truncate">{address}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-2.5 text-slate-600 text-sm">
+            <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+            <span className="truncate">{university.website || "\u00A0"}</span>
+          </div>
+          <div className="flex items-center gap-2.5 text-slate-600 text-sm">
+            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+            <span className="truncate">{address || "\u00A0"}</span>
+          </div>
           <div className="flex items-center gap-2.5 text-slate-600 text-sm">
             <GraduationCap className="w-4 h-4 text-slate-400 shrink-0" />
             <span>{programCount} Degree Programs (កម្រិត & បរិន្ញាបត្រ)</span>

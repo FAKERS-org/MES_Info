@@ -83,7 +83,7 @@ export const universities: University[] = [
   {
     id: "usha",
     name: {
-      kh: "សាកលវិទ្យាល័យវិទ្យាសាស្ត្រសុខាភិបាល (សាលាក្រហម)",
+      kh: "សាកលវិទ្យាល័យវិទ្យាសាស្ត្រសុខាភិបាល",
       en: "University of Health Sciences",
     },
     description: {
