@@ -18,6 +18,8 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
   const description = university.description[lang] ?? university.description.en;
   const address = university.address ? (university.address[lang] ?? university.address.en) : "";
   const programCount = university.departments.length;
+  const universityType = university.universityType[lang] ?? university.universityType.en;
+  const universityCategory = university.universityCategory[lang] ?? university.universityCategory.en;
 
   return (
     <Card padding="none" className={cn("w-full overflow-hidden rounded-3xl border-slate-200 shadow-xl flex flex-col", className)}>
@@ -50,9 +52,14 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
             className="w-16 h-16 rounded-full object-cover"
           />
         </div>
-        <Badge className="relative z-10 bg-emerald-100 text-emerald-700 hover:bg-emerald-100 mb-1">
-          ស្ថាប័នសាធារណៈ (Public)
+        <div className="flex flex-row items-end gap-1">
+        <Badge className="relative z-10 bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
+          {universityCategory}
         </Badge>
+        <Badge className="relative z-10 bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
+          {universityType} 
+        </Badge>
+        </div>
       </div>
 
     <CardContent className="flex flex-col px-5 pt-4 pb-5">

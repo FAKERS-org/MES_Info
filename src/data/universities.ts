@@ -15,6 +15,8 @@ export interface Department {
 export interface University {
   id: string;
   name: NamespacedText;
+  universityType: NamespacedText;
+  universityCategory: NamespacedText;
   description: NamespacedText;
   logo: string;
   website?: string;
@@ -33,6 +35,8 @@ export const universities: University[] = [
       kh: "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (សាលាតិចណូ)",
       en: "Institute of Technology of Cambodia",
     },
+    universityType: { kh: "សាធារណៈ", en: "Public" },
+    universityCategory: { kh: "បច្ចេកវិទ្យា", en: "Technology" },
     description: {
       kh: "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (ITC) ជាសាលាវិស្វកម្មសាធារណៈឈានមុខគេនៅកម្ពុជា ផ្តល់កម្មវិធីបរិញ្ញាបត្រ និងអនុបណ្ឌិតផ្នែកវិស្វកម្ម វិទ្យាសាស្ត្រអនុវត្ត និងបច្ចេកវិទ្យា។",
       en: "The Institute of Technology of Cambodia (ITC) is the leading public engineering school in Cambodia, offering bachelor's and master's programs in engineering, applied science and technology.",
@@ -86,6 +90,8 @@ export const universities: University[] = [
       kh: "សាកលវិទ្យាល័យវិទ្យាសាស្ត្រសុខាភិបាល",
       en: "University of Health Sciences",
     },
+    universityType: { kh: "សាធារណៈ", en: "Public" },
+    universityCategory: { kh: "សុខាភិបាល", en: "Health" },
     description: {
       kh: "សាកលវិទ្យាល័យវិទ្យាសាស្ត្រសុខាភិបាល (UHS) ជាស្ថាប័នសាធារណៈសំខាន់ដែលបណ្តុះបណ្តាលគ្រូពេទ្យ ឱសថករ និងអ្នកជំនាញសុខាភិបាលដទៃទៀតនៅកម្ពុជា។",
       en: "The University of Health Sciences (UHS) is the main public institution training doctors, pharmacists and other health professionals in Cambodia.",
@@ -104,6 +110,8 @@ export const universities: University[] = [
       kh: "សាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ",
       en: "Royal University of Phnom Penh",
     },
+    universityType: { kh: "សាធារណៈ", en: "Public" },
+    universityCategory: { kh: "ទូទៅ", en: "General" },
     description: {
       kh: "សាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ (RUPP) ជាសាកលវិទ្យាល័យធំបំផុតនៅកម្ពុជា ផ្តល់កម្មវិធីផ្នែកវិទ្យាសាស្ត្រ វិទ្យាសាស្ត្រសង្គម បច្ចេកវិទ្យាព័ត៌មាន និងផ្សេងៗទៀត។",
       en: "The Royal University of Phnom Penh (RUPP) is Cambodia's largest university, offering programs across sciences, social sciences, information technology and more.",
@@ -122,6 +130,8 @@ export const universities: University[] = [
       kh: "វិទ្យាស្ថានភាសាបរទេស",
       en: "Institute of Foreign Languages",
     },
+    universityType: { kh: "សាធារណៈ", en: "Public" },
+    universityCategory: { kh: "ភាសា", en: "Language" },
     description: {
       kh: "វិទ្យាស្ថានភាសាបរទេស (IFL) ជាផ្នែកមួយនៃ RUPP ជាវិទ្យាស្ថានឈានមុខគេរបស់កម្ពុជាសម្រាប់ការបណ្តុះបណ្តាលភាសា និងការសិក្សាអន្តរជាតិ។",
       en: "The Institute of Foreign Languages (IFL), part of RUPP, is Cambodia's leading institute for language and international studies training.",

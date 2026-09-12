@@ -8,6 +8,7 @@ import { SkeletonGrid } from "@/components/shared/skeleton";
 import { ErrorState } from "@/components/shared/error-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import UniversityHero from "@/components/universities/university-hero";
+import UniversityPagination from "@/components/universities/universiity-pagination";
 
 type SortKey = "name-asc" | "name-desc" | "departments-desc";
 
@@ -122,6 +123,10 @@ export default function ExploreUniversitiesPage() {
           ))}
         </div>
       )}
+
+      {/* Pagination */}
+      <UniversityPagination />
+
     </div>
   );
 }
