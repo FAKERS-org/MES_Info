@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
-import UniInfoCard from "@/components/info/uni-info-card";
+import { UniversityCard } from "@/components/universities/university-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
 import { SkeletonGrid } from "@/components/shared/skeleton";
@@ -118,7 +118,7 @@ export default function ExploreUniversitiesPage() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((university) => (
-            <UniInfoCard key={university.id} university={university} />
+            <UniversityCard key={university.id} university={university} />
           ))}
         </div>
       )}
