@@ -9,6 +9,7 @@ import {
 } from "react";
 import type { University } from "@/data";
 import { api } from "@/services/api";
+import { universities as seedUniversities } from "@/data/universities";
 
 export type UniversitiesStatus = "loading" | "error" | "ready";
 
@@ -35,8 +36,10 @@ export function UniversitiesProvider({ children }: { children: ReactNode }) {
         setStatus("ready");
       })
       .catch(() => {
-        setUniversities([]);
-        setStatus("error");
+        // Fallback for static hosts (e.g. Vercel) where the API
+        // endpoint is not available — use the bundled seed data.
+        setUniversities(seedUniversities);
+        setStatus("ready");
       });
   }, []);
 
