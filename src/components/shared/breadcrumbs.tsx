@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import { useLanguage, type TranslationKey } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 import { institutionLabels } from "@/data/institutions";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +25,13 @@ function useDefaultCrumbs(): Crumb[] {
   }
 
   const [section] = segments;
+
+  if (section === "explore-universities") {
+    return [
+      { label: t("nav.overview"), to: "/" },
+      { label: t("nav.exploreUniversities") },
+    ];
+  }
 
   if (section === "info") {
     if (segments.length === 1) {
