@@ -1,5 +1,9 @@
 {
   "nav.overview": "Overview",
+  "nav.majors&Careers": "Majors & Careers",
+  "nav.exploreUniversities": "Explore Universities",
+  "nav.scholarships": "Scholarships",
+  "nav.compare" : "Compare",
   "nav.info": "Information",
   "topbar.searchPlaceholder": "Search...",
   "topbar.toggleMenu": "Toggle menu",

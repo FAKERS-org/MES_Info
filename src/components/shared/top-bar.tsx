@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from "react";
-import { Bell, ChevronDown, Menu, Moon, Search, Sun } from "lucide-react";
+import { ChevronDown, Menu, Moon, Search, Sun } from "lucide-react";
 import "flag-icons/css/flag-icons.min.css";
 import { Button } from "@/components/ui/button";
 import {

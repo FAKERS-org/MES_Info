@@ -1,5 +1,9 @@
 {
-"nav.overview": "ទំព័រដើម",
+  "nav.overview": "ទំព័រដើម",
+  "nav.majors&Careers": "ជំនាញ និងការងារ",
+  "nav.exploreUniversities": "ស្វែងរកសាកលវិទ្យាល័យ",
+  "nav.scholarships": "អាហារូបករណ៍",
+  "nav.compare" : "ប្រៀបធៀប",
   "nav.info": "ព័ត៌មាន",
   "topbar.searchPlaceholder": "ស្វែងរក...",
   "filter.all": "ទាំងអស់",

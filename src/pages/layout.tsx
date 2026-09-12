@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { FileText, LayoutGrid } from "lucide-react";
+import { BookOpen, Coins, Diff, FileText, LayoutGrid, University } from "lucide-react";
 import Sidebar, { type NavItem } from "@/components/shared/sidebar";
 import TopBar from "@/components/shared/top-bar";
 import Breadcrumbs from "@/components/shared/breadcrumbs";
@@ -19,6 +19,10 @@ function RootLayout() {
   const navItems: NavItem[] = [
     { icon: <LayoutGrid className="size-4" />, label: t("nav.overview"), active: isDashboard, to: "/" },
     { icon: <FileText className="size-4" />, label: t("nav.info"), active: isInfo, to: "/info" },
+    { icon: <BookOpen className="size-4" />, label: t("nav.majors&Careers"), to: "/majors-and-careers"},
+    { icon: <University className="size-4" />, label: t("nav.exploreUniversities"), to: "/explore-universities"},
+    { icon: <Coins className="size-4" />, label: t("nav.scholarships"), to: "/scholarships"},
+    { icon: <Diff className="size-4" />, label: t("nav.compare"), to: "/compare"},
   ];
 
   return (
