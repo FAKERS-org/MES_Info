@@ -14,7 +14,7 @@ function RootLayout() {
   const { pathname } = useLocation();
 
   const isDashboard = pathname === "/";
-  const isExplore = pathname === "/explore-universities";
+  const isExplore = pathname.startsWith("/explore-universities");
 
   const navItems: NavItem[] = [
     { icon: <LayoutGrid className="size-4" />, label: t("nav.overview"), active: isDashboard, to: "/" },

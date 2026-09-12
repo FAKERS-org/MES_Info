@@ -5,7 +5,26 @@ import { LANGUAGE_CONFIG } from "@/config";
 
 export type Lang = typeof LANGUAGE_CONFIG.supportedLanguages[number];
 
-export const translations: Record<Lang, Record<string, string>> = { kh, en };
+type TranslationMap = Record<string, string>;
+export type Translations = Record<Lang, TranslationMap>;
+
+// Mutable translation store — populated from locale JSON by default,
+// replaceable with API data via setTranslations().
+const translationStore: Translations = {
+  kh: { ...kh },
+  en: { ...en },
+};
+
+export const getTranslations = (): Translations => ({
+  kh: { ...translationStore.kh },
+  en: { ...translationStore.en },
+});
+
+export const setTranslations = (translations: Translations) => {
+  Object.assign(translationStore, translations);
+};
+
+export const loadTranslations = setTranslations;
 
 export type TranslationKey = keyof typeof kh;
 
@@ -48,7 +67,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t: TranslateFn = (key, params) => {
     let str =
-      translations[lang][key] ?? translations[LANGUAGE_CONFIG.defaultLanguage][key] ?? key;
+      translationStore[lang][key] ?? translationStore[LANGUAGE_CONFIG.defaultLanguage][key] ?? key;
     if (params) {
       for (const [k, v] of Object.entries(params)) {
         str = str.replace(`{${k}}`, String(v));

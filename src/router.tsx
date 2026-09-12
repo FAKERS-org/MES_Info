@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { ErrorPage, ExploreUniversitiesPage, InstitutePage, OverviewPage, RootLayout } from "./pages";
+import { ErrorPage, ExploreUniversitiesPage, UniversityPage, OverviewPage, RootLayout } from "./pages";
 
 
 const router = createBrowserRouter([
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <OverviewPage /> },
       { path: "explore-universities", element: <ExploreUniversitiesPage /> },
-      { path: "explore-universities/:university", element: <InstitutePage /> },
+      { path: "explore-universities/:university", element: <UniversityPage /> },
       { path: "*", element: <ErrorPage /> },
     ],
   },

@@ -19,7 +19,6 @@ function useDefaultCrumbs(): Crumb[] {
   const { pathname } = useLocation();
   const { t } = useLanguage();
   const segments = pathname.split("/").filter(Boolean);
-  console.log(segments);
 
   if (segments.length === 0) {
     return [{ label: t("nav.overview") }];
@@ -27,7 +26,6 @@ function useDefaultCrumbs(): Crumb[] {
 
   // jab route
   const [section, param] = segments;
-  console.log(section, param);
 
   if (section === "explore-universities") {
     if (param) {

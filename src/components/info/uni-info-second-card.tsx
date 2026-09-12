@@ -1,6 +1,6 @@
 import { Building2, Globe, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useLanguage, translations } from "@/lib/i18n";
+import { useLanguage, getTranslations } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { InfoRow } from "@/components/info/info-row";
 import type { University } from "@/data/universities";
@@ -12,6 +12,7 @@ export interface UniInfoSecondCardProps {
 
 const UniInfoSecondCard = ({ university, className }: UniInfoSecondCardProps) => {
   const { t } = useLanguage();
+  const translations = getTranslations();
   const name = t(university.nameKey);
   const khName = translations.kh[university.nameKey] ?? name;
   const enName = translations.en[university.nameKey] ?? name;

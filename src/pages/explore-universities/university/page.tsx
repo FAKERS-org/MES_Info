@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useLanguage, translations } from "@/lib/i18n";
+import { useLanguage, getTranslations } from "@/lib/i18n";
 import { universities } from "@/data/universities";
 import DepartementInfoCard from "@/components/info/departement-info-card";
 import UniInfoSecondCard from "@/components/info/uni-info-second-card";
@@ -45,6 +45,7 @@ export default function UniversityPage() {
     );
   }
 
+  const translations = getTranslations();
   const khName = translations.kh[data.nameKey] ?? t(data.nameKey);
   const enName = translations.en[data.nameKey] ?? t(data.nameKey);
 
