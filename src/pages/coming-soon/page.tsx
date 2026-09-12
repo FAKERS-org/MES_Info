@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import ComingSoon from "@/components/shared/coming-soon";
 import { useLanguage } from "@/lib/i18n";
 import UniInfoCard from "@/components/info/uni-info-card";
-import { institutions } from "@/data/institutions";
+import { universities } from "@/data/universities";
 
 type FeatureId = "exam" | "history" | "profile" | "info";
 
@@ -69,8 +69,8 @@ const config = {
     >
       {feature === "info" && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {institutions.map((institution) => (
-            <UniInfoCard key={institution.id} institution={institution} />
+          {universities.map((university) => (
+            <UniInfoCard key={university.id} university={university} />
           ))}
         </div>
       )}

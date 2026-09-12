@@ -2,16 +2,16 @@ import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useLanguage, translations } from "@/lib/i18n";
-import { institutions } from "@/data/institutions";
+import { universities } from "@/data/universities";
 import DepartementInfoCard from "@/components/info/departement-info-card";
 import UniInfoSecondCard from "@/components/info/uni-info-second-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
 
 export default function UniversityPage() {
-  const { institution = "" } = useParams();
+  const { university = "" } = useParams();
   const { t } = useLanguage();
-  const data = institutions.find((inst) => inst.id === institution);
+  const data = universities.find((u) => u.id === university);
 
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -38,8 +38,8 @@ export default function UniversityPage() {
     return (
       <div className="flex flex-col items-center gap-4 py-16 text-center">
         <p className="text-sm text-muted-foreground">{t("exam.subjectNotFound")}</p>
-        <Link to="/info" className="text-sm font-medium text-primary hover:underline">
-          {t("nav.info")}
+        <Link to="/explore-universities" className="text-sm font-medium text-primary hover:underline">
+          {t("nav.exploreUniversities")}
         </Link>
       </div>
     );
@@ -73,14 +73,13 @@ export default function UniversityPage() {
   return (
     <div className="space-y-8">
       <Link
-        to="/info"
+        to="/explore-universities"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        {t("nav.info")}
+        {t("nav.exploreUniversities")}
       </Link>
 
-      {/* Institute hero banner — full width */}
       <div className="rounded-xl overflow-hidden shadow-md">
         <div className="bg-[#0f4c81] px-6 py-6">
           <div className="flex items-center gap-4">
@@ -99,7 +98,6 @@ export default function UniversityPage() {
 
       <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.5fr_1fr]">
         <div className="w-full flex flex-col gap-6">
-          {/* Toolbar: search + filters */}
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <SearchInput
@@ -136,12 +134,10 @@ export default function UniversityPage() {
             )}
           </div>
 
-          {/* Summary line */}
           <p className="text-sm text-muted-foreground">
             {t("info.detail.departments")}: {filteredDepartments.length} / {data.departments.length}
           </p>
 
-          {/* Department cards */}
           {filteredDepartments.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
               {t("info.detail.noDepartments")}
@@ -157,7 +153,7 @@ export default function UniversityPage() {
             ))
           )}
         </div>
-        <UniInfoSecondCard institution={data} />
+        <UniInfoSecondCard university={data} />
       </div>
     </div>
   );

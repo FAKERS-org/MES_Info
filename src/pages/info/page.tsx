@@ -1,6 +1,6 @@
 import InfoHeading from "@/components/info/info-heading";
 import UniInfoCard from "@/components/info/uni-info-card";
-import { institutions } from "@/data/institutions";
+import { universities } from "@/data/universities";
 
 export default function InfoPage() {
   return (
@@ -8,8 +8,8 @@ export default function InfoPage() {
       <InfoHeading />
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {institutions.map((institution) => (
-          <UniInfoCard key={institution.id} institution={institution} />
+        {universities.map((university) => (
+          <UniInfoCard key={university.id} university={university} />
         ))}
       </div>
     </div>

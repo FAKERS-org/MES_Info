@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import { institutionLabels } from "@/data/institutions";
 import { cn } from "@/lib/utils";
+import { universityLabels } from "@/data";
 
 export interface Crumb {
   label: string;
@@ -19,41 +19,31 @@ function useDefaultCrumbs(): Crumb[] {
   const { pathname } = useLocation();
   const { t } = useLanguage();
   const segments = pathname.split("/").filter(Boolean);
+  console.log(segments);
 
   if (segments.length === 0) {
     return [{ label: t("nav.overview") }];
   }
 
-  const [section] = segments;
+  // jab route
+  const [section, param] = segments;
+  console.log(section, param);
 
   if (section === "explore-universities") {
-    return [
-      { label: t("nav.overview"), to: "/" },
-      { label: t("nav.exploreUniversities") },
-    ];
-  }
-
-  if (section === "info") {
-    if (segments.length === 1) {
-      return [{ label: t("nav.info") }];
-    }
-
-    if (segments.length === 2) {
-      const institutionId = segments[1]!;
-      const institutionKey = institutionLabels[institutionId];
+    if (param) {
+      const universityLabel = universityLabels[param]
+        ? t(universityLabels[param])
+        : param
 
       return [
-        {
-          label: t("nav.info"),
-          to: "/info",
-        },
-        {
-          label: institutionKey
-            ? t(institutionKey)
-            : institutionId,
-        },
-      ];
+        { label: t("nav.exploreUniversities"), to: "/explore-universities" },
+        { label: universityLabel },
+      ]
     }
+
+    return [
+      { label: t("nav.exploreUniversities") },
+    ];
   }
 
   return [

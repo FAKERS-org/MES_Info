@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { institutions } from "@/data/institutions";
+import { universities } from "@/data/universities";
 import UniInfoCard from "@/components/info/uni-info-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
@@ -18,20 +18,20 @@ export default function ExploreUniversitiesPage() {
   const categories = useMemo(
     () =>
       Array.from(
-        new Set(institutions.flatMap((i) => i.departments.map((d) => d.categoryKey))),
+        new Set(universities.flatMap((u) => u.departments.map((d) => d.categoryKey))),
       ),
     [],
   );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let items = institutions.filter((i) => {
+    let items = universities.filter((u) => {
       const matchesQuery =
         !q ||
-        t(i.nameKey).toLowerCase().includes(q) ||
-        (i.address ?? "").toLowerCase().includes(q);
+        t(u.nameKey).toLowerCase().includes(q) ||
+        (u.address ?? "").toLowerCase().includes(q);
       const matchesCategory =
-        !category || i.departments.some((d) => d.categoryKey === category);
+        !category || u.departments.some((d) => d.categoryKey === category);
       return matchesQuery && matchesCategory;
     });
 
@@ -102,8 +102,8 @@ export default function ExploreUniversitiesPage() {
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((institution) => (
-            <UniInfoCard key={institution.id} institution={institution} />
+          {filtered.map((university) => (
+            <UniInfoCard key={university.id} university={university} />
           ))}
         </div>
       )}

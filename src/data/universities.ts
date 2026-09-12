@@ -9,7 +9,7 @@ export interface Department {
   requirementKeys: TranslationKey[];
 }
 
-export interface Institution {
+export interface University {
   id: string;
   nameKey: TranslationKey;
   descriptionKey: TranslationKey;
@@ -19,10 +19,10 @@ export interface Institution {
   departments: Department[];
 }
 
-export const institutions: Institution[] = [
+export const universities: University[] = [
   {
     id: "itc",
-    nameKey: "overview.institutions.itc",
+    nameKey: "overview.universities.itc",
     descriptionKey: "info.about.institutions.itc",
     logo: "/images/ITC-logo.png",
     website: "itc.edu.kh",
@@ -46,7 +46,7 @@ export const institutions: Institution[] = [
   },
   {
     id: "usha",
-    nameKey: "overview.institutions.usha",
+    nameKey: "overview.universities.usha",
     descriptionKey: "info.about.institutions.uhs",
     logo: "/images/UHS-logo.png",
     website: "uhs.edu.kh",
@@ -55,7 +55,7 @@ export const institutions: Institution[] = [
   },
   {
     id: "rupp",
-    nameKey: "overview.institutions.rupp",
+    nameKey: "overview.universities.rupp",
     descriptionKey: "info.about.institutions.rupp",
     logo: "/images/RUPP-logo.png",
     website: "rupp.edu.kh",
@@ -64,7 +64,7 @@ export const institutions: Institution[] = [
   },
   {
     id: "ifl",
-    nameKey: "overview.institutions.ifl",
+    nameKey: "overview.universities.ifl",
     descriptionKey: "info.about.institutions.ifl",
     logo: "/images/IFL-logo.png",
     website: "ifl.rupp.edu.kh",
@@ -73,6 +73,6 @@ export const institutions: Institution[] = [
   },
 ];
 
-export const institutionLabels: Record<string, TranslationKey> = Object.fromEntries(
-  institutions.map((institution) => [institution.id, institution.nameKey]),
+export const universityLabels: Record<string, TranslationKey> = Object.fromEntries(
+  universities.map((university) => [university.id, university.nameKey]),
 );

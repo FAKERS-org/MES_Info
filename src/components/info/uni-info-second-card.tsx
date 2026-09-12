@@ -3,25 +3,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage, translations } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { InfoRow } from "@/components/info/info-row";
-import type { Institution } from "@/data/institutions";
+import type { University } from "@/data/universities";
 
 export interface UniInfoSecondCardProps {
-  institution: Institution;
+  university: University;
   className?: string;
 }
 
-const UniInfoSecondCard = ({ institution, className }: UniInfoSecondCardProps) => {
+const UniInfoSecondCard = ({ university, className }: UniInfoSecondCardProps) => {
   const { t } = useLanguage();
-  const name = t(institution.nameKey);
-  const khName = translations.kh[institution.nameKey] ?? name;
-  const enName = translations.en[institution.nameKey] ?? name;
+  const name = t(university.nameKey);
+  const khName = translations.kh[university.nameKey] ?? name;
+  const enName = translations.en[university.nameKey] ?? name;
 
   return (
     <Card className={cn("h-fit w-full overflow-hidden rounded-xl", className)}>
       <div className="bg-primary px-6 py-5">
         <div className="flex items-center gap-4">
           <img
-            src={institution.logo}
+            src={university.logo}
             alt={name}
             className="h-14 w-14 shrink-0 rounded-full border-4 border-white bg-white object-cover"
           />
@@ -37,7 +37,7 @@ const UniInfoSecondCard = ({ institution, className }: UniInfoSecondCardProps) =
           <Building2 className="h-5 w-5 shrink-0 text-primary" />
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-foreground">
-              {institution.departments.length}
+              {university.departments.length}
             </span>
             <span className="text-xs text-muted-foreground">{t("info.detail.departments")}</span>
           </div>
@@ -46,22 +46,22 @@ const UniInfoSecondCard = ({ institution, className }: UniInfoSecondCardProps) =
         <div className="flex flex-col gap-2">
           <h4 className="text-sm font-semibold text-foreground">{t("info.detail.about")}</h4>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            {t(institution.descriptionKey)}
+            {t(university.descriptionKey)}
           </p>
         </div>
 
         <div className="flex flex-col gap-1 border-t pt-4">
-          {institution.website && (
+          {university.website && (
             <InfoRow
               icon={<Globe className="h-4 w-4" />}
-              value={institution.website}
-              href={`https://${institution.website}`}
+              value={university.website}
+              href={`https://${university.website}`}
             />
           )}
-          {institution.address && (
+          {university.address && (
             <InfoRow
               icon={<MapPin className="h-4 w-4" />}
-              value={institution.address}
+              value={university.address}
             />
           )}
         </div>

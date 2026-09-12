@@ -1,0 +1,1 @@
+export { universities, universityLabels } from "./universities";

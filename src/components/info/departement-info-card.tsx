@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { Department } from "@/data/institutions";
+import type { Department } from "@/data/universities";
 
 export interface DepartementInfoCardProps {
   department: Department;
