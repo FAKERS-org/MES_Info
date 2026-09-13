@@ -1,14 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
-import DepartementInfoCard from "@/components/info/departement-info-card";
-import UniInfoSecondCard from "@/components/info/uni-info-second-card";
-import { SearchInput } from "@/components/shared/search-input";
-import { FilterChip } from "@/components/shared/filter-chip";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 import { ErrorState } from "@/components/shared/error-state";
+import UniversityIdCard from "@/components/universities/universityId-card";
 
 export default function UniversityPage() {
   const { university = "" } = useParams();
@@ -86,89 +82,7 @@ export default function UniversityPage() {
 
   return (
     <div className="space-y-8">
-      <Link
-        to="/explore-universities"
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        {t("nav.exploreUniversities")}
-      </Link>
-
-      <div className="rounded-xl overflow-hidden shadow-md">
-        <div className="bg-[#0f4c81] px-6 py-6">
-          <div className="flex items-center gap-4">
-            <img
-              src={data.logo}
-              alt={data.name[lang] ?? data.name.en}
-              className="h-16 w-16 rounded-full object-cover border-4 border-white bg-white shrink-0"
-            />
-            <div className="flex flex-col gap-1">
-              <h1 className="text-2xl font-bold leading-tight text-white">{data.name.kh}</h1>
-              <p className="text-sm font-medium text-white/80">{data.name.en}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.5fr_1fr]">
-        <div className="w-full flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <SearchInput
-                value={query}
-                onChange={setQuery}
-                placeholder={t("topbar.searchPlaceholder")}
-              />
-
-              {data.departments.length > 0 && (
-                <button
-                  onClick={toggleAll}
-                  className="rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-                >
-                  {totalExpanded ? t("info.detail.collapseAll") : t("info.detail.expandAll")}
-                </button>
-              )}
-            </div>
-
-            {categories.length > 1 && (
-              <div className="flex flex-wrap items-center gap-2">
-                <FilterChip active={categoryFilter === null} onClick={() => setCategoryFilter(null)}>
-                  {t("filter.all")}
-                </FilterChip>
-                {categories.map((cat) => (
-                  <FilterChip
-                    key={cat.id}
-                    active={categoryFilter === cat.id}
-                    onClick={() => setCategoryFilter(categoryFilter === cat.id ? null : cat.id)}
-                  >
-                    {cat.label}
-                  </FilterChip>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <p className="text-sm text-muted-foreground">
-            {t("info.detail.departments")}: {filteredDepartments.length} / {data.departments.length}
-          </p>
-
-          {filteredDepartments.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">
-              {t("info.detail.noDepartments")}
-            </p>
-          ) : (
-            filteredDepartments.map((dept) => (
-              <DepartementInfoCard
-                key={dept.id}
-                department={dept}
-                open={expandedIds.has(dept.id)}
-                onToggle={() => toggleOne(dept.id)}
-              />
-            ))
-          )}
-        </div>
-        <UniInfoSecondCard university={data} />
-      </div>
+      <UniversityIdCard />
     </div>
   );
 }

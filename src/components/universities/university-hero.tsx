@@ -37,7 +37,7 @@ export default function UniversityHero() {
             className="h-auto py-3 px-6 rounded-full border-slate-200 bg-white hover:bg-slate-50 text-slate-700 flex items-center gap-3"
           >
             <GraduationCap className="h-5 w-5 text-sky-600" />
-            <span className="font-medium">{t('miscellaneous.universities')}</span>
+            <span className="font-medium">{t('miscellaneous.university.plural')}</span>
           </Button>
 
           <Button 
@@ -45,7 +45,7 @@ export default function UniversityHero() {
             className="h-auto py-3 px-6 rounded-full border-slate-200 bg-white hover:bg-slate-50 text-slate-700 flex items-center gap-3"
           >
             <Building2 className="h-5 w-5 text-sky-600" />
-            <span className="font-medium">{t('miscellaneous.faculties')}</span>
+            <span className="font-medium">{t('miscellaneous.faculty.plural')}</span>
           </Button>
 
           <Button 
