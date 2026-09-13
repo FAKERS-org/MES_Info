@@ -2,7 +2,7 @@ import { BarChart3, BookOpen, GraduationCap, Info, ShieldCheck, Users } from "lu
 
 export const HotNewsCard = () => {
   return (
-    <div className="w-full max-w-sm space-y-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm font-sans">
+    <div className="w-full space-y-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm font-sans">
       
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-gray-100 pb-3">

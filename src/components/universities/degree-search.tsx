@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 
 export const DegreeSearch = () => {
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm w-full max-w-fit">
+    <div className="flex flex-wrap items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm w-full">
       {/* Search Input */}
       <div className="flex items-center gap-2 pl-3 pr-4 border-r border-gray-200">
         <Search className="h-4 w-4 text-gray-400" />

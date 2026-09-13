@@ -58,7 +58,7 @@ const CourseItem = ({
 
 export const FacultyCard = () => {
   return (
-    <div className="w-full max-w-2xl overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between bg-[#0B1B36] p-4 text-white">
         <div className="flex items-center gap-3">
