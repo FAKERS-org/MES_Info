@@ -97,39 +97,36 @@ export default function UniversityIdCard() {
       </div>
 
       {/* Body */}
-      <CardContent className="pt-24 pb-6 px-6">
-        {/* Title row */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mt-3 flex-wrap">
-              <Badge variant="outline" className="gap-1.5">
-                <GraduationCap className="w-3.5 h-3.5" />
-                ប្រភេទគ្រឹះស្ថាន: (Public University)
-              </Badge>
-              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 gap-1.5">
-                <Award className="w-3.5 h-3.5" />
-                STEM Excellence Leader
-              </Badge>
-              <Badge variant="outline" className="gap-1.5 text-slate-600">
-                <Award className="w-3.5 h-3.5" />
-                AUN-QA Accredited
-              </Badge>
-            </div>
-          </div>
+      <CardContent className="relative pt-24 pb-6 px-6">
+        {/* 3 badges — next to the logo, just below the split border */}
+        <div className="absolute left-[196px] top-4 flex items-center gap-2 flex-wrap pr-[300px]">
+          <Badge variant="outline" className="gap-1.5">
+            <GraduationCap className="w-3.5 h-3.5" />
+            ប្រភេទគ្រឹះស្ថាន: (Public University)
+          </Badge>
+          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0 gap-1.5">
+            <Award className="w-3.5 h-3.5" />
+            STEM Excellence Leader
+          </Badge>
+          <Badge variant="outline" className="gap-1.5 text-slate-600">
+            <Award className="w-3.5 h-3.5" />
+            AUN-QA Accredited
+          </Badge>
+        </div>
 
-          <div className="flex flex-col items-start md:items-end gap-3">
-            <Button className="bg-sky-600 hover:bg-sky-700 text-white gap-2 rounded-lg px-5">
-              <MessageCircle className="w-4 h-4" />
-              Chat Telegram (ជជែកឥឡូវ)
-            </Button>
-            <a
-              href="https://itc.edu.kh"
-              className="flex items-center gap-1.5 text-slate-600 hover:text-sky-600 text-sm"
-            >
-              <Globe className="w-4 h-4" />
-              itc.edu.kh
-            </a>
-          </div>
+        {/* Action buttons on the right */}
+        <div className="flex justify-end gap-3">
+          <Button className="bg-sky-600 hover:bg-sky-700 text-white gap-2 rounded-lg px-5">
+            <MessageCircle className="w-4 h-4" />
+            Chat Telegram (ជជែកអ៉ីវ)
+          </Button>
+          <a
+            href="https://itc.edu.kh"
+            className="flex items-center gap-1.5 text-slate-600 hover:text-sky-600 text-sm"
+          >
+            <Globe className="w-4 h-4" />
+            itc.edu.kh
+          </a>
         </div>
 
         <hr className="my-6 border-slate-200" />
