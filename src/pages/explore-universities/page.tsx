@@ -91,6 +91,7 @@ export default function ExploreUniversitiesPage() {
         </Select>
       </div>
 
+      {/* Filter */}
       {categories.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
           <FilterChip active={category === null} onClick={() => setCategory(null)}>
@@ -108,6 +109,7 @@ export default function ExploreUniversitiesPage() {
         </div>
       )}
 
+      {/* Results Count */}
       <p className="text-sm text-muted-foreground">
         {t("explore.resultsCount", { count: filtered.length })}
       </p>

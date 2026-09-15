@@ -7,7 +7,7 @@ import { AdmissionsCard } from "@/components/universities/admissions-card";
 import { BrochureCard } from "@/components/universities/brochure-card";
 import { CampusMapCard } from "@/components/universities/campus-map-card";
 
-export default function UniversityPage() {
+export default function UniversityIdPage() {
   return (
     <div className="space-y-8">
       <UniversityIdCard />

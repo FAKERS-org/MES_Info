@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ChevronRight, Clock, GraduationCap, Zap } from "lucide-react";
 
 const CourseItem = ({ 
@@ -49,9 +50,12 @@ const CourseItem = ({
         {seats && <div className="text-[11px] text-gray-400">{seats}</div>}
       </div>
       
-      <button className="flex items-center gap-1 rounded bg-[#F0F4F8] px-3 py-1.5 text-xs font-semibold text-[#1E3A8A] hover:bg-[#E2E8F0] transition-colors">
+      <Link
+        to="department"
+        className="flex items-center gap-1 rounded bg-[#F0F4F8] px-3 py-1.5 text-xs font-semibold text-[#1E3A8A] hover:bg-[#E2E8F0] transition-colors"
+      >
         {cta || "ព័ត៌មានលម្អិត"} <ChevronRight className="h-3 w-3" />
-      </button>
+      </Link>
     </div>
   </div>
 );

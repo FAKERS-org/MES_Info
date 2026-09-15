@@ -92,9 +92,11 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
           <Button
             asChild
             variant="secondary"
-            className="flex-1 bg-sky-50 hover:bg-sky-100 text-sky-600 rounded-2xl h-12 font-semibold"
+            className="flex-1 bg-sky-50 hover:bg-sky-100 text-sky-600 rounded-2xl h-12 font-semibold p-0"
           >
-            <Link to={`/explore-universities/${university.id}`}>
+            <Link to={`/explore-universities/${university.id}`}
+            className="flex items-center justify-center w-full h-full"
+            >
               { t('miscellaneous.viewProgram') }
             </Link>
           </Button>
@@ -102,9 +104,11 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
             asChild
             variant="outline"
             size="icon"
-            className="w-11 h-11 rounded-2xl border-slate-200 text-slate-500 shrink-0"
+            className="w-11 h-11 rounded-2xl border-slate-200 text-slate-500 shrink-0 p-0"
           >
-            <Link to={`/explore-universities/${university.id}`}>
+            <Link to={`/explore-universities/${university.id}`}
+            className="flex items-center justify-center w-full h-full"
+            >
               <ArrowUpRight className="w-4 h-4" />
             </Link>
           </Button>
