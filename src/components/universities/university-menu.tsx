@@ -20,7 +20,7 @@ const TABS = [
     icon: CalendarDays,
     label: "អាហារូបករណ៍ (Scholarships)",
   },
-] as const;
+];
 
 const TRIGGER_CLASS =
   "group relative flex items-center gap-3 px-6 py-4 h-full rounded-xl border-none text-gray-500 font-medium transition-all duration-200 outline-none hover:bg-gray-50 hover:text-gray-700 data-[state=active]:bg-blue-50 data-[state=active]:text-[#0056b3] data-[state=active]:font-semibold data-[state=active]:shadow-none";
