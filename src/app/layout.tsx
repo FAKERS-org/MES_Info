@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import "@/styles/globals.css";
 import AppShell from "./app-shell";
+
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: {
