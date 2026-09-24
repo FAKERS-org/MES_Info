@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -7,7 +9,7 @@ export interface NavItem {
   icon: ReactNode;
   label: string;
   active?: boolean;
-  to?: string;
+  href?: string;
   comingSoon?: boolean;
 }
 
@@ -27,13 +29,6 @@ function Sidebar({
   className,
 }: SidebarProps) {
   const { t } = useLanguage();
-  const navigate = useNavigate();
-
-  const handleNav = (item: NavItem) => {
-    if (item.to) {
-      navigate(item.to);
-    }
-  };
 
   return (
     <aside
@@ -45,31 +40,52 @@ function Sidebar({
     >
       <div className="flex h-full w-64 flex-col">
         <div className="flex items-center justify-center px-5 py-6">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={logoSrc} alt={logoAlt} className="h-7 w-auto object-contain" />
         </div>
 
         <nav className="mt-2 flex-1 space-y-1 px-3">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              onClick={() => handleNav(item)}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
-                item.active
-                  ? "bg-sky-100 font-semibold text-sky-900 dark:bg-sky-950/80 dark:text-sky-100"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
-              )}
-            >
-              {item.icon}
-              <span className="truncate">{item.label}</span>
-              {item.comingSoon && (
-                <span className="ml-auto shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary">
-                  {t("nav.comingSoon")}
-                </span>
-              )}
-            </button>
-          ))}
+          {navItems.map((item) =>
+            item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                  item.active
+                    ? "bg-sky-100 font-semibold text-sky-900 dark:bg-sky-950/80 dark:text-sky-100"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
+              >
+                {item.icon}
+                <span className="truncate">{item.label}</span>
+                {item.comingSoon && (
+                  <span className="ml-auto shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary">
+                    {t("nav.comingSoon")}
+                  </span>
+                )}
+              </Link>
+            ) : (
+              <button
+                key={item.label}
+                type="button"
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                  item.active
+                    ? "bg-sky-100 font-semibold text-sky-900 dark:bg-sky-950/80 dark:text-sky-100"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
+              >
+                {item.icon}
+                <span className="truncate">{item.label}</span>
+                {item.comingSoon && (
+                  <span className="ml-auto shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary">
+                    {t("nav.comingSoon")}
+                  </span>
+                )}
+              </button>
+            )
+          )}
         </nav>
       </div>
     </aside>

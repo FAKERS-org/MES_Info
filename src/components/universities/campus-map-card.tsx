@@ -1,3 +1,5 @@
+"use client";
+
 import { ExternalLink, Map, MapPin } from "lucide-react";
 
 export const CampusMapCard = () => {

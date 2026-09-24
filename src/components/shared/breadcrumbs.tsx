@@ -1,5 +1,8 @@
+"use client";
+
 import { Fragment } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
@@ -7,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 export interface Crumb {
   label: string;
-  to?: string;
+  href?: string;
 }
 
 export interface BreadcrumbsProps {
@@ -16,7 +19,7 @@ export interface BreadcrumbsProps {
 }
 
 function useDefaultCrumbs(): Crumb[] {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const { lang, t } = useLanguage();
   const { universities } = useUniversities();
   const segments = pathname.split("/").filter(Boolean);
@@ -25,7 +28,6 @@ function useDefaultCrumbs(): Crumb[] {
     return [{ label: t("nav.overview") }];
   }
 
-  // jab route
   const [section, param] = segments;
   const safeSection = section ?? "";
 
@@ -49,7 +51,7 @@ function useDefaultCrumbs(): Crumb[] {
 
     if (param) {
       return [
-        { label: sectionLabel, to: `/${safeSection}` },
+        { label: sectionLabel, href: `/${safeSection}` },
         { label: paramLabel ?? param },
       ];
     }
@@ -84,11 +86,11 @@ function Breadcrumbs({ crumbs, className }: BreadcrumbsProps) {
                 </li>
               )}
               <li aria-current={isLast ? "page" : undefined}>
-                {isLast || !crumb.to ? (
+                {isLast || !crumb.href ? (
                   <span className="font-medium text-foreground">{crumb.label}</span>
                 ) : (
                   <Link
-                    to={crumb.to}
+                    href={crumb.href}
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {crumb.label}

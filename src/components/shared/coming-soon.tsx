@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { Bell, ArrowRight, type LucideIcon } from "lucide-react";

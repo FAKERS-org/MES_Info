@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+"use client";
+
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import kh from "@/locales/kh.json";
 import en from "@/locales/en.json";
 import { LANGUAGE_CONFIG } from "@/config";
@@ -31,25 +33,38 @@ const translations: Translations = {
 
 const LANG_KEY = LANGUAGE_CONFIG.storageKey;
 
-function getInitialLang(): Lang {
-  if (typeof window === "undefined") return LANGUAGE_CONFIG.defaultLanguage;
-  const stored = window.localStorage.getItem(LANG_KEY);
-  if (LANGUAGE_CONFIG.supportedLanguages.includes(stored as Lang)) {
-    return stored as Lang;
-  }
-  return LANGUAGE_CONFIG.defaultLanguage;
+function applyFont(lang: Lang): void {
+  document.documentElement.style.setProperty(
+    "--font-current",
+    lang === "en" ? "var(--font-lexend)" : "var(--font-sans)"
+  );
+  document.documentElement.lang = lang === "en" ? "en" : "km";
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>(getInitialLang);
+  // Start from the default language so server and client render the same
+  // markup, then sync with the persisted choice after hydration.
+  const [lang, setLang] = useState<Lang>(LANGUAGE_CONFIG.defaultLanguage);
+  const skipNextPersist = useRef(true);
 
+  // Read the persisted language once, after hydration.
   useEffect(() => {
+    const stored = window.localStorage.getItem(LANG_KEY);
+    const initial = LANGUAGE_CONFIG.supportedLanguages.includes(stored as Lang)
+      ? (stored as Lang)
+      : LANGUAGE_CONFIG.defaultLanguage;
+    setLang(initial);
+    applyFont(initial);
+  }, []);
+
+  // Persist + apply font on every subsequent change (skips the mount run).
+  useEffect(() => {
+    if (skipNextPersist.current) {
+      skipNextPersist.current = false;
+      return;
+    }
     window.localStorage.setItem(LANG_KEY, lang);
-    // Apply font based on language
-    document.documentElement.style.setProperty(
-      "--font-current",
-      lang === "en" ? "var(--font-lexend)" : "var(--font-sans)"
-    );
+    applyFont(lang);
   }, [lang]);
 
   const t: TranslateFn = (key, params) => {

@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { ChevronRight, Clock, GraduationCap, Zap } from "lucide-react";
 
 const CourseItem = ({ 
@@ -9,7 +12,8 @@ const CourseItem = ({
   years, 
   price, 
   seats, 
-  cta 
+  cta,
+  deptHref
 }: { 
   titleKh: string; 
   titleEn: string; 
@@ -18,7 +22,8 @@ const CourseItem = ({
   years: string; 
   price: string; 
   seats?: string; 
-  cta?: string 
+  cta?: string;
+  deptHref: string;
 }) => (
   <div className="flex flex-col justify-between gap-4 border-b border-gray-100 p-5 last:border-0 sm:flex-row sm:items-center">
     <div className="space-y-2">
@@ -51,7 +56,7 @@ const CourseItem = ({
       </div>
       
       <Link
-        to="department"
+        href={deptHref}
         className="flex items-center gap-1 rounded bg-[#F0F4F8] px-3 py-1.5 text-xs font-semibold text-[#1E3A8A] hover:bg-[#E2E8F0] transition-colors"
       >
         {cta || "ព័ត៌មានលម្អិត"} <ChevronRight className="h-3 w-3" />
@@ -61,6 +66,9 @@ const CourseItem = ({
 );
 
 export const FacultyCard = () => {
+  const params = useParams<{ university: string }>();
+  const departmentHref = `/explore-universities/${params.university}/department`;
+
   return (
     <div className="w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       {/* Header */}
@@ -89,6 +97,7 @@ export const FacultyCard = () => {
           years="៥ ឆ្នាំ"
           price="$650"
           seats="មានអាហារូបករណ៍"
+          deptHref={departmentHref}
         />
         <CourseItem 
           titleKh="វិស្វកម្មអគ្គិសនី"
@@ -97,6 +106,7 @@ export const FacultyCard = () => {
           years="៥ ឆ្នាំ"
           price="$650"
           seats="ចំណុះ 120 នាក់"
+          deptHref={departmentHref}
         />
         <CourseItem 
           titleKh="ស្វ័យប្រវត្តិកម្ម និងមនុស្សយន្ត"
@@ -106,6 +116,7 @@ export const FacultyCard = () => {
           years="៥ ឆ្នាំ"
           price="$750"
           seats="Smart Lab ITC"
+          deptHref={departmentHref}
         />
       </div>
     </div>

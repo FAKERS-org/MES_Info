@@ -1,3 +1,5 @@
+"use client";
+
 import { Calendar, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { resolveText } from "@/data/department";

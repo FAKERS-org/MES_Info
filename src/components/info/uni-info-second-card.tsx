@@ -1,3 +1,5 @@
+"use client";
+
 import { Building2, Globe, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/lib/i18n";

@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { Globe, MapPin } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -15,7 +17,7 @@ const UniInfoCard = ({ university, className }: UniInfoCardProps) => {
 
   return (
     <Link
-      to={`/explore-universities/${university.id}`}
+      href={`/explore-universities/${university.id}`}
       className={cn(
         "flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-shadow hover:shadow-xl",
         className

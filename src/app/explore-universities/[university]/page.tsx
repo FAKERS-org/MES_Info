@@ -7,14 +7,14 @@ import { AdmissionsCard } from "@/components/universities/admissions-card";
 import { BrochureCard } from "@/components/universities/brochure-card";
 import { CampusMapCard } from "@/components/universities/campus-map-card";
 
-export default function UniversityIdPage() {
+export default async function UniversityIdPage() {
   return (
     <div className="space-y-8">
       <UniversityIdCard />
       <UniversityMenu />
 
       <div className="mx-auto grid w-full max-w-full grid-cols-1 gap-6 md:grid-cols-3">
-        
+
         {/* Left Column (Search + Faculty) */}
         <div className="md:col-span-2 space-y-6">
           <DegreeSearch />
@@ -32,6 +32,6 @@ export default function UniversityIdPage() {
         </div>
 
       </div>
-    </div>  
+    </div>
   );
 }

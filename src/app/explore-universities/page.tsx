@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
@@ -67,7 +69,7 @@ export default function ExploreUniversitiesPage() {
 
   return (
     <div className="space-y-6">
-      
+
       {/* Hero */}
       <UniversityHero />
 

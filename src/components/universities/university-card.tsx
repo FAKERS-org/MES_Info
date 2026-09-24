@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -94,7 +96,7 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
             variant="secondary"
             className="flex-1 bg-sky-50 hover:bg-sky-100 text-sky-600 rounded-2xl h-12 font-semibold p-0"
           >
-            <Link to={`/explore-universities/${university.id}`}
+            <Link href={`/explore-universities/${university.id}`}
             className="flex items-center justify-center w-full h-full"
             >
               { t('miscellaneous.viewProgram') }
@@ -106,7 +108,7 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
             size="icon"
             className="w-11 h-11 rounded-2xl border-slate-200 text-slate-500 shrink-0 p-0"
           >
-            <Link to={`/explore-universities/${university.id}`}
+            <Link href={`/explore-universities/${university.id}`}
             className="flex items-center justify-center w-full h-full"
             >
               <ArrowUpRight className="w-4 h-4" />

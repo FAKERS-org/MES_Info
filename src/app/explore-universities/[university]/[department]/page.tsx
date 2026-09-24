@@ -7,7 +7,7 @@ import DiscussionCard from "@/components/explore-universities/department/discuss
 import FacilityCard from "@/components/explore-universities/department/facility-card";
 import { departmentPageData } from "@/data/department";
 
-export default function DepartmentIdPage() {
+export default async function DepartmentIdPage() {
   return (
     <div className="space-y-0">
       <DepartmentIdHeading data={departmentPageData.heading} />
