@@ -1,11 +1,11 @@
-import UniversityIdCard from "@/components/universities/universityId-card";
-import UniversityMenu from "@/components/universities/university-menu";
-import { DegreeSearch } from "@/components/universities/degree-search";
-import { FacultyCard } from "@/components/universities/faculty-card";
-import { HotNewsCard } from "@/components/universities/hot-nows-card";
-import { AdmissionsCard } from "@/components/universities/admissions-card";
-import { BrochureCard } from "@/components/universities/brochure-card";
-import { CampusMapCard } from "@/components/universities/campus-map-card";
+import UniversityIdCard from "@/components/university/university-id-card";
+import UniversityMenu from "@/components/university/university-menu";
+import { DegreeSearch } from "@/components/university/degree-search";
+import { FacultyCard } from "@/components/university/faculty-card";
+import { HotNewsCard } from "@/components/university/hot-news-card";
+import { AdmissionsCard } from "@/components/university/admissions-card";
+import { BrochureCard } from "@/components/university/brochure-card";
+import { CampusMapCard } from "@/components/university/campus-map-card";
 
 export default async function UniversityIdPage() {
   return (

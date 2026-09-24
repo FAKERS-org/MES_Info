@@ -3,9 +3,9 @@
 import { useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { BookOpen, Coins, Diff, LayoutGrid, University } from "lucide-react";
-import Sidebar, { type NavItem } from "@/components/shared/sidebar";
-import TopBar from "@/components/shared/top-bar";
-import Breadcrumbs from "@/components/shared/breadcrumbs";
+import Sidebar, { type NavItem } from "@/components/layout/sidebar";
+import TopBar from "@/components/layout/top-bar";
+import Breadcrumbs from "@/components/layout/breadcrumbs";
 import { useTheme } from "@/lib/theme";
 import { LanguageProvider, useLanguage } from "@/lib/i18n";
 import { UniversitiesProvider } from "@/hooks/use-universities";

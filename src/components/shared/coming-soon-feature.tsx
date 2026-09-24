@@ -4,7 +4,7 @@ import { ClipboardList, Clock, FileCheck, History, ListChecks, Timer, User, User
 import ComingSoon from "@/components/shared/coming-soon";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
-import UniInfoCard from "@/components/info/uni-info-card";
+import UniInfoCard from "@/components/university/uni-info-card";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 
 export type ComingSoonFeatureId = "exam" | "history" | "profile" | "info" | "majors" | "scholarships" | "compare";

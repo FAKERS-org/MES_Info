@@ -3,14 +3,14 @@
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
-import { UniversityCard } from "@/components/universities/university-card";
+import { UniversityCard } from "@/components/university/university-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 import { ErrorState } from "@/components/shared/error-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import UniversityHero from "@/components/universities/university-hero";
-import UniversityPagination from "@/components/universities/universiity-pagination";
+import UniversityHero from "@/components/university/university-hero";
+import UniversityPagination from "@/components/university/university-pagination";
 
 type SortKey = "name-asc" | "name-desc" | "departments-desc";
 

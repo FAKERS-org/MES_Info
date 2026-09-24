@@ -1,10 +1,10 @@
-import DepartmentIdHeading from "@/components/explore-universities/department/department-id-heading";
-import CourseSyllabusCard from "@/components/explore-universities/department/course-syllabus-card";
-import ApplicationConditionCard from "@/components/explore-universities/department/application-condition-card";
-import ScholarshipBriefCard from "@/components/explore-universities/department/scholarship-brief-card";
-import CareerPathCard from "@/components/explore-universities/department/career-path-card";
-import DiscussionCard from "@/components/explore-universities/department/discussion-card";
-import FacilityCard from "@/components/explore-universities/department/facility-card";
+import DepartmentIdHeading from "@/components/department/department-id-heading";
+import CourseSyllabusCard from "@/components/department/course-syllabus-card";
+import ApplicationConditionCard from "@/components/department/application-condition-card";
+import ScholarshipBriefCard from "@/components/department/scholarship-brief-card";
+import CareerPathCard from "@/components/department/career-path-card";
+import DiscussionCard from "@/components/department/discussion-card";
+import FacilityCard from "@/components/department/facility-card";
 import { departmentPageData } from "@/data/department";
 
 export default async function DepartmentIdPage() {

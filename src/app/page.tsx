@@ -1,6 +1,6 @@
 "use client";
 
-import UniInfoCard from "@/components/info/uni-info-card";
+import UniInfoCard from "@/components/university/uni-info-card";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 import { ErrorState } from "@/components/shared/error-state";
 import { useUniversities } from "@/hooks/use-universities";
