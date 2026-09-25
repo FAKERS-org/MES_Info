@@ -1,15 +1,69 @@
-import { useQuery } from "@tanstack/react-query";
+"use client";
+
+import type { University } from "@/data";
+import { universities as staticUniversities } from "@/data/universities";
 import apiClient from "@/lib/api/client";
-// Import types generated in Step 1!
-import type { paths } from "@/lib/api/schema"; 
+import { useQuery } from "@tanstack/react-query";
+import { createContext, useCallback, useContext } from "react";
+
+// Switch: "static" | "api"
+const DATA_SOURCE = "static" as const;
+
+type UniversitiesContextType = {
+    universities: University[];
+    status: "loading" | "error" | "success";
+    error: Error | null;
+    refresh: () => void;
+};
+
+const UniversitiesContext = createContext<UniversitiesContextType | undefined>(undefined);
+
+async function fetchUniversities(): Promise<University[]> {
+    if (DATA_SOURCE === "static") {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        return staticUniversities as University[];
+    }
+    const response = await apiClient.get("/public/universities");
+    return response.data as University[];
+}
+
+export function UniversitiesProvider({ children }: { children: React.ReactNode }) {
+    const queryResult = useQuery({
+        queryKey: ["universities"],
+        queryFn: fetchUniversities,
+    });
+
+    const refresh = useCallback(() => {
+        queryResult.refetch();
+    }, [queryResult]);
+
+    let status: "loading" | "error" | "success";
+    if (queryResult.isLoading) {
+        status = "loading";
+    } else if (queryResult.isError) {
+        status = "error";
+    } else {
+        status = "success";
+    }
+
+    return (
+        <UniversitiesContext.Provider
+            value={{
+                universities: queryResult.data ?? [],
+                status,
+                error: queryResult.error,
+                refresh,
+            }}
+        >
+            {children}
+        </UniversitiesContext.Provider>
+    );
+}
 
 export function useUniversities() {
-  return useQuery({
-    queryKey: ["universities"],
-    queryFn: async () => {
-      // Notice how clean this is. No loading state management needed here.
-      const response = await apiClient.get("/public/universities");
-      return response.data;
-    },
-  });
+    const context = useContext(UniversitiesContext);
+    if (!context) {
+        throw new Error("useUniversities must be used within a UniversitiesProvider");
+    }
+    return context;
 }
