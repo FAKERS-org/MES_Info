@@ -1,0 +1,93 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  Award,
+  BarChart3,
+  Bookmark,
+  Bot,
+  BookOpen,
+  BrainCircuit,
+  Building2,
+  Calendar,
+  CalendarDays,
+  Camera,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  Cloud,
+  Code2,
+  Cpu,
+  Download,
+  ExternalLink,
+  FileText,
+  Globe,
+  GraduationCap,
+  Headphones,
+  Hourglass,
+  Info,
+  Mail,
+  Map,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Search,
+  Send,
+  Server,
+  Share2,
+  ShieldCheck,
+  TrendingUp,
+  Users,
+  Wallet,
+  Zap,
+} from "lucide-react";
+
+/**
+ * Registry of the icons addressable by name. Data files store `IconName`
+ * strings and components render them through the shared `<Icon />`, so both
+ * detail pages of `/explore-universities` resolve icons the same way.
+ */
+export const iconMap = {
+  Award,
+  BarChart3,
+  Bookmark,
+  Bot,
+  BookOpen,
+  BrainCircuit,
+  Building2,
+  Calendar,
+  CalendarDays,
+  Camera,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  Cloud,
+  Code2,
+  Cpu,
+  Download,
+  ExternalLink,
+  FileText,
+  Globe,
+  GraduationCap,
+  Headphones,
+  Hourglass,
+  Info,
+  Mail,
+  Map,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Search,
+  Send,
+  Server,
+  Share2,
+  ShieldCheck,
+  TrendingUp,
+  Users,
+  Wallet,
+  Zap,
+} satisfies Record<string, LucideIcon>;
+
+export type IconName = keyof typeof iconMap;
+
+export function getIcon(name: IconName): LucideIcon {
+  return iconMap[name];
+}

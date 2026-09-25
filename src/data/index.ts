@@ -1,10 +1,17 @@
 export type { University, Department, NamespacedText } from "./universities";
-export {
-  resolveText,
-  departmentPageData,
-  iconMap,
-  getIcon,
-} from "./department";
+export { resolveText, departmentPageData } from "./department";
+export { universityPageData } from "./university";
+export { iconMap, getIcon } from "@/lib/icons";
+export type {
+  UniversityPageData,
+  UniversityHeroData,
+  FacultyCardData,
+  HotNewsCardData,
+  AdmissionsCardData,
+  CampusMapCardData,
+  BrochureCardData,
+  UniversityMenuTab,
+} from "./university";
 export type {
   IconName,
   DepartmentStat,

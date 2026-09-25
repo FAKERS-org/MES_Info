@@ -1,4 +1,11 @@
 import { Search } from "lucide-react";
+import { Tag, TagList } from "@/components/shared/tag-list";
+
+const FILTER_ACTIVE_CLASS =
+  "whitespace-nowrap rounded-full border-0 bg-[#0B1B36] px-4 py-1.5 text-white";
+
+const FILTER_CLASS =
+  "whitespace-nowrap rounded-full border-0 bg-gray-100 px-4 py-1.5 text-gray-600 hover:bg-gray-200";
 
 export const DegreeSearch = () => {
   return (
@@ -14,17 +21,17 @@ export const DegreeSearch = () => {
       </div>
 
       {/* Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto">
-        <button className="whitespace-nowrap rounded-full bg-[#0B1B36] px-4 py-1.5 text-xs font-medium text-white transition-colors">
+      <TagList className="items-center gap-1.5 overflow-x-auto flex-nowrap">
+        <Tag as="button" type="button" className={FILTER_ACTIVE_CLASS}>
           គ្រប់ជំនាញ (All Degrees)
-        </button>
-        <button className="whitespace-nowrap rounded-full bg-gray-100 px-4 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors">
+        </Tag>
+        <Tag as="button" type="button" className={FILTER_CLASS}>
           វិស្វករ (Ingénieur 5Y)
-        </button>
-        <button className="whitespace-nowrap rounded-full bg-gray-100 px-4 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors">
+        </Tag>
+        <Tag as="button" type="button" className={FILTER_CLASS}>
           បរិញ្ញាបត្រ
-        </button>
-      </div>
+        </Tag>
+      </TagList>
     </div>
   );
 };

@@ -1,29 +1,5 @@
 import type { NamespacedText } from "./universities";
-import type { LucideIcon } from "lucide-react";
-import {
-  BookOpen,
-  ShieldCheck,
-  CheckCircle2,
-  Calendar,
-  Wallet,
-  TrendingUp,
-  BrainCircuit,
-  Code2,
-  Cloud,
-  Building2,
-  MessageCircle,
-  Send,
-  Phone,
-  Mail,
-  Cpu,
-  Bot,
-  Server,
-  Camera,
-  Hourglass,
-  Globe,
-  GraduationCap,
-  Download,
-} from "lucide-react";
+import type { IconName } from "@/lib/icons";
 
 import type { Lang } from "@/lib/i18n";
 
@@ -31,29 +7,7 @@ export function resolveText(text: NamespacedText, lang: Lang): string {
   return text[lang] ?? text.en;
 }
 
-export type IconName =
-  | "BookOpen"
-  | "ShieldCheck"
-  | "CheckCircle2"
-  | "Calendar"
-  | "Wallet"
-  | "TrendingUp"
-  | "BrainCircuit"
-  | "Code2"
-  | "Cloud"
-  | "Building2"
-  | "MessageCircle"
-  | "Send"
-  | "Phone"
-  | "Mail"
-  | "Cpu"
-  | "Bot"
-  | "Server"
-  | "Camera"
-  | "Hourglass"
-  | "Globe"
-  | "GraduationCap"
-  | "Download";
+export type { IconName } from "@/lib/icons";
 
 export interface DepartmentStat {
   label: NamespacedText;
@@ -184,35 +138,6 @@ export interface DepartmentPageData {
   career: CareerPathData;
   discussion: DiscussionCardData;
   facility: FacilityCardData;
-}
-
-export const iconMap: Record<IconName, LucideIcon> = {
-  BookOpen,
-  ShieldCheck,
-  CheckCircle2,
-  Calendar,
-  Wallet,
-  TrendingUp,
-  BrainCircuit,
-  Code2,
-  Cloud,
-  Building2,
-  MessageCircle,
-  Send,
-  Phone,
-  Mail,
-  Cpu,
-  Bot,
-  Server,
-  Camera,
-  Hourglass,
-  Globe,
-  GraduationCap,
-  Download,
-};
-
-export function getIcon(name: IconName): LucideIcon {
-  return iconMap[name];
 }
 
 export const departmentPageData: DepartmentPageData = {

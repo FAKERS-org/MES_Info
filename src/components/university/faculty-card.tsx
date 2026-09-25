@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ChevronRight, Clock, GraduationCap, Zap } from "lucide-react";
+import { DetailCard } from "@/components/shared/detail-card";
+import { Icon } from "@/components/shared/icon-renderer";
+import type { FacultyCardData } from "@/data/university";
 
 const CourseItem = ({ 
   titleKh, 
@@ -14,17 +16,7 @@ const CourseItem = ({
   seats, 
   cta,
   deptHref
-}: { 
-  titleKh: string; 
-  titleEn: string; 
-  badge?: string; 
-  degree: string; 
-  years: string; 
-  price: string; 
-  seats?: string; 
-  cta?: string;
-  deptHref: string;
-}) => (
+}: FacultyCardData["courses"][number] & { deptHref: string }) => (
   <div className="flex flex-col justify-between gap-4 border-b border-gray-100 p-5 last:border-0 sm:flex-row sm:items-center">
     <div className="space-y-2">
       <div className="flex items-center gap-2">
@@ -39,10 +31,10 @@ const CourseItem = ({
       
       <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-gray-600">
         <span className="flex items-center gap-1">
-          <GraduationCap className="h-3.5 w-3.5" /> {degree}
+          <Icon name="GraduationCap" className="h-3.5 w-3.5" /> {degree}
         </span>
         <span className="flex items-center gap-1">
-          <Clock className="h-3.5 w-3.5" /> រយៈពេល {years} (5 Years Full-time)
+          <Icon name="Clock" className="h-3.5 w-3.5" /> រយៈពេល {years} (5 Years Full-time)
         </span>
       </div>
     </div>
@@ -59,66 +51,43 @@ const CourseItem = ({
         href={deptHref}
         className="flex items-center gap-1 rounded bg-[#F0F4F8] px-3 py-1.5 text-xs font-semibold text-[#1E3A8A] hover:bg-[#E2E8F0] transition-colors"
       >
-        {cta || "ព័ត៌មានលម្អិត"} <ChevronRight className="h-3 w-3" />
+        {cta || "ព័ត៌មានលម្អិត"} <Icon name="ChevronRight" className="h-3 w-3" />
       </Link>
     </div>
   </div>
 );
 
-export const FacultyCard = () => {
+export interface FacultyCardProps {
+  data: FacultyCardData;
+}
+
+export function FacultyCard({ data }: FacultyCardProps) {
   const params = useParams<{ university: string }>();
   const departmentHref = `/explore-universities/${params.university}/department`;
 
   return (
-    <div className="w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-      {/* Header */}
-      <div className="flex items-center justify-between bg-[#0B1B36] p-4 text-white">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded bg-white/10">
-            <Zap className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <h2 className="font-bold font-sans">មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី និងជាមពល</h2>
-            <p className="text-xs text-gray-300">Faculty of Electrical and Energy Engineering (FEE)</p>
-          </div>
-        </div>
-        <span className="rounded bg-white/10 px-2 py-1 text-xs font-medium">
-          3 Majors Offered
-        </span>
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-col">
-        <CourseItem 
-          titleKh="វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ"
-          titleEn="Telecommunication & Network Engineering (GTR)"
-          badge="ពេញនិយម"
-          degree="បរិញ្ញាបត្រវិស្វកម្ម (Diplôme d'Ingénieur)"
-          years="៥ ឆ្នាំ"
-          price="$650"
-          seats="មានអាហារូបករណ៍"
-          deptHref={departmentHref}
-        />
-        <CourseItem 
-          titleKh="វិស្វកម្មអគ្គិសនី"
-          titleEn="Electrical Power Engineering (GEE)"
-          degree="បរិញ្ញាបត្រវិស្វកម្ម (Engineering)"
-          years="៥ ឆ្នាំ"
-          price="$650"
-          seats="ចំណុះ 120 នាក់"
-          deptHref={departmentHref}
-        />
-        <CourseItem 
-          titleKh="ស្វ័យប្រវត្តិកម្ម និងមនុស្សយន្ត"
-          titleEn="Automation & Robotics Engineering (GAR)"
-          badge="ថ្មីពិសេស"
-          degree="បរិញ្ញាបត្រវិស្វកម្ម (Engineering Degree)"
-          years="៥ ឆ្នាំ"
-          price="$750"
-          seats="Smart Lab ITC"
-          deptHref={departmentHref}
-        />
-      </div>
-    </div>
+    <DetailCard
+      className="border-gray-200"
+      header={{
+        padding: "p-4",
+        className: "bg-[#0B1B36] text-white",
+        icon: <Icon name="Zap" className="h-5 w-5 text-white" />,
+        iconTileClassName: "flex h-10 w-10 items-center justify-center rounded bg-white/10",
+        title: data.header.title,
+        titleClassName: "font-bold font-sans text-white",
+        subtitle: data.header.subtitle,
+        subtitleClassName: "text-xs text-gray-300",
+        badge: (
+          <span className="rounded bg-white/10 px-2 py-1 text-xs font-medium">
+            {data.header.badge}
+          </span>
+        ),
+      }}
+      body={{ padding: "", className: "flex flex-col" }}
+    >
+      {data.courses.map((course, idx) => (
+        <CourseItem key={idx} {...course} deptHref={departmentHref} />
+      ))}
+    </DetailCard>
   );
-};
+}

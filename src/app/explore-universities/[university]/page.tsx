@@ -6,32 +6,37 @@ import { HotNewsCard } from "@/components/university/hot-news-card";
 import { AdmissionsCard } from "@/components/university/admissions-card";
 import { BrochureCard } from "@/components/university/brochure-card";
 import { CampusMapCard } from "@/components/university/campus-map-card";
+import { SectionLayout } from "@/components/shared/section-layout";
+import { universityPageData } from "@/data/university";
 
 export default async function UniversityIdPage() {
+  const { hero, faculty, hotNews, admissions, campusMap, brochure } =
+    universityPageData;
+
   return (
     <div className="space-y-8">
-      <UniversityIdCard />
+      <UniversityIdCard data={hero} />
       <UniversityMenu />
 
-      <div className="mx-auto grid w-full max-w-full grid-cols-1 gap-6 md:grid-cols-3">
-
+      <SectionLayout
+        breakpoint="md"
+        mainClassName="space-y-6"
+        aside={
+          /* Right Column (Hot News, Campus Map, Admissions, Brochure) */
+          <>
+            <HotNewsCard data={hotNews} />
+            <CampusMapCard data={campusMap} />
+            <AdmissionsCard data={admissions} />
+            <BrochureCard data={brochure} />
+          </>
+        }
+      >
         {/* Left Column (Search + Faculty) */}
-        <div className="md:col-span-2 space-y-6">
-          <DegreeSearch />
-          <FacultyCard />
-          <FacultyCard />
-          {/* <FacultyCard /> */}
-        </div>
-
-        {/* Right Column (Hot News) */}
-        <div className="flex flex-col gap-6 md:col-span-1">
-          <HotNewsCard />
-          <CampusMapCard />
-          <AdmissionsCard />
-          <BrochureCard />
-        </div>
-
-      </div>
+        <DegreeSearch />
+        <FacultyCard data={faculty} />
+        <FacultyCard data={faculty} />
+        {/* <FacultyCard data={faculty} /> */}
+      </SectionLayout>
     </div>
   );
 }
