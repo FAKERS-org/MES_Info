@@ -82,6 +82,45 @@ export const universities: University[] = [
           },
         ],
       },
+      {
+        id: "gtr",
+        name: {
+          kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ (GTR)",
+          en: "Department of Telecommunication and Network Engineering (GTR)",
+        },
+        category: {
+          kh: "វិស្វកម្ម",
+          en: "Engineering",
+        },
+        logo: "/images/ITC-logo.png",
+        requirements: [],
+      },
+      {
+        id: "gee",
+        name: {
+          kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មអគ្គិសនី (GEE)",
+          en: "Department of Electrical Power Engineering (GEE)",
+        },
+        category: {
+          kh: "វិស្វកម្ម",
+          en: "Engineering",
+        },
+        logo: "/images/ITC-logo.png",
+        requirements: [],
+      },
+      {
+        id: "gar",
+        name: {
+          kh: "ដេប៉ាតឺម៉ង់ស្វ័យប្រវត្តិកម្ម និងមនុស្សយន្ត (GAR)",
+          en: "Department of Automation and Robotics Engineering (GAR)",
+        },
+        category: {
+          kh: "វិស្វកម្ម",
+          en: "Engineering",
+        },
+        logo: "/images/ITC-logo.png",
+        requirements: [],
+      },
     ],
   },
   {

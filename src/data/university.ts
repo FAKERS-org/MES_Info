@@ -52,6 +52,8 @@ export interface FacultyCourseData {
   price: string;
   seats?: string;
   cta?: string;
+  /** `University.departments[].id` this course links to. */
+  departmentId: string;
 }
 
 export interface FacultyCardData {
@@ -209,6 +211,7 @@ export const universityPageData: UniversityPageData = {
         years: "៥ ឆ្នាំ",
         price: "$650",
         seats: "មានអាហារូបករណ៍",
+        departmentId: "gtr",
       },
       {
         titleKh: "វិស្វកម្មអគ្គិសនី",
@@ -217,6 +220,7 @@ export const universityPageData: UniversityPageData = {
         years: "៥ ឆ្នាំ",
         price: "$650",
         seats: "ចំណុះ 120 នាក់",
+        departmentId: "gee",
       },
       {
         titleKh: "ស្វ័យប្រវត្តិកម្ម និងមនុស្សយន្ត",
@@ -226,6 +230,7 @@ export const universityPageData: UniversityPageData = {
         years: "៥ ឆ្នាំ",
         price: "$750",
         seats: "Smart Lab ITC",
+        departmentId: "gar",
       },
     ],
   },

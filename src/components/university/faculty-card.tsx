@@ -63,7 +63,6 @@ export interface FacultyCardProps {
 
 export function FacultyCard({ data }: FacultyCardProps) {
   const params = useParams<{ university: string }>();
-  const departmentHref = `/explore-universities/${params.university}/department`;
 
   return (
     <DetailCard
@@ -86,7 +85,11 @@ export function FacultyCard({ data }: FacultyCardProps) {
       body={{ padding: "", className: "flex flex-col" }}
     >
       {data.courses.map((course, idx) => (
-        <CourseItem key={idx} {...course} deptHref={departmentHref} />
+        <CourseItem
+          key={idx}
+          {...course}
+          deptHref={`/explore-universities/${params.university}/${course.departmentId}`}
+        />
       ))}
     </DetailCard>
   );

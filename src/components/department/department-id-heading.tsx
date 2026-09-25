@@ -1,12 +1,13 @@
 "use client";
 
-import { CheckCircle2, GraduationCap } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { resolveText } from "@/data/department";
 import type { DepartmentIdHeadingData } from "@/data/department";
+import type { NamespacedText } from "@/data/universities";
 import { Icon } from "@/components/shared/icon-renderer";
 import {
   EntityHero,
@@ -16,108 +17,131 @@ import {
 
 export interface DepartmentIdHeadingProps {
   data: DepartmentIdHeadingData;
+  /** Resolved `Department` of the URL: overrides title and logo. */
+  entity?: { name: NamespacedText; logo: string };
   className?: string;
 }
 
 export default function DepartmentIdHeading({
   data,
+  entity,
   className,
 }: DepartmentIdHeadingProps) {
   const { lang } = useLanguage();
+  const title = entity?.name ?? data.title;
+  const logo = entity?.logo ?? data.logo;
+  const logoAlt = entity?.name ?? data.logoAlt;
 
   return (
     <EntityHero
-      className={cn("border-gray-100 mx-auto font-sans", className)}
-      bannerClassName="h-40 w-full bg-gradient-to-r from-[#0a4f7c] to-[#167bb3] absolute top-0 left-0 z-0"
-      bodyClassName="z-10 px-6 pt-24 pb-6"
+      className={cn(
+        "border-border text-card-foreground transition-all mx-auto font-sans",
+        className
+      )}
+      bannerClassName="relative h-56 bg-gradient-to-br from-[#0a4f7c] via-[#0e5a8a] to-[#167bb3]"
+      banner={
+        <>
+          {/* Subtle grid pattern overlay */}
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+
+          {/* Top badges */}
+          <div className="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
+            <Badge className="bg-white/15 hover:bg-white/25 text-white border-0">
+              <Icon name="ShieldCheck" className="w-3.5 h-3.5 mr-1" />
+              {data.accreditationBadge}
+            </Badge>
+            <Badge className="bg-white/15 hover:bg-white/25 text-white border-0">
+              <Icon name="GraduationCap" className="w-3.5 h-3.5 mr-1" />
+              {data.facultyBadge}
+            </Badge>
+          </div>
+
+          {/* Logo */}
+          <EntityHeroLogo
+            containerClassName="absolute left-6 -bottom-20"
+            className="w-40 h-40 p-1 shadow-xl"
+            innerClassName="bg-[#0e5a8a] border-4 border-[#d4af37]"
+            innerStyle={{
+              backgroundImage: `url(${logo})`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+            fallback={
+              <span className="text-white text-xs text-center font-bold px-2">
+                {resolveText(logoAlt, lang)}
+              </span>
+            }
+            check={
+              <CheckCircle2 className="absolute -bottom-1 -right-1 w-6 h-6 text-green-500 fill-white" />
+            }
+          />
+        </>
+      }
+      bodyClassName="pt-24 pb-6 px-6"
     >
-      <div className="absolute top-4 right-6 flex items-center gap-2 text-white/90 text-xs font-medium">
-        <div className="flex items-center gap-1">
-          <Icon name="ShieldCheck" className="w-4 h-4" />
-          <span>{data.accreditationBadge}</span>
-        </div>
-        <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
-          <GraduationCap className="w-4 h-4" />
-          <span>{data.facultyBadge}</span>
-        </div>
+      {/* Department name next to the logo: in flow on mobile, on the banner
+          split from md up, exactly like the university hero. */}
+      <div className="md:absolute md:left-[196px] md:right-6 md:-top-11 md:-translate-y-1/2 mb-4 md:mb-0">
+        <h1 className="text-2xl font-bold text-gray-900 md:text-white">
+          {resolveText(title, lang)}
+        </h1>
+        <p className="text-gray-600 text-sm mt-1 md:text-teal-100">
+          {resolveText(data.subtitle, lang)}
+        </p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        <EntityHeroLogo
-          containerClassName="flex-shrink-0 -mt-20 md:-mt-24"
-          className="w-32 h-32 md:w-36 md:h-36 p-2 shadow-md"
-          innerClassName="bg-[#0e5a8a] border-4 border-[#d4af37]"
-          innerStyle={{
-            backgroundImage: `url(${data.logo})`,
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-          fallback={
-            <span className="text-white text-xs text-center font-bold px-2">
-              {resolveText(data.logoAlt, lang)}
-            </span>
-          }
-          check={
-            <div className="absolute bottom-2 right-2 bg-[#0a7d4f] text-white p-1 rounded-full border-2 border-white">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          }
-        />
-
-        <div className="flex-1 mt-4 md:mt-0">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            {data.badges.map((badge, idx) => (
-              <Badge
+      {/* Badges + action buttons — next to the logo, just below the split border */}
+      <div className="md:absolute md:left-[196px] md:top-4 md:right-6 mt-4 md:mt-0 flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
+          {data.badges.map((badge, idx) => (
+            <Badge
+              key={idx}
+              className="bg-[#eef5fc] text-[#0e5a8a] gap-1 hover:bg-[#eef5fc]"
+            >
+              {badge}
+            </Badge>
+          ))}
+        </div>
+        <div className="flex items-center gap-3 flex-wrap justify-end md:flex-nowrap">
+          <Button className="gap-2 rounded-lg px-5">
+            {resolveText(data.actions.primary.label, lang)}
+            <Icon name={data.actions.primary.icon} className="w-4 h-4" />
+          </Button>
+          <div className="flex gap-2">
+            {data.actions.secondary.map((action, idx) => (
+              <Button
                 key={idx}
-                className="bg-[#eef5fc] text-[#0e5a8a] gap-1"
+                variant="secondary"
+                className="gap-2 rounded-lg"
               >
-                <span className="text-blue-500">⏱</span> {badge}
-              </Badge>
+                <Icon name={action.icon} className="w-4 h-4" />
+                {resolveText(action.label, lang)}
+              </Button>
             ))}
-            <span className="text-xs text-gray-400 font-medium hidden sm:inline">
-              Fundamental Foundation
-            </span>
-          </div>
-
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-            {resolveText(data.title, lang)}
-          </h1>
-          <p className="text-gray-600 mt-1 md:text-lg">
-            {resolveText(data.subtitle, lang)}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-3 mt-4 md:absolute md:top-24 md:right-6">
-            <Button className="gap-2 rounded-full px-6">
-              {resolveText(data.actions.primary.label, lang)}
-              <Icon name={data.actions.primary.icon} />
-            </Button>
-            <div className="flex gap-2">
-              {data.actions.secondary.map((action, idx) => (
-                <Button
-                  key={idx}
-                  variant="secondary"
-                  className="gap-2 rounded-full"
-                >
-                  <Icon name={action.icon} />
-                  {resolveText(action.label, lang)}
-                </Button>
-              ))}
-            </div>
           </div>
         </div>
       </div>
+
+      <hr className="my-6 border-slate-200" />
 
       <EntityHeroStats
-        className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-gray-100"
+        className="grid-cols-2 md:grid-cols-4 gap-6"
         items={data.stats.map((stat) => ({
-          icon: <Icon name={stat.icon} className="w-6 h-6" />,
-          iconClassName: `${stat.iconBg} p-3 rounded-lg ${stat.iconColor}`,
+          icon: <Icon name={stat.icon} className="w-5 h-5 text-slate-400" />,
+          iconClassName: "mt-0.5",
           label: resolveText(stat.label, lang),
-          labelClassName: "text-xs text-gray-500 font-medium",
+          labelClassName: "text-xs text-slate-500 mb-0.5",
           value: resolveText(stat.value, lang),
-          valueClassName: `font-bold ${stat.valueColor ?? "text-gray-900"}`,
-          className: "items-center gap-4 bg-[#f8fafc] rounded-xl p-4",
+          valueClassName: "text-sm font-semibold text-slate-900",
+          className: "items-start gap-3",
         }))}
       />
     </EntityHero>
