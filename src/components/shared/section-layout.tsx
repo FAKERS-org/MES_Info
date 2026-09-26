@@ -15,6 +15,27 @@ export interface SectionLayoutProps {
 }
 
 /**
+ * Responsive classes of the 2/1 split. They are spelled out instead of built
+ * from `${breakpoint}:…` because Tailwind only generates the class names it
+ * finds written literally in the source, so a template literal silently drops
+ * the whole split (the grid stayed on `grid-cols-1` and never spanned).
+ */
+const GRID_COLS = {
+  md: "md:grid-cols-3",
+  xl: "xl:grid-cols-3",
+} as const;
+
+const MAIN_SPAN = {
+  md: "md:col-span-2",
+  xl: "xl:col-span-2",
+} as const;
+
+const ASIDE_SPAN = {
+  md: "md:col-span-1",
+  xl: "xl:col-span-1",
+} as const;
+
+/**
  * Page band wrapping a wide main column plus a narrow side column, used by
  * both detail pages of `/explore-universities`.
  */
@@ -37,10 +58,10 @@ export function SectionLayout({
       <div
         className={cn(
           "grid w-full max-w-full grid-cols-1 gap-6",
-          aside && `${breakpoint}:grid-cols-3`
+          aside && GRID_COLS[breakpoint]
         )}
       >
-        <div className={cn(aside && `${breakpoint}:col-span-2`, mainClassName)}>
+        <div className={cn(aside && MAIN_SPAN[breakpoint], mainClassName)}>
           {children}
         </div>
 
@@ -48,7 +69,7 @@ export function SectionLayout({
           <div
             className={cn(
               "flex flex-col gap-6",
-              `${breakpoint}:col-span-1`,
+              ASIDE_SPAN[breakpoint],
               asideClassName
             )}
           >
