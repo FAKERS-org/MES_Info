@@ -7,19 +7,22 @@
  * 1. `./universities`  — entity data: the `University` / `Department` types
  *                        and the seed list served by `/api/universities`.
  * 2. `./university-page` / `./department-page` — placeholder UI copy for the
- *                        two detail pages (no real data, mock content).
+ *                        two detail pages. University page copy is *built*
+ *                        from the entity (`getUniversityPageData`), the
+ *                        department page copy is still mock content.
  * 3. `./text`          — `resolveText`, the `NamespacedText` language picker.
  */
 export type { University, Department, NamespacedText } from "./universities";
 export { resolveText } from "./text";
 export { departmentPageData } from "./department-page";
-export { universityPageData } from "./university-page";
+export { getUniversityPageData } from "./university-page";
 export { iconMap, getIcon } from "@/lib/icons";
 export type { IconName } from "@/lib/icons";
 export type {
   UniversityPageData,
   UniversityHeroData,
   FacultyCardData,
+  AboutCardData,
   HotNewsCardData,
   AdmissionsCardData,
   CampusMapCardData,

@@ -12,6 +12,8 @@ export interface PromoCardAction {
   label: ReactNode;
   /** Color/sizing of the button, on top of the shared full width layout. */
   className?: string;
+  /** Renders the action as a link opening in a new tab when set. */
+  href?: string;
 }
 
 export interface PromoCardProps {
@@ -104,12 +106,23 @@ export function PromoCard({
             <p className={descriptionClassName}>{description}</p>
           )}
 
-          {action !== undefined && (
-            <button className={cn(ACTION_CLASS, action.className)}>
-              {action.icon}
-              {action.label}
-            </button>
-          )}
+          {action !== undefined &&
+            (action.href ? (
+              <a
+                href={action.href}
+                target="_blank"
+                rel="noreferrer"
+                className={cn(ACTION_CLASS, action.className)}
+              >
+                {action.icon}
+                {action.label}
+              </a>
+            ) : (
+              <button className={cn(ACTION_CLASS, action.className)}>
+                {action.icon}
+                {action.label}
+              </button>
+            ))}
 
           {children}
         </SectionCardBody>

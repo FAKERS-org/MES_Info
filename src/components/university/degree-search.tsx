@@ -7,7 +7,7 @@ const FILTER_ACTIVE_CLASS =
 const FILTER_CLASS =
   "whitespace-nowrap rounded-full border-0 bg-gray-100 px-4 py-1.5 text-gray-600 hover:bg-gray-200";
 
-export const DegreeSearch = () => {
+export const DegreeSearch = ({ pills }: { pills: string[] }) => {
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-full border border-gray-200 bg-white p-1.5 shadow-sm w-full">
       {/* Search Input */}
@@ -22,15 +22,16 @@ export const DegreeSearch = () => {
 
       {/* Filter Pills */}
       <TagList className="items-center gap-1.5 overflow-x-auto flex-nowrap">
-        <Tag as="button" type="button" className={FILTER_ACTIVE_CLASS}>
-          គ្រប់ជំនាញ (All Degrees)
-        </Tag>
-        <Tag as="button" type="button" className={FILTER_CLASS}>
-          វិស្វករ (Ingénieur 5Y)
-        </Tag>
-        <Tag as="button" type="button" className={FILTER_CLASS}>
-          បរិញ្ញាបត្រ
-        </Tag>
+        {pills.map((label, index) => (
+          <Tag
+            key={label}
+            as="button"
+            type="button"
+            className={index === 0 ? FILTER_ACTIVE_CLASS : FILTER_CLASS}
+          >
+            {label}
+          </Tag>
+        ))}
       </TagList>
     </div>
   );

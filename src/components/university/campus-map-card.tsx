@@ -58,10 +58,22 @@ export const CampusMapCard = ({ data }: CampusMapCardProps) => {
             </span>
           </div>
           
-          <button className="flex items-center gap-1 text-blue-600 text-sm font-semibold hover:text-blue-700">
-            <span>{data.directions}</span>
-            <Icon name="ExternalLink" size={14} />
-          </button>
+          {data.directionsHref ? (
+            <a
+              href={data.directionsHref}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1 text-blue-600 text-sm font-semibold hover:text-blue-700"
+            >
+              <span>{data.directions}</span>
+              <Icon name="ExternalLink" size={14} />
+            </a>
+          ) : (
+            <button className="flex items-center gap-1 text-blue-600 text-sm font-semibold hover:text-blue-700">
+              <span>{data.directions}</span>
+              <Icon name="ExternalLink" size={14} />
+            </button>
+          )}
         </div>
       </div>
 

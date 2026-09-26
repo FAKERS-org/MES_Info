@@ -117,13 +117,24 @@ export default function UniversityIdCard({ data }: UniversityIdCardProps) {
           ))}
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
-          <Button className={data.primaryAction.className}>
-            <Icon
-              name={data.primaryAction.icon}
-              className="w-4 h-4"
-            />
-            {data.primaryAction.label}
-          </Button>
+          {data.primaryAction.href ? (
+            <Button asChild className={data.primaryAction.className}>
+              <a
+                href={data.primaryAction.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2"
+              >
+                <Icon name={data.primaryAction.icon} className="w-4 h-4" />
+                {data.primaryAction.label}
+              </a>
+            </Button>
+          ) : (
+            <Button className={data.primaryAction.className}>
+              <Icon name={data.primaryAction.icon} className="w-4 h-4" />
+              {data.primaryAction.label}
+            </Button>
+          )}
           <a
             href={data.link.href}
             className={data.link.className}

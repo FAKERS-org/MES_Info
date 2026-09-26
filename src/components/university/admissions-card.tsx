@@ -22,53 +22,64 @@ export const AdmissionsCard = ({ data }: AdmissionsCardProps) => {
       }}
       body={false}
     >
-      {/* Profile Card Section */}
-      <div className="bg-slate-50 rounded-2xl p-3 flex gap-3 mb-4 items-center">
-        <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-200 shrink-0 border border-slate-300">
-           {/* Replace with actual image */}
-           <img 
-             src={advisor.avatar} 
-             alt="Profile" 
-             className="w-full h-full object-cover"
-           />
-        </div>
-        <div>
-          <h4 className="font-bold text-slate-900 text-sm">
-            {advisor.name}
-          </h4>
-          <p className="text-slate-500 text-xs">{advisor.role}</p>
-          <div className="flex items-center gap-1.5 mt-1">
-            <span
-              className={
-                advisor.isOnline
-                  ? "w-2 h-2 rounded-full bg-green-500"
-                  : "w-2 h-2 rounded-full bg-slate-400"
-              }
-            ></span>
-            <span
-              className={
-                advisor.isOnline
-                  ? "text-green-700 text-xs font-medium"
-                  : "text-slate-500 text-xs font-medium"
-              }
-            >
-              {advisor.status}
-            </span>
+      {/* Profile Card Section — only when the school publishes an advisor */}
+      {advisor && (
+        <div className="bg-slate-50 rounded-2xl p-3 flex gap-3 mb-4 items-center">
+          {/* Letter avatar — avoids a dead request for a portrait the school has not uploaded yet */}
+          <div className="w-12 h-12 rounded-full shrink-0 border border-blue-200 bg-blue-100 flex items-center justify-center font-bold text-blue-700 text-lg">
+            {advisor.name.trim().charAt(0)}
+          </div>
+          <div>
+            <h4 className="font-bold text-slate-900 text-sm">
+              {advisor.name}
+            </h4>
+            <p className="text-slate-500 text-xs">{advisor.role}</p>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span
+                className={
+                  advisor.isOnline
+                    ? "w-2 h-2 rounded-full bg-green-500"
+                    : "w-2 h-2 rounded-full bg-slate-400"
+                }
+              ></span>
+              <span
+                className={
+                  advisor.isOnline
+                    ? "text-green-700 text-xs font-medium"
+                    : "text-slate-500 text-xs font-medium"
+                }
+              >
+                {advisor.status}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Action Buttons */}
       <div className="space-y-3">
-        {data.actions.map((action) => (
-          <button
-            key={action.label}
-            className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-medium transition-colors ${action.className}`}
-          >
-            <Icon name={action.icon} size={18} />
-            <span>{action.label}</span>
-          </button>
-        ))}
+        {data.actions.map((action) =>
+          action.href ? (
+            <a
+              key={action.label}
+              href={action.href}
+              target="_blank"
+              rel="noreferrer"
+              className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-medium transition-colors ${action.className}`}
+            >
+              <Icon name={action.icon} size={18} />
+              <span>{action.label}</span>
+            </a>
+          ) : (
+            <button
+              key={action.label}
+              className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-medium transition-colors ${action.className}`}
+            >
+              <Icon name={action.icon} size={18} />
+              <span>{action.label}</span>
+            </button>
+          )
+        )}
       </div>
     </DetailCard>
   );
