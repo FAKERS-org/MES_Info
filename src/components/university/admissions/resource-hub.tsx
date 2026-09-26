@@ -1,9 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/shared/icon-renderer";
+import { InsetPanel } from "@/components/shared/inset-panel";
+import { NoticeBox } from "@/components/shared/notice-box";
 import { cn } from "@/lib/utils";
+import { buttonTone, iconTone, iconTileTone } from "@/lib/tones";
 import type { ResourceHubData } from "@/data/admissions-page";
 import { AdmissionsCard } from "./admissions-card";
-import { buttonTone, iconTone, iconTileTone } from "./tones";
 
 export interface ResourceHubProps {
   data: ResourceHubData;
@@ -15,10 +17,7 @@ export function ResourceHub({ data }: ResourceHubProps) {
     <AdmissionsCard header={data.header} bodyClassName="space-y-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {data.items.map((item) => (
-          <div
-            key={item.title}
-            className="rounded-lg border border-slate-200 bg-slate-50 p-4"
-          >
+          <InsetPanel key={item.title}>
             <div className="mb-3 flex items-center gap-2">
               <div
                 className={cn(
@@ -57,28 +56,24 @@ export function ResourceHub({ data }: ResourceHubProps) {
                 {item.downloadLabel}
               </button>
             </div>
-          </div>
+          </InsetPanel>
         ))}
       </div>
 
       {data.note && (
-        <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <Icon
-            name={data.note.icon}
-            className="mt-0.5 h-5 w-5 shrink-0 text-amber-600"
-          />
-          <div>
-            <p className="text-sm font-medium text-amber-800">
-              {data.note.title}
-            </p>
-            <p className="text-xs text-amber-700">{data.note.text}</p>
-            {data.note.action && (
-              <button className="mt-2 rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700">
+        <NoticeBox
+          icon={<Icon name={data.note.icon} />}
+          title={data.note.title}
+          action={
+            data.note.action && (
+              <button className="rounded-md bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700">
                 {data.note.action}
               </button>
-            )}
-          </div>
-        </div>
+            )
+          }
+        >
+          {data.note.text}
+        </NoticeBox>
       )}
     </AdmissionsCard>
   );

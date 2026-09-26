@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
+import { InsetPanel } from "@/components/shared/inset-panel";
 import { cn } from "@/lib/utils";
+import { softTone } from "@/lib/tones";
 import type { RegistrationFeeData } from "@/data/admissions-page";
 import { AdmissionsCard } from "./admissions-card";
-import { softTone } from "./tones";
 
 export interface RegistrationFeeProps {
   data: RegistrationFeeData;
@@ -16,7 +17,7 @@ export function RegistrationFee({ data }: RegistrationFeeProps) {
       titleClassName="text-lg font-bold text-slate-900"
       subtitleClassName="text-xs text-slate-500"
     >
-      <div className="rounded-lg bg-slate-50 p-4">
+      <InsetPanel>
         <p className="mb-1 text-xs text-slate-500">{data.label}</p>
 
         <div className="flex items-baseline gap-2">
@@ -38,7 +39,7 @@ export function RegistrationFee({ data }: RegistrationFeeProps) {
             {data.badge.label}
           </Badge>
         )}
-      </div>
+      </InsetPanel>
     </AdmissionsCard>
   );
 }

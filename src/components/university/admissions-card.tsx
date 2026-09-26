@@ -1,4 +1,5 @@
 import { DetailCard } from "@/components/shared/detail-card";
+import { Avatar } from "@/components/shared/avatar";
 import { Icon } from "@/components/shared/icon-renderer";
 import type { AdmissionsCardData } from "@/data/university-page";
 
@@ -26,9 +27,10 @@ export const AdmissionsCard = ({ data }: AdmissionsCardProps) => {
       {advisor && (
         <div className="bg-slate-50 rounded-2xl p-3 flex gap-3 mb-4 items-center">
           {/* Letter avatar — avoids a dead request for a portrait the school has not uploaded yet */}
-          <div className="w-12 h-12 rounded-full shrink-0 border border-blue-200 bg-blue-100 flex items-center justify-center font-bold text-blue-700 text-lg">
-            {advisor.name.trim().charAt(0)}
-          </div>
+          <Avatar
+            fallback={advisor.name.trim().charAt(0)}
+            className="h-12 w-12 border border-blue-200 bg-blue-100 text-lg font-bold text-blue-700"
+          />
           <div>
             <h4 className="font-bold text-slate-900 text-sm">
               {advisor.name}

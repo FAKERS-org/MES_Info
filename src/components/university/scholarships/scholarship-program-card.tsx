@@ -1,5 +1,8 @@
 import { CheckCircle2 } from "lucide-react";
 import { Icon } from "@/components/shared/icon-renderer";
+import { CheckItem, CheckList } from "@/components/shared/check-list";
+import { InsetPanel } from "@/components/shared/inset-panel";
+import { NoticeBox } from "@/components/shared/notice-box";
 import { cn } from "@/lib/utils";
 import type {
   ScholarshipGroupData,
@@ -11,7 +14,7 @@ import type {
 import { ScholarshipApplyButton } from "./scholarship-apply-button";
 import { ScholarshipCard } from "./scholarship-card";
 import { ScholarshipStatTile } from "./scholarship-stat-tile";
-import { iconTone, markerTone, panelTone, panelTitleTone } from "./tones";
+import { iconTone, markerTone, panelTone, panelTitleTone } from "@/lib/tones";
 
 export interface ScholarshipProgramCardProps {
   data: ScholarshipProgramData;
@@ -50,21 +53,13 @@ export function ScholarshipProgramCard({ data }: ScholarshipProgramCardProps) {
       )}
 
       {notice && (
-        <div
-          className={cn(
-            "flex items-start gap-2 rounded-lg border p-3 text-sm",
-            panelTone.amber
-          )}
+        <NoticeBox
+          size="sm"
+          icon={<Icon name={notice.icon ?? "Info"} />}
         >
-          <Icon
-            name={notice.icon ?? "Info"}
-            className="mt-0.5 h-4 w-4 shrink-0 text-amber-600"
-          />
-          <span className="text-amber-800">
-            {notice.title && <strong>{notice.title} </strong>}
-            {notice.text}
-          </span>
-        </div>
+          {notice.title && <strong>{notice.title} </strong>}
+          {notice.text}
+        </NoticeBox>
       )}
 
       {(deadline || action) && (
@@ -89,7 +84,7 @@ function ScholarshipPanel({ panel }: { panel: ScholarshipPanelData }) {
   const tone = panel.accent ?? panel.tone;
 
   return (
-    <div className={cn("rounded-lg border p-4", panelTone[panel.tone])}>
+    <InsetPanel toneClassName={panelTone[panel.tone]}>
       <h4
         className={cn(
           "mb-3 text-sm font-semibold",
@@ -115,7 +110,7 @@ function ScholarshipPanel({ panel }: { panel: ScholarshipPanelData }) {
           />
         ))}
       </div>
-    </div>
+    </InsetPanel>
   );
 }
 
@@ -162,7 +157,7 @@ function ScholarshipGroup({ group }: { group: ScholarshipGroupData }) {
   const accent = group.accent ?? "green";
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+    <InsetPanel>
       <div className="mb-3 flex items-center gap-2">
         <Icon
           name={group.icon}
@@ -176,16 +171,13 @@ function ScholarshipGroup({ group }: { group: ScholarshipGroupData }) {
         </div>
       </div>
 
-      <ul className="space-y-1.5 text-sm text-slate-600">
+      <CheckList className="gap-1.5 text-sm text-slate-600">
         {group.items.map((item) => (
-          <li key={item} className="flex items-start gap-2">
-            <CheckCircle2
-              className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", iconTone[accent])}
-            />
-            <span>{item}</span>
-          </li>
+          <CheckItem key={item} iconClassName={cn("h-3.5 w-3.5", iconTone[accent])}>
+            {item}
+          </CheckItem>
         ))}
-      </ul>
+      </CheckList>
 
       {group.action && (
         <div className="mt-3">
@@ -197,6 +189,6 @@ function ScholarshipGroup({ group }: { group: ScholarshipGroupData }) {
           />
         </div>
       )}
-    </div>
+    </InsetPanel>
   );
 }

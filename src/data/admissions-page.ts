@@ -1,4 +1,5 @@
 import type { IconName } from "@/lib/icons";
+import type { Tone } from "@/lib/tones";
 import type { NamespacedText, University } from "@/data/universities";
 
 /* ------------------------------------------------------------------ *
@@ -7,9 +8,13 @@ import type { NamespacedText, University } from "@/data/universities";
 
 /**
  * Accent of a chip, badge or button. Stored as a semantic name so the data
- * stays free of Tailwind classes — the components own the mapping.
+ * stays free of Tailwind classes — `@/lib/tones` owns the one mapping, and
+ * narrowing {@link Tone} here keeps the names valid there by construction.
  */
-export type AdmissionsTone = "blue" | "green" | "red" | "purple" | "amber";
+export type AdmissionsTone = Extract<
+  Tone,
+  "blue" | "green" | "red" | "purple" | "amber"
+>;
 
 /**
  * Head of every admissions card: an optional eyebrow line (with the right

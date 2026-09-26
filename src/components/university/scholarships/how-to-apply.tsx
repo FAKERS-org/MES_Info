@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/shared/icon-renderer";
+import { IconList, IconListItem } from "@/components/shared/icon-list";
+import { InsetPanel } from "@/components/shared/inset-panel";
+import { StepList, StepListItem } from "@/components/shared/step-list";
 import type { HowToApplyData } from "@/data/scholarships-page";
 import { ScholarshipApplyButton } from "./scholarship-apply-button";
 import { ScholarshipCard } from "./scholarship-card";
@@ -19,28 +22,20 @@ export function HowToApply({ data }: HowToApplyProps) {
 
   return (
     <ScholarshipCard header={header}>
-      <div className="space-y-3">
+      <StepList>
         {steps.map((step) => (
-          <div key={step.number} className="flex gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
-              {step.number}
-            </div>
-            <div className="min-w-0 flex-1">
-              <h4 className="text-sm font-bold text-slate-900">{step.title}</h4>
-              <p className="text-xs text-slate-500">{step.subtitle}</p>
-              <p className="text-xs text-slate-600">{step.description}</p>
-            </div>
-          </div>
+          <StepListItem key={step.number} number={step.number} size="sm">
+            <h4 className="text-sm font-bold text-slate-900">{step.title}</h4>
+            <p className="text-xs text-slate-500">{step.subtitle}</p>
+            <p className="text-xs text-slate-600">{step.description}</p>
+          </StepListItem>
         ))}
-      </div>
+      </StepList>
 
       {download && (
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+        <InsetPanel>
           <div className="mb-2 flex items-center gap-2">
-            <Icon
-              name="Download"
-              className="h-4 w-4 shrink-0 text-blue-600"
-            />
+            <Icon name="Download" className="h-4 w-4 text-blue-600" />
             <span className="text-sm font-semibold text-slate-800">
               {download.title}
             </span>
@@ -50,29 +45,31 @@ export function HowToApply({ data }: HowToApplyProps) {
             <Icon name="Download" className="h-4 w-4" />
             {download.file}
           </Button>
-        </div>
+        </InsetPanel>
       )}
 
       {contact && (
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+        <InsetPanel>
           <h4 className="mb-3 text-sm font-semibold text-slate-800">
             {contact.title}
           </h4>
-          <div className="space-y-2">
+          <IconList className="gap-2">
             {contact.rows.map((row) => (
-              <div
+              <IconListItem
                 key={row.text}
-                className="flex items-center gap-2 text-sm text-slate-700"
+                className="items-center gap-2 text-sm text-slate-700"
+                icon={
+                  <Icon
+                    name={row.icon}
+                    className="h-4 w-4 shrink-0 text-blue-500"
+                  />
+                }
               >
-                <Icon
-                  name={row.icon}
-                  className="h-4 w-4 shrink-0 text-blue-500"
-                />
-                <span>{row.text}</span>
-              </div>
+                {row.text}
+              </IconListItem>
             ))}
-          </div>
-        </div>
+          </IconList>
+        </InsetPanel>
       )}
 
       {action && <ScholarshipApplyButton action={action} block />}

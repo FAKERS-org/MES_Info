@@ -6,7 +6,7 @@ import type {
   ScholarshipAction,
   ScholarshipTone,
 } from "@/data/scholarships-page";
-import { buttonTone } from "./tones";
+import { buttonTone } from "@/lib/tones";
 
 export interface ScholarshipApplyButtonProps {
   action: ScholarshipAction;

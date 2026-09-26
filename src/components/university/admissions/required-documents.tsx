@@ -1,4 +1,5 @@
 import { Icon } from "@/components/shared/icon-renderer";
+import { InsetPanel } from "@/components/shared/inset-panel";
 import type { RequiredDocumentsData } from "@/data/admissions-page";
 import { AdmissionsCard } from "./admissions-card";
 
@@ -22,10 +23,7 @@ export function RequiredDocuments({ data }: RequiredDocumentsProps) {
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {data.items.map((doc) => (
-          <div
-            key={doc.index}
-            className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4"
-          >
+          <InsetPanel key={doc.index} className="flex gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
               {doc.index}
             </div>
@@ -36,7 +34,7 @@ export function RequiredDocuments({ data }: RequiredDocumentsProps) {
               )}
               <p className="text-xs text-slate-600">{doc.description}</p>
             </div>
-          </div>
+          </InsetPanel>
         ))}
       </div>
     </AdmissionsCard>

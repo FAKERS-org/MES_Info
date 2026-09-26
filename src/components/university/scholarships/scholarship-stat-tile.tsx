@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/shared/icon-renderer";
+import { InsetPanel } from "@/components/shared/inset-panel";
 import { cn } from "@/lib/utils";
 import type { ScholarshipStatData } from "@/data/scholarships-page";
-import { badgeTone, heroIconTone, iconTone } from "./tones";
+import { badgeTone, heroIconTone, iconTone } from "@/lib/tones";
 
 export interface ScholarshipStatTileProps {
   data: ScholarshipStatData;
@@ -90,9 +91,5 @@ export function ScholarshipStatTile({
     );
   }
 
-  return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-      {body}
-    </div>
-  );
+  return <InsetPanel className="p-3">{body}</InsetPanel>;
 }

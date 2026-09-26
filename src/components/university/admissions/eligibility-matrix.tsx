@@ -1,9 +1,11 @@
 import { Fragment } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/shared/icon-renderer";
+import { InsetPanel } from "@/components/shared/inset-panel";
+import { NoticeBox } from "@/components/shared/notice-box";
+import { softTone } from "@/lib/tones";
 import type { EligibilityMatrixData } from "@/data/admissions-page";
 import { AdmissionsCard } from "./admissions-card";
-import { softTone } from "./tones";
 
 export interface EligibilityMatrixProps {
   data: EligibilityMatrixData;
@@ -25,10 +27,7 @@ export function EligibilityMatrix({ data }: EligibilityMatrixProps) {
     <AdmissionsCard header={data.header} bodyClassName="space-y-4">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         {data.cells.map((cell, index) => (
-          <div
-            key={index}
-            className="rounded-lg border border-slate-200 bg-slate-50 p-4"
-          >
+          <InsetPanel key={index}>
             <div className="mb-2 flex items-center gap-2">
               <span className="text-sm font-medium text-slate-700">
                 <Lines lines={cell.label} />
@@ -40,11 +39,11 @@ export function EligibilityMatrix({ data }: EligibilityMatrixProps) {
             <p className="text-sm text-slate-600">
               <Lines lines={cell.note} />
             </p>
-          </div>
+          </InsetPanel>
         ))}
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+      <InsetPanel>
         <div className="mb-4 flex items-center justify-between">
           <h4 className="text-sm font-semibold text-slate-800">
             {data.gauges.title}
@@ -74,18 +73,12 @@ export function EligibilityMatrix({ data }: EligibilityMatrixProps) {
             </div>
           ))}
         </div>
-      </div>
+      </InsetPanel>
 
       {data.notice && (
-        <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <Icon
-            name={data.notice.icon}
-            className="mt-0.5 h-5 w-5 shrink-0 text-amber-600"
-          />
-          <p className="text-sm font-medium text-amber-800">
-            {data.notice.text}
-          </p>
-        </div>
+        <NoticeBox icon={<Icon name={data.notice.icon} />}>
+          {data.notice.text}
+        </NoticeBox>
       )}
     </AdmissionsCard>
   );

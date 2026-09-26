@@ -1,8 +1,11 @@
 import { Badge } from "@/components/ui/badge";
+import { Avatar } from "@/components/shared/avatar";
 import { Icon } from "@/components/shared/icon-renderer";
+import { IconList, IconListItem } from "@/components/shared/icon-list";
+import { InsetPanel } from "@/components/shared/inset-panel";
+import { softTone } from "@/lib/tones";
 import type { ContactCardData } from "@/data/admissions-page";
 import { AdmissionsCard } from "./admissions-card";
-import { softTone } from "./tones";
 
 export interface ContactCardProps {
   data: ContactCardData;
@@ -23,19 +26,12 @@ export function ContactCard({ data }: ContactCardProps) {
       bodyClassName="space-y-4"
     >
       <div className="flex items-center gap-3">
-        <div className="h-12 w-12 overflow-hidden rounded-full bg-slate-200">
-          {person.avatar ? (
-            <img
-              src={person.avatar}
-              alt={person.name}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-slate-500">
-              {person.name.slice(0, 2)}
-            </div>
-          )}
-        </div>
+        <Avatar
+          src={person.avatar}
+          alt={person.name}
+          fallback={person.name.slice(0, 2)}
+          className="h-12 w-12 text-sm font-bold text-slate-500"
+        />
 
         <div>
           <p className="text-sm font-bold text-slate-900">{person.name}</p>
@@ -48,20 +44,24 @@ export function ContactCard({ data }: ContactCardProps) {
         </div>
       </div>
 
-      <div className="space-y-2 rounded-lg bg-slate-50 p-3">
-        {rows.map((row, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-2 text-sm text-slate-700"
-          >
-            <Icon
-              name={row.icon}
-              className="h-4 w-4 shrink-0 text-blue-500"
-            />
-            <span>{row.text}</span>
-          </div>
-        ))}
-      </div>
+      <InsetPanel className="p-3">
+        <IconList className="gap-2">
+          {rows.map((row, index) => (
+            <IconListItem
+              key={index}
+              className="items-center gap-2 text-sm text-slate-700"
+              icon={
+                <Icon
+                  name={row.icon}
+                  className="h-4 w-4 shrink-0 text-blue-500"
+                />
+              }
+            >
+              {row.text}
+            </IconListItem>
+          ))}
+        </IconList>
+      </InsetPanel>
 
       {action && (
         <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 p-3 text-sm font-medium text-white transition hover:bg-blue-700">

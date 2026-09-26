@@ -3,6 +3,7 @@
 import { useLanguage } from "@/lib/i18n";
 import { resolveText } from "@/data/text";
 import type { RequirementsCardData } from "@/data/admissions-page";
+import { CheckItem, CheckList } from "@/components/shared/check-list";
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
 
@@ -68,19 +69,15 @@ export const RequirementsCard = ({ data }: RequirementsCardProps) => {
                 {resolveText(data.pending, lang)}
               </p>
             ) : (
-              <ul className="space-y-2.5">
+              <CheckList>
                 {group.lines.map((line, lineIndex) => (
-                  <li key={lineIndex} className="flex items-start gap-2.5">
-                    <Icon
-                      name="CheckCircle2"
-                      className="mt-0.5 h-4 w-4 shrink-0 text-blue-600"
-                    />
+                  <CheckItem key={lineIndex}>
                     <span className="text-sm leading-relaxed text-slate-700">
                       {resolveText(line, lang)}
                     </span>
-                  </li>
+                  </CheckItem>
                 ))}
-              </ul>
+              </CheckList>
             )}
           </div>
         ))

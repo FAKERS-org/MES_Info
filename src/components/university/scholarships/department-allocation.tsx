@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { InsetPanel } from "@/components/shared/inset-panel";
 import type { DepartmentAllocationData } from "@/data/scholarships-page";
 import { ScholarshipCard } from "./scholarship-card";
-import { badgeTone, barTone } from "./tones";
+import { badgeTone, barTone } from "@/lib/tones";
 
 export interface DepartmentAllocationProps {
   data: DepartmentAllocationData;
@@ -56,7 +57,7 @@ export function DepartmentAllocation({ data }: DepartmentAllocationProps) {
         })}
       </div>
 
-      <div className="rounded-lg bg-slate-50 p-4 text-center">
+      <InsetPanel className="text-center">
         <p className="text-sm text-slate-600">
           {summary.label}{" "}
           <span className="font-bold text-slate-900">
@@ -64,7 +65,7 @@ export function DepartmentAllocation({ data }: DepartmentAllocationProps) {
           </span>
         </p>
         <p className="text-xs text-slate-500">{summary.caption}</p>
-      </div>
+      </InsetPanel>
     </ScholarshipCard>
   );
 }

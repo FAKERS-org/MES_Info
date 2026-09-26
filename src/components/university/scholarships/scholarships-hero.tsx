@@ -2,7 +2,7 @@ import { Icon } from "@/components/shared/icon-renderer";
 import { cn } from "@/lib/utils";
 import type { ScholarshipsHeroData } from "@/data/scholarships-page";
 import { ScholarshipStatTile } from "./scholarship-stat-tile";
-import { heroIconTone } from "./tones";
+import { heroIconTone } from "@/lib/tones";
 
 export interface ScholarshipsHeroProps {
   data: ScholarshipsHeroData;

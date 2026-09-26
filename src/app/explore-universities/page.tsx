@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { useUniversities } from "@/hooks/use-universities";
-import { UniversityCard } from "@/components/university/university-card";
+import { UniversityTile } from "@/components/university/university-tile";
 import { SearchInput } from "@/components/shared/search-input";
 import { FilterChip } from "@/components/shared/filter-chip";
 import { SkeletonGrid } from "@/components/shared/skeleton";
@@ -123,7 +123,11 @@ export default function ExploreUniversitiesPage() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((university) => (
-            <UniversityCard key={university.id} university={university} />
+            <UniversityTile
+              key={university.id}
+              university={university}
+              variant="featured"
+            />
           ))}
         </div>
       )}

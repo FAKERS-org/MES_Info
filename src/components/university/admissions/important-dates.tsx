@@ -3,7 +3,7 @@ import { Icon } from "@/components/shared/icon-renderer";
 import { cn } from "@/lib/utils";
 import type { ImportantDatesData } from "@/data/admissions-page";
 import { AdmissionsCard } from "./admissions-card";
-import { iconSoftTone } from "./tones";
+import { iconSoftTone } from "@/lib/tones";
 
 export interface ImportantDatesProps {
   data: ImportantDatesData;

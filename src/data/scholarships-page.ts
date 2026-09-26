@@ -1,6 +1,7 @@
 import { departmentPageData } from "@/data/department-page";
 import type { ScholarshipItem } from "@/data/department-page";
 import type { IconName } from "@/lib/icons";
+import type { Tone } from "@/lib/tones";
 import type { NamespacedText, University } from "@/data/universities";
 
 /* ------------------------------------------------------------------ *
@@ -9,10 +10,12 @@ import type { NamespacedText, University } from "@/data/universities";
 
 /**
  * Accent of a scholarship card's eyebrow, badge, panel or button. Stored as a
- * semantic name so the data stays free of Tailwind classes — the components
- * own the mapping in `components/university/scholarships/tones.ts`.
+ * semantic name so the data stays free of Tailwind classes — `@/lib/tones`
+ * owns the one mapping, and narrowing {@link Tone} here keeps the names
+ * valid there by construction.
  */
-export type ScholarshipTone =
+export type ScholarshipTone = Extract<
+  Tone,
   | "blue"
   | "purple"
   | "green"
@@ -20,7 +23,8 @@ export type ScholarshipTone =
   | "orange"
   | "red"
   | "pink"
-  | "slate";
+  | "slate"
+>;
 
 /**
  * Head of every section card: the eyebrow line (icon + label + badge on the

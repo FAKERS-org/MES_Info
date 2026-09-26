@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import { DegreeSearch } from "@/components/university/programs-and-fees/degree-search";
 import { FacultyCard } from "@/components/university/programs-and-fees/faculty-card";
 import { AboutCard } from "@/components/university/about-card";
 import { HotNewsCard } from "@/components/university/hot-news-card";
 import { CampusMapCard } from "@/components/university/campus-map-card";
 import { AdmissionsCard } from "@/components/university/admissions-card";
 import { BrochureCard } from "@/components/university/brochure-card";
+import { SearchFilterBar } from "@/components/shared/search-filter-bar";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getUniversityPageData } from "@/data/university-page";
 import { universities } from "@/data/universities";
@@ -39,7 +39,7 @@ export default async function ProgramsPage({ params }: ProgramsPageProps) {
         </>
       }
     >
-      <DegreeSearch pills={filters} />
+      <SearchFilterBar pills={filters} placeholder="ស្វែងរកជំនាញ (Search)" />
       <FacultyCard data={faculty} />
     </SectionLayout>
   );
