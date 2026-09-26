@@ -7,7 +7,7 @@ import DiscussionCard from "@/components/department/discussion-card";
 import FacilityCard from "@/components/department/facility-card";
 import ScholarshipBriefCard from "@/components/department/scholarship-brief-card";
 import { SectionLayout } from "@/components/shared/section-layout";
-import { departmentPageData } from "@/data/department";
+import { departmentPageData } from "@/data/department-page";
 import { universities } from "@/data/universities";
 
 interface DepartmentIdPageProps {

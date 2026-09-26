@@ -1,8 +1,8 @@
 "use client";
 
 import { useLanguage } from "@/lib/i18n";
-import { resolveText } from "@/data/department";
-import type { FacilityCardData, FacilityItem } from "@/data/department";
+import { resolveText } from "@/data/text";
+import type { FacilityCardData, FacilityItem } from "@/data/department-page";
 import { Icon } from "@/components/shared/icon-renderer";
 import { DetailCard } from "@/components/shared/detail-card";
 import { TileGrid } from "@/components/shared/tile-grid";

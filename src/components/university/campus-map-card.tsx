@@ -2,7 +2,7 @@
 
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
-import type { CampusMapCardData } from "@/data/university";
+import type { CampusMapCardData } from "@/data/university-page";
 
 export interface CampusMapCardProps {
   data: CampusMapCardData;

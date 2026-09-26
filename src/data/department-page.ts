@@ -1,13 +1,14 @@
+/**
+ * Department detail page (`/explore-universities/[university]/[department]`).
+ *
+ * UI content only — one hardcoded sample used as a placeholder while the
+ * department API is unbaked. It is *not* the `Department` entity: that type
+ * and its records live in `./universities`.
+ *
+ * Text helpers live in `./text`, entity data in `./universities`.
+ */
 import type { NamespacedText } from "./universities";
 import type { IconName } from "@/lib/icons";
-
-import type { Lang } from "@/lib/i18n";
-
-export function resolveText(text: NamespacedText, lang: Lang): string {
-  return text[lang] ?? text.en;
-}
-
-export type { IconName } from "@/lib/icons";
 
 export interface DepartmentStat {
   label: NamespacedText;

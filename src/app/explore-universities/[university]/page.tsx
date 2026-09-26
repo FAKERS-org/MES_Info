@@ -7,7 +7,7 @@ import { AdmissionsCard } from "@/components/university/admissions-card";
 import { BrochureCard } from "@/components/university/brochure-card";
 import { CampusMapCard } from "@/components/university/campus-map-card";
 import { SectionLayout } from "@/components/shared/section-layout";
-import { universityPageData } from "@/data/university";
+import { universityPageData } from "@/data/university-page";
 
 export default async function UniversityIdPage() {
   const { hero, faculty, hotNews, admissions, campusMap, brochure } =
@@ -34,8 +34,6 @@ export default async function UniversityIdPage() {
         {/* Left Column (Search + Faculty) */}
         <DegreeSearch />
         <FacultyCard data={faculty} />
-        <FacultyCard data={faculty} />
-        {/* <FacultyCard data={faculty} /> */}
       </SectionLayout>
     </div>
   );

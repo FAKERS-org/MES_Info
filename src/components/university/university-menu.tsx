@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/shared/icon-renderer";
-import { universityPageData } from "@/data/university";
+import { universityPageData } from "@/data/university-page";
 
 const TABS = universityPageData.menu;
 

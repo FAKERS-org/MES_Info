@@ -1,3 +1,11 @@
+/**
+ * University entity data — the single source of truth for the school list.
+ *
+ * Served verbatim by `GET /api/universities` and looked up by id on the
+ * detail pages. `./university-page` and `./department-page` are separate
+ * placeholder mocks for page-specific UI copy.
+ */
+
 /** Language-prefixed field map, e.g. { kh: "...", en: "..." }. */
 export interface NamespacedText {
   kh: string;

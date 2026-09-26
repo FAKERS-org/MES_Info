@@ -1,6 +1,6 @@
 import { PromoCard } from "@/components/shared/promo-card";
 import { Icon } from "@/components/shared/icon-renderer";
-import type { BrochureCardData } from "@/data/university";
+import type { BrochureCardData } from "@/data/university-page";
 
 export interface BrochureCardProps {
   data: BrochureCardData;

@@ -2,8 +2,8 @@
 
 import { Calendar, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import { resolveText } from "@/data/department";
-import type { ApplicationConditionData } from "@/data/department";
+import { resolveText } from "@/data/text";
+import type { ApplicationConditionData } from "@/data/department-page";
 import { Icon } from "@/components/shared/icon-renderer";
 import { DetailCard } from "@/components/shared/detail-card";
 import { IconList, IconListItem } from "@/components/shared/icon-list";

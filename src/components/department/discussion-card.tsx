@@ -1,8 +1,8 @@
 "use client";
 
 import { useLanguage } from "@/lib/i18n";
-import { resolveText } from "@/data/department";
-import type { DiscussionCardData, ContactItem } from "@/data/department";
+import { resolveText } from "@/data/text";
+import type { DiscussionCardData, ContactItem } from "@/data/department-page";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/shared/icon-renderer";
 import { PromoCard } from "@/components/shared/promo-card";

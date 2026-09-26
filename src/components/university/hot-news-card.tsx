@@ -1,7 +1,7 @@
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
 import { IconList, IconListItem } from "@/components/shared/icon-list";
-import type { HotNewsCardData } from "@/data/university";
+import type { HotNewsCardData } from "@/data/university-page";
 
 export interface HotNewsCardProps {
   data: HotNewsCardData;

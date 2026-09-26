@@ -8,7 +8,7 @@ import {
   EntityHeroLogo,
   EntityHeroStats,
 } from "@/components/shared/entity-hero";
-import type { UniversityHeroData, UniversityHeroBadge } from "@/data/university";
+import type { UniversityHeroData, UniversityHeroBadge } from "@/data/university-page";
 
 /** Badge used in the banner (its icons keep the trailing `mr-1`). */
 function BannerBadge({ badge }: { badge: UniversityHeroBadge }) {

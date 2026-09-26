@@ -1,3 +1,12 @@
+/**
+ * University detail page (`/explore-universities/[university]`).
+ *
+ * UI content only — one hardcoded sample (ITC) used as a placeholder while
+ * the university API is unbaked. It is *not* the university list: that
+ * entity data lives in `./universities`.
+ *
+ * Text helpers live in `./text`, entity data in `./universities`.
+ */
 import type { IconName } from "@/lib/icons";
 
 /* ------------------------------------------------------------------ *

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
-import type { FacultyCardData } from "@/data/university";
+import type { FacultyCardData } from "@/data/university-page";
 
 const CourseItem = ({ 
   titleKh, 

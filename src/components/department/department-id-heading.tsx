@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { resolveText } from "@/data/department";
-import type { DepartmentIdHeadingData } from "@/data/department";
+import { resolveText } from "@/data/text";
+import type { DepartmentIdHeadingData } from "@/data/department-page";
 import type { NamespacedText } from "@/data/universities";
 import { Icon } from "@/components/shared/icon-renderer";
 import {

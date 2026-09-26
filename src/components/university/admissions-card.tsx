@@ -1,6 +1,6 @@
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
-import type { AdmissionsCardData } from "@/data/university";
+import type { AdmissionsCardData } from "@/data/university-page";
 
 export interface AdmissionsCardProps {
   data: AdmissionsCardData;
