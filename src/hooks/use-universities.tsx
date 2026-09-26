@@ -20,7 +20,6 @@ const UniversitiesContext = createContext<UniversitiesContextType | undefined>(u
 
 async function fetchUniversities(): Promise<University[]> {
     if (DATA_SOURCE === "static") {
-        await new Promise(resolve => setTimeout(resolve, 100));
         return staticUniversities as University[];
     }
     const response = await apiClient.get("/public/universities");

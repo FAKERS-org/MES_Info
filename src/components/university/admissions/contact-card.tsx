@@ -30,6 +30,7 @@ export function ContactCard({ data }: ContactCardProps) {
           src={person.avatar}
           alt={person.name}
           fallback={person.name.slice(0, 2)}
+          sizes="48px"
           className="h-12 w-12 text-sm font-bold text-slate-500"
         />
 

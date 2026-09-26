@@ -1,6 +1,7 @@
 import { TileGrid } from "@/components/shared/tile-grid";
 import { cn } from "@/lib/utils";
-import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
+import type { ReactNode } from "react";
 
 export interface EntityHeroProps {
     children: ReactNode;
@@ -50,8 +51,11 @@ export interface EntityHeroLogoProps {
     className?: string;
     /** Inner circle surface (background, border…). */
     innerClassName?: string;
-    innerStyle?: CSSProperties;
     imageClassName?: string;
+    /** Passed to `next/image` — the CSS width of the circle, for srcset sizing. */
+    sizes?: string;
+    /** Hero logos sit above the fold, so they are preloaded by default. */
+    priority?: boolean;
     /** Verified badge anchored to the circle. */
     check?: ReactNode;
 }
@@ -66,8 +70,10 @@ export function EntityHeroLogo({
     containerClassName,
     className,
     innerClassName,
-    innerStyle,
     imageClassName,
+    // `h-40 w-40 p-1` in EntityProfileHero → 152px inner circle.
+    sizes = "152px",
+    priority = true,
     check,
 }: EntityHeroLogoProps) {
     return (
@@ -76,16 +82,18 @@ export function EntityHeroLogo({
                 <div className={cn("flex items-center justify-center rounded-full bg-white", className)}>
                     <div
                         className={cn(
-                            "flex h-full w-full items-center justify-center overflow-hidden rounded-full",
+                            "relative flex h-full w-full items-center justify-center overflow-hidden rounded-full",
                             innerClassName,
                         )}
-                        style={innerStyle}
                     >
                         {src !== undefined ? (
-                            <img
+                            <Image
+                                fill
                                 src={src}
                                 alt={alt ?? ""}
-                                className={cn("h-full w-full object-cover", imageClassName)}
+                                sizes={sizes}
+                                priority={priority}
+                                className={cn("object-cover", imageClassName)}
                             />
                         ) : (
                             fallback

@@ -3,6 +3,8 @@
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
 import type { CampusMapCardData } from "@/data/university-page";
+import Image from "next/image";
+import type { SyntheticEvent } from "react";
 
 export interface CampusMapCardProps {
   data: CampusMapCardData;
@@ -33,11 +35,13 @@ export const CampusMapCard = ({ data }: CampusMapCardProps) => {
       {/* Map Image Container */}
       <div className="relative rounded-2xl overflow-hidden mb-4 h-48 bg-slate-100 border border-slate-200">
         {/* Placeholder for Map Image */}
-        <img 
-          src={data.map.src} 
-          alt={data.map.alt} 
-          className="w-full h-full object-cover opacity-90"
-          onError={(e) => {
+        <Image
+          fill
+          src={data.map.src}
+          alt={data.map.alt}
+          sizes="(min-width: 768px) 30vw, 90vw"
+          className="object-cover opacity-90"
+          onError={(e: SyntheticEvent<HTMLImageElement>) => {
             // Fallback if no API key
             e.currentTarget.style.display = 'none';
           }}

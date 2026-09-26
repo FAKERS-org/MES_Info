@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -40,8 +41,16 @@ function Sidebar({
     >
       <div className="flex h-full w-64 flex-col">
         <div className="flex items-center justify-center px-5 py-6">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt={logoAlt} className="h-7 w-auto object-contain" />
+          <Image
+            src={logoSrc}
+            alt={logoAlt}
+            width={2320}
+            height={670}
+            priority
+            /* h-7 tall, 2320x670 intrinsic → ~97px wide */
+            sizes="97px"
+            className="h-7 w-auto object-contain"
+          />
         </div>
 
         <nav className="mt-2 flex-1 space-y-1 px-3">

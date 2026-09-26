@@ -49,13 +49,13 @@ export default function DepartmentIdHeading({
         </>
       }
       logo={{
+        // `|| undefined` keeps the text fallback for a department without a logo.
+        src: logo || undefined,
+        alt: resolveText(logoAlt, lang),
+        // The circle only letterboxes the logo, like the old
+        // `background-size: contain` did — never crop it.
+        imageClassName: "object-contain",
         innerClassName: "border-4 border-[#d4af37] bg-[#0e5a8a]",
-        innerStyle: {
-          backgroundImage: `url(${logo})`,
-          backgroundSize: "contain",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        },
         fallback: (
           <span className="px-2 text-center text-xs font-bold text-white">
             {resolveText(logoAlt, lang)}

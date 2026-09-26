@@ -6,6 +6,7 @@ import type { FacilityCardData, FacilityItem } from "@/data/department-page";
 import { Icon } from "@/components/shared/icon-renderer";
 import { DetailCard } from "@/components/shared/detail-card";
 import { TileGrid } from "@/components/shared/tile-grid";
+import Image from "next/image";
 
 export interface FacilityCardProps {
   data: FacilityCardData;
@@ -34,11 +35,13 @@ export default function FacilityCard({ data, className }: FacilityCardProps) {
             key={idx}
             className="bg-slate-50 rounded-xl p-3 border border-slate-100/50 flex flex-col h-full"
           >
-            <div className="w-full h-32 rounded-lg overflow-hidden mb-3 relative bg-slate-200">
-              <img
+            <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3 bg-slate-200">
+              <Image
+                fill
                 src={facility.image}
                 alt={resolveText(facility.title, lang)}
-                className="w-full h-full object-cover"
+                sizes="(min-width: 768px) 250px, 90vw"
+                className="object-cover"
               />
             </div>
             <div className="flex items-center gap-2 mb-2 text-slate-700">

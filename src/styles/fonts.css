@@ -1,5 +1,13 @@
+/**
+ * Font stacks. The `--font-*-family` values are injected by `next/font` on
+ * <html> (src/app/layout.tsx) and point at the self-hosted woff2 files;
+ * everything after them is the system fallback chain.
+ *
+ * `--font-sans` is the Khmer-first body stack (default `lang="km"`),
+ * `--font-lexend` the Latin stack the i18n layer switches to for `lang="en"`.
+ */
 @theme {
   --font-sans:
-    "Kantumruy Pro", "Noto Sans Khmer", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-lexend: "Lexend", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    var(--font-kantumruy-family), "Noto Sans Khmer", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-lexend: var(--font-lexend-family), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
