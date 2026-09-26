@@ -85,7 +85,7 @@ export function UniversityCard({ university, className }: UniversityCardProps) {
           </div>
           <div className="flex items-center gap-2.5 text-slate-600 text-sm">
             <GraduationCap className="w-4 h-4 text-slate-400 shrink-0" />
-            <span>{programCount} Degree Programs (កម្រិត & បរិន្ញាបត្រ)</span>
+            <span>{programCount} {t("miscellaneous.programs.plural")}</span>
           </div>
         </div>
 
