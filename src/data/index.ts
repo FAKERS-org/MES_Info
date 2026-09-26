@@ -22,12 +22,28 @@ export { getAdmissionsPageData } from "./admissions-page";
 export { getScholarshipsPageData } from "./scholarships-page";
 export type {
   AdmissionsPageData,
+  AdmissionsCardHeader,
+  AdmissionsTone,
   RequirementGroup,
-  ApplyStep,
-  KeyDate,
   RequirementsCardData,
-  ApplyStepsCardData,
-  KeyDatesCardData,
+  EligibilityMatrixData,
+  EligibilityCellData,
+  CompetencyGaugeData,
+  AdmissionRoadmapData,
+  RoadmapStepData,
+  RequiredDocumentsData,
+  ApplicationDocumentData,
+  ResourceHubData,
+  ExamResourceData,
+  AdmissionsFaqData,
+  FaqItemData,
+  ImportantDatesData,
+  DateItemData,
+  CountdownData,
+  RegistrationFeeData,
+  PaymentQrData,
+  ContactCardData,
+  ContactPersonData,
 } from "./admissions-page";
 export type { ScholarshipsCardData } from "./scholarships-page";
 export { iconMap, getIcon } from "@/lib/icons";

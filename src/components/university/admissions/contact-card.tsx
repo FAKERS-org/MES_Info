@@ -1,60 +1,74 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, Mail, MapPin, MessageCircle, Phone, Share2 } from "lucide-react";
+import { Icon } from "@/components/shared/icon-renderer";
+import type { ContactCardData } from "@/data/admissions-page";
+import { AdmissionsCard } from "./admissions-card";
+import { softTone } from "./tones";
 
-export function ContactCard() {
-    return (
-        <Card className="border-0 shadow-sm">
-            <CardHeader className="bg-white pb-2">
-                <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-bold text-slate-900">ការិយាល័យប្រធាន & ទំនាក់ទំនង</CardTitle>
-                    <Share2 className="h-5 w-5 text-blue-600" />
-                </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                {/* Contact Person */}
-                <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 overflow-hidden rounded-full bg-slate-200">
-                        <img
-                            src="/avatar-placeholder.png"
-                            alt="Admissions Officer"
-                            className="h-full w-full object-cover"
-                        />
-                    </div>
-                    <div>
-                        <p className="text-sm font-bold text-slate-900">លោកគ្រូ សុខ វិបុល</p>
-                        <p className="text-xs text-slate-500">បរធានការិយាល័យចូលរៀន & ទំនាក់ទំនង</p>
-                        <Badge className="mt-1 bg-green-100 text-green-800 hover:bg-green-100">
-                            ផ្ទាល់អនឡាញ • Online
-                        </Badge>
-                    </div>
-                </div>
+export interface ContactCardProps {
+  data: ContactCardData;
+}
 
-                {/* Contact Info */}
-                <div className="space-y-2 rounded-lg bg-slate-50 p-3">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                        <MapPin className="h-4 w-4 text-blue-500" />
-                        <span>បន្ទប់ ០៦ អាគារ A (Campus ITC, Russian Blvd)</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                        <Phone className="h-4 w-4 text-blue-500" />
-                        <span>023 880 370 / 012 880 370</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                        <Mail className="h-4 w-4 text-blue-500" />
-                        <span>admission@itc.edu.kh</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                        <Clock className="h-4 w-4 text-blue-500" />
-                        <span>ច័នទ - សុក្រ: 7:30 ព្ឹក - 5:00 លងាច</span>
-                    </div>
-                </div>
+/**
+ * Admissions officer and how to reach them. A person without a photo shows
+ * their initials — `public/` ships no placeholder avatar, so the old
+ * `<img src="/avatar-placeholder.png">` was a broken image on every school.
+ */
+export function ContactCard({ data }: ContactCardProps) {
+  const { person, rows, action } = data;
 
-                <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 p-3 text-sm font-medium text-white transition hover:bg-blue-700">
-                    <MessageCircle className="h-4 w-4" />
-                    ជជែក Telegram ជាមួយអ្នកណែនាំភ្លាម
-                </button>
-            </CardContent>
-        </Card>
-    );
+  return (
+    <AdmissionsCard
+      header={data.header}
+      titleClassName="text-lg font-bold text-slate-900"
+      bodyClassName="space-y-4"
+    >
+      <div className="flex items-center gap-3">
+        <div className="h-12 w-12 overflow-hidden rounded-full bg-slate-200">
+          {person.avatar ? (
+            <img
+              src={person.avatar}
+              alt={person.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-sm font-bold text-slate-500">
+              {person.name.slice(0, 2)}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <p className="text-sm font-bold text-slate-900">{person.name}</p>
+          {person.role && (
+            <p className="text-xs text-slate-500">{person.role}</p>
+          )}
+          {person.badge && (
+            <Badge className={`mt-1 ${softTone.green}`}>{person.badge}</Badge>
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-2 rounded-lg bg-slate-50 p-3">
+        {rows.map((row, index) => (
+          <div
+            key={index}
+            className="flex items-center gap-2 text-sm text-slate-700"
+          >
+            <Icon
+              name={row.icon}
+              className="h-4 w-4 shrink-0 text-blue-500"
+            />
+            <span>{row.text}</span>
+          </div>
+        ))}
+      </div>
+
+      {action && (
+        <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 p-3 text-sm font-medium text-white transition hover:bg-blue-700">
+          <Icon name={action.icon} className="h-4 w-4" />
+          {action.label}
+        </button>
+      )}
+    </AdmissionsCard>
+  );
 }
