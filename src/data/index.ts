@@ -45,7 +45,24 @@ export type {
   ContactCardData,
   ContactPersonData,
 } from "./admissions-page";
-export type { ScholarshipsCardData } from "./scholarships-page";
+export type {
+  ScholarshipsPageData,
+  ScholarshipsCardHeader,
+  ScholarshipsHeroData,
+  ScholarshipsCardData,
+  ScholarshipTone,
+  ScholarshipStatData,
+  ScholarshipAction,
+  ScholarshipListRow,
+  ScholarshipPanelData,
+  ScholarshipGroupData,
+  ScholarshipNoticeData,
+  ScholarshipProgramData,
+  DepartmentAllocationData,
+  DepartmentAllocationEntry,
+  HowToApplyData,
+  HowToApplyStepData,
+} from "./scholarships-page";
 export { iconMap, getIcon } from "@/lib/icons";
 export type { IconName } from "@/lib/icons";
 export type {

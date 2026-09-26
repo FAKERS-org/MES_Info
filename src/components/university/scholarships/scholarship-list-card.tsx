@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import { resolveText } from "@/data/text";
 import type { ScholarshipsCardData } from "@/data/scholarships-page";
-import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
+import { ScholarshipCard } from "./scholarship-card";
 
 export interface ScholarshipListCardProps {
   data: ScholarshipsCardData;
@@ -20,25 +20,14 @@ export const ScholarshipListCard = ({ data }: ScholarshipListCardProps) => {
   const { lang } = useLanguage();
 
   return (
-    <DetailCard
-      className="rounded-3xl p-6 font-sans"
+    <ScholarshipCard
       header={{
-        align: "start",
-        padding: "",
-        className: "mb-4",
-        icon: <Icon name="Award" size={26} strokeWidth={2.5} />,
-        iconTileClassName: "text-blue-600",
+        icon: "Award",
+        tone: "blue",
         title: data.header.title,
-        titleClassName: "text-lg font-bold text-slate-900",
         subtitle: data.header.subtitle,
-        subtitleClassName: "text-slate-600 font-medium",
-        badge: data.header.badge && (
-          <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-            {data.header.badge}
-          </span>
-        ),
+        badge: data.header.badge,
       }}
-      body={false}
     >
       {data.items.length === 0 ? (
         <div className="rounded-xl bg-slate-50 p-4">
@@ -93,6 +82,6 @@ export const ScholarshipListCard = ({ data }: ScholarshipListCardProps) => {
           ))}
         </ul>
       )}
-    </DetailCard>
+    </ScholarshipCard>
   );
 };

@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation";
+import { DepartmentAllocation } from "@/components/university/scholarships/department-allocation";
+import { HowToApply } from "@/components/university/scholarships/how-to-apply";
 import { ScholarshipListCard } from "@/components/university/scholarships/scholarship-list-card";
+import { ScholarshipProgramCard } from "@/components/university/scholarships/scholarship-program-card";
+import { ScholarshipsHero } from "@/components/university/scholarships/scholarships-hero";
+import { SectionLayout } from "@/components/shared/section-layout";
 import { getScholarshipsPageData } from "@/data/scholarships-page";
 import { universities } from "@/data/universities";
 
@@ -7,7 +12,13 @@ interface ScholarshipsPageProps {
   params: Promise<{ university: string }>;
 }
 
-/** "Scholarships" tab: the awards the school publishes, or a pointer to the global board. */
+/**
+ * "Scholarships" tab: a banner over the school's own published scholarships and
+ * a wide column of programme sections, plus a narrow rail of steps, contacts
+ * and the application button. Every section is optional — the sample ones (see
+ * `getScholarshipsPageData`) exist for ITC only — so another school renders
+ * its banner and its real list instead of invented deadlines and quotas.
+ */
 export default async function ScholarshipsPage({
   params,
 }: ScholarshipsPageProps) {
@@ -18,5 +29,23 @@ export default async function ScholarshipsPage({
 
   const data = getScholarshipsPageData(university);
 
-  return <ScholarshipListCard data={data} />;
+  return (
+    <div className="space-y-6 py-4 md:py-8">
+      <ScholarshipsHero data={data.hero} />
+
+      <SectionLayout
+        breakpoint="md"
+        mainClassName="space-y-6"
+        aside={data.howToApply && <HowToApply data={data.howToApply} />}
+      >
+        <ScholarshipListCard data={data.list} />
+
+        {data.programs.map((program) => (
+          <ScholarshipProgramCard key={program.header.title} data={program} />
+        ))}
+
+        {data.allocation && <DepartmentAllocation data={data.allocation} />}
+      </SectionLayout>
+    </div>
+  );
 }
