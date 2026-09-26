@@ -1,8 +1,7 @@
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import UniversityIdCard from "@/components/university/university-id-card";
 import UniversityMenu from "@/components/university/university-menu";
-import { DegreeSearch } from "@/components/university/degree-search";
-import { FacultyCard } from "@/components/university/faculty-card";
 import { AboutCard } from "@/components/university/about-card";
 import { HotNewsCard } from "@/components/university/hot-news-card";
 import { AdmissionsCard } from "@/components/university/admissions-card";
@@ -12,27 +11,31 @@ import { SectionLayout } from "@/components/shared/section-layout";
 import { getUniversityPageData } from "@/data/university-page";
 import { universities } from "@/data/universities";
 
-interface UniversityIdPageProps {
+interface UniversityTabsLayoutProps {
   params: Promise<{ university: string }>;
+  children: ReactNode;
 }
 
-export default async function UniversityIdPage({ params }: UniversityIdPageProps) {
+/**
+ * Chrome shared by the three tabs of `/explore-universities/{university}`
+ * (Programs & Fees, Admissions, Scholarships): hero, linked menu and the
+ * right-hand rail, with the tab itself supplying the left column.
+ *
+ * It lives in the `(tabs)` route group on purpose — the group does not exist
+ * in the URL, so `[department]` stays outside it and keeps its own layout
+ * instead of growing a hero, a menu and a rail it never had.
+ */
+export default async function UniversityTabsLayout({
+  params,
+  children,
+}: UniversityTabsLayoutProps) {
   const { university: id } = await params;
   const university = universities.find((u) => u.id === id);
 
   if (!university) notFound();
 
-  const {
-    hero,
-    filters,
-    faculty,
-    about,
-    hotNews,
-    admissions,
-    campusMap,
-    brochure,
-    menu,
-  } = getUniversityPageData(university);
+  const { hero, about, hotNews, campusMap, admissions, brochure, menu } =
+    getUniversityPageData(university);
 
   return (
     <div className="space-y-8">
@@ -53,9 +56,7 @@ export default async function UniversityIdPage({ params }: UniversityIdPageProps
           </>
         }
       >
-        {/* Left Column (Search + Faculty) */}
-        <DegreeSearch pills={filters} />
-        <FacultyCard data={faculty} />
+        {children}
       </SectionLayout>
     </div>
   );

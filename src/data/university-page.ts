@@ -155,7 +155,8 @@ export interface BrochureCardData {
 }
 
 export interface UniversityMenuTab {
-  value: string;
+  /** Absolute route of the tab, active state is matched against it. */
+  href: string;
   icon: IconName;
   label: string;
   badge?: number;
@@ -346,6 +347,9 @@ export function getUniversityPageData(
     : undefined;
   const addressEn = address?.en ?? "";
   const campus = shortLocation(addressEn);
+
+  /** Route prefix shared by the three menu tabs (Programs / Admissions / Scholarships). */
+  const tabBase = `/explore-universities/${university.id}`;
 
   /**
    * Field of study of each entry — the cross-school facet behind the explore
@@ -547,20 +551,22 @@ export function getUniversityPageData(
 
     brochure: university.id === "itc" ? ITC_BROCHURE : undefined,
 
+    /* The three tabs are three routes; `href` is the only wiring the menu
+       needs, the active state is derived from the current path. */
     menu: [
       {
-        value: "majors",
+        href: tabBase,
         icon: "BookOpen",
         label: "ជំនាញសិក្សា & ថ្លៃសិក្សា (Programs & Fees)",
         badge: departments.length,
       },
       {
-        value: "admissions",
+        href: `${tabBase}/admissions`,
         icon: "GraduationCap",
         label: "ការចុះឈ្មោះ & លក្ខខណ្ឌ (Admissions)",
       },
       {
-        value: "scholarships",
+        href: `${tabBase}/scholarships`,
         icon: "CalendarDays",
         label: "អាហារូបករណ៍ (Scholarships)",
       },

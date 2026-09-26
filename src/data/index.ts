@@ -6,16 +6,30 @@
  *
  * 1. `./universities`  — entity data: the `University` / `Department` types
  *                        and the seed list served by `/api/universities`.
- * 2. `./university-page` / `./department-page` — placeholder UI copy for the
- *                        two detail pages. University page copy is *built*
- *                        from the entity (`getUniversityPageData`), the
- *                        department page copy is still mock content.
+ * 2. `./university-page` / `./department-page` / `./admissions-page` /
+ *                        `./scholarships-page` — placeholder UI copy for the
+ *                        detail pages. University page copy is *built*
+ *                        from the entity (`getUniversityPageData`), the two
+ *                        tab pages likewise, the department page copy is
+ *                        still mock content.
  * 3. `./text`          — `resolveText`, the `NamespacedText` language picker.
  */
 export type { University, Department, NamespacedText } from "./universities";
 export { resolveText } from "./text";
 export { departmentPageData } from "./department-page";
 export { getUniversityPageData } from "./university-page";
+export { getAdmissionsPageData } from "./admissions-page";
+export { getScholarshipsPageData } from "./scholarships-page";
+export type {
+  AdmissionsPageData,
+  RequirementGroup,
+  ApplyStep,
+  KeyDate,
+  RequirementsCardData,
+  ApplyStepsCardData,
+  KeyDatesCardData,
+} from "./admissions-page";
+export type { ScholarshipsCardData } from "./scholarships-page";
 export { iconMap, getIcon } from "@/lib/icons";
 export type { IconName } from "@/lib/icons";
 export type {
