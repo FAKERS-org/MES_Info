@@ -59,7 +59,7 @@ function ShellChrome({ children }: { children: ReactNode }) {
             <Sidebar open={sidebarOpen} navItems={navItems} />
 
             <div
-                className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden ${
+                className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
                     sidebarOpen ? "opacity-100" : "pointer-events-none opacity-0"
                 }`}
                 onClick={() => setSidebarOpen(false)}
