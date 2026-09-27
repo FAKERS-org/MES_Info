@@ -1,16 +1,16 @@
-import { notFound } from "next/navigation";
-import { DepartmentAllocation } from "@/components/university/scholarships/department-allocation";
-import { HowToApply } from "@/components/university/scholarships/how-to-apply";
-import { ScholarshipListCard } from "@/components/university/scholarships/scholarship-list-card";
-import { ScholarshipProgramCard } from "@/components/university/scholarships/scholarship-program-card";
-import { ScholarshipsHero } from "@/components/university/scholarships/scholarships-hero";
 import { SectionLayout } from "@/components/shared/section-layout";
+import { DepartmentAllocation } from "@/components/university/scholarships/department-allocation";
+import HowToApply from "@/components/university/scholarships/how-to-apply";
+import ScholarshipOptions from "@/components/university/scholarships/scholarship-options";
+import { ScholarshipProgramCard } from "@/components/university/scholarships/scholarship-program-card";
+import ScholarshipsBanner from "@/components/university/scholarships/scholarships-banner";
 import { getScholarshipsPageData } from "@/data/scholarships-page";
 import { universities } from "@/data/universities";
 import { readLang } from "@/lib/language.server";
+import { notFound } from "next/navigation";
 
 interface ScholarshipsPageProps {
-  params: Promise<{ university: string }>;
+    params: Promise<{ university: string }>;
 }
 
 /**
@@ -20,33 +20,31 @@ interface ScholarshipsPageProps {
  * `getScholarshipsPageData`) exist for ITC only — so another school renders
  * its banner and its real list instead of invented deadlines and quotas.
  */
-export default async function ScholarshipsPage({
-  params,
-}: ScholarshipsPageProps) {
-  const { university: id } = await params;
-  const university = universities.find((u) => u.id === id);
+export default async function ScholarshipsPage({ params }: ScholarshipsPageProps) {
+    const { university: id } = await params;
+    const university = universities.find(u => u.id === id);
 
-  if (!university) notFound();
+    if (!university) notFound();
 
-  const data = getScholarshipsPageData(university, await readLang());
+    const data = getScholarshipsPageData(university, await readLang());
 
-  return (
-    <div className="space-y-4 py-3 md:py-6">
-      <ScholarshipsHero data={data.hero} />
+    return (
+        <div className="space-y-4 py-3 md:py-6">
+            <ScholarshipsBanner />
 
-      <SectionLayout
-        breakpoint="md"
-        mainClassName="space-y-4"
-        aside={data.howToApply && <HowToApply data={data.howToApply} />}
-      >
-        <ScholarshipListCard data={data.list} />
+            <SectionLayout
+                breakpoint="md"
+                mainClassName="space-y-4"
+                aside={data.howToApply && <HowToApply />}
+            >
+                <ScholarshipOptions />
 
-        {data.programs.map((program) => (
-          <ScholarshipProgramCard key={program.header.title} data={program} />
-        ))}
+                {/* {data.programs.map(program => (
+                    <ScholarshipProgramCard key={program.header.title} data={program} />
+                ))}
 
-        {data.allocation && <DepartmentAllocation data={data.allocation} />}
-      </SectionLayout>
-    </div>
-  );
+                {data.allocation && <DepartmentAllocation data={data.allocation} />} */}
+            </SectionLayout>
+        </div>
+    );
 }

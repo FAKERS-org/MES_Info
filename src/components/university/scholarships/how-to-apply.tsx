@@ -1,78 +1,74 @@
-import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/shared/icon-renderer";
-import { IconList, IconListItem } from "@/components/shared/icon-list";
-import { InsetPanel } from "@/components/shared/inset-panel";
-import { StepList, StepListItem } from "@/components/shared/step-list";
-import type { HowToApplyData } from "@/data/scholarships-page";
-import { ScholarshipApplyButton } from "./scholarship-apply-button";
-import { ScholarshipCard } from "./scholarship-card";
+import { CalendarDays, ClipboardCheck } from "lucide-react";
 
-export interface HowToApplyProps {
-  data: HowToApplyData;
-}
+const HowToApply = () => {
+    const steps = [
+        {
+            number: "១",
+            title: "ប្រើសិទ្ធិស្របច្បាប់អាហារូបករណ៍",
+            description: 'គូសធីកជម្រើសប្រឡង "សិទ្ធិអាហារូបករណ៍" ក្នុងពេលដាក់ពាក្យ។',
+        },
+        {
+            number: "២",
+            title: "ចូលរួមប្រឡងប្រជែងដណ្តើមអាហារូបករណ៍",
+            description:
+                "ចូលរួមប្រឡងជ្រើសរើសជាមួយនឹងមុខវិជ្ជា គណិតវិទ្យា រូបវិទ្យា និងគីមីវិទ្យា តាមកាលវិភាគដែលបានកំណត់។",
+        },
+        {
+            number: "៣",
+            title: "ផ្ទៀងផ្ទាត់លទ្ធផល និងទទួលអាហារូបករណ៍",
+            description: "លទ្ធផលនឹងត្រូវបានប្រកាសជាផ្លូវការ និងអាចពិនិត្យមើលបានតាមរយៈគេហទំព័រផ្លូវការរបស់វិទ្យាស្ថាន។",
+        },
+    ];
 
-/**
- * Right-hand rail of the scholarships tab: the four steps, the downloadable
- * guide, the office contacts and the button that starts the application.
- * Everything except the steps comes from the data, so a school without a
- * published contact simply omits it.
- */
-export function HowToApply({ data }: HowToApplyProps) {
-  const { header, steps, download, contact, action } = data;
+    return (
+        <div className="w-full max-w-[400px] bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-6 font-sans">
+            {/* --- Header --- */}
+            <div className="flex items-center gap-3 mb-8">
+                <div className="text-sky-600">
+                    <ClipboardCheck className="h-6 w-6" strokeWidth={2} />
+                </div>
+                <h2 className="text-[17px] font-bold text-[#0B1F3A] leading-tight">
+                    របៀបដាក់ពាក្យអាហារូបករណ៍ (How to Apply)
+                </h2>
+            </div>
 
-  return (
-    <ScholarshipCard header={header}>
-      <StepList>
-        {steps.map((step) => (
-          <StepListItem key={step.number} number={step.number} size="sm">
-            <h4 className="text-sm font-bold text-slate-900">{step.title}</h4>
-            <p className="text-xs text-slate-500">{step.subtitle}</p>
-            <p className="text-xs text-slate-600">{step.description}</p>
-          </StepListItem>
-        ))}
-      </StepList>
+            {/* --- Steps Timeline --- */}
+            <div className="relative">
+                {/* Vertical Line */}
+                <div className="absolute left-[19px] top-6 bottom-6 w-[1.5px] bg-slate-200"></div>
 
-      {download && (
-        <InsetPanel>
-          <div className="mb-2 flex items-center gap-2">
-            <Icon name="Download" className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-semibold text-slate-800">
-              {download.title}
-            </span>
-          </div>
-          <p className="mb-3 text-xs text-slate-500">{download.caption}</p>
-          <Button variant="outline" className="w-full text-sm">
-            <Icon name="Download" className="h-4 w-4" />
-            {download.file}
-          </Button>
-        </InsetPanel>
-      )}
+                <div className="space-y-7">
+                    {steps.map((step, index) => (
+                        <div key={index} className="relative flex gap-5 items-start">
+                            {/* Step Number Circle */}
+                            <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#15628F] text-white font-bold text-sm shadow-sm ring-4 ring-white">
+                                {step.number}
+                            </div>
 
-      {contact && (
-        <InsetPanel>
-          <h4 className="mb-3 text-sm font-semibold text-slate-800">
-            {contact.title}
-          </h4>
-          <IconList className="gap-2">
-            {contact.rows.map((row) => (
-              <IconListItem
-                key={row.text}
-                className="items-center gap-2 text-sm text-slate-700"
-                icon={
-                  <Icon
-                    name={row.icon}
-                    className="h-4 w-4 shrink-0 text-blue-500"
-                  />
-                }
-              >
-                {row.text}
-              </IconListItem>
-            ))}
-          </IconList>
-        </InsetPanel>
-      )}
+                            {/* Step Content */}
+                            <div className="pt-1.5">
+                                <h3 className="text-[15px] font-bold text-[#0B1F3A] mb-1.5 leading-snug">
+                                    {step.title}
+                                </h3>
+                                <p className="text-[13px] text-slate-500 leading-relaxed">{step.description}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
-      {action && <ScholarshipApplyButton action={action} block />}
-    </ScholarshipCard>
-  );
-}
+            {/* --- Footer Alert --- */}
+            <div className="mt-8 bg-[#F8FAFC] rounded-xl p-4 flex items-center gap-4 border border-slate-100">
+                <div className="text-[#15628F]">
+                    <CalendarDays className="h-6 w-6" strokeWidth={2} />
+                </div>
+                <div>
+                    <p className="text-xs text-slate-500 mb-0.5 font-medium">ថ្ងៃប្រឡងអាហារូបករណ៍</p>
+                    <p className="text-[15px] font-bold text-[#0B1F3A]">១៥-១៦ តុលា ២០២៥</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default HowToApply;
