@@ -3,7 +3,7 @@ import { SectionLayout } from "@/components/shared/section-layout";
 import AdmissionsContactCard from "@/components/university/programs-and-fees/admissions-contact-card";
 import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
 import CampusMapCard from "@/components/university/programs-and-fees/campus-map-card";
-import ExamInfoCard from "@/components/university/programs-and-fees/eexam-info-card";
+import ExamInfoCard from "@/components/university/programs-and-fees/exam-info-card";
 import FacultyCard from "@/components/university/programs-and-fees/faculty-card";
 import { universities } from "@/data/universities";
 import { getUniversityPageData } from "@/data/university-page";
