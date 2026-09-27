@@ -15,13 +15,28 @@
  * 3. `./text`          — `resolveText`, the `NamespacedText` language picker.
  */
 export type { University, Department, NamespacedText } from "./universities";
+export {
+  listUniversities,
+  findUniversity,
+  normalizeUniversity,
+  splitRequirementLines,
+  pairRequirements,
+} from "./universities-source";
+export type { ApiUniversity, ApiProgram } from "./universities-source";
 export { resolveText } from "./text";
 export { departmentPageData } from "./department-page";
 export { getUniversityPageData } from "./university-page";
-export { getAdmissionsPageData } from "./admissions-page";
+export {
+  getAdmissionsPageData,
+  getAdmissionsProfile,
+  getAdmissionsSections,
+  PENDING_SECTIONS,
+} from "./admissions-page";
 export { getScholarshipsPageData } from "./scholarships-page";
 export type {
   AdmissionsPageData,
+  AdmissionsSections,
+  AdmissionsProfile,
   AdmissionsCardHeader,
   AdmissionsTone,
   RequirementGroup,
@@ -29,6 +44,7 @@ export type {
   EligibilityMatrixData,
   EligibilityCellData,
   CompetencyGaugeData,
+  CompetencyGaugesData,
   AdmissionRoadmapData,
   RoadmapStepData,
   RequiredDocumentsData,
@@ -44,6 +60,16 @@ export type {
   PaymentQrData,
   ContactCardData,
   ContactPersonData,
+  Scoped,
+  EntranceExamProfile,
+  AdmissionsSectionKey,
+  PendingSection,
+  RoadmapStepProfile,
+  ApplicationDocumentProfile,
+  EligibilityCellProfile,
+  DateItemProfile,
+  FaqItemProfile,
+  CompetencyGaugeProfile,
 } from "./admissions-page";
 export type {
   ScholarshipsPageData,

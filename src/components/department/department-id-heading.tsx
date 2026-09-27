@@ -13,7 +13,7 @@ import { EntityProfileHero } from "@/components/shared/entity-profile-hero";
 export interface DepartmentIdHeadingProps {
   data: DepartmentIdHeadingData;
   /** Resolved `Department` of the URL: overrides title and logo. */
-  entity?: { name: NamespacedText; logo: string };
+  entity?: { name: NamespacedText; logo?: string };
   className?: string;
 }
 

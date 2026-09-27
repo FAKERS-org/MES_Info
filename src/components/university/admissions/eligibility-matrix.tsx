@@ -21,59 +21,71 @@ function Lines({ lines }: { lines: string[] }) {
   ));
 }
 
-/** Entry criteria, subject-competency gauges and the associate-degree note. */
+/**
+ * Entry criteria, subject-competency gauges and the associate-degree note.
+ *
+ * Both lists are optional: a school that publishes no thresholds — or one
+ * whose thresholds come from an exam it does not sit — renders its criteria
+ * tiles alone instead of an empty gauge panel.
+ */
 export function EligibilityMatrix({ data }: EligibilityMatrixProps) {
+  const { cells, gauges } = data;
+
   return (
     <AdmissionsCard header={data.header} bodyClassName="space-y-4">
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        {data.cells.map((cell, index) => (
-          <InsetPanel key={index}>
-            <div className="mb-2 flex items-center gap-2">
-              <span className="text-sm font-medium text-slate-700">
-                <Lines lines={cell.label} />
-              </span>
-              <Badge className={softTone[cell.tone]}>
-                <Lines lines={cell.badge} />
-              </Badge>
-            </div>
-            <p className="text-sm text-slate-600">
-              <Lines lines={cell.note} />
-            </p>
-          </InsetPanel>
-        ))}
-      </div>
-
-      <InsetPanel>
-        <div className="mb-4 flex items-center justify-between">
-          <h4 className="text-sm font-semibold text-slate-800">
-            {data.gauges.title}
-          </h4>
-          {data.gauges.note && (
-            <span className="text-xs text-slate-500">{data.gauges.note}</span>
-          )}
-        </div>
-
-        <div className="space-y-3">
-          {data.gauges.items.map((gauge) => (
-            <div key={gauge.label}>
-              <div className="mb-1 flex items-center justify-between">
+      {cells.length > 0 && (
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          {cells.map((cell, index) => (
+            <InsetPanel key={index}>
+              <div className="mb-2 flex items-center gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  {gauge.label}
+                  <Lines lines={cell.label} />
                 </span>
-                <span className="text-sm font-semibold text-blue-600">
-                  {gauge.requirement}
-                </span>
+                <Badge className={softTone[cell.tone]}>
+                  <Lines lines={cell.badge} />
+                </Badge>
               </div>
-              <div className="h-2.5 w-full rounded-full bg-slate-200">
-                <div
-                  className="h-2.5 rounded-full bg-blue-500"
-                  style={{ width: `${gauge.value}%` }}
-                />
-              </div>
-            </div>
+              <p className="text-sm text-slate-600">
+                <Lines lines={cell.note} />
+              </p>
+            </InsetPanel>
           ))}
         </div>
-      </InsetPanel>
+      )}
+
+      {gauges && gauges.items.length > 0 && (
+        <InsetPanel>
+          <div className="mb-4 flex items-center justify-between">
+            <h4 className="text-sm font-semibold text-slate-800">
+              {gauges.title}
+            </h4>
+            {gauges.note && (
+              <span className="text-xs text-slate-500">{gauges.note}</span>
+            )}
+          </div>
+
+          <div className="space-y-3">
+            {gauges.items.map((gauge) => (
+              <div key={gauge.label}>
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700">
+                    {gauge.label}
+                  </span>
+                  <span className="text-sm font-semibold text-blue-600">
+                    {gauge.requirement}
+                  </span>
+                </div>
+                <div className="h-2.5 w-full rounded-full bg-slate-200">
+                  <div
+                    className="h-2.5 rounded-full bg-blue-500"
+                    style={{ width: `${gauge.value}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </InsetPanel>
+      )}
 
       {data.notice && (
         <NoticeBox icon={<Icon name={data.notice.icon} />}>

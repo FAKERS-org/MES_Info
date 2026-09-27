@@ -32,7 +32,8 @@ export interface Department {
      */
     faculty?: NamespacedText;
     category: NamespacedText;
-    logo: string;
+    /** Omitted by a school with no artwork; the avatar falls back to initials. */
+    logo?: string;
     requirements: NamespacedText[];
 }
 
@@ -42,7 +43,8 @@ export interface University {
     universityType: NamespacedText;
     universityCategory: NamespacedText;
     description: NamespacedText;
-    logo: string;
+    /** Omitted by a school with no artwork; the avatar falls back to initials. */
+    logo?: string;
     website?: string;
     address?: NamespacedText;
     embedMapUrl?: string;

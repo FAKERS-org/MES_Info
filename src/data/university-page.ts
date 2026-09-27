@@ -43,7 +43,7 @@ export interface UniversityHeroData {
     bannerBadges: UniversityHeroBadge[];
     /** Share / bookmark buttons sitting on the banner. */
     bannerActions: UniversityHeroAction[];
-    logo: { src: string; alt: string };
+    logo: { src?: string; alt: string };
     name: string;
     nameBadge: string;
     subtitle: string;
