@@ -112,7 +112,7 @@ export default function ExploreUniversitiesPage() {
             {filtered.length === 0 ? (
                 <p className="py-12 text-center text-sm text-muted-foreground">{t("explore.noResults")}</p>
             ) : (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                     {filtered.map(university => (
                         <UniversityTile key={university.id} university={university} variant="featured" />
                     ))}
