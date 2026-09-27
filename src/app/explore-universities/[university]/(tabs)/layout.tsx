@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
-import { notFound } from "next/navigation";
-import UniversityIdCard from "@/components/university/university-id-card";
+import UniversityHeaderCard from "@/components/university/programs-and-fees/university-header-card";
 import UniversityMenu from "@/components/university/university-menu";
-import { getUniversityPageData } from "@/data/university-page";
 import { findUniversity } from "@/data/universities-source";
+import { getUniversityPageData } from "@/data/university-page";
 import { readLang } from "@/lib/language.server";
+import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 
 interface UniversityTabsLayoutProps {
-  params: Promise<{ university: string }>;
-  children: ReactNode;
+    params: Promise<{ university: string }>;
+    children: ReactNode;
 }
 
 /**
@@ -28,22 +28,20 @@ interface UniversityTabsLayoutProps {
  * knew the seed would 404 a school an admin added before its Admissions tab
  * ever got the chance to render.
  */
-export default async function UniversityTabsLayout({
-  params,
-  children,
-}: UniversityTabsLayoutProps) {
-  const { university: id } = await params;
-  const university = await findUniversity(id);
+export default async function UniversityTabsLayout({ params, children }: UniversityTabsLayoutProps) {
+    const { university: id } = await params;
+    const university = await findUniversity(id);
 
-  if (!university) notFound();
+    if (!university) notFound();
 
-  const { hero, menu } = getUniversityPageData(university, await readLang());
+    const { hero, menu } = getUniversityPageData(university, await readLang());
 
-  return (
-    <div className="space-y-5">
-      <UniversityIdCard data={hero} />
-      <UniversityMenu tabs={menu} />
-      {children}
-    </div>
-  );
+    return (
+        <div className="space-y-5">
+            {/* <UniversityIdCard data={hero} /> */}
+            <UniversityHeaderCard />
+            <UniversityMenu tabs={menu} />
+            {children}
+        </div>
+    );
 }

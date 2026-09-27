@@ -5,12 +5,12 @@ import Sidebar, { type NavItem } from "@/components/layout/sidebar";
 import TopBar from "@/components/layout/top-bar";
 import { UniversitiesProvider } from "@/hooks/use-universities";
 import { LanguageProvider, useLanguage } from "@/lib/i18n";
+import type { Lang } from "@/lib/language";
 import { useTheme } from "@/lib/theme";
 import { QueryProvider } from "@/providers/query-provider";
 import { BookOpen, Coins, Diff, LayoutGrid, University } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
-import type { Lang } from "@/lib/language";
 
 /**
  * Dashboard chrome: sidebar, top bar, breadcrumbs and the routed page.
