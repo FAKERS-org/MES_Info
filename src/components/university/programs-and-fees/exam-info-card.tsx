@@ -4,7 +4,7 @@ import { Info, Languages, ShieldCheck, TrendingUp, Users } from "lucide-react";
 
 export default function ExamInfoCard() {
     return (
-        <div className="w-full max-w-full p-4 bg-gray-50/50">
+        <div className="w-full max-w-sm p-4 bg-gray-50/50">
             <Card className="rounded-[24px] border border-slate-100 shadow-sm bg-white overflow-hidden">
                 <div className="p-5 flex flex-col gap-5">
                     {/* --- Header --- */}

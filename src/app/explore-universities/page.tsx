@@ -16,7 +16,7 @@ type SortKey = "name-asc" | "name-desc" | "departments-desc";
 
 export default function ExploreUniversitiesPage() {
     const { lang, t } = useLanguage();
-    const { universities, status, refresh } = useUniversities();
+    const { universities, status, refresh } = useUniversities()
 
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState<string | null>(null);
