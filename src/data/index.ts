@@ -23,14 +23,15 @@ export {
   pairRequirements,
 } from "./universities-source";
 export type { ApiUniversity, ApiProgram } from "./universities-source";
-export { resolveText } from "./text";
+export { resolveText, resolveCopy, resolveBilingual } from "./text";
+export type { PageCopy, Bilingual, Resolved } from "./text";
 export { departmentPageData } from "./department-page";
 export { getUniversityPageData } from "./university-page";
 export {
   getAdmissionsPageData,
   getAdmissionsProfile,
   getAdmissionsSections,
-  PENDING_SECTIONS,
+  getPendingSections,
 } from "./admissions-page";
 export { getScholarshipsPageData } from "./scholarships-page";
 export type {
@@ -44,7 +45,6 @@ export type {
   EligibilityMatrixData,
   EligibilityCellData,
   CompetencyGaugeData,
-  CompetencyGaugesData,
   AdmissionRoadmapData,
   RoadmapStepData,
   RequiredDocumentsData,
@@ -70,6 +70,10 @@ export type {
   DateItemProfile,
   FaqItemProfile,
   CompetencyGaugeProfile,
+  CompetencyGaugesProfile,
+  ProfileHeader,
+  ProfileAction,
+  ResolvedProfile,
 } from "./admissions-page";
 export type {
   ScholarshipsPageData,

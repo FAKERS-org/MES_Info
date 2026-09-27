@@ -9,6 +9,7 @@ import { SearchFilterBar } from "@/components/shared/search-filter-bar";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getUniversityPageData } from "@/data/university-page";
 import { universities } from "@/data/universities";
+import { readLang } from "@/lib/language.server";
 
 interface ProgramsPageProps {
   params: Promise<{ university: string }>;
@@ -21,8 +22,9 @@ export default async function ProgramsPage({ params }: ProgramsPageProps) {
 
   if (!university) notFound();
 
+  const lang = await readLang();
   const { filters, faculty, about, hotNews, campusMap, admissions, brochure } =
-    getUniversityPageData(university);
+    getUniversityPageData(university, lang);
 
   return (
     <SectionLayout
@@ -39,7 +41,12 @@ export default async function ProgramsPage({ params }: ProgramsPageProps) {
         </>
       }
     >
-      <SearchFilterBar pills={filters} placeholder="ស្វែងរកជំនាញ (Search)" />
+      {/* Widget copy this page owns, in the reader's language rather than as one
+          string holding both. */}
+      <SearchFilterBar
+        pills={filters}
+        placeholder={lang === "en" ? "Search programs" : "ស្វែងរកជំនាញ"}
+      />
       <FacultyCard data={faculty} />
     </SectionLayout>
   );

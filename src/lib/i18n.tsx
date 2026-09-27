@@ -1,11 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import kh from "@/locales/kh.json";
 import en from "@/locales/en.json";
 import { LANGUAGE_CONFIG } from "@/config";
+import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, langAttributes, resolveLang } from "./language";
+import type { Lang } from "./language";
 
-export type Lang = typeof LANGUAGE_CONFIG.supportedLanguages[number];
+export type { Lang };
 
 type TranslationMap = Record<string, string>;
 export type Translations = Record<Lang, TranslationMap>;
@@ -31,41 +34,50 @@ const translations: Translations = {
   en: en,
 };
 
-const LANG_KEY = LANGUAGE_CONFIG.storageKey;
-
 function applyFont(lang: Lang): void {
-  document.documentElement.style.setProperty(
-    "--font-current",
-    lang === "en" ? "var(--font-lexend)" : "var(--font-sans)"
-  );
-  document.documentElement.lang = lang === "en" ? "en" : "km";
+  const { htmlLang, fontStack } = langAttributes(lang);
+  document.documentElement.style.setProperty("--font-current", fontStack);
+  document.documentElement.lang = htmlLang;
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // Start from the default language so server and client render the same
-  // markup, then sync with the persisted choice after hydration.
-  const [lang, setLang] = useState<Lang>(LANGUAGE_CONFIG.defaultLanguage);
-  const skipNextPersist = useRef(true);
+export interface LanguageProviderProps {
+  children: React.ReactNode;
+  /**
+   * The language the server already resolved from the cookie. It is passed in
+   * rather than read here so the first client render matches the server's HTML
+   * exactly; reading `localStorage` on mount is what used to make the page
+   * paint in one language and then switch to another.
+   */
+  initialLang: Lang;
+}
 
-  // Read the persisted language once, after hydration.
-  useEffect(() => {
-    const stored = window.localStorage.getItem(LANG_KEY);
-    const initial = LANGUAGE_CONFIG.supportedLanguages.includes(stored as Lang)
-      ? (stored as Lang)
-      : LANGUAGE_CONFIG.defaultLanguage;
-    setLang(initial);
-    applyFont(initial);
-  }, []);
+export function LanguageProvider({ children, initialLang }: LanguageProviderProps) {
+  const router = useRouter();
+  const [lang, setLangState] = useState<Lang>(initialLang);
 
-  // Persist + apply font on every subsequent change (skips the mount run).
+  /* Keep the document in step when the language changes without a reload. The
+   * server already set both of these for the first paint, so this only has to
+   * cover the change. */
   useEffect(() => {
-    if (skipNextPersist.current) {
-      skipNextPersist.current = false;
-      return;
-    }
-    window.localStorage.setItem(LANG_KEY, lang);
     applyFont(lang);
   }, [lang]);
+
+  const setLang = (next: Lang) => {
+    setLangState(next);
+    document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=${LANG_COOKIE_MAX_AGE}; samesite=lax`;
+    /* Copy rendered by Server Components — every card on the university and
+     * department pages — is baked during the server render, so the new language
+     * only reaches it once that tree is re-fetched. Without this the chrome
+     * would switch while the page body stayed in the old language. */
+    router.refresh();
+  };
+
+  const toggleLang = () =>
+    setLang(
+      lang === LANGUAGE_CONFIG.supportedLanguages[0]
+        ? LANGUAGE_CONFIG.supportedLanguages[1]
+        : LANGUAGE_CONFIG.supportedLanguages[0],
+    );
 
   const t: TranslateFn = (key, params) => {
     let str =
@@ -77,13 +89,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
     return str;
   };
-
-  const toggleLang = () =>
-    setLang((l) =>
-      l === LANGUAGE_CONFIG.supportedLanguages[0]
-        ? LANGUAGE_CONFIG.supportedLanguages[1]
-        : LANGUAGE_CONFIG.supportedLanguages[0]
-    );
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, toggleLang, t }}>

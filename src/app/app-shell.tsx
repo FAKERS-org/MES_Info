@@ -10,16 +10,20 @@ import { QueryProvider } from "@/providers/query-provider";
 import { BookOpen, Coins, Diff, LayoutGrid, University } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import type { Lang } from "@/lib/language";
 
 /**
  * Dashboard chrome: sidebar, top bar, breadcrumbs and the routed page.
  * Replaces the react-router `RootLayout` (its `<Outlet />` is `children`).
  * Providers sit above the chrome because it consumes their contexts.
+ *
+ * `initialLang` is resolved by the root layout from the language cookie, so
+ * the chrome and the server-rendered page body below it always agree.
  */
-export default function AppShell({ children }: { children: ReactNode }) {
+export default function AppShell({ children, initialLang }: { children: ReactNode; initialLang: Lang }) {
     return (
         <QueryProvider>
-            <LanguageProvider>
+            <LanguageProvider initialLang={initialLang}>
                 <UniversitiesProvider>
                     <ShellChrome>{children}</ShellChrome>
                 </UniversitiesProvider>

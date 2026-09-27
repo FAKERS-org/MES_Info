@@ -1,5 +1,7 @@
 import type { NamespacedText, University } from "@/data/universities";
+import { resolveBilingual, resolveCopy, type Bilingual, type PageCopy, type Resolved } from "@/data/text";
 import type { IconName } from "@/lib/icons";
+import type { Lang } from "@/lib/language";
 import type { Tone } from "@/lib/tones";
 
 /* ------------------------------------------------------------------ *
@@ -14,10 +16,12 @@ import type { Tone } from "@/lib/tones";
 export type AdmissionsTone = Extract<Tone, "blue" | "green" | "red" | "purple" | "amber">;
 
 /**
- * Head of every admissions card: an optional eyebrow line (with the right
- * slot holding `meta`, the icon and an action), the title and an optional
- * subtitle. `title` is written in Khmer with its English gloss in
- * parentheses, the way the school prints it.
+ * Head of every admissions card, as the components receive it: plain strings,
+ * already in the reader's language.
+ *
+ * The same shape as {@link ProfileHeader} is what a profile *declares*; this is
+ * what it *resolves to*. Keeping the two apart is what lets the page be
+ * written in one language at a time.
  */
 export interface AdmissionsCardHeader {
     /** Small uppercase label above the title, e.g. "Checklist". */
@@ -31,6 +35,16 @@ export interface AdmissionsCardHeader {
     tone?: AdmissionsTone;
 }
 
+/**
+ * A card head as a profile declares it: copy per language, with the icon name
+ * and tone left as the plain strings they are.
+ */
+export type ProfileHeader = Bilingual<AdmissionsCardHeader>;
+
+/** An `{ icon, label }` pair — a card action. Only the label is copy. */
+export type ProfileAction = Bilingual<{ icon: IconName; label: string }>;
+
+
 /* ------------------------------------------------------------------ *
  * Requirements — real data, every school                              *
  * ------------------------------------------------------------------ */
@@ -43,7 +57,7 @@ export interface RequirementGroup {
 }
 
 export interface RequirementsCardData {
-    header: { title: string; subtitle: string; badge?: string };
+    header: { title: string; subtitle?: string; badge?: string };
     /** Every program of the school; an empty `lines` array means unpublished. */
     groups: RequirementGroup[];
     /** Rendered when the school publishes no requirements at all. */
@@ -224,21 +238,33 @@ export interface Scoped<T> {
     item: T;
 }
 
+/* ------------------------------------------------------------------ *
+ * Profile — declared copy, one language at a time                       *
+ * ------------------------------------------------------------------ */
+
+/**
+ * The profile types below are the display shapes with their copy turned back
+ * into {@link PageCopy} pairs. They exist only so the data can be authored per
+ * language; {@link resolveBilingual} turns a profile back into the plain
+ * display shapes the components already take, and every builder below works
+ * on that resolved form.
+ */
+
 /** A roadmap step before the page numbers it — steps are renumbered. */
-export type RoadmapStepProfile = Scoped<Omit<RoadmapStepData, "number">>;
+export type RoadmapStepProfile = Scoped<Bilingual<Omit<RoadmapStepData, "number">>>;
 
 /** A checklist entry before the page numbers it — the index is generated. */
-export type ApplicationDocumentProfile = Scoped<Omit<ApplicationDocumentData, "index">>;
+export type ApplicationDocumentProfile = Scoped<Bilingual<Omit<ApplicationDocumentData, "index">>>;
 
-export type EligibilityCellProfile = Scoped<EligibilityCellData>;
-export type DateItemProfile = Scoped<DateItemData>;
-export type FaqItemProfile = Scoped<FaqItemData>;
-export type CompetencyGaugeProfile = Scoped<CompetencyGaugeData>;
+export type EligibilityCellProfile = Scoped<Bilingual<EligibilityCellData>>;
+export type DateItemProfile = Scoped<Bilingual<DateItemData>>;
+export type FaqItemProfile = Scoped<Bilingual<FaqItemData>>;
+export type CompetencyGaugeProfile = Scoped<Bilingual<CompetencyGaugeData>>;
 
-/** The subject-competency bars of the criteria card. */
-export interface CompetencyGaugesData {
-    title: string;
-    note?: string;
+/** The subject-competency bars of the criteria card, as a profile declares them. */
+export interface CompetencyGaugesProfile {
+    title: PageCopy;
+    note?: PageCopy;
     items: CompetencyGaugeProfile[];
 }
 
@@ -252,7 +278,7 @@ export interface EntranceExamProfile {
      * The exam-material card — format notes and past papers. Omitted when the
      * school publishes none, e.g. because a ministry owns the exam.
      */
-    papers?: ResourceHubData;
+    papers?: Bilingual<ResourceHubData>;
 }
 
 /**
@@ -267,31 +293,38 @@ export interface AdmissionsProfile {
     /** Omitted by a school that admits without an entrance exam. */
     exam?: EntranceExamProfile;
     eligibility: {
-        header: AdmissionsCardHeader;
+        header: ProfileHeader;
         cells: EligibilityCellProfile[];
-        gauges?: CompetencyGaugesData;
-        notice?: { icon: IconName; text: string };
+        gauges?: CompetencyGaugesProfile;
+        notice?: Bilingual<{ icon: IconName; text: string }>;
     };
     roadmap: {
-        header: AdmissionsCardHeader;
+        header: ProfileHeader;
         steps: RoadmapStepProfile[];
     };
     documents: {
-        header: AdmissionsCardHeader;
-        action?: { icon: IconName; label: string };
+        header: ProfileHeader;
+        action?: ProfileAction;
         items: ApplicationDocumentProfile[];
     };
     dates: {
-        header: AdmissionsCardHeader;
-        countdown?: CountdownData;
+        header: ProfileHeader;
+        countdown?: Bilingual<CountdownData>;
         items: DateItemProfile[];
-        action?: { icon: IconName; label: string };
+        action?: ProfileAction;
     };
-    faq: { header: AdmissionsCardHeader; items: FaqItemProfile[] };
-    fee?: RegistrationFeeData;
-    payment?: PaymentQrData;
-    contact?: ContactCardData;
+    faq: { header: ProfileHeader; items: FaqItemProfile[] };
+    fee?: Bilingual<RegistrationFeeData, "divider">;
+    payment?: Bilingual<PaymentQrData, "initials">;
+    contact?: Bilingual<ContactCardData, "avatar" | "icon">;
 }
+
+/**
+ * A profile whose copy has been resolved for one language — structurally the
+ * display shapes, so the builders need no knowledge of bilingual data.
+ */
+export type ResolvedProfile = Resolved<AdmissionsProfile>;
+
 
 /* ------------------------------------------------------------------ *
  * Page bundle                                                         *
@@ -350,37 +383,91 @@ export type AdmissionsSections = Omit<AdmissionsPageData, "requirements" | "pend
  * Shared copy                                                         *
  * ------------------------------------------------------------------ */
 
-const REQUIREMENTS_HEADER = {
-    title: "តម្រូវការចុះឈ្មោះ",
-    subtitle: "(Admission Requirements)",
+/**
+ * Head of the requirements card. The English used to sit in a subtitle reading
+ * "(Admission Requirements)" beside the Khmer title — one string holding both
+ * languages, so it showed that way in every language. Now each side is its own
+ * title and there is no subtitle.
+ */
+const REQUIREMENTS_HEADER: Bilingual<{ title: string; subtitle?: string }> = {
+    title: { kh: "តម្រូវការចុះឈ្មោះ", en: "Admission Requirements" },
+};
+
+/**
+ * The card heads, worded once and shared. A hand-written profile spells these
+ * out where it overrides them; a school with no profile and the pending list
+ * both use these, which is why an unpublished card is titled exactly like the
+ * published one it stands in for.
+ */
+const ELIGIBILITY_HEADER: ProfileHeader = {
+    icon: "FileText",
+    title: { kh: "លក្ខខណ្ឌចូលរៀន", en: "Entry Criteria" },
+};
+
+const ROADMAP_HEADER: ProfileHeader = {
+    icon: "Flag",
+    title: { kh: "ដំណើរការចូលរៀន", en: "Application Roadmap" },
 };
 
 /** Head of the document checklist — the wording is school-agnostic. */
-const DOCUMENTS_HEADER = {
-    eyebrow: "Checklist",
-    title: "ឯកសារដែលត្រូវដាក់បញ្ចូល (Required Application Documents)",
+const DOCUMENTS_HEADER: ProfileHeader = {
+    icon: "FileText",
+    eyebrow: { en: "Checklist" },
+    title: { kh: "ឯកសារដែលត្រូវដាក់បញ្ចូល", en: "Required Application Documents" },
 };
 
-const DOCUMENTS_ACTION: { icon: IconName; label: string } = {
+const DOCUMENTS_ACTION: ProfileAction = {
     icon: "Download",
-    label: "ទាញយកជា PDF",
+    label: { kh: "ទាញយកជា PDF", en: "Download PDF" },
+};
+
+const FAQ_HEADER: ProfileHeader = {
+    icon: "HelpCircle",
+    title: { kh: "សំណួរដគលសួរញឹកញាប់", en: "Admissions FAQ" },
 };
 
 /** Head of the dates rail. */
-const DATES_HEADER: AdmissionsCardHeader = {
+const DATES_HEADER: ProfileHeader = {
     icon: "Calendar",
-    title: "កាលបរិច្ឆេទសំខាន់",
+    title: { kh: "កាលបរិច្ឆេទសំខាន់", en: "Key Dates" },
+};
+
+const FEE_HEADER: ProfileHeader = {
+    icon: "DollarSign",
+    title: { kh: "ថ្លៃចុះឈ្មោះ", en: "Registration Fee" },
+};
+
+const PAYMENT_HEADER: ProfileHeader = {
+    icon: "CreditCard",
+    title: { kh: "របៀបបង់ប្រាក់", en: "Payment" },
+};
+
+const CONTACT_HEADER: ProfileHeader = {
+    icon: "Share2",
+    title: { kh: "ទំនាក់ទំនងការិយាល័យចូលរៀន", en: "Admissions Contact" },
 };
 
 /** Khqr payment block — a national scheme, so only the account differs. */
 const KHQR_BRAND = {
     initials: "KB",
-    title: "Bakong KHQR",
-    subtitle: "Payment",
-    badge: "Instant Verify",
+    title: { en: "Bakong KHQR" },
+    subtitle: { en: "Payment" },
+    badge: { en: "Instant Verify" },
 };
 
-const KHQR_BANKS = "ABA / ACLEDA / Canadia / Wing";
+/** The banks the school accepts. Names, so they read the same in both. */
+const KHQR_BANKS: PageCopy = neutral("ABA / ACLEDA / Canadia / Wing");
+
+/**
+ * Copy that reads identically in every language — a price, a phone number, a
+ * grade band, a language code. Written out on both sides rather than left as a
+ * bare string so the data never *looks* translated where it is only
+ * language-neutral, and so it is obvious when a value is deliberately shared
+ * rather than accidentally untranslated.
+ */
+function neutral(text: string): PageCopy {
+    return { kh: text, en: text };
+}
 
 const EMPTY_REQUIREMENTS: NamespacedText = {
     kh: "មិនមានតម្រូវការចុះឈ្មោះដែលបានចុះផ្សាយនៅឡើយ — សូមពិនិត្យមើលគេហទំព័រសាលា។",
@@ -398,62 +485,34 @@ const PENDING_COPY: NamespacedText = {
     en: "Not published yet — contact the school or check its official website.",
 };
 
+/** A pending placeholder before its head is resolved for a language. */
+type PendingSectionSource = Omit<PendingSection, "header"> & { header: ProfileHeader };
+
 /**
  * The sections the page shows for a school nobody has written a profile for,
  * in layout order. `resources` is deliberately absent: exam material is not a
  * gap in a record, it is a claim that the school sits an entrance exam, and
  * nothing in the record makes that.
  */
-export const PENDING_SECTIONS: readonly PendingSection[] = [
-    {
-        key: "eligibility",
-        rail: false,
-        header: { icon: "FileText", title: "លក្ខខណ្ឌចូលរៀន (Entry Criteria)" },
-        copy: PENDING_COPY,
-    },
-    {
-        key: "roadmap",
-        rail: false,
-        header: { icon: "Flag", title: "ដំណើរការចូលរៀន (Application Roadmap)" },
-        copy: PENDING_COPY,
-    },
-    {
-        key: "documents",
-        rail: false,
-        header: DOCUMENTS_HEADER,
-        copy: PENDING_COPY,
-    },
-    {
-        key: "faq",
-        rail: false,
-        header: { icon: "HelpCircle", title: "សំណួរដគលសួរញឹកញាប់ (Admissions FAQ)" },
-        copy: PENDING_COPY,
-    },
-    {
-        key: "dates",
-        rail: true,
-        header: DATES_HEADER,
-        copy: PENDING_COPY,
-    },
-    {
-        key: "fee",
-        rail: true,
-        header: { icon: "DollarSign", title: "ថ្លៃចុះឈ្មោះ (Registration Fee)" },
-        copy: PENDING_COPY,
-    },
-    {
-        key: "payment",
-        rail: true,
-        header: { icon: "CreditCard", title: "របៀបបង់ប្រាក់ (Payment)" },
-        copy: PENDING_COPY,
-    },
-    {
-        key: "contact",
-        rail: true,
-        header: { icon: "Share2", title: "ទំនាក់ទំនងការិយាល័យចូលរៀន (Admissions Contact)" },
-        copy: PENDING_COPY,
-    },
+const PENDING_SECTIONS: readonly PendingSectionSource[] = [
+    { key: "eligibility", rail: false, header: ELIGIBILITY_HEADER, copy: PENDING_COPY },
+    { key: "roadmap", rail: false, header: ROADMAP_HEADER, copy: PENDING_COPY },
+    { key: "documents", rail: false, header: DOCUMENTS_HEADER, copy: PENDING_COPY },
+    { key: "faq", rail: false, header: FAQ_HEADER, copy: PENDING_COPY },
+    { key: "dates", rail: true, header: DATES_HEADER, copy: PENDING_COPY },
+    { key: "fee", rail: true, header: FEE_HEADER, copy: PENDING_COPY },
+    { key: "payment", rail: true, header: PAYMENT_HEADER, copy: PENDING_COPY },
+    { key: "contact", rail: true, header: CONTACT_HEADER, copy: PENDING_COPY },
 ];
+
+/** The pending list, titled in `lang`. */
+export function getPendingSections(lang: Lang): PendingSection[] {
+    return PENDING_SECTIONS.map(section => ({
+        ...section,
+        header: resolveBilingual<AdmissionsCardHeader>(section.header, lang),
+    }));
+}
+
 
 /* ------------------------------------------------------------------ *
  * Profiles                                                            *
@@ -464,100 +523,106 @@ const ITC_PROFILE: AdmissionsProfile = {
     exam: {
         papers: {
             header: {
-                eyebrow: "Resource Hub",
+                eyebrow: { en: "Resource Hub" },
                 tone: "green",
-                title: "ទម្រង់ប្រឡងសិក្សា និងសំណួរពីមុន (Exam Format & Past Papers)",
+                title: { kh: "ទម្រង់ប្រឡងសិក្សា និងសំណួរពីមុន", en: "Exam Format & Past Papers" },
                 subtitle:
-                    "ទាញយកឯកសារប្រឡងសិស្សចាស់ៗ និងទម្រង់សំណួរប្រឡង ដើមបីរៀបចំខ្លួន។ ឯកសារទាំងអស់មានជាភាសាខ្មែរ និងអង់គ្លេស។",
+                    { kh: "ទាញយកឯកសារប្រឡងសិស្សចាស់ៗ និងទម្រង់សំណួរប្រឡង ដើមបីរៀបចំខ្លួន។ ឯកសារទាំងអស់មានជាភាសាខ្មែរ និងអង់គ្លេស។" },
             },
             items: [
                 {
                     icon: "BookOpen",
-                    title: "គណិតវិទ្យា (Mathematics)",
-                    meta: "ពេលវេលា: 150min",
-                    description: "រួមមាន ពិជគណិត, ត្រីកោណមាត្រ, កាល់គុលុស, និងស្ថិតិ។",
-                    file: "PDF • 15.4 MB (Khmer-French)",
-                    downloadLabel: "ទាញយក PDF",
+                    title: { kh: "គណិតវិទ្យា", en: "Mathematics" },
+                    meta: { kh: "ពេលវេលា: 150min" },
+                    description: { kh: "រួមមាន ពិជគណិត, ត្រីកោណមាត្រ, កាល់គុលុស, និងស្ថិតិ។" },
+                    file: { en: "PDF • 15.4 MB (Khmer-French)" },
+                    downloadLabel: { kh: "ទាញយក PDF" },
                     tone: "blue",
                 },
                 {
                     icon: "BookOpen",
-                    title: "រូបវិទ្ាអនុវត្ត (Applied Physics)",
-                    meta: "ពេលវេលា: 90min",
-                    description: "រួមមាន៖ មេកានិច, អគ្គិសនី, អុបទិក, និងរូបវិទ្យាទំនើប។",
-                    file: "PDF • 14.6 MB (Khmer-French)",
-                    downloadLabel: "ទាញយក Physics PDF",
+                    title: { kh: "រូបវិទ្ាអនុវត្ត", en: "Applied Physics" },
+                    meta: { kh: "ពេលវេលា: 90min" },
+                    description: { kh: "រួមមាន៖ មេកានិច, អគ្គិសនី, អុបទិក, និងរូបវិទ្យាទំនើប។" },
+                    file: { en: "PDF • 14.6 MB (Khmer-French)" },
+                    downloadLabel: { kh: "ទាញយក Physics PDF" },
                     tone: "purple",
                 },
             ],
             note: {
                 icon: "Calculator",
-                title: "ច្បាប់អំពីម៉ាស៊ីនគិតលេខ",
-                text: "អនុញ្ញាតឱ្យប្រើម៉ាស៊ីនគិតលេខវិទ្ាសាស្ត្រែប៉ុណ្ណោះ (Non-programmable Casio fx-570/9860/991)។",
-                action: "អានបទបញ្ជាបន្ថែម",
+                title: { kh: "ច្បាប់អំពីម៉ាស៊ីនគិតលេខ" },
+                text: {
+                          kh: "អនុញ្ញាតឱ្យប្រើម៉ាស៊ីនគិតលេខវិទ្ាសាស្ត្រែប៉ុណ្ណោះ (Non-programmable Casio fx-570/9860/991)។",
+                      },
+                action: { kh: "អានបទបញ្ជាបន្ថែម" },
             },
         },
     },
 
     eligibility: {
         header: {
-            eyebrow: "Eligibility Matrix",
+            eyebrow: { en: "Eligibility Matrix" },
             icon: "FileText",
-            title: "លក្ខខណ្ឌចូលរៀនទូទៅ (General Entry Criteria & BacII)",
+            title: { kh: "លក្ខខណ្ឌចូលរៀនទូទៅ", en: "General Entry Criteria & BacII" },
             subtitle:
-                "លក្ខខណ្ឌទូទៅសម្រាប់សិស្សដែលបានបញ្ប់ថ្នាក់បមសិក្សា (BacII) ឬស្មើគ្នា ដែលចង់ចូលរៀននៅផ្នែកវិទ្យាសាស្ត្រ (Science Stream) សម្ាប់កម្មវិធីបរិញ្ញាបត្ររយៈពេល ៤ ឆ្ាំ និងបរិញ្ញាបត្ររង។",
+                { kh: "លក្ខខណ្ឌទូទៅសម្រាប់សិស្សដែលបានបញ្ប់ថ្នាក់បមសិក្សា (BacII) ឬស្មើគ្នា ដែលចង់ចូលរៀននៅផ្នែកវិទ្យាសាស្ត្រ (Science Stream) សម្ាប់កម្មវិធីបរិញ្ញាបត្ររយៈពេល ៤ ឆ្ាំ និងបរិញ្ញាបត្ររង។" },
         },
         cells: [
             {
                 item: {
-                    label: ["ពិន្ទុសមមូល", "ជាមធ្យម"],
-                    badge: ["Grade A - C"],
+                    label: [{ kh: "ពិន្ទុសមមូល" }, { kh: "ជាមធ្យម" }],
+                    badge: [{ en: "Grade A - C" }],
                     tone: "green",
-                    note: ["Science Track graduates receive first-priority qualification for technical faculties."],
+                    note: [{
+                               en: "Science Track graduates receive first-priority qualification for technical faculties.",
+                           }],
                 },
             },
             {
                 item: {
-                    label: ["ពិន្ទុសមមូលគណិត", "វិទ្យា & រូបវិទ្យា"],
-                    badge: ["Math ≥ C+", "Phys ≥ C"],
+                    label: [{ kh: "ពិន្ទុសមមូលគណិត" }, { kh: "វិទ្យា & រូបវិទ្យា" }],
+                    badge: [{ en: "Math ≥ C+" }, { en: "Phys ≥ C" }],
                     tone: "blue",
-                    note: ["គីមីវិទ្យាជាជម្រើស", "(Chemistry ≥ D required for Chemical & Food Engineering)."],
+                    note: [{ kh: "គីមីវិទ្យាជាជម្រើស" }, {
+                                                     en: "(Chemistry ≥ D required for Chemical & Food Engineering).",
+                                                 }],
                 },
             },
             {
                 item: {
-                    label: ["ភាសាបរទេស"],
-                    badge: ["FR / EN"],
+                    label: [{ kh: "ភាសាបរទេស" }],
+                    badge: [neutral("FR / EN")],
                     tone: "purple",
                     note: [
-                        "កម្រិតមូលដ្ឋាន",
-                        "French or English baseline; preparatory bilingual year (TRC) provided on enrollment.",
+                        { kh: "កម្រិតមូលដ្ឋាន" },
+                        { en: "French or English baseline; preparatory bilingual year (TRC) provided on enrollment." },
                     ],
                 },
             },
         ],
         gauges: {
-            title: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា (Minimum Subject Competency Gauge)",
-            note: "ផ្គកលើពិន្ទុប្រឡងជាតិបាច់ទី",
+            title: { kh: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា", en: "Minimum Subject Competency Gauge" },
+            note: { kh: "ផ្គកលើពិន្ទុប្រឡងជាតិបាច់ទី" },
             items: [
                 {
                     item: {
-                        label: "គណិតវិទ្យា (Advanced Mathematics)",
-                        requirement: "តម្រូវ 65% ≥ ពិន្ទុ C ឡើងទៅ",
+                        label: { kh: "គណិតវិទ្យា", en: "Advanced Mathematics" },
+                        requirement: { kh: "តម្រូវ 65% ≥ ពិន្ទុ C ឡើងទៅ" },
                         value: 65,
                     },
                 },
                 {
                     item: {
-                        label: "រូបវិទ្ា (Physics)",
-                        requirement: "តម្រូវ 60% ≥ ពិន្ទុ C ឡើងទៅ",
+                        label: { kh: "រូបវិទ្ា", en: "Physics" },
+                        requirement: { kh: "តម្រូវ 60% ≥ ពិន្ទុ C ឡើងទៅ" },
                         value: 60,
                     },
                 },
                 {
                     item: {
-                        label: "គីមីវិទ្យា / ជីវវិទ្យា (Chemistry / Biology)",
-                        requirement: "តម្រូវ 50% ≥ ពិន្ទុ D ឡើងទៅ",
+                        label: { kh: "គីមីវិទ្យា / ជីវវិទ្យា", en: "Chemistry / Biology" },
+                        requirement: { kh: "តម្រូវ 50% ≥ ពិន្ទុ D ឡើងទៅ" },
                         value: 50,
                     },
                 },
@@ -565,56 +630,58 @@ const ITC_PROFILE: AdmissionsProfile = {
         },
         notice: {
             icon: "AlertCircle",
-            text: "ចំណាំសំខាន់៖ បុគ្គលដែលមានបរិញ្ញាបតររង ឬសមមូល (DUT / Associate Degree) តរូវបានចាត់ទុកថាមានលក្ខខណ្ឌគ្រប់គ្រាន់។ សូមពិគ្រោះជាមួយក្រុមប្រឹក្សា (DUT / Associate Degree) បន្ថែម។",
+            text: {
+                      kh: "ចំណាំសំខាន់៖ បុគ្គលដែលមានបរិញ្ញាបតររង ឬសមមូល (DUT / Associate Degree) តរូវបានចាត់ទុកថាមានលក្ខខណ្ឌគ្រប់គ្រាន់។ សូមពិគ្រោះជាមួយក្រុមប្រឹក្សា (DUT / Associate Degree) បន្ថែម។",
+                  },
         },
     },
 
     roadmap: {
         header: {
-            eyebrow: "Step-by-Step Flow",
-            meta: "Updated 2025",
-            title: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន (4-Step Admission Roadmap)",
-            subtitle: "ដំណើរការចូលរៀននៅ ITC មាន ៤ ជំហានសំខាន់ៗ ចាប់ពីខែកញ្ញា ដល់ខែវិច្ឆិកា ២០២៥។",
+            eyebrow: { en: "Step-by-Step Flow" },
+            meta: { en: "Updated 2025" },
+            title: { kh: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន", en: "4-Step Admission Roadmap" },
+            subtitle: { kh: "ដំណើរការចូលរៀននៅ ITC មាន ៤ ជំហានសំខាន់ៗ ចាប់ពីខែកញ្ញា ដល់ខែវិច្ឆិកា ២០២៥។" },
         },
         steps: [
             {
                 item: {
-                    title: "បំពេញពាក្យសុំអនឡាញ (Online Registration & Form Submission)",
-                    date: "08 កញ្ញា - 30 កញ្ញា ០២៥",
+                    title: { kh: "បំពេញពាក្យសុំអនឡាញ", en: "Online Registration & Form Submission" },
+                    date: { kh: "08 កញ្ញា - 30 កញ្ញា ០២៥" },
                     dateTone: "blue",
                     description:
-                        "ចុះឈ្មោះនៅលើ ITC Admissions Portal បង្កើតគណនី បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាចំនួន ២ (First & Second Choice)។",
-                    note: "ពេលវេលាប្រហែល ១៥ នាទី  រួមទាំងការបង់ ~15 ដុល្លារ",
+                        { kh: "ចុះឈ្មោះនៅលើ ITC Admissions Portal បង្កើតគណនី បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាចំនួន ២ (First & Second Choice)។" },
+                    note: { kh: "ពេលវេលាប្រហែល ១៥ នាទី  រួមទាំងការបង់ ~15 ដុល្លារ" },
                 },
             },
             {
                 item: {
-                    title: "ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃពិនិត្យ (Document Verification & Fee)",
-                    date: "15 តុលា ២០២៥ (15 Oct 2025)",
+                    title: { kh: "ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃពិនិត្យ", en: "Document Verification & Fee" },
+                    date: { kh: "15 តុលា ២០២៥", en: "15 Oct 2025" },
                     dateTone: "green",
                     description:
-                        "មកផ្ទាល់នៅការិយាល័យ ITC ដើម្បីផ្ទៀងផ្ទាត់ឯកសារដើម និងបង់ថ្លៃពិនិត្យ $15.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។",
-                    note: "ទទួលបានវិក្យបត្រ Bakong KHQR / ABA / Wing Bank",
+                        { kh: "មកផ្ទាល់នៅការិយាល័យ ITC ដើម្បីផ្ទៀងផ្ទាត់ឯកសារដើម និងបង់ថ្លៃពិនិត្យ $15.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។" },
+                    note: { kh: "ទទួលបានវិក្យបត្រ Bakong KHQR / ABA / Wing Bank" },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "ប្រឡងចូលរៀនជាតិ (National Entrance Examination)",
-                    date: "28 តុលា ២០២៥ (ITC Campus)",
+                    title: { kh: "ប្រឡងចូលរៀនជាតិ", en: "National Entrance Examination" },
+                    date: { kh: "28 តុលា ២០២៥", en: "ITC Campus" },
                     dateTone: "red",
                     description:
-                        "ប្ឡងនៅ ITC Campus រួមមាន ៣ មុខវិជ្ជា៖ គណិតវិទ្យា (150min), រូបវិទ្យា (90min), និង ូជីខល & វិទ្យាសាស្ត្រទូទៅ (60min)។",
-                    note: "ម៉ោង: 08:00 - 12:30",
+                        { kh: "ប្ឡងនៅ ITC Campus រួមមាន ៣ មុខវិជ្ជា៖ គណិតវិទ្យា (150min), រូបវិទ្យា (90min), និង ូជីខល & វិទ្យាសាស្ត្រទូទៅ (60min)។" },
+                    note: { kh: "ម៉ោង: 08:00 - 12:30" },
                 },
             },
             {
                 item: {
-                    title: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន (Official Results & Enrollment)",
-                    date: "17 វិច្ឆិកា ២០២៥",
+                    title: { kh: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន", en: "Official Results & Enrollment" },
+                    date: { kh: "17 វិច្ឆិកា ២០២៥" },
                     dateTone: "purple",
                     description:
-                        "លទ្ធផលផលូវការផ្សាយនៅលើ ITC Portal និង Telegram។ សិស្សជាប់ត្រូវមកចុះឈ្មោះចូលរៀនផ្ទាល់នៅ ITC ក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                        { kh: "លទ្ធផលផលូវការផ្សាយនៅលើ ITC Portal និង Telegram។ សិស្សជាប់ត្រូវមកចុះឈ្មោះចូលរៀនផ្ទាល់នៅ ITC ក្នុងរយៈពេល ៧ ថ្ងៃ។" },
                 },
             },
         ],
@@ -626,31 +693,39 @@ const ITC_PROFILE: AdmissionsProfile = {
         items: [
             {
                 item: {
-                    title: "សញ្ញាបត្របឋមសិក្សាឬមធ្យមសិក្សា",
-                    subtitle: "Official Stamps",
-                    description: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបានបញ្ជាក់ពីសាលា (Official stamps)។",
+                    title: { kh: "សញ្ញាបត្របឋមសិក្សាឬមធ្យមសិក្សា" },
+                    subtitle: { en: "Official Stamps" },
+                    description: {
+                                     kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបានបញ្ជាក់ពីសាលា (Official stamps)។",
+                                 },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ",
-                    subtitle: "High School Transcript",
-                    description: "ពិន្ទុប្រឡងជាតិបាច់ទី២ ឬ ៣ ដែលមានត្រាផ្លូវការពីក្រសួងអប់រំ (High School Transcript)។",
+                    title: { kh: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ" },
+                    subtitle: { en: "High School Transcript" },
+                    description: {
+                                     kh: "ពិន្ទុប្រឡងជាតិបាច់ទី២ ឬ ៣ ដែលមានត្រាផ្លូវការពីក្រសួងអប់រំ (High School Transcript)។",
+                                 },
                 },
             },
             {
                 item: {
-                    title: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ",
-                    subtitle: "Birth Certificate & National ID",
-                    description: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                    title: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ" },
+                    subtitle: { en: "Birth Certificate & National ID" },
+                    description: {
+                                     kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                                 },
                 },
             },
             {
                 item: {
-                    title: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក",
-                    subtitle: "4x6 Photos x 4",
-                    description: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក (ផ្ទឃានខាងក្រោយពណ៌ស ឬខក់វ៉ា) (4x6 Portrait Photos x 4)។",
+                    title: { kh: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក" },
+                    subtitle: { en: "4x6 Photos x 4" },
+                    description: {
+                                     kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក (ផ្ទឃានខាងក្រោយពណ៌ស ឬខក់វ៉ា) (4x6 Portrait Photos x 4)។",
+                                 },
                 },
             },
         ],
@@ -659,16 +734,16 @@ const ITC_PROFILE: AdmissionsProfile = {
     dates: {
         header: DATES_HEADER,
         countdown: {
-            label: "ថ្ងៃផុតកំណត់ពាក្យសុំ",
-            badge: "Urgent",
-            value: "30 កក្កដា ២២៥",
-            note: "September 30, 2025 • 23:59 PM",
-            remainingLabel: "ម៉ោងនៅសល់ (Time Remaining):",
+            label: { kh: "ថ្ងៃផុតកំណត់ពាក្យសុំ" },
+            badge: { en: "Urgent" },
+            value: { kh: "30 កក្កដា ២២៥" },
+            note: { en: "September 30, 2025 • 23:59 PM" },
+            remainingLabel: { kh: "ម៉ោងនៅសល់ (Time Remaining):" },
             units: [
-                { value: "18", label: "ថ្ងៃ", sub: "Days" },
-                { value: "09", label: "ម៉ោង", sub: "Hrs" },
-                { value: "42", label: "នាទី", sub: "Min" },
-                { value: "15", label: "វិនាទី", sub: "Sec" },
+                { value: neutral("18"), label: { kh: "ថ្ងៃ" }, sub: { en: "Days" } },
+                { value: neutral("09"), label: { kh: "ម៉ោង" }, sub: { en: "Hrs" } },
+                { value: neutral("42"), label: { kh: "នាទី" }, sub: { en: "Min" } },
+                { value: neutral("15"), label: { kh: "វិនាទី" }, sub: { en: "Sec" } },
             ],
         },
         items: [
@@ -676,9 +751,9 @@ const ITC_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "Calendar",
                     tone: "blue",
-                    title: "ថ្ងៃផុតកំណត់ពាក្យសុំ",
-                    value: "១៥ តុលា ២០២៥ (15 Oct 2025)",
-                    note: "ការផ្ទៀងផ្ទាត់ឯកសារនៅការិយាល័យ (ITC)",
+                    title: { kh: "ថ្ងៃផុតកំណត់ពាក្យសុំ" },
+                    value: { kh: "១៥ តុលា ២០២៥", en: "15 Oct 2025" },
+                    note: { kh: "ការផ្ទៀងផ្ទាត់ឯកសារនៅការិយាល័យ", en: "ITC" },
                 },
             },
             {
@@ -686,44 +761,48 @@ const ITC_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "MessageSquare",
                     tone: "green",
-                    title: "ប្រឡងចូលរៀនជាតិ",
-                    value: "២៨ តុលា ២០២៥ (28 Oct 2025)",
-                    note: "ផ្សាយតាម Telegram & ITC Portal",
+                    title: { kh: "ប្រឡងចូលរៀនជាតិ" },
+                    value: { kh: "២៨ តុលា ២០២៥", en: "28 Oct 2025" },
+                    note: { kh: "ផ្សាយតាម Telegram & ITC Portal" },
                 },
             },
             {
                 item: {
                     icon: "GraduationCap",
                     tone: "purple",
-                    title: "ផ្សាយលទ្ធផលជាផ្លូវការ",
-                    value: "១៧ វិច្ឆិកា ២០២៥ (17 Nov 2025)",
-                    note: "ចុះឈ្មោះចូលរៀន (TRC)",
+                    title: { kh: "ផ្សាយលទ្ធផលជាផ្លូវការ" },
+                    value: { kh: "១៧ វិច្ឆិកា ២០២៥", en: "17 Nov 2025" },
+                    note: { kh: "ចុះឈ្មោះចូលរៀន", en: "TRC" },
                 },
             },
         ],
         action: {
             icon: "BookOpen",
-            label: "បញ្ចូលទៅក្នុង Google Calendar",
+            label: { kh: "បញ្ចូលទៅក្នុង Google Calendar" },
         },
     },
 
     faq: {
         header: {
             icon: "HelpCircle",
-            title: "សំណួរដែលសួរញឹកញាប់ (Admissions FAQ)",
-            subtitle: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ ITC។",
+            title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
+            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ ITC។" },
         },
         items: [
             {
                 item: {
-                    question: "តើអ្នកដែលបានបញ្ចប់ថ្នាក់ DUT/Associate Degree អាចចូលរៀនបានដែរឬទេ?",
-                    answer: "បាទ/ចាស! សិស្សដែលមានបរិញ្ញាបត្ររង (DUT) ឬសមមូល អាចដាក់ពាក្យចូលរៀនបានដោយផ្ទាល់នៅ ITC ដោយគ្រាន់តែផ្តល់ឯកសារបញ្ជាក់ពីសាលាចាស់។ សូមទាក់ទងការិយាល័យចូលរៀនសម្រាប់ព័ត៌មានបន្ថែម។",
+                    question: { kh: "តើអ្នកដែលបានបញ្ចប់ថ្នាក់ DUT/Associate Degree អាចចូលរៀនបានដែរឬទេ?" },
+                    answer: {
+                                kh: "បាទ/ចាស! សិស្សដែលមានបរិញ្ញាបត្ររង (DUT) ឬសមមូល អាចដាក់ពាក្យចូលរៀនបានដោយផ្ទាល់នៅ ITC ដោយគ្រាន់តែផ្តល់ឯកសារបញ្ជាក់ពីសាលាចាស់។ សូមទាក់ទងការិយាល័យចូលរៀនសម្រាប់ព័ត៌មានបន្ថែម។",
+                            },
                 },
             },
             {
                 item: {
-                    question: "តើសិស្ប្រភេទ A ទទួលបានអាហារូបករណ៍អ្វីខ្លះ?",
-                    answer: "សិស្សប្រភេទ A (ពិន្ទុខ្ពស់បំផុត) អាចទទួលបានអាហារូបករណ៍ពេញលេញរហូតដល់ 100% រួមទាំងថ្លៃសិក្សា និងថលៃស្នាក់នៅ។ សូមពិនិត្យលក្ខខណ្លម្អិតនៅលើគេហទំព័រ ITC។",
+                    question: { kh: "តើសិស្ប្រភេទ A ទទួលបានអាហារូបករណ៍អ្វីខ្លះ?" },
+                    answer: {
+                                kh: "សិស្សប្រភេទ A (ពិន្ទុខ្ពស់បំផុត) អាចទទួលបានអាហារូបករណ៍ពេញលេញរហូតដល់ 100% រួមទាំងថ្លៃសិក្សា និងថលៃស្នាក់នៅ។ សូមពិនិត្យលក្ខខណ្លម្អិតនៅលើគេហទំព័រ ITC។",
+                            },
                 },
             },
         ],
@@ -732,47 +811,47 @@ const ITC_PROFILE: AdmissionsProfile = {
     fee: {
         header: {
             icon: "Link2",
-            title: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា",
-            subtitle: "Registration & Exam Fee",
+            title: { kh: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា" },
+            subtitle: { en: "Registration & Exam Fee" },
         },
-        label: "ថ្លៃចុះឈ្មោះប្រឡងសរុប",
-        price: "$15.00",
+        label: { kh: "ថ្លៃចុះឈ្មោះប្រឡងសរុប" },
+        price: neutral("$15.00"),
         divider: "/",
-        strike: "៦០,០០០ រៀល",
-        badge: { label: "Non-refundable", tone: "green" },
+        strike: { kh: "៦០,០០០ រៀល" },
+        badge: { label: { en: "Non-refundable" }, tone: "green" },
     },
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: "ឈមោះ: ITC Admissions Fund", subtitle: KHQR_BANKS },
-        action: { icon: "CreditCard", label: "បង់ថ្លៃពាក្យសុំឥឡូវ (Pay $15.00)" },
+        caption: { title: { kh: "ឈមោះ: ITC Admissions Fund" }, subtitle: KHQR_BANKS },
+        action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $15.00" } },
     },
 
     contact: {
         header: {
             icon: "Share2",
-            title: "ការិយាល័យប្រធាន & ទំនាក់ទំនង",
+            title: { kh: "ការិយាល័យប្រធាន & ទំនាក់ទំនង" },
         },
         person: {
-            name: "លោកគ្រូ សុខ វិបុល",
-            role: "បរធានការិយាល័យចូលរៀន & ទំនាក់ទំនង",
-            badge: "ផ្ទាល់អនឡាញ • Online",
+            name: { kh: "លោកគ្រូ សុខ វិបុល" },
+            role: { kh: "បរធានការិយាល័យចូលរៀន & ទំនាក់ទំនង" },
+            badge: { kh: "ផ្ទាល់អនឡាញ • Online" },
         },
         rows: [
             {
                 icon: "MapPin",
-                text: "បន្ទប់ ០៦ អាគារ A (Campus ITC, Russian Blvd)",
+                text: { kh: "បន្ទប់ ០៦ អាគារ A", en: "Campus ITC, Russian Blvd" },
             },
-            { icon: "Phone", text: "023 880 370 / 012 880 370" },
-            { icon: "Mail", text: "admission@itc.edu.kh" },
+            { icon: "Phone", text: neutral("023 880 370 / 012 880 370") },
+            { icon: "Mail", text: { en: "admission@itc.edu.kh" } },
             {
                 icon: "Clock",
-                text: "ច័នទ - សុក្រ: 7:30 ព្ឹក - 5:00 លងាច",
+                text: { kh: "ច័នទ - សុក្រ: 7:30 ព្ឹក - 5:00 លងាច" },
             },
         ],
         action: {
             icon: "MessageCircle",
-            label: "ជជែក Telegram ជាមួយអ្នកណែនាំភ្លាម",
+            label: { kh: "ជជែក Telegram ជាមួយអ្នកណែនាំភ្លាម" },
         },
     },
 };
@@ -782,102 +861,108 @@ const USHA_PROFILE: AdmissionsProfile = {
     exam: {
         papers: {
             header: {
-                eyebrow: "Resource Hub",
+                eyebrow: { en: "Resource Hub" },
                 tone: "green",
-                title: "កម្មវិធីប្រឡងចូលរៀន & សំណួរពីមុន (Entrance Exam Format & Notices)",
+                title: { kh: "កម្មវិធីប្រឡងចូលរៀន & សំណួរពីមុន", en: "Entrance Exam Format & Notices" },
                 subtitle:
-                    "ព័ត៌មានកម្មវិធីប្រឡងនិងឯកសារបន្ទាប់ពីក្រសួងសុខាភិបាល និងក្រសួងអប់រំ យុវជន និងកីឡា ដែលសាលាបានប្រកាស។",
+                    { kh: "ព័ត៌មានកម្មវិធីប្រឡងនិងឯកសារបន្ទាប់ពីក្រសួងសុខាភិបាល និងក្រសួងអប់រំ យុវជន និងកីឡា ដែលសាលាបានប្រកាស។" },
             },
             items: [
                 {
                     icon: "FileText",
-                    title: "ប្រឡងចូលរៀនជាតិ (National Entrance Examination)",
-                    meta: "សិក្សាវិទ្យាសាស្ត្រ",
+                    title: { kh: "ប្រឡងចូលរៀនជាតិ", en: "National Entrance Examination" },
+                    meta: { kh: "សិក្សាវិទ្យាសាស្ត្រ" },
                     description:
-                        "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា សម្រាប់កម្មវិធីវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈ។",
-                    file: "PDF • Khmer-English",
-                    downloadLabel: "ទាញយកកម្មវិធីប្រឡង",
+                        { kh: "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា សម្រាប់កម្មវិធីវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈ។" },
+                    file: { en: "PDF • Khmer-English" },
+                    downloadLabel: { kh: "ទាញយកកម្មវិធីប្រឡង" },
                     tone: "blue",
                 },
                 {
                     icon: "FileText",
-                    title: "ប្រឡងសមត្ថភាពសុខាភិបាល (MoH Aptitude Test)",
-                    meta: "សុខាភិបាល",
+                    title: { kh: "ប្រឡងសមត្ថភាពសុខាភិបាល", en: "MoH Aptitude Test" },
+                    meta: { kh: "សុខាភិបាល" },
                     description:
-                        "ប្រឡងសមត្ថភាពដោយក្រសួងសុខាភិបាល សម្រាប់មហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី។",
-                    file: "PDF • Khmer-English",
-                    downloadLabel: "ទាញយកកម្មវិធីសមត្ថភាព",
+                        { kh: "ប្រឡងសមត្ថភាពដោយក្រសួងសុខាភិបាល សម្រាប់មហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី។" },
+                    file: { en: "PDF • Khmer-English" },
+                    downloadLabel: { kh: "ទាញយកកម្មវិធីសមត្ថភាព" },
                     tone: "purple",
                 },
             ],
             note: {
                 icon: "AlertCircle",
-                title: "ចំណាំសំខាន់",
-                text: "កម្មវិធីប្រឡងត្រូវបានរៀបចំដោយក្រសួងសមាធិការ ដូច្នេះសូមពិនិត្យកាលបរិច្ឆេទផ្លូវការនៅគេហទំព័ររបស់ស្ថាប័នបញ្ជាក់។",
+                title: { kh: "ចំណាំសំខាន់" },
+                text: {
+                          kh: "កម្មវិធីប្រឡងត្រូវបានរៀបចំដោយក្រសួងសមាធិការ ដូច្នេះសូមពិនិត្យកាលបរិច្ឆេទផ្លូវការនៅគេហទំព័ររបស់ស្ថាប័នបញ្ជាក់។",
+                      },
             },
         },
     },
 
     eligibility: {
         header: {
-            eyebrow: "Eligibility Matrix",
+            eyebrow: { en: "Eligibility Matrix" },
             icon: "FileText",
-            title: "លក្ខខណ្ឌចូលរៀនទូទៅ (General Entry Criteria & BacII)",
-            subtitle: "លក្ខខណ្ឌរបស់ក្រសួងសុខាភិបាល (UHS) សម្រាប់សិស្សដែលចង់ចូលរៀនវិទ្យាសាស្ត្រពេទុយ ឱសថ និងសុខាភិបាល។",
+            title: { kh: "លក្ខខណ្ឌចូលរៀនទូទៅ", en: "General Entry Criteria & BacII" },
+            subtitle: {
+                          kh: "លក្ខខណ្ឌរបស់ក្រសួងសុខាភិបាល (UHS) សម្រាប់សិស្សដែលចង់ចូលរៀនវិទ្យាសាស្ត្រពេទុយ ឱសថ និងសុខាភិបាល។",
+                      },
         },
         cells: [
             {
                 item: {
-                    label: ["បរិញ្ញាបត្របឋមសិក្សា", "ថ្នាក់បមសិក្សាទុតិយភូមិ"],
-                    badge: ["BacII"],
+                    label: [{ kh: "បរិញ្ញាបត្របឋមសិក្សា" }, { kh: "ថ្នាក់បមសិក្សាទុតិយភូមិ" }],
+                    badge: [{ en: "BacII" }],
                     tone: "green",
                     note: [
-                        "បរិញ្ញាបត្រផ្នគរវិទ្យាសាស្ត្រសម្រាប់ពេទុយ គីមីវិទ្យា & ជីវវិទ្យាសម្រាប់ឱសថ និងគិលានុបដ្ឋាយន្ត សំឡី។",
+                        { kh: "បរិញ្ញាបត្រផ្នគរវិទ្យាសាស្ត្រសម្រាប់ពេទុយ គីមីវិទ្យា & ជីវវិទ្យាសម្រាប់ឱសថ និងគិលានុបដ្ឋាយន្ត សំឡី។" },
                     ],
                 },
             },
             {
                 exam: true,
                 item: {
-                    label: ["ការប្រឡងចូលរៀន", "Entrance Examination"],
-                    badge: ["MoEYS", "MoH"],
+                    label: [{ kh: "ការប្រឡងចូលរៀន" }, { en: "Entrance Examination" }],
+                    badge: [{ en: "MoEYS" }, { en: "MoH" }],
                     tone: "blue",
-                    note: ["ជាប់ការប្រឡងចូលរៀនជាតិ ឬការប្រឡងដោយក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជារបស់សាលា។"],
+                    note: [{
+                               kh: "ជាប់ការប្រឡងចូលរៀនជាតិ ឬការប្រឡងដោយក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជារបស់សាលា។",
+                           }],
                 },
             },
             {
                 item: {
-                    label: ["សុខភាព & ភាសា"],
-                    badge: ["Fit", "B1 EN"],
+                    label: [{ kh: "សុខភាព & ភាសា" }],
+                    badge: [{ en: "Fit" }, neutral("B1 EN")],
                     tone: "purple",
-                    note: ["មានសុខភាពល្អ និងមានចំណេះភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ។"],
+                    note: [{ kh: "មានសុខភាពល្អ និងមានចំណេះភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ។" }],
                 },
             },
         ],
         gauges: {
-            title: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា (Minimum Subject Competency Gauge)",
-            note: "ផ្គកលើពិន្ទុប្រឡងចូលរៀន",
+            title: { kh: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា", en: "Minimum Subject Competency Gauge" },
+            note: { kh: "ផ្គកលើពិន្ទុប្រឡងចូលរៀន" },
             items: [
                 {
                     exam: true,
                     item: {
-                        label: "ជីវវិទ្យា (Biology)",
-                        requirement: "តម្រូវ 65% ≥ ពិន្ទុ C ឡើងទៅ",
+                        label: { kh: "ជីវវិទ្យា", en: "Biology" },
+                        requirement: { kh: "តម្រូវ 65% ≥ ពិន្ទុ C ឡើងទៅ" },
                         value: 65,
                     },
                 },
                 {
                     exam: true,
                     item: {
-                        label: "គីមីវិទ្យា (Chemistry)",
-                        requirement: "តម្រូវ 60% ≥ ពិន្ទុ C ឡើងទៅ",
+                        label: { kh: "គីមីវិទ្យា", en: "Chemistry" },
+                        requirement: { kh: "តម្រូវ 60% ≥ ពិន្ទុ C ឡើងទៅ" },
                         value: 60,
                     },
                 },
                 {
                     item: {
-                        label: "ភាសាអង់គ្លេស (English Proficiency)",
-                        requirement: "តម្រូវ កម្រិត B1 ឡើងទៅ",
+                        label: { kh: "ភាសាអង់គ្លេស", en: "English Proficiency" },
+                        requirement: { kh: "តម្រូវ កម្រិត B1 ឡើងទៅ" },
                         value: 55,
                     },
                 },
@@ -885,54 +970,67 @@ const USHA_PROFILE: AdmissionsProfile = {
         },
         notice: {
             icon: "AlertCircle",
-            text: "ចំណាំសំខាន់៖ សិស្សត្រូវមានសុខភាពល្អ និងគ្រប់គ្រាន់ការពិនិត្យសុខភាពមុនពេលចុះឈ្មោះ និងក្នុងដំណើរការសិក្សា។",
+            text: {
+                      kh: "ចំណាំសំខាន់៖ សិស្សត្រូវមានសុខភាពល្អ និងគ្រប់គ្រាន់ការពិនិត្យសុខភាពមុនពេលចុះឈ្មោះ និងក្នុងដំណើរការសិក្សា។",
+                  },
         },
     },
 
     roadmap: {
         header: {
-            eyebrow: "Step-by-Step Flow",
-            meta: "Updated 2025",
-            title: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន (4-Step Admission Roadmap)",
-            subtitle: "ដំណើរការចូលរៀននៅ UHS មាន ៤ ជំហានសំខាន់ ចាប់ពីការចុះឈ្មោះរហូតដល់ការប្រកាសលទ្ធផល។",
+            eyebrow: { en: "Step-by-Step Flow" },
+            meta: { en: "Updated 2025" },
+            title: { kh: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន", en: "4-Step Admission Roadmap" },
+            subtitle: {
+                          kh: "ដំណើរការចូលរៀននៅ UHS មាន ៤ ជំហានសំខាន់ ចាប់ពីការចុះឈ្មោះរហូតដល់ការប្រកាសលទ្ធផល។",
+                      },
         },
         steps: [
             {
                 item: {
-                    title: "ស្នើសុំបញ្ជីបញ្ជាក់នៅមហាវិទ្យាល័យ (Collect the Faculty Application Form)",
-                    date: "០១ - ១៥ កញ្ញា ២០២៥",
+                    title: {
+                               kh: "ស្នើសុំបញ្ជីបញ្ជាក់នៅមហាវិទ្យាល័យ",
+                               en: "Collect the Faculty Application Form",
+                           },
+                    date: { kh: "០១ - ១៥ កញ្ញា ២០២៥" },
                     dateTone: "blue",
-                    description: "ទាញយកបញ្ជីបញ្ជាក់នៅការិយាល័យគ្រប់គ្រាន់ ឬបានចុះផ្សាយតាមគេហទំព័រសាលាតាមមុខវិជជា។",
-                    note: "មុខវិជជាគិលានុបដ្ឋាយន្តបរិយាកាស និងសុខាភិបាលសាធារណៈចុះឈ្មោះក្នុងវិធីបរិយាកាសរបស់ខ្លួនឯង",
+                    description: {
+                                     kh: "ទាញយកបញ្ជីបញ្ជាក់នៅការិយាល័យគ្រប់គ្រាន់ ឬបានចុះផ្សាយតាមគេហទំព័រសាលាតាមមុខវិជជា។",
+                                 },
+                    note: {
+                              kh: "មុខវិជជាគិលានុបដ្ឋាយន្តបរិយាកាស និងសុខាភិបាលសាធារណៈចុះឈ្មោះក្នុងវិធីបរិយាកាសរបស់ខ្លួនឯង",
+                          },
                 },
             },
             {
                 item: {
-                    title: "ដាក់ឯកសារ & បង់ថ្លៃ (Document Submission & Fee)",
-                    date: "១៥ - ៣០ កញ្ញា ២០២៥",
+                    title: { kh: "ដាក់ឯកសារ & បង់ថ្លៃ", en: "Document Submission & Fee" },
+                    date: { kh: "១៥ - ៣០ កញ្ញា ២០២៥" },
                     dateTone: "green",
                     description:
-                        "ដាក់ឯកសារនៅការិយាល័យ និងបង់ថ្លៃចុះឈ្មោះ $5.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។",
-                    note: "ទទួលបានវិក្យបត្របង់ប្រាក់",
+                        { kh: "ដាក់ឯកសារនៅការិយាល័យ និងបង់ថ្លៃចុះឈ្មោះ $5.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។" },
+                    note: { kh: "ទទួលបានវិក្យបត្របង់ប្រាក់" },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "ប្រឡងចូលរៀន (Entrance Examination)",
-                    date: "០៤ តុលា ២០២៥",
+                    title: { kh: "ប្រឡងចូលរៀន", en: "Entrance Examination" },
+                    date: { kh: "០៤ តុលា ២០២៥" },
                     dateTone: "red",
                     description:
-                        "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា ឬក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជាដែលបានដាក់ក្នុងបញ្ជីបញ្ជាក់។",
-                    note: "សិស្សត្រូវយកអត្តសញ្ញាណបថណ្ណមកជាមួយខ្លួនឯង",
+                        { kh: "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា ឬក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជាដែលបានដាក់ក្នុងបញ្ជីបញ្ជាក់។" },
+                    note: { kh: "សិស្សត្រូវយកអត្តសញ្ញាណបថណ្ណមកជាមួយខ្លួនឯង" },
                 },
             },
             {
                 item: {
-                    title: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន (Results & Enrollment)",
-                    date: "០៩ វិច្ឆិកា ២០២៥",
+                    title: { kh: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន", en: "Results & Enrollment" },
+                    date: { kh: "០៩ វិច្ឆិកា ២០២៥" },
                     dateTone: "purple",
-                    description: "លទ្ធផលត្រូវបានប្រកាសនៅគេហទំព័រសាលា និងត្រូវចុះឈ្មោះចូលរៀនក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                    description: {
+                                     kh: "លទ្ធផលត្រូវបានប្រកាសនៅគេហទំព័រសាលា និងត្រូវចុះឈ្មោះចូលរៀនក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                                 },
                 },
             },
         ],
@@ -944,31 +1042,35 @@ const USHA_PROFILE: AdmissionsProfile = {
         items: [
             {
                 item: {
-                    title: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII Certificate)",
-                    subtitle: "Official Stamps",
-                    description: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា ផ្នគរវិទ្យាសាស្ត្រ។",
+                    title: { kh: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ", en: "BacII Certificate" },
+                    subtitle: { en: "Official Stamps" },
+                    description: {
+                                     kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា ផ្នគរវិទ្យាសាស្ត្រ។",
+                                 },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ (Official Transcript)",
-                    subtitle: "National Exam Score",
-                    description: "ពិន្ទុប្រឡងចូលរៀនដែលបានបញ្ជាក់ពីក្រសួងអប់រំ យុវជន និងកីឡា។",
+                    title: { kh: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ", en: "Official Transcript" },
+                    subtitle: { en: "National Exam Score" },
+                    description: { kh: "ពិន្ទុប្រឡងចូលរៀនដែលបានបញ្ជាក់ពីក្រសួងអប់រំ យុវជន និងកីឡា។" },
                 },
             },
             {
                 item: {
-                    title: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ (Birth Certificate & National ID)",
-                    subtitle: "Identity Documents",
-                    description: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                    title: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ", en: "Birth Certificate & National ID" },
+                    subtitle: { en: "Identity Documents" },
+                    description: {
+                                     kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                                 },
                 },
             },
             {
                 item: {
-                    title: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក (4x6 Photos x 4)",
-                    subtitle: "Portrait Photos",
-                    description: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។",
+                    title: { kh: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក", en: "4x6 Photos x 4" },
+                    subtitle: { en: "Portrait Photos" },
+                    description: { kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។" },
                 },
             },
         ],
@@ -981,9 +1083,9 @@ const USHA_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "Calendar",
                     tone: "blue",
-                    title: "ថ្ងៃផុតកំណត់បញ្ជីបញ្ជាក់",
-                    value: "១៥ កញ្ញា ២០២៥ (15 Sep 2025)",
-                    note: "បញ្ជាក់ដាក់នៅការិយាល័យគ្រប់គ្រាន់ (UHS)",
+                    title: { kh: "ថ្ងៃផុតកំណត់បញ្ជីបញ្ជាក់" },
+                    value: { kh: "១៥ កញ្ញា ២០២៥", en: "15 Sep 2025" },
+                    note: { kh: "បញ្ជាក់ដាក់នៅការិយាល័យគ្រប់គ្រាន់", en: "UHS" },
                 },
             },
             {
@@ -991,45 +1093,49 @@ const USHA_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "MessageSquare",
                     tone: "green",
-                    title: "កាលប្រឡងចូលរៀន",
-                    value: "០៤ តុលា ២០២៥ (04 Oct 2025)",
-                    note: "ផ្សាយតាមក្រសួងសមាធិការ",
+                    title: { kh: "កាលប្រឡងចូលរៀន" },
+                    value: { kh: "០៤ តុលា ២០២៥", en: "04 Oct 2025" },
+                    note: { kh: "ផ្សាយតាមក្រសួងសមាធិការ" },
                 },
             },
             {
                 item: {
                     icon: "GraduationCap",
                     tone: "purple",
-                    title: "ប្រកាសលទ្ធផល",
-                    value: "០៩ វិច្ឆិកា ២០២៥ (09 Nov 2025)",
-                    note: "ប្រកាសនៅគេហទំព័រសាលា",
+                    title: { kh: "ប្រកាសលទ្ធផល" },
+                    value: { kh: "០៩ វិច្ឆិកា ២០២៥", en: "09 Nov 2025" },
+                    note: { kh: "ប្រកាសនៅគេហទំព័រសាលា" },
                 },
             },
         ],
         action: {
             icon: "BookOpen",
-            label: "បញ្ចូលទៅក្នុង Google Calendar",
+            label: { kh: "បញ្ចូលទៅក្នុង Google Calendar" },
         },
     },
 
     faq: {
         header: {
             icon: "HelpCircle",
-            title: "សំណួរដែលសួរញឹកញាប់ (Admissions FAQ)",
-            subtitle: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ UHS។",
+            title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
+            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ UHS។" },
         },
         items: [
             {
                 exam: true,
                 item: {
-                    question: "តើប្រឡងចូលរៀនរបស់ UHS ខុសពីប្រឡងជាតិយ៉ាងណា?",
-                    answer: "មហាវិទ្យាល័យវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈប្រើការប្រឡងចូលរៀនជាតិរបស់ក្រសួងអប់រំ យុវជន និងកីឡា ចន្លោះមហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី ប្រើការប្រឡងសមត្ថភាពរបស់ក្រសួងសុខាភិបាល។",
+                    question: { kh: "តើប្រឡងចូលរៀនរបស់ UHS ខុសពីប្រឡងជាតិយ៉ាងណា?" },
+                    answer: {
+                                kh: "មហាវិទ្យាល័យវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈប្រើការប្រឡងចូលរៀនជាតិរបស់ក្រសួងអប់រំ យុវជន និងកីឡា ចន្លោះមហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី ប្រើការប្រឡងសមត្ថភាពរបស់ក្រសួងសុខាភិបាល។",
+                            },
                 },
             },
             {
                 item: {
-                    question: "តើមានអាហារូបករណ៍សម្រាប់សិស្ស UHS ដែរឬទេ?",
-                    answer: "មាន។ សាលាផ្តល់អាហារូបករណ៍រហូតដល់ ១០០% សម្រាប់សិស្សដែលមានពិន្ទុល្អ និងស្ថាប័នមួយនៅពេលប្រកាសលទ្ធផល។",
+                    question: { kh: "តើមានអាហារូបករណ៍សម្រាប់សិស្ស UHS ដែរឬទេ?" },
+                    answer: {
+                                kh: "មាន។ សាលាផ្តល់អាហារូបករណ៍រហូតដល់ ១០០% សម្រាប់សិស្សដែលមានពិន្ទុល្អ និងស្ថាប័នមួយនៅពេលប្រកាសលទ្ធផល។",
+                            },
                 },
             },
         ],
@@ -1038,44 +1144,44 @@ const USHA_PROFILE: AdmissionsProfile = {
     fee: {
         header: {
             icon: "Link2",
-            title: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា",
-            subtitle: "Registration & Exam Fee",
+            title: { kh: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា" },
+            subtitle: { en: "Registration & Exam Fee" },
         },
-        label: "ថ្លៃចុះឈ្មោះប្រឡងសរុប",
-        price: "$5.00",
+        label: { kh: "ថ្លៃចុះឈ្មោះប្រឡងសរុប" },
+        price: neutral("$5.00"),
         divider: "/",
-        strike: "២០,០០០ រៀល",
-        badge: { label: "Non-refundable", tone: "green" },
+        strike: { kh: "២០,០០០ រៀល" },
+        badge: { label: { en: "Non-refundable" }, tone: "green" },
     },
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: "ឈមោះ: UHS Admissions Account", subtitle: KHQR_BANKS },
-        action: { icon: "CreditCard", label: "បង់ថ្លៃពាក្យសុំឥឡូវ (Pay $5.00)" },
+        caption: { title: { kh: "ឈមោះ: UHS Admissions Account" }, subtitle: KHQR_BANKS },
+        action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $5.00" } },
     },
 
     contact: {
         header: {
             icon: "Share2",
-            title: "ការិយាល័យប្រធាន & ទំនាក់ទំនង",
+            title: { kh: "ការិយាល័យប្រធាន & ទំនាក់ទំនង" },
         },
         person: {
-            name: "ការិយាល័យសាលាវិទ្យាសាស្ត្រសុខាភិបាល",
-            role: "អង្គភាពចុះឈ្មោះនិងបរិញ្ញាបត្រ (Admissions Unit)",
-            badge: "ផ្ទាល់អនឡាញ • Office",
+            name: { kh: "ការិយាល័យសាលាវិទ្យាសាស្ត្រសុខាភិបាល" },
+            role: { kh: "អង្គភាពចុះឈ្មោះនិងបរិញ្ញាបត្រ", en: "Admissions Unit" },
+            badge: { kh: "ផ្ទាល់អនឡាញ • Office" },
         },
         rows: [
             {
                 icon: "MapPin",
-                text: "ផ្លូវព្រះសីហមេនី លេខ ២៧១, រាជធានីភ្នំពេញ, កម្ពុជា",
+                text: { kh: "ផ្លូវព្រះសីហមេនី លេខ ២៧១, រាជធានីភ្នំពេញ, កម្ពុជា" },
             },
-            { icon: "Globe", text: "uhs.edu.kh" },
-            { icon: "Clock", text: "ច័នទ - សុក្រ: 8:00 - 16:30" },
-            { icon: "Info", text: "សូមផ្ទៀងផ្ទាត់ឯកសារនៅមហាវិទ្យាល័យដែលអ្នកចង់ចូលរៀន" },
+            { icon: "Globe", text: { en: "uhs.edu.kh" } },
+            { icon: "Clock", text: { kh: "ច័នទ - សុក្រ: 8:00 - 16:30" } },
+            { icon: "Info", text: { kh: "សូមផ្ទៀងផ្ទាត់ឯកសារនៅមហាវិទ្យាល័យដែលអ្នកចង់ចូលរៀន" } },
         ],
         action: {
             icon: "ExternalLink",
-            label: "ទាក់ទងទៅគេហទំព័រសាលា (uhs.edu.kh)",
+            label: { kh: "ទាក់ទងទៅគេហទំព័រសាលា", en: "uhs.edu.kh" },
         },
     },
 };
@@ -1085,97 +1191,110 @@ const RUPP_PROFILE: AdmissionsProfile = {
     exam: {
         papers: {
             header: {
-                eyebrow: "Resource Hub",
+                eyebrow: { en: "Resource Hub" },
                 tone: "green",
-                title: "កម្មវិធីប្រឡងចូលរៀនជ្រើសរើស & សំណួរពីមុន (Selection Exam Format & Past Papers)",
-                subtitle: "ទម្រង់ប្រឡងជ្រើសរើសរបស់មហាវិទ្យាល័យភូមិន្ទភ្នំពេញ ជាភាសាខ្មែរ និងអង់គ្លេស។",
+                title: {
+                           kh: "កម្មវិធីប្រឡងចូលរៀនជ្រើសរើស & សំណួរពីមុន",
+                           en: "Selection Exam Format & Past Papers",
+                       },
+                subtitle: { kh: "ទម្រង់ប្រឡងជ្រើសរើសរបស់មហាវិទ្យាល័យភូមិន្ទភ្នំពេញ ជាភាសាខ្មែរ និងអង់គ្លេស។" },
             },
             items: [
                 {
                     icon: "BookOpen",
-                    title: "កម្មវិធីប្រឡងវិទ្យាសាស្ត្រ & សង្គម (Science & Social Sciences)",
-                    meta: "ប្រឡងជ្រើសរើស",
-                    description: "ប្រឡងគណិតវិទ្យា រូបវិទ្យា គីមីវិទ្យា និងជីវវិទ្យា អាស្រ័តមុខវិជជាវិទ្យាសាស្ត្រ។",
-                    file: "PDF • Khmer-English",
-                    downloadLabel: "ទាញយកទម្រង់ PDF",
+                    title: { kh: "កម្មវិធីប្រឡងវិទ្យាសាស្ត្រ & សង្គម", en: "Science & Social Sciences" },
+                    meta: { kh: "ប្រឡងជ្រើសរើស" },
+                    description: {
+                                     kh: "ប្រឡងគណិតវិទ្យា រូបវិទ្យា គីមីវិទ្យា និងជីវវិទ្យា អាស្រ័តមុខវិជជាវិទ្យាសាស្ត្រ។",
+                                 },
+                    file: { en: "PDF • Khmer-English" },
+                    downloadLabel: { kh: "ទាញយកទម្រង់ PDF" },
                     tone: "blue",
                 },
                 {
                     icon: "BookOpen",
-                    title: "កម្មវិធីប្រឡងភាសាជាតិ (Khmer Language Selection)",
-                    meta: "ប្រឡងជ្រើសរើស",
-                    description: "ការវាយតម្លៃ វេជ្ជាសាស្ត្រ និងភាសាខ្មែរប្រកបដែលអាននិងសរសេរបានត្រឹមត្រូវ។",
-                    file: "PDF • Khmer",
-                    downloadLabel: "ទាញយកទម្រង់ PDF",
+                    title: { kh: "កម្មវិធីប្រឡងភាសាជាតិ", en: "Khmer Language Selection" },
+                    meta: { kh: "ប្រឡងជ្រើសរើស" },
+                    description: {
+                                     kh: "ការវាយតម្លៃ វេជ្ជាសាស្ត្រ និងភាសាខ្មែរប្រកបដែលអាននិងសរសេរបានត្រឹមត្រូវ។",
+                                 },
+                    file: { en: "PDF • Khmer" },
+                    downloadLabel: { kh: "ទាញយកទម្រង់ PDF" },
                     tone: "purple",
                 },
             ],
             note: {
                 icon: "Calculator",
-                title: "ច្បាប់អំពីឧបករណ៍",
-                text: "អនុញ្ញាតឱ្យប្រើម៉ាស៊ីនគិតលេខដែលមិនមានកម្មវិធីប៉ុណ្ណោះ (Scientific, non-programmable) នៅម្រង់ប្រឡងគណិតវិទ្យា។",
+                title: { kh: "ច្បាប់អំពីឧបករណ៍" },
+                text: {
+                          kh: "អនុញ្ញាតឱ្យប្រើម៉ាស៊ីនគិតលេខដែលមិនមានកម្មវិធីប៉ុណ្ណោះ (Scientific, non-programmable) នៅម្រង់ប្រឡងគណិតវិទ្យា។",
+                      },
             },
         },
     },
 
     eligibility: {
         header: {
-            eyebrow: "Eligibility Matrix",
+            eyebrow: { en: "Eligibility Matrix" },
             icon: "FileText",
-            title: "លក្ខខណ្ឌចូលរៀនទូទៅ (General Entry Criteria & BacII)",
+            title: { kh: "លក្ខខណ្ឌចូលរៀនទូទៅ", en: "General Entry Criteria & BacII" },
             subtitle:
-                "លក្ខខណ្ឌទូទៅសម្រាប់សិស្សរបស់សាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ ដោយគ្រប់មហាវិទ្យាល័យកំណត់ផ្នគរវិទ្យាខុសៗគ្នា។",
+                { kh: "លក្ខខណ្ឌទូទៅសម្រាប់សិស្សរបស់សាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ ដោយគ្រប់មហាវិទ្យាល័យកំណត់ផ្នគរវិទ្យាខុសៗគ្នា។" },
         },
         cells: [
             {
                 item: {
-                    label: ["ពិន្ទុបរិញ្ញាបត្រ", "BacII Results"],
-                    badge: ["A - C"],
+                    label: [{ kh: "ពិន្ទុបរិញ្ញាបត្រ" }, { en: "BacII Results" }],
+                    badge: [neutral("A - C")],
                     tone: "green",
-                    note: ["កម្រិតពិន្ទុសមមូលខុសគ្នាតាមមុខវិជជា ពិន្ទុខ្ពស់ជាងមានសិទ្ធិជ្រើសរើសជាមុន។"],
+                    note: [{ kh: "កម្រិតពិន្ទុសមមូលខុសគ្នាតាមមុខវិជជា ពិន្ទុខ្ពស់ជាងមានសិទ្ធិជ្រើសរើសជាមុន។" }],
                 },
             },
             {
                 exam: true,
                 item: {
-                    label: ["ប្រឡងជ្រើសរើស", "Selection Examination"],
-                    badge: ["RUPP"],
+                    label: [{ kh: "ប្រឡងជ្រើសរើស" }, { en: "Selection Examination" }],
+                    badge: [{ en: "RUPP" }],
                     tone: "blue",
-                    note: ["សិស្សដែលមិនបានចូលក្នុងការប្រឡងជាតិ ឬពិន្ទុមិនគ្រប់គ្រាន់ ត្រូវប្រឡងជ្រើសរើសរបស់សាលា។"],
+                    note: [{
+                               kh: "សិស្សដែលមិនបានចូលក្នុងការប្រឡងជាតិ ឬពិន្ទុមិនគ្រប់គ្រាន់ ត្រូវប្រឡងជ្រើសរើសរបស់សាលា។",
+                           }],
                 },
             },
             {
                 item: {
-                    label: ["ភាសាខ្មែរ", "ភាសាបរទេស"],
-                    badge: ["Khmer", "EN / FR"],
+                    label: [{ kh: "ភាសាខ្មែរ" }, { kh: "ភាសាបរទេស" }],
+                    badge: [{ en: "Khmer" }, neutral("EN / FR")],
                     tone: "purple",
-                    note: ["សិស្សត្រូវចេះអាន និងសរសេរភាសាខ្មែរបានល្អ ហើយមុខវិជជមួយភាសាបរទេសមួយត្រូវបានផ្ទាល់។"],
+                    note: [{
+                               kh: "សិស្សត្រូវចេះអាន និងសរសេរភាសាខ្មែរបានល្អ ហើយមុខវិជជមួយភាសាបរទេសមួយត្រូវបានផ្ទាល់។",
+                           }],
                 },
             },
         ],
         gauges: {
-            title: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា (Minimum Subject Competency Gauge)",
-            note: "ផ្គកលើពិន្ទុបរិញ្ញាបត្រ",
+            title: { kh: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា", en: "Minimum Subject Competency Gauge" },
+            note: { kh: "ផ្គកលើពិន្ទុបរិញ្ញាបត្រ" },
             items: [
                 {
                     item: {
-                        label: "ភាសាខ្មែរ (Khmer)",
-                        requirement: "តម្រូវ 70% ឡើងទៅ",
+                        label: { kh: "ភាសាខ្មែរ", en: "Khmer" },
+                        requirement: { kh: "តម្រូវ 70% ឡើងទៅ" },
                         value: 70,
                     },
                 },
                 {
                     exam: true,
                     item: {
-                        label: "គណិតវិទ្យា (Mathematics)",
-                        requirement: "តម្រូវ 60% ≥ ពិន្ទុ C ឡើងទៅ",
+                        label: { kh: "គណិតវិទ្យា", en: "Mathematics" },
+                        requirement: { kh: "តម្រូវ 60% ≥ ពិន្ទុ C ឡើងទៅ" },
                         value: 60,
                     },
                 },
                 {
                     item: {
-                        label: "ភាសាអង់គ្លេស (English)",
-                        requirement: "តម្រូវ កម្រិត B1 ឡើងទៅ",
+                        label: { kh: "ភាសាអង់គ្លេស", en: "English" },
+                        requirement: { kh: "តម្រូវ កម្រិត B1 ឡើងទៅ" },
                         value: 50,
                     },
                 },
@@ -1183,53 +1302,63 @@ const RUPP_PROFILE: AdmissionsProfile = {
         },
         notice: {
             icon: "AlertCircle",
-            text: "ចំណាំសំខាន់៖ ការប្រឡងជ្រើសរើសដោយសាលាមិនមានកម្មវិធីទូទៅឡើយ វិធីប្រឡង និងកាលបរិច្ឆេទអាស្រ័តមុខវិជជារបស់មហាវិទ្យាល័យនីមួយៗ។",
+            text: {
+                      kh: "ចំណាំសំខាន់៖ ការប្រឡងជ្រើសរើសដោយសាលាមិនមានកម្មវិធីទូទៅឡើយ វិធីប្រឡង និងកាលបរិច្ឆេទអាស្រ័តមុខវិជជារបស់មហាវិទ្យាល័យនីមួយៗ។",
+                  },
         },
     },
 
     roadmap: {
         header: {
-            eyebrow: "Step-by-Step Flow",
-            meta: "Updated 2025",
-            title: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន (4-Step Admission Roadmap)",
-            subtitle: "ដំណើរការចូលរៀននៅសាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ ចាប់ពីខែកក្កដា ដល់ខែធ្នូ ឆ្នាំ ២០២៥។",
+            eyebrow: { en: "Step-by-Step Flow" },
+            meta: { en: "Updated 2025" },
+            title: { kh: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន", en: "4-Step Admission Roadmap" },
+            subtitle: {
+                          kh: "ដំណើរការចូលរៀននៅសាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ ចាប់ពីខែកក្កដា ដល់ខែធ្នូ ឆ្នាំ ២០២៥។",
+                      },
         },
         steps: [
             {
                 item: {
-                    title: "ចុះឈ្មោះអនឡាញ (Online Registration)",
-                    date: "០១ - ៣០ កក្កដា ២០២៥",
+                    title: { kh: "ចុះឈ្មោះអនឡាញ", en: "Online Registration" },
+                    date: { kh: "០១ - ៣០ កក្កដា ២០២៥" },
                     dateTone: "blue",
                     description:
-                        "ចុះឈ្មោះនៅលើគេហទំព័រសាកលវិទ្យាល័យ បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាដែលចង់ចូលរៀន។",
-                    note: "អាចជ្រើសបានបីមុខវិជជតាមលំដាប់ចម្រើន",
+                        { kh: "ចុះឈ្មោះនៅលើគេហទំព័រសាកលវិទ្យាល័យ បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាដែលចង់ចូលរៀន។" },
+                    note: { kh: "អាចជ្រើសបានបីមុខវិជជតាមលំដាប់ចម្រើន" },
                 },
             },
             {
                 item: {
-                    title: "ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃ (Document Verification & Fee)",
-                    date: "០៥ - ២០ វិច្ឆិកា ២០២៥",
+                    title: { kh: "ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃ", en: "Document Verification & Fee" },
+                    date: { kh: "០៥ - ២០ វិច្ឆិកា ២០២៥" },
                     dateTone: "green",
-                    description: "ដាក់ឯកសារនៅការិយាល័យសាលា និងបង់ថ្លៃចុះឈ្មោះ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។",
-                    note: "ឯកសារដើមត្រូវបានទាក់ទងក្នុងសាខាកណ្ដាល",
+                    description: {
+                                     kh: "ដាក់ឯកសារនៅការិយាល័យសាលា និងបង់ថ្លៃចុះឈ្មោះ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។",
+                                 },
+                    note: { kh: "ឯកសារដើមត្រូវបានទាក់ទងក្នុងសាខាកណ្ដាល" },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "ប្រឡងជ្រើសរើស (Selection Examination)",
-                    date: "២៤ តុលា ២០២៥",
+                    title: { kh: "ប្រឡងជ្រើសរើស", en: "Selection Examination" },
+                    date: { kh: "២៤ តុលា ២០២៥" },
                     dateTone: "red",
-                    description: "សិស្សដែលត្រូវបានប្រឡងប្រឡងជ្រើសរើសតាមមុខវិជជារបស់ខ្លួន ដោយសម្រាប់សាលា។",
-                    note: "ម៉ោង: 08:00 - 12:00",
+                    description: {
+                                     kh: "សិស្សដែលត្រូវបានប្រឡងប្រឡងជ្រើសរើសតាមមុខវិជជារបស់ខ្លួន ដោយសម្រាប់សាលា។",
+                                 },
+                    note: { kh: "ម៉ោង: 08:00 - 12:00" },
                 },
             },
             {
                 item: {
-                    title: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន (Results & Enrollment)",
-                    date: "០៨ ធ្នូ ២០២៥",
+                    title: { kh: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន", en: "Results & Enrollment" },
+                    date: { kh: "០៨ ធ្នូ ២០២៥" },
                     dateTone: "purple",
-                    description: "លទ្ធផលត្រូវបានប្រកាសនៅគេហទំព័រ និងត្រូវចុះឈ្មោះនៅការិយាល័យក្នុងរយៈពេល ១០ ថ្ងៃ។",
+                    description: {
+                                     kh: "លទ្ធផលត្រូវបានប្រកាសនៅគេហទំព័រ និងត្រូវចុះឈ្មោះនៅការិយាល័យក្នុងរយៈពេល ១០ ថ្ងៃ។",
+                                 },
                 },
             },
         ],
@@ -1241,33 +1370,35 @@ const RUPP_PROFILE: AdmissionsProfile = {
         items: [
             {
                 item: {
-                    title: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII Certificate)",
-                    subtitle: "Official Stamps",
+                    title: { kh: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ", en: "BacII Certificate" },
+                    subtitle: { en: "Official Stamps" },
                     description:
-                        "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា សម្រាប់មុខវិជជដែលបានជ្រើសរើស។",
+                        { kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា សម្រាប់មុខវិជជដែលបានជ្រើសរើស។" },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ (Official Transcript)",
-                    subtitle: "BacII & Entrance Scores",
+                    title: { kh: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ", en: "Official Transcript" },
+                    subtitle: { en: "BacII & Entrance Scores" },
                     description:
-                        "សេចក្តីថ្លគិតគន្ទុពិន្ទុបមសិក្សាទុតិយភូមិ រួមមានពិន្ទុប្រឡងចូលរៀនជាតិ និងលទ្ធផលប្រឡងជ្រើសរើស។",
+                        { kh: "សេចក្តីថ្លគិតគន្ទុពិន្ទុបមសិក្សាទុតិយភូមិ រួមមានពិន្ទុប្រឡងចូលរៀនជាតិ និងលទ្ធផលប្រឡងជ្រើសរើស។" },
                 },
             },
             {
                 item: {
-                    title: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ (Birth Certificate & National ID)",
-                    subtitle: "Identity Documents",
-                    description: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                    title: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ", en: "Birth Certificate & National ID" },
+                    subtitle: { en: "Identity Documents" },
+                    description: {
+                                     kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                                 },
                 },
             },
             {
                 item: {
-                    title: "រូបថត ៤x៦ ចំនួន ២ សន្ឹក (4x6 Photos x 2)",
-                    subtitle: "Portrait Photos",
-                    description: "រូបថតទំហំ ៤x៦ ចំនួន ២ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។",
+                    title: { kh: "រូបថត ៤x៦ ចំនួន ២ សន្ឹក", en: "4x6 Photos x 2" },
+                    subtitle: { en: "Portrait Photos" },
+                    description: { kh: "រូបថតទំហំ ៤x៦ ចំនួន ២ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។" },
                 },
             },
         ],
@@ -1280,9 +1411,9 @@ const RUPP_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "Calendar",
                     tone: "blue",
-                    title: "ថ្ងៃផុតកំណត់បង់ថ្លៃ",
-                    value: "២០ វិច្ឆិកា ២០២៥ (20 Nov 2025)",
-                    note: "ការិយាល័យគ្រប់គ្រាន់ (RUPP)",
+                    title: { kh: "ថ្ងៃផុតកំណត់បង់ថ្លៃ" },
+                    value: { kh: "២០ វិច្ឆិកា ២០២៥", en: "20 Nov 2025" },
+                    note: { kh: "ការិយាល័យគ្រប់គ្រាន់", en: "RUPP" },
                 },
             },
             {
@@ -1290,45 +1421,49 @@ const RUPP_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "MessageSquare",
                     tone: "green",
-                    title: "ប្រឡងជ្រើសរើស",
-                    value: "២៤ តុលា ២០២៥ (24 Oct 2025)",
-                    note: "ផ្សាយតាមគេហទំព័រសាលា",
+                    title: { kh: "ប្រឡងជ្រើសរើស" },
+                    value: { kh: "២៤ តុលា ២០២៥", en: "24 Oct 2025" },
+                    note: { kh: "ផ្សាយតាមគេហទំព័រសាលា" },
                 },
             },
             {
                 item: {
                     icon: "GraduationCap",
                     tone: "purple",
-                    title: "ប្រកាសលទ្ធផល",
-                    value: "០៨ ធ្នូ ២០២៥ (08 Dec 2025)",
-                    note: "ប្រកាសនៅគេហទំព័រសាកលវិទ្យាល័យ",
+                    title: { kh: "ប្រកាសលទ្ធផល" },
+                    value: { kh: "០៨ ធ្នូ ២០២៥", en: "08 Dec 2025" },
+                    note: { kh: "ប្រកាសនៅគេហទំព័រសាកលវិទ្យាល័យ" },
                 },
             },
         ],
         action: {
             icon: "BookOpen",
-            label: "បញ្ចូលទៅក្នុង Google Calendar",
+            label: { kh: "បញ្ចូលទៅក្នុង Google Calendar" },
         },
     },
 
     faq: {
         header: {
             icon: "HelpCircle",
-            title: "សំណួរដែលសួរញឹកញាប់ (Admissions FAQ)",
-            subtitle: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ RUPP។",
+            title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
+            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ RUPP។" },
         },
         items: [
             {
                 exam: true,
                 item: {
-                    question: "តើត្រូវប្រឡងជ្រើសរើសទោះបានជាប្រឡងជាតិក៏ដែរឬទេ?",
-                    answer: "បាទ។ សិស្សដែលជាប់ការប្រឡងចូលរៀនជាតិ តែមិនមានចំណាប់តាមមុខវិជជ ត្រូវចូលរួមការប្រឡងជ្រើសរើសរបស់សាលាក្នុងវិធីបរិយាកាសទូទៅ។",
+                    question: { kh: "តើត្រូវប្រឡងជ្រើសរើសទោះបានជាប្រឡងជាតិក៏ដែរឬទេ?" },
+                    answer: {
+                                kh: "បាទ។ សិស្សដែលជាប់ការប្រឡងចូលរៀនជាតិ តែមិនមានចំណាប់តាមមុខវិជជ ត្រូវចូលរួមការប្រឡងជ្រើសរើសរបស់សាលាក្នុងវិធីបរិយាកាសទូទៅ។",
+                            },
                 },
             },
             {
                 item: {
-                    question: "តើអាចជ្រើសរើសបានបីមុខវិជជឬនៅពេលចុះឈ្មោះឬទេ?",
-                    answer: "អាច។ សិស្សមានសិទ្ធិជ្រើសរើសមុខវិជជបានដូចគ្នាទៅការជ្រើសលំដាប់ចម្រើន លុះត្រាក់តែជាតិបង្កើតការងារត្រូវបានផ្ទៀងផ្ទាត់ទាំងអស់។",
+                    question: { kh: "តើអាចជ្រើសរើសបានបីមុខវិជជឬនៅពេលចុះឈ្មោះឬទេ?" },
+                    answer: {
+                                kh: "អាច។ សិស្សមានសិទ្ធិជ្រើសរើសមុខវិជជបានដូចគ្នាទៅការជ្រើសលំដាប់ចម្រើន លុះត្រាក់តែជាតិបង្កើតការងារត្រូវបានផ្ទៀងផ្ទាត់ទាំងអស់។",
+                            },
                 },
             },
         ],
@@ -1337,44 +1472,44 @@ const RUPP_PROFILE: AdmissionsProfile = {
     fee: {
         header: {
             icon: "Link2",
-            title: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា",
-            subtitle: "Registration & Exam Fee",
+            title: { kh: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា" },
+            subtitle: { en: "Registration & Exam Fee" },
         },
-        label: "ថ្លៃចុះឈ្មោះប្រឡងសរុប",
-        price: "$10.00",
+        label: { kh: "ថ្លៃចុះឈ្មោះប្រឡងសរុប" },
+        price: neutral("$10.00"),
         divider: "/",
-        strike: "៤០,០០០ រៀល",
-        badge: { label: "Non-refundable", tone: "green" },
+        strike: { kh: "៤០,០០០ រៀល" },
+        badge: { label: { en: "Non-refundable" }, tone: "green" },
     },
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: "ឈមោះ: RUPP Admissions Account", subtitle: KHQR_BANKS },
-        action: { icon: "CreditCard", label: "បង់ថ្លៃពាក្យសុំឥឡូវ (Pay $10.00)" },
+        caption: { title: { kh: "ឈមោះ: RUPP Admissions Account" }, subtitle: KHQR_BANKS },
+        action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $10.00" } },
     },
 
     contact: {
         header: {
             icon: "Share2",
-            title: "ការិយាល័យប្រធាន & ទំនាក់ទំនង",
+            title: { kh: "ការិយាល័យប្រធាន & ទំនាក់ទំនង" },
         },
         person: {
-            name: "ការិយាល័យសាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ",
-            role: "អង្គចូលរៀន & ទូទៅ (Registrar & Admissions)",
-            badge: "ផ្ទាល់អនឡាញ • Office",
+            name: { kh: "ការិយាល័យសាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ" },
+            role: { kh: "អង្គចូលរៀន & ទូទៅ", en: "Registrar & Admissions" },
+            badge: { kh: "ផ្ទាល់អនឡាញ • Office" },
         },
         rows: [
             {
                 icon: "MapPin",
-                text: "ផ្លូវសហព័ន្ធរុស្សី, ខណ្ឌទួលគោក, រាជធានីភ្នំពេញ, កម្ពុជា",
+                text: { kh: "ផ្លូវសហព័ន្ធរុស្សី, ខណ្ឌទួលគោក, រាជធានីភ្នំពេញ, កម្ពុជា" },
             },
-            { icon: "Globe", text: "rupp.edu.kh" },
-            { icon: "Clock", text: "ច័នទ - សុក្រ: 8:00 - 16:30" },
-            { icon: "Users", text: "សុំតាមមហាវិទ្យាល័យដែលបានជ្រើសរើសជាមុន" },
+            { icon: "Globe", text: { en: "rupp.edu.kh" } },
+            { icon: "Clock", text: { kh: "ច័នទ - សុក្រ: 8:00 - 16:30" } },
+            { icon: "Users", text: { kh: "សុំតាមមហាវិទ្យាល័យដែលបានជ្រើសរើសជាមុន" } },
         ],
         action: {
             icon: "ExternalLink",
-            label: "ទាក់ទងទៅគេហទំព័រសាលា (rupp.edu.kh)",
+            label: { kh: "ទាក់ទងទៅគេហទំព័រសាលា", en: "rupp.edu.kh" },
         },
     },
 };
@@ -1384,101 +1519,109 @@ const IFL_PROFILE: AdmissionsProfile = {
     exam: {
         papers: {
             header: {
-                eyebrow: "Resource Hub",
+                eyebrow: { en: "Resource Hub" },
                 tone: "green",
-                title: "កម្មវិធីប្រឡងភាសា & សំណួរពីមុន (Language Test Format & Past Papers)",
-                subtitle: "ទម្រង់ប្រឡងភាសាអង់គ្លេស និងប្រឡងសមត្ថភាពភាសាបរទេស ដើមបីរៀបចំខ្លួនមុនចុះឈ្មោះ។",
+                title: { kh: "កម្មវិធីប្រឡងភាសា & សំណួរពីមុន", en: "Language Test Format & Past Papers" },
+                subtitle: {
+                              kh: "ទម្រង់ប្រឡងភាសាអង់គ្លេស និងប្រឡងសមត្ថភាពភាសាបរទេស ដើមបីរៀបចំខ្លួនមុនចុះឈ្មោះ។",
+                          },
             },
             items: [
                 {
                     icon: "BookOpen",
-                    title: "ប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន (Basic English Placement Test)",
-                    meta: "ពេលវេលា: 90min",
+                    title: { kh: "ប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន", en: "Basic English Placement Test" },
+                    meta: { kh: "ពេលវេលា: 90min" },
                     description:
-                        "វេជ្ជាសាស្ត្រ ក្រាស្រយោធន៍ និងប្រយោគ សម្រាប់វាយតម្លៃកម្រិតភាសាពីមូលដ្ឋានដល់កម្រិតមួយ។",
-                    file: "PDF • Khmer-English",
-                    downloadLabel: "ទាញយកទម្រង់ PDF",
+                        { kh: "វេជ្ជាសាស្ត្រ ក្រាស្រយោធន៍ និងប្រយោគ សម្រាប់វាយតម្លៃកម្រិតភាសាពីមូលដ្ឋានដល់កម្រិតមួយ។" },
+                    file: { en: "PDF • Khmer-English" },
+                    downloadLabel: { kh: "ទាញយកទម្រង់ PDF" },
                     tone: "blue",
                 },
                 {
                     icon: "BookOpen",
-                    title: "ប្រឡងសមត្ថភាពភាសាបរទេស (Language Aptitude Test)",
-                    meta: "ពេលវេលា: 60min",
-                    description: "ប្រឡងសមត្ថភាពសម្រាប់ដេប៉ាតឺភាសាបារាំង និងដេប៉ាតឺបកប្រែ សរសេរ និងស្តាប់។",
-                    file: "PDF • Khmer",
-                    downloadLabel: "ទាញយកទម្រង់ PDF",
+                    title: { kh: "ប្រឡងសមត្ថភាពភាសាបរទេស", en: "Language Aptitude Test" },
+                    meta: { kh: "ពេលវេលា: 60min" },
+                    description: {
+                                     kh: "ប្រឡងសមត្ថភាពសម្រាប់ដេប៉ាតឺភាសាបារាំង និងដេប៉ាតឺបកប្រែ សរសេរ និងស្តាប់។",
+                                 },
+                    file: { en: "PDF • Khmer" },
+                    downloadLabel: { kh: "ទាញយកទម្រង់ PDF" },
                     tone: "purple",
                 },
             ],
             note: {
                 icon: "Info",
-                title: "ចំណាំសំខាន់",
-                text: "សិស្សដែលជាប់ការប្រឡងភាសាអង់គ្លេសត្រូវចូលរួមសម្រាប់ដេប៉ាតឺភាសាអង់គ្លេសដោយស្រាប់ ដេប៉ាតឺភាសាបរទេសដែលទាមទារការប្រឡងបន្ថែម។",
+                title: { kh: "ចំណាំសំខាន់" },
+                text: {
+                          kh: "សិស្សដែលជាប់ការប្រឡងភាសាអង់គ្លេសត្រូវចូលរួមសម្រាប់ដេប៉ាតឺភាសាអង់គ្លេសដោយស្រាប់ ដេប៉ាតឺភាសាបរទេសដែលទាមទារការប្រឡងបន្ថែម។",
+                      },
             },
         },
     },
 
     eligibility: {
         header: {
-            eyebrow: "Eligibility Matrix",
+            eyebrow: { en: "Eligibility Matrix" },
             icon: "FileText",
-            title: "លក្ខខណ្ឌចូលរៀនទូទៅ (General Entry Criteria & BacII)",
+            title: { kh: "លក្ខខណ្ឌចូលរៀនទូទៅ", en: "General Entry Criteria & BacII" },
             subtitle:
-                "លក្ខខណ្ឌរបស់វិទ្យាស្ថានភាសាបរទេស (IFL) សម្រាប់សិស្សដែលចង់ចូលរៀននៅដេប៉ាតឺភាសាអង់គ្លេស ភាសាបារាំង និងបកប្រែ។",
+                { kh: "លក្ខខណ្ឌរបស់វិទ្យាស្ថានភាសាបរទេស (IFL) សម្រាប់សិស្សដែលចង់ចូលរៀននៅដេប៉ាតឺភាសាអង់គ្លេស ភាសាបារាំង និងបកប្រែ។" },
         },
         cells: [
             {
                 item: {
-                    label: ["បរិញ្ញាបត្រ", "ស្មើគ្នា"],
-                    badge: ["BacII"],
+                    label: [{ kh: "បរិញ្ញាបត្រ" }, { kh: "ស្មើគ្នា" }],
+                    badge: [{ en: "BacII" }],
                     tone: "green",
                     note: [
-                        "បរិញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII) ឬសញ្ញាបត្រស្មើគ្នា ដោយអាស្រ័តមុខវិជជរបស់វិទ្យាស្ថាន។",
+                        { kh: "បរិញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII) ឬសញ្ញាបត្រស្មើគ្នា ដោយអាស្រ័តមុខវិជជរបស់វិទ្យាស្ថាន។" },
                     ],
                 },
             },
             {
                 exam: true,
                 item: {
-                    label: ["ប្រឡងចូលរៀន & សមត្ថភាព", "Entrance & Aptitude Test"],
-                    badge: ["IFL"],
+                    label: [{ kh: "ប្រឡងចូលរៀន & សមត្ថភាព" }, { en: "Entrance & Aptitude Test" }],
+                    badge: [{ en: "IFL" }],
                     tone: "blue",
-                    note: ["ជាប់ការប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងការប្រឡងសមត្ថភាពភាសារបស់វិទ្យាស្ថាន អាស្រ័តមុខវិជជ។"],
+                    note: [{
+                               kh: "ជាប់ការប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងការប្រឡងសមត្ថភាពភាសារបស់វិទ្យាស្ថាន អាស្រ័តមុខវិជជ។",
+                           }],
                 },
             },
             {
                 item: {
-                    label: ["កម្រិតភាសា", "Language Level"],
-                    badge: ["B1 EN", "A2 NEW"],
+                    label: [{ kh: "កម្រិតភាសា" }, { en: "Language Level" }],
+                    badge: [neutral("B1 EN"), { en: "A2 NEW" }],
                     tone: "purple",
-                    note: ["សិស្សត្រូវអាចរៀនភាសាបរទេសពេញលេញ ហើយចូលរៀនភាសាបរទេសពីកម្រិតមូលដ្ឋានបាន។"],
+                    note: [{ kh: "សិស្សត្រូវអាចរៀនភាសាបរទេសពេញលេញ ហើយចូលរៀនភាសាបរទេសពីកម្រិតមូលដ្ឋានបាន។" }],
                 },
             },
         ],
         gauges: {
-            title: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា (Minimum Subject Competency Gauge)",
-            note: "ផ្គកលើលទ្ធផលប្រឡងវាយតម្លៃ",
+            title: { kh: "កម្រិតសមត្ថភាពមុខវិជជាអប្បបរមា", en: "Minimum Subject Competency Gauge" },
+            note: { kh: "ផ្គកលើលទ្ធផលប្រឡងវាយតម្លៃ" },
             items: [
                 {
                     exam: true,
                     item: {
-                        label: "ភាសាអង់គ្លេស (English)",
-                        requirement: "តម្រូវ 60% ឡើងទៅ",
+                        label: { kh: "ភាសាអង់គ្លេស", en: "English" },
+                        requirement: { kh: "តម្រូវ 60% ឡើងទៅ" },
                         value: 60,
                     },
                 },
                 {
                     exam: true,
                     item: {
-                        label: "សមត្ថភាពភាសា (Language Aptitude)",
-                        requirement: "តម្រូវ 50% ឡើងទៅ",
+                        label: { kh: "សមត្ថភាពភាសា", en: "Language Aptitude" },
+                        requirement: { kh: "តម្រូវ 50% ឡើងទៅ" },
                         value: 50,
                     },
                 },
                 {
                     item: {
-                        label: "ភាសាខ្មែរ (Khmer)",
-                        requirement: "តម្រូវ កម្រិត B1 ឡើងទៅ",
+                        label: { kh: "ភាសាខ្មែរ", en: "Khmer" },
+                        requirement: { kh: "តម្រូវ កម្រិត B1 ឡើងទៅ" },
                         value: 45,
                     },
                 },
@@ -1486,52 +1629,62 @@ const IFL_PROFILE: AdmissionsProfile = {
         },
         notice: {
             icon: "AlertCircle",
-            text: "ចំណាំសំខាន់៖ កម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំង (Foundation Year) ត្រូវចូលរួមនៅដេប៉ាតឺភាសាខ្មែរ ខ្មែន ឬចិន។",
+            text: {
+                      kh: "ចំណាំសំខាន់៖ កម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំង (Foundation Year) ត្រូវចូលរួមនៅដេប៉ាតឺភាសាខ្មែរ ខ្មែន ឬចិន។",
+                  },
         },
     },
 
     roadmap: {
         header: {
-            eyebrow: "Step-by-Step Flow",
-            meta: "Updated 2025",
-            title: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន (4-Step Admission Roadmap)",
-            subtitle: "ដំណើរការចូលរៀននៅ IFL មាន ៤ ជំហាន ចាប់ពីការទាញយកបញ្ជីបញ្ជាក់ ដល់ការចុះឈ្មោះចូលរៀន។",
+            eyebrow: { en: "Step-by-Step Flow" },
+            meta: { en: "Updated 2025" },
+            title: { kh: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន", en: "4-Step Admission Roadmap" },
+            subtitle: {
+                          kh: "ដំណើរការចូលរៀននៅ IFL មាន ៤ ជំហាន ចាប់ពីការទាញយកបញ្ជីបញ្ជាក់ ដល់ការចុះឈ្មោះចូលរៀន។",
+                      },
         },
         steps: [
             {
                 item: {
-                    title: "ទាញយកបញ្ជីបញ្ជាក់ & ចុះឈ្មោះ (Collect the Form & Register)",
-                    date: "០១ - ១០ កញ្ញា ២០២៥",
+                    title: { kh: "ទាញយកបញ្ជីបញ្ជាក់ & ចុះឈ្មោះ", en: "Collect the Form & Register" },
+                    date: { kh: "០១ - ១០ កញ្ញា ២០២៥" },
                     dateTone: "blue",
-                    description: "ទាញយកបញ្ជីបញ្ជាក់នៅសាខាកណ្ដាលវិទ្យាស្ថាន បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជ។",
-                    note: "អាចចុះឈ្មោះតាមអ៊ីមែល ឬមកផ្ទាល់នៅសាខា",
+                    description: {
+                                     kh: "ទាញយកបញ្ជីបញ្ជាក់នៅសាខាកណ្ដាលវិទ្យាស្ថាន បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជ។",
+                                 },
+                    note: { kh: "អាចចុះឈ្មោះតាមអ៊ីមែល ឬមកផ្ទាល់នៅសាខា" },
                 },
             },
             {
                 item: {
-                    title: "ដាក់ឯកសារ & បង់ថ្លៃ (Document Submission & Fee)",
-                    date: "១០ - ២៥ កញ្ញា ២០២៥",
+                    title: { kh: "ដាក់ឯកសារ & បង់ថ្លៃ", en: "Document Submission & Fee" },
+                    date: { kh: "១០ - ២៥ កញ្ញា ២០២៥" },
                     dateTone: "green",
-                    description: "ដាក់ឯកសារនៅសាខាកណ្ដាល និងបង់ថ្លៃ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។",
-                    note: "ទទួលបានវិក្យបត្របង់ប្រាក់",
+                    description: { kh: "ដាក់ឯកសារនៅសាខាកណ្ដាល និងបង់ថ្លៃ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។" },
+                    note: { kh: "ទទួលបានវិក្យបត្របង់ប្រាក់" },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "ប្រឡងភាសា & បទប្បង្កត់ (Language Test & Interview)",
-                    date: "០៩ តុលា ២០២៥",
+                    title: { kh: "ប្រឡងភាសា & បទប្បង្កត់", en: "Language Test & Interview" },
+                    date: { kh: "០៩ តុលា ២០២៥" },
                     dateTone: "red",
-                    description: "សិស្សប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងប្រឡងសមត្ថភាពភាសា រួមមានការសម្រាប់ដេប៉ាតឺបកប្រែ។",
-                    note: "អាស្រ័តមុខវិជជដែលបានជ្រើសរើស",
+                    description: {
+                                     kh: "សិស្សប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងប្រឡងសមត្ថភាពភាសា រួមមានការសម្រាប់ដេប៉ាតឺបកប្រែ។",
+                                 },
+                    note: { kh: "អាស្រ័តមុខវិជជដែលបានជ្រើសរើស" },
                 },
             },
             {
                 item: {
-                    title: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន (Results & Enrollment)",
-                    date: "២០ តុលា ២០២៥",
+                    title: { kh: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន", en: "Results & Enrollment" },
+                    date: { kh: "២០ តុលា ២០២៥" },
                     dateTone: "purple",
-                    description: "លទ្ធផលត្រូវបានប្រកាសនៅសាខាកណ្ដាល និងត្រូវចុះឈ្មោះចូលរៀនក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                    description: {
+                                     kh: "លទ្ធផលត្រូវបានប្រកាសនៅសាខាកណ្ដាល និងត្រូវចុះឈ្មោះចូលរៀនក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                                 },
                 },
             },
         ],
@@ -1543,31 +1696,37 @@ const IFL_PROFILE: AdmissionsProfile = {
         items: [
             {
                 item: {
-                    title: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII Certificate)",
-                    subtitle: "Official Stamps",
-                    description: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា ឬសញ្ញាបត្រស្មើគ្នា។",
+                    title: { kh: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ", en: "BacII Certificate" },
+                    subtitle: { en: "Official Stamps" },
+                    description: {
+                                     kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា ឬសញ្ញាបត្រស្មើគ្នា។",
+                                 },
                 },
             },
             {
                 exam: true,
                 item: {
-                    title: "វិក្យបត្រភាសា (Language Certificate)",
-                    subtitle: "B1 or Equivalent",
-                    description: "វិក្យបត្រភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ ឬវិក្យបត្រពីស្ថាប័នស្របសម្រាប់ដេប៉ាតឺបកប្រែ។",
+                    title: { kh: "វិក្យបត្រភាសា", en: "Language Certificate" },
+                    subtitle: { en: "B1 or Equivalent" },
+                    description: {
+                                     kh: "វិក្យបត្រភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ ឬវិក្យបត្រពីស្ថាប័នស្របសម្រាប់ដេប៉ាតឺបកប្រែ។",
+                                 },
                 },
             },
             {
                 item: {
-                    title: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ (Birth Certificate & National ID)",
-                    subtitle: "Identity Documents",
-                    description: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                    title: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ", en: "Birth Certificate & National ID" },
+                    subtitle: { en: "Identity Documents" },
+                    description: {
+                                     kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ (Birth Certificate & National ID)។",
+                                 },
                 },
             },
             {
                 item: {
-                    title: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក (4x6 Photos x 4)",
-                    subtitle: "Portrait Photos",
-                    description: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។",
+                    title: { kh: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក", en: "4x6 Photos x 4" },
+                    subtitle: { en: "Portrait Photos" },
+                    description: { kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។" },
                 },
             },
         ],
@@ -1580,9 +1739,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "Calendar",
                     tone: "blue",
-                    title: "ថ្ងៃផុតកំណត់បញ្ជីបញ្ជាក់",
-                    value: "១០ កញ្ញា ២០២៥ (10 Sep 2025)",
-                    note: "សាខាកណ្ដាលវិទ្យាស្ថាន (IFL)",
+                    title: { kh: "ថ្ងៃផុតកំណត់បញ្ជីបញ្ជាក់" },
+                    value: { kh: "១០ កញ្ញា ២០២៥", en: "10 Sep 2025" },
+                    note: { kh: "សាខាកណ្ដាលវិទ្យាស្ថាន", en: "IFL" },
                 },
             },
             {
@@ -1590,45 +1749,49 @@ const IFL_PROFILE: AdmissionsProfile = {
                 item: {
                     icon: "MessageSquare",
                     tone: "green",
-                    title: "ប្រឡងភាសា & បទប្បង្កត់",
-                    value: "០៩ តុលា ២០២៥ (09 Oct 2025)",
-                    note: "ផ្សាយតាមគេហទំព័រវិទ្យាស្ថាន",
+                    title: { kh: "ប្រឡងភាសា & បទប្បង្កត់" },
+                    value: { kh: "០៩ តុលា ២០២៥", en: "09 Oct 2025" },
+                    note: { kh: "ផ្សាយតាមគេហទំព័រវិទ្យាស្ថាន" },
                 },
             },
             {
                 item: {
                     icon: "GraduationCap",
                     tone: "purple",
-                    title: "ប្រកាសលទ្ធផល",
-                    value: "២០ តុលា ២០២៥ (20 Oct 2025)",
-                    note: "ប្រកាសនៅសាខាកណ្ដាល",
+                    title: { kh: "ប្រកាសលទ្ធផល" },
+                    value: { kh: "២០ តុលា ២០២៥", en: "20 Oct 2025" },
+                    note: { kh: "ប្រកាសនៅសាខាកណ្ដាល" },
                 },
             },
         ],
         action: {
             icon: "BookOpen",
-            label: "បញ្ចូលទៅក្នុង Google Calendar",
+            label: { kh: "បញ្ចូលទៅក្នុង Google Calendar" },
         },
     },
 
     faq: {
         header: {
             icon: "HelpCircle",
-            title: "សំណួរដែលសួរញឹកញាប់ (Admissions FAQ)",
-            subtitle: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ IFL។",
+            title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
+            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ IFL។" },
         },
         items: [
             {
                 exam: true,
                 item: {
-                    question: "តើមានការប្រឡងចូលរៀននៅវិទ្យាស្ថានភាសាបរទេសឬទេ?",
-                    answer: "មាន។ រួមមានការប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងការប្រឡងសមត្ថភាពភាសា ដែលបានកំណត់តាមមុខវិជជដែលសិស្សបានជ្រើសរើស។",
+                    question: { kh: "តើមានការប្រឡងចូលរៀននៅវិទ្យាស្ថានភាសាបរទេសឬទេ?" },
+                    answer: {
+                                kh: "មាន។ រួមមានការប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងការប្រឡងសមត្ថភាពភាសា ដែលបានកំណត់តាមមុខវិជជដែលសិស្សបានជ្រើសរើស។",
+                            },
                 },
             },
             {
                 item: {
-                    question: "តើអាចចូលរៀនភាសាបារាំងពីកម្រិតមូលដ្ឋានបានទេ?",
-                    answer: "បាទ។ ដេប៉ាតឺភាសាបារាំងគ្រប់គ្រាន់ទទួលសិស្សចាប់ពីកម្រិតមូលដ្ឋាន។ សូមពិនិត្យមើលកម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំងនៅលើគេហទំព័រសាខាកណ្ដាល។",
+                    question: { kh: "តើអាចចូលរៀនភាសាបារាំងពីកម្រិតមូលដ្ឋានបានទេ?" },
+                    answer: {
+                                kh: "បាទ។ ដេប៉ាតឺភាសាបារាំងគ្រប់គ្រាន់ទទួលសិស្សចាប់ពីកម្រិតមូលដ្ឋាន។ សូមពិនិត្យមើលកម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំងនៅលើគេហទំព័រសាខាកណ្ដាល។",
+                            },
                 },
             },
         ],
@@ -1637,44 +1800,44 @@ const IFL_PROFILE: AdmissionsProfile = {
     fee: {
         header: {
             icon: "Link2",
-            title: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា",
-            subtitle: "Registration & Exam Fee",
+            title: { kh: "ថ្លៃចុះឈ្មោះប្រឡង និងការសិក្សា" },
+            subtitle: { en: "Registration & Exam Fee" },
         },
-        label: "ថ្លៃចុះឈ្មោះប្រឡងសរុប",
-        price: "$10.00",
+        label: { kh: "ថ្លៃចុះឈ្មោះប្រឡងសរុប" },
+        price: neutral("$10.00"),
         divider: "/",
-        strike: "៤០,០០០ រៀល",
-        badge: { label: "Non-refundable", tone: "green" },
+        strike: { kh: "៤០,០០០ រៀល" },
+        badge: { label: { en: "Non-refundable" }, tone: "green" },
     },
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: "ឈមោះ: IFL Admissions Account", subtitle: KHQR_BANKS },
-        action: { icon: "CreditCard", label: "បង់ថ្លៃពាក្យសុំឥឡូវ (Pay $10.00)" },
+        caption: { title: { kh: "ឈមោះ: IFL Admissions Account" }, subtitle: KHQR_BANKS },
+        action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $10.00" } },
     },
 
     contact: {
         header: {
             icon: "Share2",
-            title: "ការិយាល័យប្រធាន & ទំនាក់ទំនង",
+            title: { kh: "ការិយាល័យប្រធាន & ទំនាក់ទំនង" },
         },
         person: {
-            name: "សាខាកណ្ដាលវិទ្យាស្ថានភាសាបរទេស",
-            role: "សាខាសិក្សា & ទំនាក់ទំនង (Registrar & Student Affairs)",
-            badge: "ផ្ទាល់អនឡាញ • Office",
+            name: { kh: "សាខាកណ្ដាលវិទ្យាស្ថានភាសាបរទេស" },
+            role: { kh: "សាខាសិក្សា & ទំនាក់ទំនង", en: "Registrar & Student Affairs" },
+            badge: { kh: "ផ្ទាល់អនឡាញ • Office" },
         },
         rows: [
             {
                 icon: "MapPin",
-                text: "ផ្លូវព្រះសីហមេនី, រាជធានីភ្នំពេញ, កម្ពុជា",
+                text: { kh: "ផ្លូវព្រះសីហមេនី, រាជធានីភ្នំពេញ, កម្ពុជា" },
             },
-            { icon: "Globe", text: "ifl.rupp.edu.kh" },
-            { icon: "Clock", text: "ច័នទ - សុក្រ: 8:00 - 16:30" },
-            { icon: "Info", text: "បញ្ជីបញ្ជាក់អាចទាញយកផ្ទាល់នៅសាខាកណ្ដាល" },
+            { icon: "Globe", text: { en: "ifl.rupp.edu.kh" } },
+            { icon: "Clock", text: { kh: "ច័នទ - សុក្រ: 8:00 - 16:30" } },
+            { icon: "Info", text: { kh: "បញ្ជីបញ្ជាក់អាចទាញយកផ្ទាល់នៅសាខាកណ្ដាល" } },
         ],
         action: {
             icon: "ExternalLink",
-            label: "ទាក់ទងទៅគេហទំព័រ (ifl.rupp.edu.kh)",
+            label: { kh: "ទាក់ទងទៅគេហទំព័រ", en: "ifl.rupp.edu.kh" },
         },
     },
 };
@@ -1717,7 +1880,7 @@ function itemsOf<T>(items: Scoped<T>[], hasExam: boolean): T[] {
 }
 
 /** Criteria tiles and competency bars, or nothing when both lists empty up. */
-function buildEligibility(profile: AdmissionsProfile, hasExam: boolean): EligibilityMatrixData | undefined {
+function buildEligibility(profile: ResolvedProfile, hasExam: boolean): EligibilityMatrixData | undefined {
     const cells = itemsOf(profile.eligibility.cells, hasExam);
     const gauges = profile.eligibility.gauges;
     const bars = gauges ? itemsOf(gauges.items, hasExam) : [];
@@ -1734,7 +1897,7 @@ function buildEligibility(profile: AdmissionsProfile, hasExam: boolean): Eligibi
 }
 
 /** The application flow, renumbered so the exam-less schools skip no digit. */
-function buildRoadmap(profile: AdmissionsProfile, hasExam: boolean): AdmissionRoadmapData | undefined {
+function buildRoadmap(profile: ResolvedProfile, hasExam: boolean): AdmissionRoadmapData | undefined {
     const steps = itemsOf(profile.roadmap.steps, hasExam);
     if (steps.length === 0) return undefined;
 
@@ -1745,7 +1908,7 @@ function buildRoadmap(profile: AdmissionsProfile, hasExam: boolean): AdmissionRo
 }
 
 /** The hand-in checklist, numbered in Khmer numerals. */
-function buildDocuments(profile: AdmissionsProfile, hasExam: boolean): RequiredDocumentsData | undefined {
+function buildDocuments(profile: ResolvedProfile, hasExam: boolean): RequiredDocumentsData | undefined {
     const items = itemsOf(profile.documents.items, hasExam);
     if (items.length === 0) return undefined;
 
@@ -1757,7 +1920,7 @@ function buildDocuments(profile: AdmissionsProfile, hasExam: boolean): RequiredD
 }
 
 /** Deadlines and milestones. */
-function buildDates(profile: AdmissionsProfile, hasExam: boolean): ImportantDatesData | undefined {
+function buildDates(profile: ResolvedProfile, hasExam: boolean): ImportantDatesData | undefined {
     const items = itemsOf(profile.dates.items, hasExam);
     if (items.length === 0) return undefined;
 
@@ -1770,7 +1933,7 @@ function buildDates(profile: AdmissionsProfile, hasExam: boolean): ImportantDate
 }
 
 /** Q&A pairs. */
-function buildFaq(profile: AdmissionsProfile, hasExam: boolean): AdmissionsFaqData | undefined {
+function buildFaq(profile: ResolvedProfile, hasExam: boolean): AdmissionsFaqData | undefined {
     const items = itemsOf(profile.faq.items, hasExam);
     if (items.length === 0) return undefined;
 
@@ -1783,7 +1946,7 @@ function buildFaq(profile: AdmissionsProfile, hasExam: boolean): AdmissionsFaqDa
  * the exam-scoped criteria, steps, documents, dates and FAQ entries disappear
  * for one that admits without sitting an exam.
  */
-export function getAdmissionsSections(profile: AdmissionsProfile): AdmissionsSections {
+export function getAdmissionsSections(profile: ResolvedProfile): AdmissionsSections {
     const hasExam = profile.exam !== undefined;
 
     return {
@@ -1804,27 +1967,37 @@ export function getAdmissionsSections(profile: AdmissionsProfile): AdmissionsSec
  * how to reach it online. A person is never named — the record names an
  * office, not an officer — and a school with neither an address nor a website
  * gets no card at all, so the section falls through to its placeholder.
+ *
+ * Built already resolved, because unlike a profile this is derived per request
+ * and has the language to hand. Note that the school's own address and name
+ * are read in the reader's language too — they are `NamespacedText` on the
+ * entity, and picking `.en` here would have left a Khmer reader with an
+ * English address.
  */
-function deriveContact(university: University): ContactCardData | undefined {
+function deriveContact(university: University, lang: Lang): ContactCardData | undefined {
     const rows: ContactCardData["rows"] = [];
-    if (university.address) rows.push({ icon: "MapPin", text: university.address.en });
+    const address = university.address && resolveCopy(university.address, lang);
+    if (address) rows.push({ icon: "MapPin", text: address });
     if (university.website) rows.push({ icon: "Globe", text: university.website });
     if (rows.length === 0) return undefined;
 
     return {
-        header: {
-            icon: "Share2",
-            title: "ទំនាក់ទំនងការិយាល័យចូលរៀន (Admissions Contact)",
-        },
+        header: resolveBilingual<AdmissionsCardHeader>(CONTACT_HEADER, lang),
         person: {
-            name: "ការិយាល័យចូលរៀន (Admissions Office)",
-            role: university.name.en,
+            name: resolveCopy({ kh: "ការិយាល័យចូលរៀន", en: "Admissions Office" }, lang),
+            role: university.name[lang] ?? university.name.en,
         },
         rows,
         action: university.website
             ? {
                   icon: "ExternalLink",
-                  label: `ទាក់ទងទៅគេហទំព័រសាលា (${university.website})`,
+                  label: resolveCopy(
+                      {
+                          kh: `ទាក់ទងទៅគេហទំព័រសាលា (${university.website})`,
+                          en: `Visit the school website (${university.website})`,
+                      },
+                      lang,
+                  ),
               }
             : undefined,
     };
@@ -1837,24 +2010,29 @@ function deriveContact(university: University): ContactCardData | undefined {
  * calendar or a fee. `getAdmissionsPageData` pairs whatever survives with
  * {@link PENDING_SECTIONS} so the tab reads as a page under construction
  * rather than a broken one.
+ *
+ * Resolved on the spot for the same reason as {@link deriveContact}: this is
+ * derived from the record at request time, so it never sits in the data file.
  */
-function deriveProfile(university: University): AdmissionsProfile {
+function deriveProfile(university: University, lang: Lang): ResolvedProfile {
+    const head = resolveBilingual<AdmissionsCardHeader>;
+
     return {
         eligibility: {
-            header: { icon: "FileText", title: "លក្ខខណ្ឌចូលរៀន (Entry Criteria)" },
+            header: head(ELIGIBILITY_HEADER, lang),
             cells: [],
         },
         roadmap: {
-            header: { icon: "Flag", title: "ដំណើរការចូលរៀន (Application Roadmap)" },
+            header: head(ROADMAP_HEADER, lang),
             steps: [],
         },
-        documents: { header: DOCUMENTS_HEADER, items: [] },
-        dates: { header: DATES_HEADER, items: [] },
+        documents: { header: head(DOCUMENTS_HEADER, lang), items: [] },
+        dates: { header: head(DATES_HEADER, lang), items: [] },
         faq: {
-            header: { icon: "HelpCircle", title: "សំណួរដគលសួរញឹកញាប់ (Admissions FAQ)" },
+            header: head(FAQ_HEADER, lang),
             items: [],
         },
-        contact: deriveContact(university),
+        contact: deriveContact(university, lang),
     };
 }
 
@@ -1873,8 +2051,13 @@ function deriveProfile(university: University): AdmissionsProfile {
  * requirements-only page instead of inheriting another school's dates, fees
  * and phone numbers, the same rule the university page applies to its news
  * and brochure.
+ *
+ * `lang` is the reader's language, resolved by the root layout from the
+ * language cookie and handed down. A profile is declared per language and
+ * resolved here, once, so the cards receive plain strings in the language the
+ * page is being read in.
  */
-export function getAdmissionsPageData(university: University): AdmissionsPageData {
+export function getAdmissionsPageData(university: University, lang: Lang): AdmissionsPageData {
     /* Every program is listed: a student should see that a program's
      requirements are unpublished, not wonder why it is missing. */
     const groups = university.departments.map(dept => ({
@@ -1886,8 +2069,14 @@ export function getAdmissionsPageData(university: University): AdmissionsPageDat
 
     const requirements: RequirementsCardData = {
         header: {
-            ...REQUIREMENTS_HEADER,
-            badge: total > 0 ? `${total} ${total === 1 ? "Requirement" : "Requirements"}` : undefined,
+            ...resolveBilingual(REQUIREMENTS_HEADER, lang),
+            badge:
+                total > 0
+                    ? resolveCopy(
+                          { kh: `${total} តម្រូវការ`, en: `${total} Requirement${total === 1 ? "" : "s"}` },
+                          lang,
+                      )
+                    : undefined,
         },
         groups,
         empty: EMPTY_REQUIREMENTS,
@@ -1900,14 +2089,18 @@ export function getAdmissionsPageData(university: University): AdmissionsPageDat
      * marked pending: that page is the school's own copy, so a section it
      * leaves out is a decision rather than a gap to advertise. */
     if (profile) {
-        return { requirements, ...getAdmissionsSections(profile), pending: [] };
+        return {
+            requirements,
+            ...getAdmissionsSections(resolveBilingual<ResolvedProfile>(profile, lang)),
+            pending: [],
+        };
     }
 
-    const sections = getAdmissionsSections(deriveProfile(university));
+    const sections = getAdmissionsSections(deriveProfile(university, lang));
 
     return {
         requirements,
         ...sections,
-        pending: PENDING_SECTIONS.filter(section => !sections[section.key]),
+        pending: getPendingSections(lang).filter(section => !sections[section.key]),
     };
 }

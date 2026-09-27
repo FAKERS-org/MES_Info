@@ -1,7 +1,10 @@
 import { departmentPageData } from "@/data/department-page";
 import type { ScholarshipItem } from "@/data/department-page";
 import type { IconName } from "@/lib/icons";
+import type { Lang } from "@/lib/language";
 import type { Tone } from "@/lib/tones";
+import type { Bilingual } from "@/data/text";
+import { resolveBilingual, resolveText } from "@/data/text";
 import type { NamespacedText, University } from "@/data/universities";
 
 /* ------------------------------------------------------------------ *
@@ -178,7 +181,7 @@ export interface HowToApplyData {
  * ------------------------------------------------------------------ */
 
 export interface ScholarshipsCardData {
-  header: { title: string; subtitle: string; badge?: string };
+  header: { title: string; subtitle?: string; badge?: string };
   items: ScholarshipItem[];
   /** Rendered when the school publishes none. */
   empty: NamespacedText;
@@ -203,6 +206,54 @@ export interface ScholarshipsPageData {
 }
 
 /* ------------------------------------------------------------------ *
+ * How the copy above is authored                                        *
+ * ------------------------------------------------------------------ */
+
+/**
+ * Fields typed as a bare `string` that are not display copy, so
+ * {@link Bilingual} has to be told to leave them alone. `code` and `nameEn`
+ * are identifiers and one side of a bilingual name; the rest are routes, a
+ * file name and a bare host.
+ */
+type NonCopyKey =
+  | "href"
+  | "website"
+  | "file"
+  | "code"
+  | "nameEn";
+
+/**
+ * The board card's list, with its two already-bilingual fields taken out of
+ * the walk.
+ *
+ * `ScholarshipItem` holds `NamespacedText` and `ScholarshipListCard` resolves
+ * it client-side with `resolveText`, because that card is where the reader can
+ * flip language without a round trip. Left to {@link Bilingual} the same two
+ * keys would be rewritten into `PageCopy` and flattened back to a single
+ * string here — quietly taking the resolution away from the card that owns it.
+ *
+ * `Omit` rather than the `NonCopyKey` list, because `items` means the opposite
+ * thing in `ScholarshipGroupData` (a list of copy) and in `ScholarshipsCardData`
+ * (a list of already-bilingual records). One page-wide list cannot say both.
+ */
+type ListCardSource = Omit<
+  Bilingual<ScholarshipsCardData, "href" | "website">,
+  "items" | "empty"
+> & {
+  items: ScholarshipItem[];
+  empty: NamespacedText;
+};
+
+/** The page bundle as it is written, with every string still language-tagged. */
+type PageSource = Omit<
+  Bilingual<ScholarshipsPageData, NonCopyKey>,
+  "list"
+> & { list: ListCardSource };
+
+/** The page minus the board card, which is resolved by its own helper. */
+type PageWithoutList = Omit<PageSource, "list">;
+
+/* ------------------------------------------------------------------ *
  * Sample content — only attached where it is known to be true         *
  * ------------------------------------------------------------------ */
 
@@ -218,247 +269,338 @@ const EMPTY_SCHOLARSHIPS: NamespacedText = {
   en: "This school has not published any scholarship yet — browse all scholarships or check the school's website.",
 };
 
-const ITC_HERO: ScholarshipsHeroData = {
+const ITC_HERO: Bilingual<ScholarshipsHeroData> = {
   icon: "GraduationCap",
   tone: "blue",
-  eyebrow: "ឱកាសសិក្សាបន្ត (SCHOLARSHIPS 2025)",
-  title: "ឱកាសកាត់បន្យកម្រិតសិក្សាសម្រាប់",
-  accent: "សិស្ឆ្នើមរបស់ ITC",
-  description:
-    "ITC ផ្តល់ឱកាសអាហារូបករណ៍ដ៏ច្រើនសម្រាប់និស្សិតដែលមានសមត្ថភាពខ្ពស់ ក្នុងការសិក្សាបន្តថ្នាក់បរិញ្ញាបត្រ និងអនុបណ្ឌិត។ យើងជឿជាក់ថា ការវិនិយោគលើការអប់រំគឺជាគន្លឹះសម្រាប់អនាគត។",
+  eyebrow: { kh: "ឱកាសសិក្សាបន្ត", en: "SCHOLARSHIPS 2025" },
+  title: {
+    kh: "ឱកាសកាត់បន្យកម្រិតសិក្សាសម្រាប់",
+    en: "Cutting-edge scholarship opportunities for",
+  },
+  accent: { kh: "សិស្ឆ្នើមរបស់ ITC", en: "ITC students" },
+  description: {
+    kh: "ITC ផ្តល់ឱកាសអាហារូបករណ៍ដ៏ច្រើនសម្រាប់និស្សិតដែលមានសមត្ថភាពខ្ពស់ ក្នុងការសិក្សាបន្តថ្នាក់បរិញ្ញាបត្រ និងអនុបណ្ឌិត។ យើងជឿជាក់ថា ការវិនិយោគលើការអប់រំគឺជាគន្លឹះសម្រាប់អនាគត។",
+    en: "ITC offers a wide range of scholarships for high-achieving students in undergraduate and graduate study. We believe investing in education is the key to the future.",
+  },
   stats: [
     {
       icon: "GraduationCap",
       tone: "blue",
-      label: "អាហារូបករណ",
-      value: "២០+",
-      caption: "Scholarships Available",
+      label: { kh: "អាហារូបករណ៍", en: "Scholarships" },
+      value: { kh: "២០+", en: "20+" },
+      caption: { kh: "អាហារូបករណ៍ដែលមាន", en: "Scholarships Available" },
     },
     {
       icon: "DollarSign",
       tone: "green",
-      label: "តម្លៃសរុប",
-      value: "$350,000+",
-      caption: "Total Scholarship Value",
+      label: { kh: "តម្លៃសរុប", en: "Total value" },
+      value: { kh: "$350,000+", en: "$350,000+" },
+      caption: { kh: "តម្លៃអាហារូបករណ៍សរុប", en: "Total Scholarship Value" },
     },
     {
       icon: "Percent",
       tone: "amber",
-      label: "ការគ្របដណ្តប់",
-      value: "80% & 95%",
-      caption: "Coverage Rate",
+      label: { kh: "ការគ្របដណ្តប់", en: "Coverage" },
+      value: { kh: "80% & 95%", en: "80% & 95%" },
+      caption: { kh: "អត្រាការគ្របដណ្តប់", en: "Coverage Rate" },
     },
   ],
 };
 
-const ITC_GOVERNMENT: ScholarshipProgramData = {
+const ITC_GOVERNMENT: Bilingual<ScholarshipProgramData, NonCopyKey> = {
   header: {
-    eyebrow:
-      "អាហារូបករណ៍រដឋាភិបាល & អាហារូបករណ៍សំខាន់ (Government & Flagship Scholarships)",
+    eyebrow: {
+      kh: "អាហារូបករណ៍រដឋាភិបាល & អាហារូបករណ៍សំខាន់",
+      en: "Government & Flagship Scholarships",
+    },
     icon: "Flag",
     tone: "blue",
-    badge: "រដ្ឋាភិបាល",
-    title: "អាហារូបករណរដ្ឋាភិបាលកម្ពុជា (MEYS) — Cambodia Government State Quota",
-    subtitle:
-      "អាហារូបករណ៍ពេញលេញសម្រាប់និស្ិតឆ្នើមរបស់ ITC ដើម្បីសិក្សានៅបរទេស (រុស្៊ី, ចិន, ជប៉ុន, កូរ៉េ, បារាំង)។",
+    badge: { kh: "រដ្ឋាភិបាល", en: "Government" },
+    title: {
+      kh: "អាហារូបករណ៍រដ្ឋាភិបាលកម្ពុជា (MEYS)",
+      en: "Cambodia Government State Quota (MEYS)",
+    },
+    subtitle: {
+      kh: "អាហារូបករណ៍ពេញលេញសម្រាប់និស្សិតឆ្នើមរបស់ ITC ដើម្បីសិក្សានៅបរទេស (រុស្៊ី, ចិន, ជប៉ុន, កូរ៉េ, បារាំង)។",
+      en: "Full scholarships for top ITC graduates to study abroad (Russia, China, Japan, Korea, Germany).",
+    },
   },
   stats: [
     {
       icon: "Star",
       tone: "amber",
-      label: "ពិន្ទុ GPA ឆ្នាំ",
-      value: "≥ 3.50",
-      caption: "Minimum GPA Requirement",
+      label: { kh: "ពិន្ទុ GPA ឆ្នាំ", en: "GPA score" },
+      value: { kh: "≥ 3.50", en: "≥ 3.50" },
+      caption: { kh: "តម្រូវការពិន្ទុ GPA អប្បរមា", en: "Minimum GPA Requirement" },
     },
     {
       icon: "Award",
       tone: "purple",
-      label: "ពិន្ទុប្ឡងជាតិ",
-      value: "≥ 85%",
-      caption: "National Exam Score",
+      label: { kh: "ពិន្ទុប្ឡងជាតិ", en: "National exam" },
+      value: { kh: "≥ 85%", en: "≥ 85%" },
+      caption: { kh: "ពិន្ទុប្រឡងជាតិ", en: "National Exam Score" },
     },
     {
       icon: "Globe",
       tone: "blue",
-      label: "ចំណាត់ថ្នាក់ ITC",
-      value: "Top 10%",
-      caption: "ITC Class Ranking",
+      label: { kh: "ចំណាត់ថ្នាក់ ITC", en: "ITC class rank" },
+      value: { kh: "Top 10%", en: "Top 10%" },
+      caption: { kh: "ចំណាត់ថ្នាក់ ITC", en: "ITC Class Ranking" },
     },
   ],
   panels: [
     {
       tone: "blue",
-      title: "អត្ថបរយោជន៍ (Benefits):",
+      title: { kh: "អត្ថបរយោជន៍", en: "Benefits" },
       marker: "check",
       layout: "grid",
       items: [
-        { title: "រយៈពេលពេញ ឆ្នាំ", caption: "Full 5 Years Coverage" },
-        { title: "ប្រាក់ខែប្រចាំខែ (Stipend)", caption: "Monthly Allowance" },
-        { title: "ការធ្វើដំណើរអន្តរជាតិ", caption: "International Trip" },
+        {
+          title: { kh: "រយៈពេលពេញ ៥ ឆ្នាំ", en: "Full 5 years" },
+          caption: { kh: "គ្របដណ្តប់ទាំងរយៈពេល", en: "Full 5 Years Coverage" },
+        },
+        {
+          title: { kh: "ប្រាក់ខែប្រចាំខែ", en: "Monthly allowance" },
+          caption: { kh: "ប្រាក់ខែប្រចាំខែ", en: "Monthly Allowance" },
+        },
+        {
+          title: { kh: "ការធ្វើដំណើរអន្តរជាតិ", en: "International trip" },
+          caption: { kh: "ការធ្វើដំណើរអន្តរជាតិ", en: "International Trip" },
+        },
       ],
     },
     {
       tone: "slate",
       accent: "blue",
       marker: "dot",
-      title: "លក្ខខណ្ឌសិទ្ធទទួលបាន (Eligibility Criteria):",
+      title: { kh: "លក្ខខណ្ឌសិទ្ធទទួលបាន", en: "Eligibility Criteria" },
       items: [
         {
-          title:
-            "និស្ិតដែលកំពុងសិកសានៅ ITC ក្នុងឆ្នាំទី ៣ ឬទី ៤ នៃកម្មវិីបរិញ្ញាបត្រ",
+          title: {
+            kh: "និស្សិតដែលកំពុងសិកសានៅ ITC ក្នុងឆ្នាំទី ៣ ឬទី ៤ នៃកម្មវិីបរិញ្ញាបត្រ",
+            en: "Students currently studying at ITC in year 3 or 4 of the program",
+          },
         },
-        { title: "មានពិន្ទុ GPA ≥ 3.50 និងពិន្ទុប្ឡងជាតិ ≥ 85%" },
-        { title: "មានសមត្ភាពភាសា (អង់គ្លេស ឬភាសាប្រទេសគោលដៅ)" },
-        { title: "មានសកមមភាពស្ម័គ្រចិតត និងសកម្មភាពសង្គម" },
+        {
+          title: {
+            kh: "មានពិន្ទុ GPA ≥ 3.50 និងពិន្ទុប្ឡងជាតិ ≥ 85%",
+            en: "GPA ≥ 3.50 and national exam score ≥ 85%",
+          },
+        },
+        {
+          title: {
+            kh: "មានសមត្ភាពភាសា (អង់គ្លេស ឬភាសាប្រទេសគោលដៅ)",
+            en: "Language proficiency (English or the target country's language)",
+          },
+        },
+        {
+          title: {
+            kh: "មានសកមមភាពស្ម័គ្រចិតត និងសកម្មភាពសង្គម",
+            en: "Good conduct and community involvement",
+          },
+        },
       ],
     },
   ],
-  deadline: "ផុតកំណត់: ៣០ កញ្ញា ២០២៥",
-  action: { label: "ដាក់ពាក្យ (Apply Now)" },
+  deadline: {
+    kh: "ផុតកំណត់៖ ៣០ កញ្ញា ២០២៥",
+    en: "Deadline: September 30, 2025",
+  },
+  action: { label: { kh: "ដាក់ពាក្យ", en: "Apply Now" } },
 };
 
-const ITC_TECH: ScholarshipProgramData = {
+const ITC_TECH: Bilingual<ScholarshipProgramData, NonCopyKey> = {
   header: {
-    eyebrow: "អាហារូបករណ៍ឧស្សាហកម្ម & បច្ចេកវិទ្យា (Industry & Tech Scholarships)",
+    eyebrow: {
+      kh: "អាហារូបករណ៍ឧស្សាហកម្ម & បច្ចេកវិទ្យា",
+      en: "Industry & Tech Scholarships",
+    },
     icon: "Cpu",
     tone: "purple",
-    badge: "MPTC",
-    title: "អាហារូបករណ៍ទេពកោសល្យឌីជីថល (Tech Digital Talent — MPTC)",
-    subtitle:
-      "អាហារូបករណ៍ពីក្រសួងប្រៃសណីយ៍ និងទូរគមនាគមន៍ (MPTC) សមរាប់និស្សិតផ្នែកបច្ចេកវិទ្យា និងទូរគមនាគមន៍។",
+    badge: { kh: "MPTC", en: "MPTC" },
+    title: {
+      kh: "អាហារូបករណ៍ទេពកោសល្យឌីជីថល (MPTC)",
+      en: "Tech Digital Talent Scholarship (MPTC)",
+    },
+    subtitle: {
+      kh: "អាហារូបករណ៍ពីក្រសួងប្រៃសណីយ៍ និងទូរគមនាគមន៍ (MPTC) សម្រាប់និស្សិតផ្នែកបច្ចេកវិទ្យា និងទូរគមនាគមន៍។",
+      en: "Scholarships from the Ministry of Posts and Telecommunications (MPTC) for students in technology and telecoms.",
+    },
   },
   stats: [
     {
       tone: "purple",
-      label: "អត្ប្រយោជន",
-      value: "100% Fee + $700/m",
-      caption: "Full Tuition + Monthly Stipend",
+      label: { kh: "អត្ប្រយោជន", en: "Coverage" },
+      value: { kh: "100% ថ្លៃ + $700/ខែ", en: "100% fee + $700/m" },
+      caption: {
+        kh: "ថ្លៃសិក្សាទាំងអស់ + ប្រាក់ខែប្រចាំខែ",
+        en: "Full Tuition + Monthly Stipend",
+      },
     },
     {
       tone: "purple",
-      label: "ផ្ែកសិក្សា",
+      label: { kh: "ផ្នែកសិក្សា", en: "Field of study" },
       chips: [
-        { label: "GSC", tone: "blue" },
-        { label: "AI", tone: "green" },
-        { label: "Telecom", tone: "purple" },
+        { label: { kh: "GSC", en: "GSC" }, tone: "blue" },
+        { label: { kh: "AI", en: "AI" }, tone: "green" },
+        { label: { kh: "ទូរគមនាគមន៍", en: "Telecom" }, tone: "purple" },
       ],
-      caption: "Computer Science & Cybersecurity",
+      caption: {
+        kh: "វិទ្យាសាស្ត្រកុំព្យូទ័រ & សន្តរកម្មណើធតាបណ្ណ",
+        en: "Computer Science & Cybersecurity",
+      },
     },
     {
       tone: "purple",
-      label: "រយៈពេល",
-      value: "2-4 ឆ្នាំ",
-      caption: "Duration",
+      label: { kh: "រយៈពេល", en: "Duration" },
+      value: { kh: "២-៤ ឆ្នាំ", en: "2-4 years" },
+      caption: { kh: "រយៈពេល", en: "Duration" },
     },
   ],
   panels: [
     {
       tone: "purple",
       marker: "check",
-      title: "លក្ខខណឌសិទ្ធិទទួលបាន (Eligibility):",
+      title: { kh: "លក្ខខណ៌សិទ្ធទទួលបាន", en: "Eligibility" },
       items: [
-        { title: "និស្សិត ITC ផ្នែក Computer Science, AI, ឬ Telecom" },
-        { title: "GPA ≥ 3.20 និងមានគម្រោងស្រាវជ្រាវ" },
-        { title: "មានបទពិសោធន៍ផ្នែកបច្ចេកវិទ្យា (Coding, Projects)" },
+        {
+          title: {
+            kh: "និស្សិត ITC ផ្នែកវិទ្យាសាស្ត្រកុំព្យូទ័រ, AI, ឬទូរគមនាគមន៍",
+            en: "ITC students in Computer Science, AI or Telecom",
+          },
+        },
+        {
+          title: {
+            kh: "GPA ≥ 3.20 និងមានគម្រោងស្រាវជ្រាវ",
+            en: "GPA ≥ 3.20 and a research project",
+          },
+        },
+        {
+          title: {
+            kh: "មានបទពិសោធន៍ផ្នែកបច្ចេកវិទ្យា (Coding, Projects)",
+            en: "Technology experience (coding, projects)",
+          },
+        },
       ],
     },
   ],
-  deadline: "ផុតកំណត់: ១៥ តុលា ២០២៥",
-  action: { label: "ដាក់ពាក្យ (Apply)" },
+  deadline: {
+    kh: "ផុតកំណត់៖ ១៥ តុលា ២០២៥",
+    en: "Deadline: October 15, 2025",
+  },
+  action: { label: { kh: "ដាក់ពាក្យ", en: "Apply" } },
 };
 
-const ITC_INSTITUTIONAL: ScholarshipProgramData = {
+const ITC_INSTITUTIONAL: Bilingual<ScholarshipProgramData, NonCopyKey> = {
   header: {
-    eyebrow: "អាហារូបករណ៍ស្ថាប័ន & ដៃគូ (Institutional & Partner Grants)",
+    eyebrow: {
+      kh: "អាហារូបករណ៍ស្ថាប័ន & ដៃគូ",
+      en: "Institutional & Partner Grants",
+    },
     icon: "Building2",
     tone: "green",
-    badge: "Partner",
-    title: "អាហារូបករណ៍ស្ថាប័ន និងដៃគូអន្តរជាតិ (Institutional & Partner Grants)",
-    subtitle:
-      "អាហារូបករណ៍ពីអង្គការអន្តរជាតិ និងដៃគូអភិវឌ្ន៍ រួមមាន UNESCO, JICA, និងមូលនិធិសិស្ ITC។",
+    badge: { kh: "ដៃគូ", en: "Partner" },
+    title: {
+      kh: "អាហារូបករណ៍ស្ថាប័ន និងដៃគូអន្តរជាតិ",
+      en: "Institutional & Partner Grants",
+    },
+    subtitle: {
+      kh: "អាហារូបករណ៍ពីអង្គការអន្តរជាតិ និងដៃគូអភិវឌ្ន៍ រួមមាន UNESCO, JICA, និងមូលនិធិសិស្ ITC។",
+      en: "Scholarships from international organisations and development partners, including UNESCO, JICA and the ITC Foundation.",
+    },
   },
   groups: [
     {
       icon: "Globe",
       tone: "blue",
-      title: "UNESCO & JICA",
-      subtitle: "International Partners",
+      title: { kh: "UNESCO & JICA", en: "UNESCO & JICA" },
+      subtitle: { kh: "ដៃគូអន្តរជាតិ", en: "International Partners" },
       items: [
-        "អាហារូបករណ៍សម្ាប់ស្ត្រីក្នុងវិស័យ STEM",
-        "គម្រោងស្រាវជ្រាវរួម",
-        "ការផ្លាស់ប្តូរនិស្ិតអន្តរជាតិ",
+        { kh: "អាហារូបករណ៍សម្រាប់ស្ត្រីក្នុងវិស័យ STEM", en: "Scholarships for women in STEM" },
+        { kh: "គម្រោងស្រាវជ្រាវរួម", en: "Joint research programmes" },
+        { kh: "ការផ្លាស់ប្តូរនិស្ិតអន្តរជាតិ", en: "International student exchange" },
       ],
-      action: { label: "ដាក់ពាក្យ (Apply)" },
+      action: { label: { kh: "ដាក់ពាក្យ", en: "Apply" } },
     },
     {
       icon: "Heart",
       tone: "red",
-      title: "ITC Student Welfare Fund",
-      subtitle: "Internal Support",
+      title: { kh: "មូលនិធិសិស្ដិសិត ITC", en: "ITC Student Welfare Fund" },
+      subtitle: { kh: "ជំនួយផ្ទៃក", en: "Internal Support" },
       items: [
-        "ជំនួយហិរញ្ញវត្ថុសម្រាប់និសសិតខ្វះខាត",
-        "អាហារូបករណពាក់កណ្តាល (50%)",
-        "គាំទ្រសកម្មភាពសិក្សាបន្ថែម",
+        { kh: "ជំនួយហិរញ្ញវត្ថុសម្រាប់និសសិតខ្វះខាត", en: "Financial aid for students in difficulty" },
+        { kh: "អាហារូបករណពាក់កណ្តាល (50%)", en: "50% tuition reduction" },
+        { kh: "គាំទ្រសកម្មភាពសិក្សាបន្ថែម", en: "Support for extracurricular activities" },
       ],
-      action: { label: "ដាក់ពាក្យ (Apply)" },
+      action: { label: { kh: "ដាក់ពាក្យ", en: "Apply" } },
     },
   ],
   notice: {
     icon: "Calendar",
-    title: "ចំណាំ:",
-    text: "អាហារូបករណ៍ស្ាប័នមានផុតកំណត់ផ្សេងៗគ្នា។ សូមពិនិត្យមើលលម្អិតសម្រាប់កម្មវិីនីមួយៗ។",
+    title: { kh: "ចំណាំ៖", en: "Note:" },
+    text: {
+      kh: "អាហារូបករណ៍ស្ាប័នមានផុតកំណត់ផ្សេងៗគ្នា។ សូមពិនិត្យមើលលម្អិតសម្រាប់កម្មវិីនីមួយៗ។",
+      en: "Institutional scholarships have different deadlines. Please check the details for each programme.",
+    },
   },
 };
 
-const ITC_ALLOCATION: DepartmentAllocationData = {
+const ITC_ALLOCATION: Bilingual<DepartmentAllocationData, NonCopyKey> = {
   header: {
-    eyebrow:
-      "ការបែងចែកអាហារូបករណតាមនាយកដ្ឋាន (Scholarship Allocation by Department)",
+    eyebrow: {
+      kh: "ការបែងចែកអាហារូបករណ៍តាមនាយកដ្ឋាន",
+      en: "Scholarship Allocation by Department",
+    },
     icon: "GraduationCap",
     tone: "slate",
-    badge: "សរុប: {total} ទីតាំង",
-    title: "ការបែងចែកអាហារូបករណ៍តាមនាយកដ្ឋាន (Scholarship Allocation by Department)",
-    subtitle:
-      "ចំនួនអាហារូបករណ៍ដែលមានសម្រាប់នាយកដ្ឋាននីមួយក្នុងឆ្នាំសិក្សា ២០២៥-២០២៦",
+    badge: { kh: "សរុប៖ {total} ទីតាំង", en: "Total: {total} seats" },
+    title: {
+      kh: "ការបែងចែកអាហារូបករណ៍តាមនាយកដ្ឋាន",
+      en: "Scholarship Allocation by Department",
+    },
+    subtitle: {
+      kh: "ចំនួនអាហារូបករណ៍ដែលមានសម្រាប់នាយកដ្ឋាននីមួយក្នុងឆ្នាំសិក្សា ២០២៥-២០២៦",
+      en: "Number of scholarships available for each department in the 2025-2026 academic year",
+    },
   },
   departments: [
     {
-      name: "វិស្កម្មកុំព្យូទ័រ និងព័ត៌មានវិទ្ា",
+      name: { kh: "វិស្កម្មកុំព្យូទ័រ និងព័ត៌មានវិទ្ា", en: "Computer & Information Engineering" },
       nameEn: "Computer & Information Engineering",
       code: "CIE",
       count: 8,
       tone: "blue",
     },
     {
-      name: "វិស្វកម្មអគ្គិសនី",
+      name: { kh: "វិស្វកម្មអគ្គិសនី", en: "Electrical Engineering" },
       nameEn: "Electrical Engineering",
       code: "EE",
       count: 6,
       tone: "amber",
     },
     {
-      name: "វិស្វកម្មសំណង់",
+      name: { kh: "វិស្វកម្មសំណង់", en: "Civil Engineering" },
       nameEn: "Civil Engineering",
       code: "CE",
       count: 5,
       tone: "orange",
     },
     {
-      name: "វិស្វកម្គីមី",
+      name: { kh: "វិស្វកម្គីមី", en: "Chemical Engineering" },
       nameEn: "Chemical Engineering",
       code: "ChE",
       count: 4,
       tone: "green",
     },
     {
-      name: "វិស្វកមមមេកានិច",
+      name: { kh: "វិស្វកម្មមេកានិច", en: "Mechanical Engineering" },
       nameEn: "Mechanical Engineering",
       code: "ME",
       count: 5,
       tone: "purple",
     },
     {
-      name: "វិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា",
+      name: { kh: "វិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា", en: "Science & Technology" },
       nameEn: "Science & Technology",
       code: "ST",
       count: 3,
@@ -466,61 +608,77 @@ const ITC_ALLOCATION: DepartmentAllocationData = {
     },
   ],
   summary: {
-    label: "សរុបអាហារូបករណ៍ទាំងអស់:",
-    unit: "ទីតាំង",
-    caption: "Total Scholarship Positions Available",
+    label: { kh: "សរុបអាហារូបករណ៍ទាំងអស់៖", en: "Total scholarships:" },
+    unit: { kh: "ទីតាំង", en: "seats" },
+    caption: {
+      kh: "ចំនួនទីតាំងអាហារូបករណ៍ដែលមាន",
+      en: "Total Scholarship Positions Available",
+    },
   },
 };
 
-const ITC_HOW_TO_APPLY: HowToApplyData = {
+const ITC_HOW_TO_APPLY: Bilingual<HowToApplyData, NonCopyKey> = {
   header: {
     icon: "FileText",
     tone: "blue",
-    title: "របៀបដាក់ពាក្យសុំ (How to Apply)",
+    title: { kh: "របៀបដាក់ពាក្យសុំ", en: "How to Apply" },
   },
   steps: [
     {
       number: 1,
-      title: "បំពេញពាក្យសុំអនឡាញ",
-      subtitle: "Online Application",
-      description: "ចុះឈ្មោះ និងបំពេញទម្រង់ពាក្យសុំនៅលើ ITC Portal",
+      title: { kh: "បំពេញពាក្យសុំអនឡាញ", en: "Complete the online application" },
+      subtitle: { kh: "ពាក្យសុំអនឡាញ", en: "Online Application" },
+      description: {
+        kh: "ចុះឈ្មោះ និងបំពេញទម្រង់ពាក្យសុំនៅលើ ITC Portal",
+        en: "Register and complete the application form on the ITC Portal",
+      },
     },
     {
       number: 2,
-      title: "ដាក់ឯកសារភជាប់",
-      subtitle: "Upload Documents",
-      description: "ផ្ទុកឡើង Transcript, GPA, និងឯកសារផ្សេង",
+      title: { kh: "ដាក់ឯកសារភជាប់", en: "Upload documents" },
+      subtitle: { kh: "ដាក់ឯកសារ", en: "Upload Documents" },
+      description: {
+        kh: "ផ្ទុកឡើង Transcript, GPA, និងឯកសារផ្សេង",
+        en: "Upload your transcript, GPA and other documents",
+      },
     },
     {
       number: 3,
-      title: "រង់ចាំការពិនិត្",
-      subtitle: "Review Process",
-      description:
-        "គណៈកម្ការនឹងពិនិត្យពាក្យសុំក្នុងរយៈពេល ២-៤ សប្ាហ៍",
+      title: { kh: "រង់ចាំការពិនិត្យ", en: "Wait for review" },
+      subtitle: { kh: "ការពិនិត្យ", en: "Review Process" },
+      description: {
+        kh: "គណៈកម្ការនឹងពិនិត្យពាក្យសុំក្នុងរយៈពេល ២-៤ សប្ាហ៍",
+        en: "The committee will review the application within 2-4 weeks",
+      },
     },
     {
       number: 4,
-      title: "ទទួលលទ្ធល",
-      subtitle: "Get Results",
-      description: "លទ្ធលនឹងត្រូវផ្សាយតាម ITC Portal និង Email",
+      title: { kh: "ទទួលលទ្ធល", en: "Get results" },
+      subtitle: { kh: "ទទួលលទ្ធល", en: "Get Results" },
+      description: {
+        kh: "លទ្ធលនឹងត្រូវផ្សាយតាម ITC Portal និង Email",
+        en: "Results will be announced on the ITC Portal and by email",
+      },
     },
   ],
   download: {
-    title: "ទាញយកឯកសារណែនាំ (Download Guide)",
-    caption:
-      "ឯកសារ PDF ពេញលេញអំពីដំណើរការដាក់ពាក្យ និងលក្ខខណ្ឌ",
+    title: { kh: "ទាញយកឯកសារណែនាំ", en: "Download Guide" },
+    caption: {
+      kh: "ឯកសារ PDF ពេញលេញអំពីដំណើរការដាក់ពាក្យ និងលក្ខខណ្ឌ",
+      en: "A full PDF guide to the application process and the conditions",
+    },
     file: "ITC_Scholarship_Guide_2025.pdf",
   },
   contact: {
-    title: "ទំនាក់ទំនងសម្រាប់សំណួរ (Contact for Questions)",
+    title: { kh: "ទំនាក់ទំនងសម្រាប់សំណួរ", en: "Contact for Questions" },
     rows: [
-      { icon: "Phone", text: "+855 (0) 23 880 370" },
-      { icon: "Mail", text: "scholarship@itc.edu.kh" },
-      { icon: "Clock", text: "ច័នទ - សុក្រ: 8:00 - 17:00" },
+      { icon: "Phone", text: { kh: "+855 (0) 23 880 370", en: "+855 (0) 23 880 370" } },
+      { icon: "Mail", text: { kh: "scholarship@itc.edu.kh", en: "scholarship@itc.edu.kh" } },
+      { icon: "Clock", text: { kh: "ច័នទ - សុក្រ៖ 8:00 - 17:00", en: "Mon - Fri: 8:00 - 17:00" } },
     ],
   },
   action: {
-    label: "ចាប់ផ្តើមដាក់ពាក្យឥឡូវ (Start Application)",
+    label: { kh: "ចាប់ផ្តើមដាក់ពាក្យឥឡូវ", en: "Start Application" },
     tone: "green",
   },
 };
@@ -537,8 +695,9 @@ const ITC_HOW_TO_APPLY: HowToApplyData = {
  * empty state with a link to the global board instead of invented awards.
  */
 function getScholarshipsCardData(
-  university: University
-): ScholarshipsCardData {
+  university: University,
+  lang: Lang
+): ListCardSource {
   const site = university.website
     ? university.website.startsWith("http")
       ? university.website
@@ -549,14 +708,16 @@ function getScholarshipsCardData(
 
   return {
     header: {
-      title: "អាហារូបករណ៍",
-      subtitle: "(Scholarships)",
-      badge: items.length > 0 ? `${items.length} Available` : undefined,
+      title: { kh: "អាហារូបករណ៍", en: "Scholarships" },
+      badge:
+        items.length > 0
+          ? { [lang]: `${items.length} Available` }
+          : undefined,
     },
     items,
     empty: EMPTY_SCHOLARSHIPS,
     board: {
-      label: "អាហារូបករណ៍ទាំងអស់ (All scholarships)",
+      label: { kh: "អាហារូបករណ៍ទាំងអស់", en: "All scholarships" },
       href: "/scholarships",
     },
     website: site,
@@ -570,32 +731,59 @@ function getScholarshipsCardData(
  */
 function buildHero(
   university: University,
-  published: number
-): ScholarshipsHeroData {
+  published: number,
+  lang: Lang
+): Bilingual<ScholarshipsHeroData> {
   return {
     icon: "Award",
     tone: "blue",
-    eyebrow: "ឱកាសសិក្សាបន្ត (SCHOLARSHIPS)",
-    title: "អាហារូបករណ៍សម្រាប់",
-    accent: university.name.kh,
-    description:
-      "សូមពិនិត្យមើលអាហារូបករណ៍ដែលសាលាបានចុះផ្សាយខាងក្រោម ហើយទាក់ទងជាមួយការិយាល័យសាលាដើម្បីទទួលបានព័ត៌មានលម្អិត។",
+    eyebrow: { kh: "ឱកាសសិក្សាបន្ត", en: "SCHOLARSHIPS" },
+    title: { kh: "អាហារូបករណ៍សម្រាប់", en: "Scholarships for" },
+    accent: { [lang]: resolveText(university.name, lang) },
+    description: {
+      kh: "សូមពិនិត្យមើលអាហារូបករណ៍ដែលសាលាបានចុះផ្សាយខាងក្រោម ហើយទាក់ទងជាមួយការិយាល័យសាលាដើម្បីទទួលបានព័ត៌មានលម្អិត។",
+      en: "Browse the scholarships this school has published below, or contact the school's office for details.",
+    },
     stats: [
       {
         icon: "Award",
         tone: "blue",
-        label: "អាហារូបករណ៍ដែលបានចុះផ្សាយ",
-        value: `${published}`,
-        caption: "Published scholarships",
+        label: { kh: "អាហារូបករណ៍ដែលបានចុះផ្សាយ", en: "Published scholarships" },
+        value: { [lang]: `${published}` },
+        caption: { kh: "អាហារូបករណ៍ដែលបានចុះផ្សាយ", en: "Published scholarships" },
       },
       {
         icon: "Building2",
         tone: "slate",
-        label: "នាយកដ្ឋានសិក្សា",
-        value: `${university.departments.length}`,
-        caption: "Departments",
+        label: { kh: "នាយកដ្ឋានសិក្សា", en: "Departments" },
+        value: { [lang]: `${university.departments.length}` },
+        caption: { kh: "នាយកដ្ឋានសិក្សា", en: "Departments" },
       },
     ],
+  };
+}
+
+/**
+ * Resolves the board card's copy while leaving its two already-bilingual
+ * fields alone.
+ *
+ * This cannot be left to the one {@link resolveBilingual} call the rest of the
+ * page uses. `items` and `empty` hold `NamespacedText`, and the walk reads any
+ * `{ kh, en }` object as a `PageCopy` — so it would resolve them a second time,
+ * on the client this time, turning each record into a single string and
+ * breaking `ScholarshipListCard`. They are taken out of the walked value and
+ * put back afterwards rather than marked, because the walk is structural and a
+ * marker here would have to be honoured everywhere it recurses.
+ */
+function resolveListCard(
+  list: ListCardSource,
+  lang: Lang
+): ScholarshipsCardData {
+  const { items, empty, ...copy } = list;
+  return {
+    ...(resolveBilingual(copy, lang) as Omit<ScholarshipsCardData, "items" | "empty">),
+    items,
+    empty,
   };
 }
 
@@ -607,25 +795,30 @@ function buildHero(
  * apply" rail are the ITC catalogue and stay `undefined`/empty for every other
  * school instead of inventing deadlines, contacts and quotas, the same rule
  * the admissions tab applies to its sample sections.
+ *
+ * Copy is authored per language and resolved here, once, so the eight card
+ * components keep receiving plain strings — the alternative, threading `lang`
+ * through each of them, would have put the language switch in eight more files
+ * for no gain.
  */
 export function getScholarshipsPageData(
-  university: University
+  university: University,
+  lang: Lang
 ): ScholarshipsPageData {
-  const list = getScholarshipsCardData(university);
+  const list = getScholarshipsCardData(university, lang);
 
-  if (university.id !== "itc") {
-    return {
-      hero: buildHero(university, list.items.length),
-      list,
-      programs: [],
-    };
-  }
+  const page: PageWithoutList =
+    university.id !== "itc"
+      ? { hero: buildHero(university, list.items.length, lang), programs: [] }
+      : {
+          hero: ITC_HERO,
+          programs: [ITC_GOVERNMENT, ITC_TECH, ITC_INSTITUTIONAL],
+          allocation: ITC_ALLOCATION,
+          howToApply: ITC_HOW_TO_APPLY,
+        };
 
   return {
-    hero: ITC_HERO,
-    list,
-    programs: [ITC_GOVERNMENT, ITC_TECH, ITC_INSTITUTIONAL],
-    allocation: ITC_ALLOCATION,
-    howToApply: ITC_HOW_TO_APPLY,
+    ...(resolveBilingual(page, lang) as Omit<ScholarshipsPageData, "list">),
+    list: resolveListCard(list, lang),
   };
 }

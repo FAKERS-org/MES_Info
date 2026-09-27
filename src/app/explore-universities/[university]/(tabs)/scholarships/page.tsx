@@ -7,6 +7,7 @@ import { ScholarshipsHero } from "@/components/university/scholarships/scholarsh
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getScholarshipsPageData } from "@/data/scholarships-page";
 import { universities } from "@/data/universities";
+import { readLang } from "@/lib/language.server";
 
 interface ScholarshipsPageProps {
   params: Promise<{ university: string }>;
@@ -27,7 +28,7 @@ export default async function ScholarshipsPage({
 
   if (!university) notFound();
 
-  const data = getScholarshipsPageData(university);
+  const data = getScholarshipsPageData(university, await readLang());
 
   return (
     <div className="space-y-6 py-4 md:py-8">

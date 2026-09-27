@@ -12,6 +12,7 @@ import { RequiredDocuments } from "@/components/university/admissions/required-d
 import { RequirementsCard } from "@/components/university/admissions/requirements-card";
 import { ResourceHub } from "@/components/university/admissions/resource-hub";
 import { cn } from "@/lib/utils";
+import { readLang } from "@/lib/language.server";
 import type { AdmissionsSectionKey } from "@/data/admissions-page";
 import { getAdmissionsPageData } from "@/data/admissions-page";
 import { findUniversity } from "@/data/universities-source";
@@ -31,6 +32,11 @@ interface AdmissionsPageProps {
  * says the section is unpublished; a slot the school never had (exam papers
  * for a school that admits without an exam) is left out entirely. The grid
  * drops to one column when the rail has nothing to show.
+ *
+ * The reader's language is read from the cookie here rather than from a client
+ * context, because these cards are Server Components: the data is resolved
+ * before render, so the markup that arrives already says one language and
+ * there is no "both at once" state to flash.
  */
 export default async function AdmissionsPage({ params }: AdmissionsPageProps) {
   const { university: id } = await params;
@@ -38,7 +44,7 @@ export default async function AdmissionsPage({ params }: AdmissionsPageProps) {
 
   if (!university) notFound();
 
-  const data = getAdmissionsPageData(university);
+  const data = getAdmissionsPageData(university, await readLang());
   const pending = new Map(data.pending.map(section => [section.key, section]));
 
   /* Each slot shows its card when the school published it, says so when it did

@@ -4,9 +4,18 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { DetailCard } from "@/components/shared/detail-card";
 import { Icon } from "@/components/shared/icon-renderer";
+import { useLanguage } from "@/lib/i18n";
 import type { FacultyCardData } from "@/data/university-page";
 
 type Course = FacultyCardData["groups"][number]["courses"][number];
+
+/** Widget wording the card owns, in both languages. */
+const COPY = {
+  duration: { kh: "រយៈពេល", en: "Duration" },
+  perYear: { kh: "/ ឆ្នាំ", en: "/ year" },
+  details: { kh: "ព័ត៌មានលម្អិត", en: "Details" },
+  programs: { kh: "ជំនាញ", en: "Programs" },
+} as const;
 
 const CourseItem = ({
   titleKh,
@@ -21,11 +30,19 @@ const CourseItem = ({
   seats,
   cta,
   deptHref,
-}: Course & { deptHref: string }) => (
+}: Course & { deptHref: string }) => {
+  const { lang } = useLanguage();
+  /* The heading follows the reader's language and the other name becomes the
+     sub-line, rather than pinning Khmer as the heading for everyone — which is
+     what left an English reader looking at a Khmer course list. */
+  const heading = lang === "en" ? titleEn : titleKh;
+  const subheading = lang === "en" ? titleKh : titleEn;
+
+  return (
   <div className="flex flex-col justify-between gap-4 border-b border-gray-100 p-5 last:border-0 sm:flex-row sm:items-center">
     <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="font-semibold text-gray-900 font-sans">{titleKh}</h3>
+        <h3 className="font-semibold text-gray-900 font-sans">{heading}</h3>
         {/* What the row is at its own school: readers should not have to parse
             the official title to know it is a faculty, a department or a
             foundation year. */}
@@ -44,7 +61,9 @@ const CourseItem = ({
           </span>
         )}
       </div>
-      <p className="text-sm text-gray-500">{titleEn}</p>
+      {subheading !== heading && (
+        <p className="text-sm text-gray-500">{subheading}</p>
+      )}
 
       {/* Non-degree entries (foundation year) explain themselves in one line. */}
       {note && (
@@ -63,7 +82,7 @@ const CourseItem = ({
           )}
           {years && (
             <span className="flex items-center gap-1">
-              <Icon name="Clock" className="h-3.5 w-3.5" /> រយៈពេល {years}
+              <Icon name="Clock" className="h-3.5 w-3.5" /> {COPY.duration[lang]} {years}
             </span>
           )}
         </div>
@@ -76,7 +95,7 @@ const CourseItem = ({
         <div className="text-right">
           {price && (
             <div className="font-semibold text-gray-900 text-lg">
-              {price} <span className="text-xs font-normal text-gray-500">/ ឆ្នាំ</span>
+              {price} <span className="text-xs font-normal text-gray-500">{COPY.perYear[lang]}</span>
             </div>
           )}
           {seats && <div className="text-[11px] text-gray-400">{seats}</div>}
@@ -86,11 +105,12 @@ const CourseItem = ({
         href={deptHref}
         className="flex items-center gap-1 rounded bg-[#F0F4F8] px-3 py-1.5 text-xs font-semibold text-[#1E3A8A] hover:bg-[#E2E8F0] transition-colors"
       >
-        {cta || "ព័ត៌មានលម្អិត"} <Icon name="ChevronRight" className="h-3 w-3" />
+        {cta || COPY.details[lang]} <Icon name="ChevronRight" className="h-3 w-3" />
       </Link>
     </div>
   </div>
-);
+  );
+};
 
 export interface FacultyCardProps {
   data: FacultyCardData;
@@ -98,6 +118,7 @@ export interface FacultyCardProps {
 
 export function FacultyCard({ data }: FacultyCardProps) {
   const params = useParams<{ university: string }>();
+  const { lang } = useLanguage();
 
   return (
     <DetailCard
@@ -133,7 +154,7 @@ export function FacultyCard({ data }: FacultyCardProps) {
                 {group.title}
               </span>
               <span className="shrink-0 text-xs text-gray-400">
-                {group.courses.length} ជំនាញ
+                {group.courses.length} {COPY.programs[lang]}
               </span>
             </div>
           )}

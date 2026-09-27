@@ -1,6 +1,9 @@
 # dependencies (bun install)
 node_modules
 .next
+# `NEXT_DIST_DIR=.next-verify next build` writes here so a verification build
+# does not overwrite the `.next` a running `next dev` is serving from.
+.next-*
 
 # output
 out

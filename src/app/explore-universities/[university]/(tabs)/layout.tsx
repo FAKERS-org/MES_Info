@@ -4,6 +4,7 @@ import UniversityIdCard from "@/components/university/university-id-card";
 import UniversityMenu from "@/components/university/university-menu";
 import { getUniversityPageData } from "@/data/university-page";
 import { findUniversity } from "@/data/universities-source";
+import { readLang } from "@/lib/language.server";
 
 interface UniversityTabsLayoutProps {
   params: Promise<{ university: string }>;
@@ -36,7 +37,7 @@ export default async function UniversityTabsLayout({
 
   if (!university) notFound();
 
-  const { hero, menu } = getUniversityPageData(university);
+  const { hero, menu } = getUniversityPageData(university, await readLang());
 
   return (
     <div className="space-y-8">
