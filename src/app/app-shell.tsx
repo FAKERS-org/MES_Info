@@ -66,10 +66,16 @@ function ShellChrome({ children }: { children: ReactNode }) {
             />
 
             <div className="flex min-w-0 flex-1 flex-col bg-muted/40 dark:bg-background">
-                <main className="flex h-screen flex-1 flex-col gap-4 overflow-y-auto p-4 md:p-6">
-                    <TopBar onOpenSidebar={() => setSidebarOpen(o => !o)} isDark={isDark} onThemeToggle={toggleTheme} />
-                    <Breadcrumbs />
-                    <div className="flex-1">{children}</div>
+                <main className="flex h-screen flex-1 flex-col gap-4 overflow-y-auto pt-4 md:pt-6">
+                    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+                        <TopBar onOpenSidebar={() => setSidebarOpen(o => !o)} isDark={isDark} onThemeToggle={toggleTheme} />
+                        <div className="mt-4">
+                            <Breadcrumbs />
+                        </div>
+                    </div>
+                    <div className="w-full max-w-7xl mx-auto flex-1 px-4 md:px-6 lg:px-8">
+                        {children}
+                    </div>
                 </main>
             </div>
         </div>
