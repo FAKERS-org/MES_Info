@@ -46,7 +46,7 @@ export default function CareerPathCard({ data, className }: CareerPathCardProps)
             <div>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-slate-800 text-sm">
-                  {career.title}
+                  {resolveText(career.title, lang)}
                 </h3>
                 <Icon name={career.icon} className="w-5 h-5 text-blue-500" />
               </div>
@@ -55,8 +55,8 @@ export default function CareerPathCard({ data, className }: CareerPathCardProps)
               </p>
             </div>
             <div className="flex justify-between items-center border-t border-slate-200 pt-3 mt-auto">
-              <span className="text-xs font-semibold text-slate-500">
-                ចន្លោះប្រាក់ខែជាមូល
+              
+                {resolveText(data.labels.salary, lang)}
               </span>
               <span className="text-sm font-bold text-emerald-600">
                 {career.salary}
@@ -67,8 +67,8 @@ export default function CareerPathCard({ data, className }: CareerPathCardProps)
       </TileGrid>
 
       <div className="pt-2">
-        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
-          ដៃគូរួមសហការជាមួយ (TOP HIRING PARTNERS & INDUSTRY SPONSORS)
+        
+          {resolveText(data.labels.partners, lang)}
         </h4>
         <TagList>
           {data.partners.map((partner: string, idx: number) => (

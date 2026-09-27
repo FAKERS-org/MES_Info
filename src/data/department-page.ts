@@ -23,9 +23,9 @@ export interface DepartmentIdHeadingData {
   title: NamespacedText;
   subtitle: NamespacedText;
   university: NamespacedText;
-  facultyBadge: string;
-  accreditationBadge: string;
-  badges: string[];
+  facultyBadge: NamespacedText;
+  accreditationBadge: NamespacedText;
+  badges: NamespacedText[];
   logo: string;
   logoAlt: NamespacedText;
   stats: DepartmentStat[];
@@ -36,19 +36,19 @@ export interface DepartmentIdHeadingData {
 }
 
 export interface SyllabusSection {
-  year: string;
+  year: NamespacedText;
   title: NamespacedText;
-  credits: string;
+  credits: NamespacedText;
   description: NamespacedText;
   tags: string[];
-  badge?: { label: string; color: string };
+  badge?: { label: NamespacedText; color: string };
 }
 
 export interface CourseSyllabusData {
   header: {
     title: NamespacedText;
-    subtitle: string;
-    highlight: { label: string; bg: string; text: string };
+    subtitle: NamespacedText;
+    highlight: { label: NamespacedText; bg: string; text: string };
   };
   sections: SyllabusSection[];
 }
@@ -59,7 +59,7 @@ export interface RequirementItem {
 
 export interface DeadlineItem {
   label: NamespacedText;
-  value: string;
+  value: NamespacedText;
 }
 
 export interface ApplicationConditionData {
@@ -70,7 +70,7 @@ export interface ApplicationConditionData {
 
 export interface ScholarshipItem {
   title: NamespacedText;
-  discount: string;
+  discount: NamespacedText;
   description: NamespacedText;
   color: string;
 }
@@ -78,23 +78,25 @@ export interface ScholarshipItem {
 export interface ScholarshipBriefData {
   header: {
     title: NamespacedText;
-    status: { label: string; bg: string; text: string };
+    status: { label: NamespacedText; bg: string; text: string };
   };
   scholarships: ScholarshipItem[];
 }
 
 export interface CareerItem {
-  title: string;
+  title: NamespacedText;
   icon: IconName;
   description: NamespacedText;
   salary: string;
 }
 
 export interface CareerPathData {
+  /** Copy the card needs that is not part of one job or one partner. */
+  labels: { salary: NamespacedText; partners: NamespacedText };
   header: {
     title: NamespacedText;
     subtitle: NamespacedText;
-    badge: { label: string; bg: string; text: string };
+    badge: { label: NamespacedText; bg: string; text: string };
   };
   careers: CareerItem[];
   partners: string[];
@@ -155,9 +157,28 @@ export const departmentPageData: DepartmentPageData = {
       kh: "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (សាលាតិចណូ)",
       en: "Institute of Technology of Cambodia",
     },
-    facultyBadge: "Faculty of Information & Comm. Tech (FICT)",
-    accreditationBadge: "MoEYS Accredited",
-    badges: ["⏱ វិញ្ញាសារមូលដ្ឋាន", "AUN-QA Certified", "Fundamental Foundation"],
+    facultyBadge: {
+      kh: "មហាវិទ្យាល័យព័ត៌មាននិងបច្ចេកវិទ្យាទំនាក់ខ្មែរ (FICT)",
+      en: "Faculty of Information & Comm. Tech (FICT)",
+    },
+    accreditationBadge: {
+      kh: "ស្គាល់ដោយ MoEYS",
+      en: "MoEYS Accredited",
+    },
+    badges: [
+      {
+        kh: "\"⏱ វិញ្ញាសារមូលដ្ឋាន\"",
+        en: "⏱ Full-time",
+      },
+      {
+        kh: "ស្គាល់ដោយ AUN-QA",
+        en: "AUN-QA Certified",
+      },
+      {
+        kh: "Fundamental Foundation",
+        en: "Fundamental Foundation",
+      },,
+    ],
     logo: "/images/ITC-logo.png",
     logoAlt: {
       kh: "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា",
@@ -238,21 +259,33 @@ export const departmentPageData: DepartmentPageData = {
         kh: "កម្មវិធីសិក្សា & មុខវិជ្ជាស្រុត",
         en: "Curriculum & Core Specializations",
       },
-      subtitle: "140 Credits Total",
+      subtitle: {
+        kh: "សរុប ១៤០ ក្រឡេង",
+        en: "140 Credits Total",
+      },
       highlight: {
-        label: "● Practical Labs: 680 Hours",
+        label: {
+          kh: "● បន្ទប់ពិសោធន៍អនុវត្តផ្លូវគ្នា៖ ៦៨០ ម៉ោង",
+          en: "● Practical Labs: 680 Hours",
+        },
         bg: "bg-blue-50",
         text: "text-blue-700",
       },
     },
     sections: [
       {
-        year: "Year 1-2",
+        year: {
+          kh: "ឆ្នាំទី ១-២",
+          en: "Year 1-2",
+        },
         title: {
           kh: "មូលដ្ឋានគ្រឹះវិស្វកម្ម & ក្បួនដោះស្រាយ (Foundation & Algorithms)",
           en: "Foundation & Algorithms",
         },
-        credits: "60 Credits",
+        credits: {
+          kh: "៦០ ក្រឡេង",
+          en: "60 Credits",
+        },
         description: {
           kh: "ដេញដោលទ្រឹស្តីវិទ្យាសាស្ត្រ គណិតវិទ្យា និងរចនាសម្ព័ន្ធទិន្នន័យ (Data Structures & Discrete Math).",
           en: "Covers applied mathematics, calculus, and data structures & discrete math.",
@@ -266,12 +299,18 @@ export const departmentPageData: DepartmentPageData = {
         ],
       },
       {
-        year: "Year 3",
+        year: {
+          kh: "ឆ្នាំទី ៣",
+          en: "Year 3",
+        },
         title: {
           kh: "បច្ចេកវិទ្យាកម្រិតខ្ពស់ (Advanced Software & Cloud DevOps)",
           en: "Advanced Software & Cloud DevOps",
         },
-        credits: "40 Credits",
+        credits: {
+          kh: "៤០ ក្រឡេង",
+          en: "40 Credits",
+        },
         description: {
           kh: "គាំទ្រការអភិវឌ្ឍ Software Architecture ជាង ៣ ឆ្នាំ និងជំនាញ IT កម្រិតខ្ពស់ផ្សេងទៀត។",
           en: "Supports software architecture for 3+ years and other advanced IT skills.",
@@ -285,12 +324,18 @@ export const departmentPageData: DepartmentPageData = {
         ],
       },
       {
-        year: "Year 4-5",
+        year: {
+          kh: "ឆ្នាំទី ៤-៥",
+          en: "Year 4-5",
+        },
         title: {
           kh: "ជំនាញទំនើប AI & សហគ្រាសជាក់ស្តែង (AI Track & Capstone)",
           en: "AI Track & Capstone",
         },
-        credits: "40 Credits + Thesis",
+        credits: {
+          kh: "៤០ ក្រឡេង + សារណគន្ទ័វ",
+          en: "40 Credits + Thesis",
+        },
         description: {
           kh: "ការអនុវត្តជាក់ស្តែង AI ជាក់ស្តែង គម្រោងសិក្សា និងការបង្ហាញស្នាដៃ។",
           en: "Actual AI implementation, study project, and internship presentation.",
@@ -302,7 +347,10 @@ export const departmentPageData: DepartmentPageData = {
           "Cybersecurity & Cryptography",
         ],
         badge: {
-          label: "6-Month Industry Internship",
+          label: {
+            kh: "បន្ទរោយការងារឧសិកម្មក្នុងវិស្វកម្ម ៦ ខែ",
+            en: "6-Month Industry Internship",
+          },
           color: "bg-[#0f766e] text-white",
         },
       },
@@ -335,14 +383,20 @@ export const departmentPageData: DepartmentPageData = {
         kh: "កាលបរិច្ឆេទបញ្ចបំព្រឹត្តិបត្រ",
         en: "Application Deadline",
       },
-      value: "ថ្ងៃទី ១៥ ខែ កុម្ភៈ ឆ្នាំ ២០២៥",
+      value: {
+        kh: "ថ្ងៃទី ១៥ ខែ កុម្ភៈ ឆ្នាំ ២០២៥",
+        en: "October 15, 2025",
+      },
     },
   },
   scholarship: {
     header: {
       title: { kh: "អាហារូបករណ៍", en: "Scholarships" },
       status: {
-        label: "Available",
+        label: {
+          kh: "អាចស្វែងរកបាន",
+          en: "Available",
+        },
         bg: "bg-emerald-100",
         text: "text-emerald-700",
       },
@@ -353,7 +407,10 @@ export const departmentPageData: DepartmentPageData = {
           kh: "Techo Digital Talent (MPTC)",
           en: "Techo Digital Talent (MPTC)",
         },
-        discount: "100% Full",
+        discount: {
+          kh: "សព្វលេញ ១០០%",
+          en: "100% Full",
+        },
         description: {
           kh: "ឧបត្ថម្ភពេញលេញសិក្សា ១០០% រួមទាំងថ្លៃសិក្សា និងថ្លៃផ្សេងៗ",
           en: "Full 100% coverage including tuition and other fees.",
@@ -365,7 +422,10 @@ export const departmentPageData: DepartmentPageData = {
           kh: "ITC Academic Excellence",
           en: "ITC Academic Excellence",
         },
-        discount: "50% - 100%",
+        discount: {
+          kh: "50% - 100%",
+          en: "50% - 100%",
+        },
         description: {
           kh: "សម្រាប់និស្សិតដែលមានពិន្ទុខ្ពស់បំផុញថ្នាក់ក្នុង Top 50",
           en: "For students in Top 50 highest scores.",
@@ -377,7 +437,10 @@ export const departmentPageData: DepartmentPageData = {
           kh: "Women in Tech Grant",
           en: "Women in Tech Grant",
         },
-        discount: "75% Award",
+        discount: {
+          kh: "បង្គល ៧៥%",
+          en: "75% Award",
+        },
         description: {
           kh: "លើកទឹកចិត្តសិស្សនារីដែលមានទេពកោសល្យខាងវិស្វកម្ម AI និងកុំព្យូទ័រ។",
           en: "Support female students with talent in AI and software development.",
@@ -387,24 +450,40 @@ export const departmentPageData: DepartmentPageData = {
     ],
   },
   career: {
+    labels: {
+      salary: {
+        kh: "ចន្លោះប្រាក់ខែជាមូល",
+        en: "Estimated monthly salary",
+      },
+      partners: {
+        kh: "ដៃគូរួមសហការជាមួយ ",
+        en: "Top Hiring Partners & Industry Sponsors",
+      },
+    },
     header: {
       title: {
         kh: "ឱកាសការងារ & ប្រាក់បៀវត្សរ៍",
         en: "Career Paths & Salaries",
       },
       subtitle: {
-        kh: "Career Trajectories & Compensation in Cambodia & Regional Tech",
+        kh: "ផ្លូវការងារ និងការទូទាត់នៅកម្ពុជា និងតំបន់បច្ចេកវិទ្យា",
         en: "Career Trajectories & Compensation in Cambodia & Regional Tech",
       },
       badge: {
-        label: "2025 Market Survey",
+        label: {
+          kh: "ការស្ទាស់ទីកម្ម ២០២៥",
+          en: "2025 Market Survey",
+        },
         bg: "bg-blue-50",
         text: "text-blue-600",
       },
     },
     careers: [
       {
-        title: "AI / ML Engineer",
+        title: {
+          kh: "វេទិការការ AI / ML",
+          en: "AI / ML Engineer",
+        },
         icon: "BrainCircuit",
         description: {
           kh: "បង្កើតម៉ូដែលបញ្ញាសិប្បនិម្មិត NLP ភាសាខ្មែរ និងជំនាញវិស្វកម្មម៉ាស៊ីន",
@@ -413,7 +492,10 @@ export const departmentPageData: DepartmentPageData = {
         salary: "$600 – $2,200+",
       },
       {
-        title: "Full-Stack Developer",
+        title: {
+          kh: "អ្នកបង្កើតគេហទេសពេញគ្រប់ជំនិត",
+          en: "Full-Stack Developer",
+        },
         icon: "Code2",
         description: {
           kh: "អភិវឌ្ឍន៍កម្មវិធីគេហទំព័ី Web, FinTech apps និង Mobile platforms",
@@ -422,7 +504,10 @@ export const departmentPageData: DepartmentPageData = {
         salary: "$500 – $1,800",
       },
       {
-        title: "Data Scientist & Analyst",
+        title: {
+          kh: "វិទ្យាសាស្ត្រទិន្នន័យ & អ្នកវាយតម្លៃ",
+          en: "Data Scientist & Analyst",
+        },
         icon: "TrendingUp",
         description: {
           kh: "វិភាគ Big Data ទាញយកអត្ថន័យពីទិន្នន័យ និងធ្វើយុទ្ធសាស្ត្រអាជីវកម្ម",
@@ -431,7 +516,10 @@ export const departmentPageData: DepartmentPageData = {
         salary: "$700 – $2,500",
       },
       {
-        title: "Cloud & DevOps Architect",
+        title: {
+          kh: "ស្ថាប័ន Cloud & DevOps",
+          en: "Cloud & DevOps Architect",
+        },
         icon: "Cloud",
         description: {
           kh: "គ្រប់គ្រង Server Infrastructure, CI/CD pipelines & Cloud Security",
@@ -490,7 +578,7 @@ export const departmentPageData: DepartmentPageData = {
         en: "Research Labs & Technology Centers",
       },
       subtitle: {
-        kh: "High-Performance Computing Infrastructure & Innovation Centers",
+        kh: "ហេតុផលកម្មបញ្ចឹងទិនីសមត្ថភាពខ្ពស់ និងមជ្ឈមណ្ឌលច្នាំកម្ម",
         en: "High-Performance Computing Infrastructure & Innovation Centers",
       },
     },

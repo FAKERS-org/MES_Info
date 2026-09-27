@@ -565,7 +565,7 @@ const ITC_ALLOCATION: Bilingual<DepartmentAllocationData, NonCopyKey> = {
   },
   departments: [
     {
-      name: { kh: "វិស្កម្មកុំព្យូទ័រ និងព័ត៌មានវិទ្ា", en: "Computer & Information Engineering" },
+      name: { kh: "វិស្កម្មកុំព្យូទ័រ និងព័ត៌មានវិទ្យា", en: "Computer & Information Engineering" },
       nameEn: "Computer & Information Engineering",
       code: "CIE",
       count: 8,

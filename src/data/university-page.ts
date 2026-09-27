@@ -312,7 +312,7 @@ const ITC_ADMISSIONS: Bilingual<AdmissionsCardData, NonCopyKey> = {
     header: { kh: "ទីប្រឹក្សាការសិក្សា", en: "Admissions" },
     advisor: {
         name: { kh: "លោកគ្រូ វណ្ណា", en: "Vanna" },
-        role: { en: "Head of Student Admissions" },
+        role: { kh: "ប្រធានការិយាល័ចូលរៀនសិស្ស", en: "Head of Student Admissions" },
         status: { kh: "ឥឡូវនេះ", en: "Online" },
         isOnline: true,
     },
