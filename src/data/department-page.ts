@@ -177,7 +177,7 @@ export const departmentPageData: DepartmentPageData = {
       {
         kh: "Fundamental Foundation",
         en: "Fundamental Foundation",
-      },,
+      },
     ],
     logo: "/images/ITC-logo.png",
     logoAlt: {

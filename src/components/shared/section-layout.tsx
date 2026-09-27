@@ -49,12 +49,12 @@ export function SectionLayout({
     className,
 }: SectionLayoutProps) {
     return (
-        <div className={cn(background === "muted" && "flex items-start justify-center bg-slate-50 py-8", className)}>
-            <div className={cn("grid w-full max-w-full grid-cols-1 gap-6", aside && GRID_COLS[breakpoint])}>
+        <div className={cn(background === "muted" && "flex items-start justify-center bg-slate-50 py-6", className)}>
+            <div className={cn("grid w-full max-w-full grid-cols-1 gap-4", aside && GRID_COLS[breakpoint])}>
                 <div className={cn(aside && MAIN_SPAN[breakpoint], mainClassName)}>{children}</div>
 
                 {aside && (
-                    <div className={cn("flex flex-col gap-6", ASIDE_SPAN[breakpoint], asideClassName)}>{aside}</div>
+                    <div className={cn("flex flex-col gap-4", ASIDE_SPAN[breakpoint], asideClassName)}>{aside}</div>
                 )}
             </div>
         </div>

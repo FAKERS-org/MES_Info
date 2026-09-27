@@ -29,7 +29,7 @@ export default async function ProgramsPage({ params }: ProgramsPageProps) {
   return (
     <SectionLayout
       breakpoint="md"
-      mainClassName="space-y-6"
+      mainClassName="space-y-4"
       aside={
         /* Right Column (About, Hot News, Campus Map, Admissions, Brochure) */
         <>

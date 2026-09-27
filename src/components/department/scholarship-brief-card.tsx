@@ -27,25 +27,25 @@ export default function ScholarshipBriefCard({
         titleClassName: "text-lg font-bold text-slate-800",
         badge: (
           <span
-            className={`px-2.5 py-1 rounded-md text-xs font-semibold ${data.header.status.bg} ${data.header.status.text}`}
+            className={`px-2 py-0.5 rounded-md text-xs font-semibold ${data.header.status.bg} ${data.header.status.text}`}
           >
-            {data.header.status.label}
+            {resolveText(data.header.status.label, lang)}
           </span>
         ),
       }}
-      body={{ padding: "p-6 pt-4 space-y-5" }}
+      body={{ padding: "p-4 pt-2 space-y-3" }}
     >
       {data.scholarships.map((item, idx) => (
         <div key={idx}>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5">
             <div className="flex justify-between items-start gap-2">
               <h4 className="font-bold text-slate-800 text-sm">
                 {resolveText(item.title, lang)}
               </h4>
               <span
-                className={`${item.color} px-2 py-1 rounded-md font-bold text-xs whitespace-nowrap`}
+                className={`${item.color} px-2 py-0.5 rounded-md font-bold text-xs whitespace-nowrap`}
               >
-                {item.discount}
+                {resolveText(item.discount, lang)}
               </span>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
@@ -53,7 +53,7 @@ export default function ScholarshipBriefCard({
             </p>
           </div>
           {idx !== data.scholarships.length - 1 && (
-            <div className="h-px bg-slate-100 w-full my-4" />
+            <div className="h-px bg-slate-100 w-full my-3" />
           )}
         </div>
       ))}

@@ -12,11 +12,11 @@ export const AdmissionsCard = ({ data }: AdmissionsCardProps) => {
 
   return (
     <DetailCard
-      className="rounded-3xl p-6 font-sans"
+      className="rounded-2xl p-4 font-sans"
       header={{
         padding: "",
-        className: "mb-5",
-        icon: <Icon name="Headphones" size={26} strokeWidth={2.5} />,
+        className: "mb-3",
+        icon: <Icon name="Headphones" size={24} strokeWidth={2.5} />,
         iconTileClassName: "text-blue-600",
         title: data.header,
         titleClassName: "text-lg font-bold text-slate-900",
@@ -25,23 +25,23 @@ export const AdmissionsCard = ({ data }: AdmissionsCardProps) => {
     >
       {/* Profile Card Section — only when the school publishes an advisor */}
       {advisor && (
-        <div className="bg-slate-50 rounded-2xl p-3 flex gap-3 mb-4 items-center">
+        <div className="bg-slate-50 rounded-xl p-2.5 flex gap-2.5 mb-3 items-center">
           {/* Letter avatar — avoids a dead request for a portrait the school has not uploaded yet */}
           <Avatar
             fallback={advisor.name.trim().charAt(0)}
-            className="h-12 w-12 border border-blue-200 bg-blue-100 text-lg font-bold text-blue-700"
+            className="h-10 w-10 border border-blue-200 bg-blue-100 text-base font-bold text-blue-700"
           />
           <div>
             <h4 className="font-bold text-slate-900 text-sm">
               {advisor.name}
             </h4>
             <p className="text-slate-500 text-xs">{advisor.role}</p>
-            <div className="flex items-center gap-1.5 mt-1">
+            <div className="flex items-center gap-1 mt-0.5">
               <span
                 className={
                   advisor.isOnline
-                    ? "w-2 h-2 rounded-full bg-green-500"
-                    : "w-2 h-2 rounded-full bg-slate-400"
+                    ? "w-1.5 h-1.5 rounded-full bg-green-500"
+                    : "w-1.5 h-1.5 rounded-full bg-slate-400"
                 }
               ></span>
               <span
@@ -59,7 +59,7 @@ export const AdmissionsCard = ({ data }: AdmissionsCardProps) => {
       )}
 
       {/* Action Buttons */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         {data.actions.map((action) =>
           action.href ? (
             <a
@@ -67,17 +67,17 @@ export const AdmissionsCard = ({ data }: AdmissionsCardProps) => {
               href={action.href}
               target="_blank"
               rel="noreferrer"
-              className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-medium transition-colors ${action.className}`}
+              className={`w-full py-2 px-3.5 rounded-lg flex items-center justify-center gap-1.5 font-medium transition-colors ${action.className}`}
             >
-              <Icon name={action.icon} size={18} />
+              <Icon name={action.icon} size={17} />
               <span>{action.label}</span>
             </a>
           ) : (
             <button
               key={action.label}
-              className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-medium transition-colors ${action.className}`}
+              className={`w-full py-2 px-3.5 rounded-lg flex items-center justify-center gap-1.5 font-medium transition-colors ${action.className}`}
             >
-              <Icon name={action.icon} size={18} />
+              <Icon name={action.icon} size={17} />
               <span>{action.label}</span>
             </button>
           )

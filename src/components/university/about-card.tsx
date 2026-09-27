@@ -11,12 +11,12 @@ export interface AboutCardProps {
 export const AboutCard = ({ data }: AboutCardProps) => {
   return (
     <DetailCard
-      className="rounded-3xl p-6 font-sans"
+      className="rounded-2xl p-4 font-sans"
       header={{
         align: "start",
         padding: "",
-        className: "mb-4",
-        icon: <Icon name="Info" size={26} strokeWidth={2.5} />,
+        className: "mb-3",
+        icon: <Icon name="Info" size={24} strokeWidth={2.5} />,
         iconTileClassName: "text-blue-600",
         title: data.title,
         titleClassName: "text-lg font-bold text-slate-900",
@@ -25,11 +25,11 @@ export const AboutCard = ({ data }: AboutCardProps) => {
       }}
       body={false}
     >
-      <p className="text-sm text-slate-600 leading-relaxed mb-4">
+      <p className="text-sm text-slate-600 leading-relaxed mb-3">
         {data.description}
       </p>
 
-      <IconList as="ul" className="gap-2.5">
+      <IconList as="ul" className="gap-2">
         {data.facts.map((fact) => (
           <IconListItem
             as="li"

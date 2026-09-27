@@ -40,7 +40,7 @@ export default async function UniversityTabsLayout({
   const { hero, menu } = getUniversityPageData(university, await readLang());
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <UniversityIdCard data={hero} />
       <UniversityMenu tabs={menu} />
       {children}

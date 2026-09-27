@@ -67,10 +67,10 @@ export default async function AdmissionsPage({ params }: AdmissionsPageProps) {
   const hasRail = rail.length > 0;
 
   return (
-    <div className="py-4 md:py-8">
-      <div className={cn("grid grid-cols-1 gap-6", hasRail && "lg:grid-cols-3")}>
+    <div className="py-3 md:py-6">
+      <div className={cn("grid grid-cols-1 gap-4", hasRail && "lg:grid-cols-3")}>
         {/* Left Column - 2/3 width */}
-        <div className={cn("space-y-6", hasRail && "lg:col-span-2")}>
+        <div className={cn("space-y-4", hasRail && "lg:col-span-2")}>
           {slot(
             "eligibility",
             data.eligibility && <EligibilityMatrix data={data.eligibility} />,
@@ -83,7 +83,7 @@ export default async function AdmissionsPage({ params }: AdmissionsPageProps) {
         </div>
 
         {/* Right Column - 1/3 width */}
-        {hasRail && <div className="space-y-6">{rail}</div>}
+        {hasRail && <div className="space-y-4">{rail}</div>}
       </div>
     </div>
   );

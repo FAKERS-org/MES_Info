@@ -20,32 +20,32 @@ export default function CourseSyllabusCard({ data, className }: CourseSyllabusCa
       className={className}
       header={{
         align: "start",
-        className: "gap-4",
-        icon: <Icon name="BookOpen" className="w-6 h-6" />,
-        iconTileClassName: "flex-shrink-0 rounded-lg bg-blue-100 p-3 text-blue-600",
+        className: "gap-3",
+        icon: <Icon name="BookOpen" className="w-5 h-5" />,
+        iconTileClassName: "flex-shrink-0 rounded-lg bg-blue-100 p-2.5 text-blue-600",
         title: resolveText(data.header.title, lang),
-        subtitle: data.header.subtitle,
+        subtitle: resolveText(data.header.subtitle, lang),
         chip: (
-          <span className="mt-3 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-            {data.header.highlight.label}
+          <span className="mt-2 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+            {resolveText(data.header.highlight.label, lang)}
           </span>
         ),
       }}
     >
       {data.sections.map((section, idx) => (
-        <div key={idx} className="bg-slate-50 rounded-xl p-5 border border-slate-100/50">
-          <div className="flex justify-between items-center mb-3">
-            <span className="bg-[#1e293b] text-white rounded-md px-2.5 py-1 text-xs font-semibold">
-              {section.year}
+        <div key={idx} className="bg-slate-50 rounded-lg p-4 border border-slate-100/50">
+          <div className="flex justify-between items-center mb-2">
+            <span className="bg-[#1e293b] text-white rounded-md px-2 py-0.5 text-xs font-semibold">
+              {resolveText(section.year, lang)}
             </span>
             <span className="text-xs font-semibold text-slate-500">
-              {section.credits}
+              {resolveText(section.credits, lang)}
             </span>
           </div>
-          <h3 className="font-bold text-slate-800 mb-2">
+          <h3 className="font-bold text-slate-800 mb-1.5">
             {resolveText(section.title, lang)}
           </h3>
-          <p className="text-sm text-slate-600 mb-4 leading-relaxed font-noto-khmer">
+          <p className="text-sm text-slate-600 mb-3 leading-relaxed font-noto-khmer">
             {resolveText(section.description, lang)}
           </p>
           <TagList>
@@ -54,11 +54,11 @@ export default function CourseSyllabusCard({ data, className }: CourseSyllabusCa
             ))}
           </TagList>
           {section.badge && (
-            <div className="mt-4">
+            <div className="mt-3">
               <span
-                className={`inline-block px-3 py-1.5 rounded-md text-sm font-medium text-white ${section.badge.color}`}
+                className={`inline-block px-2.5 py-1 rounded-md text-sm font-medium text-white ${section.badge.color}`}
               >
-                {section.badge.label}
+                {resolveText(section.badge.label, lang)}
               </span>
             </div>
           )}

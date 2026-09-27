@@ -40,11 +40,11 @@ export default function DepartmentIdHeading({
         <>
           <Badge className="border-0 bg-white/15 text-white hover:bg-white/25">
             <Icon name="ShieldCheck" className="mr-1 h-3.5 w-3.5" />
-            {data.accreditationBadge}
+            {resolveText(data.accreditationBadge, lang)}
           </Badge>
           <Badge className="border-0 bg-white/15 text-white hover:bg-white/25">
             <Icon name="GraduationCap" className="mr-1 h-3.5 w-3.5" />
-            {data.facultyBadge}
+            {resolveText(data.facultyBadge, lang)}
           </Badge>
         </>
       }
@@ -55,9 +55,9 @@ export default function DepartmentIdHeading({
         // The circle only letterboxes the logo, like the old
         // `background-size: contain` did — never crop it.
         imageClassName: "object-contain",
-        innerClassName: "border-4 border-[#d4af37] bg-[#0e5a8a]",
+        innerClassName: "border-3 border-[#d4af37] bg-[#0e5a8a]",
         fallback: (
-          <span className="px-2 text-center text-xs font-bold text-white">
+          <span className="px-1.5 text-center text-xs font-bold text-white">
             {resolveText(logoAlt, lang)}
           </span>
         ),
@@ -69,18 +69,18 @@ export default function DepartmentIdHeading({
           key={idx}
           className="gap-1 bg-[#eef5fc] text-[#0e5a8a] hover:bg-[#eef5fc]"
         >
-          {badge}
+          {resolveText(badge, lang)}
         </Badge>
       ))}
       actions={
         <>
-          <Button className="gap-2 rounded-lg px-5">
+          <Button className="gap-1.5 rounded-lg px-4 py-2">
             {resolveText(data.actions.primary.label, lang)}
             <Icon name={data.actions.primary.icon} className="h-4 w-4" />
           </Button>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {data.actions.secondary.map((action, idx) => (
-              <Button key={idx} variant="secondary" className="gap-2 rounded-lg">
+              <Button key={idx} variant="secondary" className="gap-1.5 rounded-lg">
                 <Icon name={action.icon} className="h-4 w-4" />
                 {resolveText(action.label, lang)}
               </Button>

@@ -18,9 +18,9 @@ export default function UniversityMenu({ tabs }: { tabs: UniversityMenuTab[] }) 
   return (
     <nav
       aria-label="University sections"
-      className="w-full max-w-full rounded-2xl border shadow-sm bg-white overflow-hidden p-2"
+      className="w-full max-w-full rounded-xl border shadow-sm bg-white overflow-hidden p-1.5"
     >
-      <div className="w-full flex flex-wrap justify-start items-stretch gap-2">
+      <div className="w-full flex flex-wrap justify-start items-stretch gap-1.5">
         {tabs.map(({ href, icon, label, badge }) => {
           const active = pathname === href;
 
@@ -29,19 +29,19 @@ export default function UniversityMenu({ tabs }: { tabs: UniversityMenuTab[] }) 
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`group relative flex flex-1 basis-[240px] items-center justify-center gap-3 px-4 py-4 h-full rounded-xl border-none font-medium transition-all duration-200 outline-none ${
+              className={`group relative flex flex-1 basis-[220px] items-center justify-center gap-2 px-3 py-3 h-full rounded-lg border-none font-medium transition-all duration-200 outline-none ${
                 active
                   ? "bg-blue-50 text-[#0056b3] font-semibold shadow-none"
                   : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
               }`}
             >
-              <Icon name={icon} className="w-5 h-5" strokeWidth={2.5} />
-              <span className="flex items-center gap-2 whitespace-nowrap text-[15px]">
+              <Icon name={icon} className="w-4.5 h-4.5" strokeWidth={2.5} />
+              <span className="flex items-center gap-1.5 whitespace-nowrap text-sm">
                 {label}
                 {badge != null && (
                   <Badge
                     variant="secondary"
-                    className="bg-blue-100 text-[#0056b3] hover:bg-blue-200 rounded-full px-2 py-0.5 text-xs font-bold ml-1"
+                    className="bg-blue-100 text-[#0056b3] hover:bg-blue-200 rounded-full px-1.5 py-0.5 text-xs font-bold ml-1"
                   >
                     {badge}
                   </Badge>

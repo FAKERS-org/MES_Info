@@ -101,27 +101,27 @@ export function EntityProfileHero({
                     />
                 </>
             }
-            bodyClassName="px-6 pb-6 pt-24"
+            bodyClassName="px-5 pb-5 pt-20"
         >
             {/* Name: in flow on mobile, on the banner split from md up. */}
-            <div className="mb-4 md:absolute md:left-[196px] md:-top-11 md:right-6 md:-translate-y-1/2 md:mb-0">
-                <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-2xl font-bold text-gray-900 md:text-white">{title}</h1>
+            <div className="mb-3 md:absolute md:left-[196px] md:-top-11 md:right-6 md:-translate-y-1/2 md:mb-0">
+                <div className="flex flex-wrap items-center gap-1.5">
+                    <h1 className="text-xl font-bold text-gray-900 md:text-white">{title}</h1>
                     {titleBadge}
                 </div>
-                {subtitle !== undefined && <p className="mt-1 text-sm text-gray-600 md:text-teal-100">{subtitle}</p>}
+                {subtitle !== undefined && <p className="mt-0.5 text-sm text-gray-600 md:text-teal-100">{subtitle}</p>}
             </div>
 
             {/* Fact chips + actions — next to the logo, just below the split. */}
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 md:absolute md:left-[196px] md:right-6 md:top-4 md:mt-0">
-                <div className="flex flex-wrap items-center gap-2">{badges}</div>
-                <div className="flex flex-wrap items-center justify-end gap-3 md:flex-nowrap">{actions}</div>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 md:absolute md:left-[196px] md:right-6 md:top-4 md:mt-0">
+                <div className="flex flex-wrap items-center gap-1.5">{badges}</div>
+                <div className="flex flex-wrap items-center justify-end gap-2 md:flex-nowrap">{actions}</div>
             </div>
 
-            <hr className="my-6 border-slate-200" />
+            <hr className="my-4 border-slate-200" />
 
             <EntityHeroStats
-                className="grid-cols-2 gap-6 md:grid-cols-4"
+                className="grid-cols-2 gap-4 md:grid-cols-4"
                 items={stats.map(stat => ({
                     icon: <Icon name={stat.icon} className="h-5 w-5 text-slate-400" />,
                     iconClassName: "mt-0.5",

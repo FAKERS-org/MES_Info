@@ -484,12 +484,10 @@ export function getUniversityPageData(
             ],
             bannerActions: BANNER_ACTIONS,
             logo: { src: university.logo, alt: { [lang]: university.name[lang] } },
-            /* The name in the reader's language, with the other one as the
-               subtitle — so a Khmer reader gets the Khmer name and an English
-               reader the English one, instead of both always seeing Khmer. */
+            /* The name in the reader's language only — no mixed-language subtitle. */
             name: { [lang]: university.name[lang] },
             nameBadge: university.id.toUpperCase(),
-            subtitle: { [lang]: university.name[lang === "en" ? "kh" : "en"] },
+            subtitle: { [lang]: "" },
             badges: [
                 {
                     label: {

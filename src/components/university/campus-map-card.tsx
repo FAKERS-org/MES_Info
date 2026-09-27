@@ -11,19 +11,19 @@ export interface CampusMapCardProps {
 export const CampusMapCard = ({ data }: CampusMapCardProps) => {
     return (
         <DetailCard
-            className="rounded-3xl p-6 font-sans"
+            className="rounded-2xl p-4 font-sans"
             header={{
                 align: "start",
                 padding: "",
-                className: "mb-4",
-                icon: <Icon name="Map" size={28} strokeWidth={2.5} />,
-                iconTileClassName: "mt-1 text-blue-600",
+                className: "mb-3",
+                icon: <Icon name="Map" size={26} strokeWidth={2.5} />,
+                iconTileClassName: "mt-0.5 text-blue-600",
                 title: data.header.title,
                 titleClassName: "text-lg font-bold text-slate-900 leading-tight",
                 subtitle: data.header.subtitle,
                 subtitleClassName: "text-slate-600 font-medium",
                 badge: (
-                    <span className="text-blue-700 font-bold text-sm bg-blue-50 px-2 py-1 rounded-md">
+                    <span className="text-blue-700 font-bold text-sm bg-blue-50 px-2 py-0.5 rounded-md">
                         {data.header.campus}
                     </span>
                 ),
@@ -31,7 +31,7 @@ export const CampusMapCard = ({ data }: CampusMapCardProps) => {
             body={false}
         >
             {/* Map iframe Container */}
-            <div className="relative rounded-2xl overflow-hidden mb-4 h-48 bg-slate-100 border border-slate-200">
+            <div className="relative rounded-xl overflow-hidden mb-3 h-44 bg-slate-100 border border-slate-200">
                 {data.map.iframeUrl ? (
                     <iframe
                         src={data.map.iframeUrl}
@@ -50,10 +50,10 @@ export const CampusMapCard = ({ data }: CampusMapCardProps) => {
                 )}
 
                 {/* Floating Direction Bar */}
-                <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-sm p-2 rounded-xl shadow-sm flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="bg-red-50 p-1.5 rounded-full text-red-500">
-                            <Icon name="MapPin" size={16} fill="currentColor" />
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 bg-white/95 backdrop-blur-sm p-1.5 rounded-lg shadow-sm flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                        <div className="bg-red-50 p-1 rounded-full text-red-500">
+                            <Icon name="MapPin" size={15} fill="currentColor" />
                         </div>
                         <span className="text-sm font-bold text-slate-700 truncate max-w-[80px]">{data.map.place}</span>
                     </div>
@@ -66,12 +66,12 @@ export const CampusMapCard = ({ data }: CampusMapCardProps) => {
                             className="flex items-center gap-1 text-blue-600 text-sm font-semibold hover:text-blue-700"
                         >
                             <span>{data.directions}</span>
-                            <Icon name="ExternalLink" size={14} />
+                            <Icon name="ExternalLink" size={13} />
                         </a>
                     ) : (
                         <button className="flex items-center gap-1 text-blue-600 text-sm font-semibold hover:text-blue-700">
                             <span>{data.directions}</span>
-                            <Icon name="ExternalLink" size={14} />
+                            <Icon name="ExternalLink" size={13} />
                         </button>
                     )}
                 </div>

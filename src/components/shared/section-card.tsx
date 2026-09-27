@@ -20,10 +20,10 @@ export function SectionCard({ children, className }: SectionCardProps) {
     );
 }
 
-const DEFAULT_ICON_TILE = "flex-shrink-0 rounded-lg bg-blue-100 p-3 text-blue-600";
-const DEFAULT_PADDING = "p-6 pb-2";
-const DEFAULT_TITLE = "text-xl font-bold text-slate-800";
-const DEFAULT_SUBTITLE = "mt-1 text-sm font-medium text-slate-500";
+const DEFAULT_ICON_TILE = "flex-shrink-0 rounded-lg bg-blue-100 p-2.5 text-blue-600";
+const DEFAULT_PADDING = "p-4 pb-1.5";
+const DEFAULT_TITLE = "text-lg font-bold text-slate-800";
+const DEFAULT_SUBTITLE = "mt-0.5 text-sm font-medium text-slate-500";
 
 export interface SectionCardHeaderProps {
     title: ReactNode;
@@ -87,6 +87,6 @@ export interface SectionCardBodyProps {
 }
 
 /** Padded content area of a {@link SectionCard}. */
-export function SectionCardBody({ children, padding = "p-6 pt-4 space-y-4", className }: SectionCardBodyProps) {
+export function SectionCardBody({ children, padding = "p-4 pt-2 space-y-3", className }: SectionCardBodyProps) {
     return <div className={cn(padding, className)}>{children}</div>;
 }

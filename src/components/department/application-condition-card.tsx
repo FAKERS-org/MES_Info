@@ -25,17 +25,17 @@ export default function ApplicationConditionCard({
       header={{
         icon: <Icon name="ShieldCheck" className="w-5 h-5" />,
         iconTileClassName:
-          "flex-shrink-0 rounded-lg bg-indigo-50 p-2.5 text-indigo-500",
+          "flex-shrink-0 rounded-lg bg-indigo-50 p-2 text-indigo-500",
         title: resolveText(data.header.title, lang),
         titleClassName: "text-lg font-bold text-slate-800",
       }}
     >
-      <IconList as="ul">
+      <IconList as="ul" className="gap-2">
         {data.requirements.map((item, idx) => (
           <IconListItem
             key={idx}
             as="li"
-            icon={<CheckCircle2 className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />}
+            icon={<CheckCircle2 className="w-4.5 h-4.5 text-indigo-500 shrink-0 mt-0.5" />}
           >
             <span className="text-sm text-slate-700">
               {resolveText(item.label, lang)}
@@ -44,16 +44,16 @@ export default function ApplicationConditionCard({
         ))}
       </IconList>
 
-      <div className="bg-[#eff6ff] rounded-xl p-4 flex items-center gap-3 mt-4">
+      <div className="bg-[#eff6ff] rounded-lg p-3 flex items-center gap-2.5 mt-3">
         <div className="text-blue-600">
-          <Calendar size={20} />
+          <Calendar size={18} />
         </div>
         <div>
           <p className="text-xs text-slate-500 font-medium mb-0.5">
             {resolveText(data.deadline.label, lang)}
           </p>
           <p className="text-sm font-bold text-slate-800">
-            {data.deadline.value}
+            {resolveText(data.deadline.value, lang)}
           </p>
         </div>
       </div>

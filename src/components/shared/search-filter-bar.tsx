@@ -57,29 +57,29 @@ export function SearchFilterBar({
     return (
         <div
             className={cn(
-                "flex w-full flex-wrap items-center gap-2 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm",
+                "flex w-full flex-wrap items-center gap-1.5 rounded-full border border-slate-200 bg-white p-1 shadow-sm",
                 className,
             )}
         >
-            <div className="flex items-center gap-2 border-r border-slate-200 pl-3 pr-4">
-                <Search className="h-4 w-4 shrink-0 text-slate-400" />
+            <div className="flex items-center gap-1.5 border-r border-slate-200 pl-2.5 pr-3">
+                <Search className="h-3.5 w-3.5 shrink-0 text-slate-400" />
                 <input
                     type="text"
                     value={query}
                     onChange={event => setQuery(event.target.value)}
                     placeholder={placeholder}
-                    className="w-40 bg-transparent font-sans text-sm outline-none placeholder:text-slate-400 md:w-48"
+                    className="w-36 bg-transparent font-sans text-sm outline-none placeholder:text-slate-400 md:w-44"
                 />
             </div>
 
             {pills.length > 0 && (
-                <div className="flex flex-nowrap items-center gap-1.5 overflow-x-auto">
+                <div className="flex flex-nowrap items-center gap-1 overflow-x-auto">
                     {pills.map(pill => (
                         <FilterChip
                             key={pill}
                             active={pill === selected}
                             onClick={() => selectPill(pill)}
-                            className="whitespace-nowrap px-4"
+                            className="whitespace-nowrap px-3"
                         >
                             {pill}
                         </FilterChip>

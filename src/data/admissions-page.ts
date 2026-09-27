@@ -1,5 +1,5 @@
-import type { NamespacedText, University } from "@/data/universities";
 import { resolveBilingual, resolveCopy, type Bilingual, type PageCopy, type Resolved } from "@/data/text";
+import type { NamespacedText, University } from "@/data/universities";
 import type { IconName } from "@/lib/icons";
 import type { Lang } from "@/lib/language";
 import type { Tone } from "@/lib/tones";
@@ -43,7 +43,6 @@ export type ProfileHeader = Bilingual<AdmissionsCardHeader>;
 
 /** An `{ icon, label }` pair — a card action. Only the label is copy. */
 export type ProfileAction = Bilingual<{ icon: IconName; label: string }>;
-
 
 /* ------------------------------------------------------------------ *
  * Requirements — real data, every school                              *
@@ -325,7 +324,6 @@ export interface AdmissionsProfile {
  */
 export type ResolvedProfile = Resolved<AdmissionsProfile>;
 
-
 /* ------------------------------------------------------------------ *
  * Page bundle                                                         *
  * ------------------------------------------------------------------ */
@@ -513,7 +511,6 @@ export function getPendingSections(lang: Lang): PendingSection[] {
     }));
 }
 
-
 /* ------------------------------------------------------------------ *
  * Profiles                                                            *
  * ------------------------------------------------------------------ */
@@ -536,7 +533,10 @@ const ITC_PROFILE: AdmissionsProfile = {
                     icon: "BookOpen",
                     title: { kh: "គណិតវិទ្យា", en: "Mathematics" },
                     meta: { kh: "ពេលវេលា: 150min", en: "Duration: 150 min" },
-                    description: { kh: "រួមមាន ពិជគណិត, ត្រីកោណមាត្រ, កាល់គុលុស, និងស្ថិតិ។", en: "Covers trigonometry, calculus, algebra and statistics." },
+                    description: {
+                        kh: "រួមមាន ពិជគណិត, ត្រីកោណមាត្រ, កាល់គុលុស, និងស្ថិតិ។",
+                        en: "Covers trigonometry, calculus, algebra and statistics.",
+                    },
                     file: neutral("PDF • 15.4 MB (Khmer-French)"),
                     downloadLabel: { kh: "ទាញយក PDF", en: "Download PDF" },
                     tone: "blue",
@@ -545,7 +545,10 @@ const ITC_PROFILE: AdmissionsProfile = {
                     icon: "BookOpen",
                     title: { kh: "រូបវិទ្យាអនុវត្ត", en: "Applied Physics" },
                     meta: { kh: "ពេលវេលា: 90min", en: "Duration: 90 min" },
-                    description: { kh: "រួមមាន៖ មេកានិច, អគ្គិសនី, អុបទិក, និងរូបវិទ្យាទំនើប។", en: "Covers mechanics, electricity, electronics and applied physics." },
+                    description: {
+                        kh: "រួមមាន៖ មេកានិច, អគ្គិសនី, អុបទិក, និងរូបវិទ្យាទំនើប។",
+                        en: "Covers mechanics, electricity, electronics and applied physics.",
+                    },
                     file: neutral("PDF • 14.6 MB (Khmer-French)"),
                     downloadLabel: { kh: "ទាញយក Physics PDF", en: "Download Physics PDF" },
                     tone: "purple",
@@ -662,7 +665,10 @@ const ITC_PROFILE: AdmissionsProfile = {
             eyebrow: { kh: "ដំណើរការជាជំហាន", en: "Step-by-Step Flow" },
             meta: { kh: "បានកែល្មអឆ្នាំ ២០២៥", en: "Updated 2025" },
             title: { kh: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន", en: "4-Step Admission Roadmap" },
-            subtitle: { kh: "ដំណើរការចូលរៀននៅ ITC មាន ៤ ជំហានសំខាន់ៗ ចាប់ពីខែកញ្ញា ដល់ខែវិច្ឆិកា ២០២៥។", en: "The ITC admission process has 4 key steps, running from September to November 2025." },
+            subtitle: {
+                kh: "ដំណើរការចូលរៀននៅ ITC មាន ៤ ជំហានសំខាន់ៗ ចាប់ពីខែកញ្ញា ដល់ខែវិច្ឆិកា ២០២៥។",
+                en: "The ITC admission process has 4 key steps, running from September to November 2025.",
+            },
         },
         steps: [
             {
@@ -670,9 +676,14 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "បំពេញពាក្យសុំអនឡាញ", en: "Online Registration & Form Submission" },
                     date: { kh: "08 កញ្ញា - 30 កញ្ញា ០២៥", en: "08 – 30 Sep 2025" },
                     dateTone: "blue",
-                    description:
-                        { kh: "ចុះឈ្មោះនៅលើ ITC Admissions Portal បង្កើតគណនី បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាចំនួន ២។", en: "Register on the ITC Admissions Portal, create an account, fill in your personal details and select 2 subjects (first and second choice)." },
-                    note: { kh: "ពេលវេលាប្រហែល ១៥ នាទី  រួមទាំងការបង់ ~15 ដុល្លារ", en: "About 15 minutes, including the ~$15 fee" },
+                    description: {
+                        kh: "ចុះឈ្មោះនៅលើ ITC Admissions Portal បង្កើតគណនី បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាចំនួន ២។",
+                        en: "Register on the ITC Admissions Portal, create an account, fill in your personal details and select 2 subjects (first and second choice).",
+                    },
+                    note: {
+                        kh: "ពេលវេលាប្រហែល ១៥ នាទី  រួមទាំងការបង់ ~15 ដុល្លារ",
+                        en: "About 15 minutes, including the ~$15 fee",
+                    },
                 },
             },
             {
@@ -680,9 +691,14 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃពិនិត្យ", en: "Document Verification & Fee" },
                     date: { kh: "15 តុលា ២០២៥", en: "15 Oct 2025" },
                     dateTone: "green",
-                    description:
-                        { kh: "មកផ្ទាល់នៅការិយាល័យ ITC ដើម្បីផ្ទៀងផ្ទាត់ឯកសារដើម និងបង់ថ្លៃពិនិត្យ $15.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។", en: "Come to the ITC office to verify your original documents and pay the $15.00 verification fee via Bakong KHQR or at a bank (ABA / ACLEDA / Canadia / Wing)." },
-                    note: { kh: "ទទួលបានវិក្យបត្រ Bakong KHQR / ABA / Wing Bank", en: "A Bakong KHQR / ABA / Wing Bank receipt is issued" },
+                    description: {
+                        kh: "មកផ្ទាល់នៅការិយាល័យ ITC ដើម្បីផ្ទៀងផ្ទាត់ឯកសារដើម និងបង់ថ្លៃពិនិត្យ $15.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។",
+                        en: "Come to the ITC office to verify your original documents and pay the $15.00 verification fee via Bakong KHQR or at a bank (ABA / ACLEDA / Canadia / Wing).",
+                    },
+                    note: {
+                        kh: "ទទួលបានវិក្យបត្រ Bakong KHQR / ABA / Wing Bank",
+                        en: "A Bakong KHQR / ABA / Wing Bank receipt is issued",
+                    },
                 },
             },
             {
@@ -691,8 +707,10 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "ប្រឡងចូលរៀនជាតិ", en: "National Entrance Examination" },
                     date: { kh: "28 តុលា ២០២៥", en: "28 Oct 2025" },
                     dateTone: "red",
-                    description:
-                        { kh: "ប្ឡងនៅ ITC Campus រួមមាន ៣ មុខវិជ្ជា៖ គណិតវិទ្យា (150min), រូបវិទ្យា (90min), និង ូជីខល & វិទ្យាសាស្ត្រទូទៅ (60min)។", en: "The exam at ITC Campus covers 3 subjects: Mathematics (150 min), Physics (90 min), and Khmer & General Science (60 min)." },
+                    description: {
+                        kh: "ប្ឡងនៅ ITC Campus រួមមាន ៣ មុខវិជ្ជា៖ គណិតវិទ្យា (150min), រូបវិទ្យា (90min), និង ូជីខល & វិទ្យាសាស្ត្រទូទៅ (60min)។",
+                        en: "The exam at ITC Campus covers 3 subjects: Mathematics (150 min), Physics (90 min), and Khmer & General Science (60 min).",
+                    },
                     note: { kh: "ម៉ោង: 08:00 - 12:30", en: "Time: 08:00 - 12:30" },
                 },
             },
@@ -701,8 +719,10 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "ប្រកាសលទ្ផល & ចុះឈោះចូលរៀន", en: "Official Results & Enrollment" },
                     date: { kh: "17 វិច្ឆិកា ២០២៥", en: "17 Nov 2025" },
                     dateTone: "purple",
-                    description:
-                        { kh: "លទ្ធផលផលូវការផ្សាយនៅលើ ITC Portal និង Telegram។ សិស្សជាប់ត្រូវមកចុះឈ្មោះចូលរៀនផ្ទាល់នៅ ITC ក្នុងរយៈពេល ៧ ថ្ងៃ។", en: "The official results are published on the ITC Portal and Telegram. Students who pass must register and enrol at ITC within 7 days." },
+                    description: {
+                        kh: "លទ្ធផលផលូវការផ្សាយនៅលើ ITC Portal និង Telegram។ សិស្សជាប់ត្រូវមកចុះឈ្មោះចូលរៀនផ្ទាល់នៅ ITC ក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                        en: "The official results are published on the ITC Portal and Telegram. Students who pass must register and enrol at ITC within 7 days.",
+                    },
                 },
             },
         ],
@@ -717,8 +737,9 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "សញ្ញាបត្របឋមសិក្សាឬមធ្យមសិក្សា", en: "Upper secondary diploma or equivalent" },
                     subtitle: { kh: "ត្រាផ្លូវការ", en: "Official Stamps" },
                     description: {
-                                     kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបានបញ្ជាក់ពីសាលា។", en: "Original documents bearing official stamps, or copies certified by the school.",
-                                 },
+                        kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបានបញ្ជាក់ពីសាលា។",
+                        en: "Original documents bearing official stamps, or copies certified by the school.",
+                    },
                 },
             },
             {
@@ -727,8 +748,9 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ", en: "Official Transcript" },
                     subtitle: { kh: "ពិន្ទុសាលាខាងត្បូង", en: "High School Transcript" },
                     description: {
-                                     kh: "ពិន្ទុប្រឡងជាតិបាច់ទី២ ឬ ៣ ដែលមានត្រាផ្លូវការពីក្រសួងអប់រំ។", en: "National exam scores from grade 2 or 3, bearing an official stamp from the Ministry of Education.",
-                                 },
+                        kh: "ពិន្ទុប្រឡងជាតិបាច់ទី២ ឬ ៣ ដែលមានត្រាផ្លូវការពីក្រសួងអប់រំ។",
+                        en: "National exam scores from grade 2 or 3, bearing an official stamp from the Ministry of Education.",
+                    },
                 },
             },
             {
@@ -736,8 +758,9 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ", en: "Birth Certificate & National ID" },
                     subtitle: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ", en: "Birth Certificate & National ID" },
                     description: {
-                                     kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ។", en: "Copies of the birth certificate and national ID.",
-                                 },
+                        kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ។",
+                        en: "Copies of the birth certificate and national ID.",
+                    },
                 },
             },
             {
@@ -745,8 +768,9 @@ const ITC_PROFILE: AdmissionsProfile = {
                     title: { kh: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក", en: "4x6 Portrait Photos x 4" },
                     subtitle: { kh: "រូបថតប៉ូត្រាយ", en: "4x6 Photos x 4" },
                     description: {
-                                     kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក (ផ្ទឃានខាងក្រោយពណ៌ស ឬខក់វ៉ា)។", en: "4x6 photos, 4 in number, with a plain white or blue background.",
-                                 },
+                        kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក (ផ្ទឃានខាងក្រោយពណ៌ស ឬខក់វ៉ា)។",
+                        en: "4x6 photos, 4 in number, with a plain white or blue background.",
+                    },
                 },
             },
         ],
@@ -807,23 +831,34 @@ const ITC_PROFILE: AdmissionsProfile = {
         header: {
             icon: "HelpCircle",
             title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
-            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ ITC។", en: "Answers to the questions most often asked about admission to ITC." },
+            subtitle: {
+                kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ ITC។",
+                en: "Answers to the questions most often asked about admission to ITC.",
+            },
         },
         items: [
             {
                 item: {
-                    question: { kh: "តើអ្នកដែលបានបញ្ចប់ថ្នាក់ DUT អាចចូលរៀនបានដែរឬទេ?", en: "Can someone who has completed a DUT or Associate Degree enrol?" },
+                    question: {
+                        kh: "តើអ្នកដែលបានបញ្ចប់ថ្នាក់ DUT អាចចូលរៀនបានដែរឬទេ?",
+                        en: "Can someone who has completed a DUT or Associate Degree enrol?",
+                    },
                     answer: {
-                                kh: "បាទ/ចាស! សិស្សដែលមានបរិញ្ញាបត្ររង (DUT) ឬសមមូល អាចដាក់ពាក្យចូលរៀនបានដោយផ្ទាល់នៅ ITC ដោយគ្រាន់តែផ្តល់ឯកសារបញ្ជាក់ពីសាលាចាស់។ សូមទាក់ទងការិយាល័យចូលរៀនសម្រាប់ព័ត៌មានបន្ថែម។", en: "Yes! Students holding an associate degree (DUT) or equivalent may apply to enrol directly at ITC, provided they submit documents certified by their old school. Please contact the admissions office for more information.",
-                            },
+                        kh: "បាទ/ចាស! សិស្សដែលមានបរិញ្ញាបត្ររង (DUT) ឬសមមូល អាចដាក់ពាក្យចូលរៀនបានដោយផ្ទាល់នៅ ITC ដោយគ្រាន់តែផ្តល់ឯកសារបញ្ជាក់ពីសាលាចាស់។ សូមទាក់ទងការិយាល័យចូលរៀនសម្រាប់ព័ត៌មានបន្ថែម។",
+                        en: "Yes! Students holding an associate degree (DUT) or equivalent may apply to enrol directly at ITC, provided they submit documents certified by their old school. Please contact the admissions office for more information.",
+                    },
                 },
             },
             {
                 item: {
-                    question: { kh: "តើសិស្ប្រភេទ A ទទួលបានអាហារូបករណ៍អ្វីខ្លះ?", en: "What benefits do Category A students receive?" },
+                    question: {
+                        kh: "តើសិស្ប្រភេទ A ទទួលបានអាហារូបករណ៍អ្វីខ្លះ?",
+                        en: "What benefits do Category A students receive?",
+                    },
                     answer: {
-                                kh: "សិស្សប្រភេទ A (ពិន្ទុខ្ពស់បំផុត) អាចទទួលបានអាហារូបករណ៍ពេញលេញរហូតដល់ 100% រួមទាំងថ្លៃសិក្សា និងថលៃស្នាក់នៅ។ សូមពិនិត្យលក្ខខណ្លម្អិតនៅលើគេហទំព័រ ITC។", en: "Category A students (the highest scores) can receive benefits of up to 100%, including tuition fees and dormitory fees. Please check the details on the ITC website.",
-                            },
+                        kh: "សិស្សប្រភេទ A (ពិន្ទុខ្ពស់បំផុត) អាចទទួលបានអាហារូបករណ៍ពេញលេញរហូតដល់ 100% រួមទាំងថ្លៃសិក្សា និងថលៃស្នាក់នៅ។ សូមពិនិត្យលក្ខខណ្លម្អិតនៅលើគេហទំព័រ ITC។",
+                        en: "Category A students (the highest scores) can receive benefits of up to 100%, including tuition fees and dormitory fees. Please check the details on the ITC website.",
+                    },
                 },
             },
         ],
@@ -844,7 +879,10 @@ const ITC_PROFILE: AdmissionsProfile = {
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: { kh: "ឈមោះ: ITC Admissions Fund", en: "Account: ITC Admissions Fund" }, subtitle: KHQR_BANKS },
+        caption: {
+            title: { kh: "ឈមោះ: ITC Admissions Fund", en: "Account: ITC Admissions Fund" },
+            subtitle: KHQR_BANKS,
+        },
         action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $15.00" } },
     },
 
@@ -885,17 +923,20 @@ const USHA_PROFILE: AdmissionsProfile = {
                 eyebrow: { kh: "មជ្ឈមណ្ឌលធន្គត", en: "Resource Hub" },
                 tone: "green",
                 title: { kh: "កម្មវិធីប្រឡងចូលរៀន & សំណួរពីមុន", en: "Entrance Exam Format & Notices" },
-                subtitle:
-                    { kh: "ព័ត៌មានកម្មវិធីប្រឡងនិងឯកសារបន្ទាប់ពីក្រសួងសុខាភិបាល និងក្រសួងអប់រំ យុវជន និងកីឡា ដែលសាលាបានប្រកាស។",
-                      en: "Information on the exam programme and the notices published by the Ministry of Health and the Ministry of Education, Youth and Sport." },
+                subtitle: {
+                    kh: "ព័ត៌មានកម្មវិធីប្រឡងនិងឯកសារបន្ទាប់ពីក្រសួងសុខាភិបាល និងក្រសួងអប់រំ យុវជន និងកីឡា ដែលសាលាបានប្រកាស។",
+                    en: "Information on the exam programme and the notices published by the Ministry of Health and the Ministry of Education, Youth and Sport.",
+                },
             },
             items: [
                 {
                     icon: "FileText",
                     title: { kh: "ប្រឡងចូលរៀនជាតិ", en: "National Entrance Examination" },
                     meta: { kh: "សិក្សាវិទ្យាសាស្ត្រ", en: "Science" },
-                    description:
-                        { kh: "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា សម្រាប់កម្មវិធីវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈ។", en: "Set by the Ministry of Education, Youth and Sport for the medical and public health science programmes." },
+                    description: {
+                        kh: "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា សម្រាប់កម្មវិធីវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈ។",
+                        en: "Set by the Ministry of Education, Youth and Sport for the medical and public health science programmes.",
+                    },
                     file: neutral("PDF • Khmer-English"),
                     downloadLabel: { kh: "ទាញយកកម្មវិធីប្រឡង", en: "Download exam programme" },
                     tone: "blue",
@@ -904,8 +945,10 @@ const USHA_PROFILE: AdmissionsProfile = {
                     icon: "FileText",
                     title: { kh: "ប្រឡងសមត្ថភាពសុខាភិបាល", en: "MoH Aptitude Test" },
                     meta: { kh: "សុខាភិបាល", en: "Health" },
-                    description:
-                        { kh: "ប្រឡងសមត្ថភាពដោយក្រសួងសុខាភិបាល សម្រាប់មហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី។", en: "Aptitude test set by the Ministry of Health for the faculties of nursing, midwifery and medical laboratory science." },
+                    description: {
+                        kh: "ប្រឡងសមត្ថភាពដោយក្រសួងសុខាភិបាល សម្រាប់មហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី។",
+                        en: "Aptitude test set by the Ministry of Health for the faculties of nursing, midwifery and medical laboratory science.",
+                    },
                     file: neutral("PDF • Khmer-English"),
                     downloadLabel: { kh: "ទាញយកកម្មវិធីសមត្ថភាព", en: "Download aptitude test" },
                     tone: "purple",
@@ -942,21 +985,28 @@ const USHA_PROFILE: AdmissionsProfile = {
                     badge: [neutral("BacII")],
                     tone: "green",
                     note: [
-                        { kh: "បរិញ្ញាបត្រផ្នគរវិទ្យាសាស្ត្រសម្រាប់ពេទុយ គីមីវិទ្យា & ជីវវិទ្យាសម្រាប់ឱសថ និងគិលានុបដ្ឋាយន្ត សំឡី។",
-                          en: "A science certificate in medicine, chemistry & biology is required for nursing and medical laboratory science." },
+                        {
+                            kh: "បរិញ្ញាបត្រផ្នគរវិទ្យាសាស្ត្រសម្រាប់ពេទុយ គីមីវិទ្យា & ជីវវិទ្យាសម្រាប់ឱសថ និងគិលានុបដ្ឋាយន្ត សំឡី។",
+                            en: "A science certificate in medicine, chemistry & biology is required for nursing and medical laboratory science.",
+                        },
                     ],
                 },
             },
             {
                 exam: true,
                 item: {
-                    label: [{ kh: "ការប្រឡងចូលរៀន", en: "Entrance examination" }, { kh: "ការប្រឡងចូលរៀន", en: "Entrance Examination" }],
+                    label: [
+                        { kh: "ការប្រឡងចូលរៀន", en: "Entrance examination" },
+                        { kh: "ការប្រឡងចូលរៀន", en: "Entrance Examination" },
+                    ],
                     badge: [neutral("MoEYS"), neutral("MoH")],
                     tone: "blue",
-                    note: [{
-                        kh: "ជាប់ការប្រឡងចូលរៀនជាតិ ឬការប្រឡងដោយក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជារបស់សាលា។",
-                        en: "Either the national entrance exam or the test set by the Ministry of Health, depending on the school's programme.",
-                    }],
+                    note: [
+                        {
+                            kh: "ជាប់ការប្រឡងចូលរៀនជាតិ ឬការប្រឡងដោយក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជារបស់សាលា។",
+                            en: "Either the national entrance exam or the test set by the Ministry of Health, depending on the school's programme.",
+                        },
+                    ],
                 },
             },
             {
@@ -964,7 +1014,12 @@ const USHA_PROFILE: AdmissionsProfile = {
                     label: [{ kh: "សុខភាព & ភាសា", en: "Health & language" }],
                     badge: [{ kh: "ស្រប", en: "Fit" }, neutral("B1 EN")],
                     tone: "purple",
-                    note: [{ kh: "មានសុខភាពល្អ និងមានចំណេះភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ។", en: "Must be in good health and have English proficiency at B1 level or above." }],
+                    note: [
+                        {
+                            kh: "មានសុខភាពល្អ និងមានចំណេះភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ។",
+                            en: "Must be in good health and have English proficiency at B1 level or above.",
+                        },
+                    ],
                 },
             },
         ],
@@ -1040,8 +1095,10 @@ const USHA_PROFILE: AdmissionsProfile = {
                     title: { kh: "ដាក់ឯកសារ & បង់ថ្លៃ", en: "Document Submission & Fee" },
                     date: { kh: "១៥ - ៣០ កញ្ញា ២០២៥", en: "15 - 30 Sep 2025" },
                     dateTone: "green",
-                    description:
-                        { kh: "ដាក់ឯកសារនៅការិយាល័យ និងបង់ថ្លៃចុះឈ្មោះ $5.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។", en: "Submit documents at the office and pay the $5.00 registration fee via Bakong KHQR or at a bank (ABA / ACLEDA / Canadia / Wing)." },
+                    description: {
+                        kh: "ដាក់ឯកសារនៅការិយាល័យ និងបង់ថ្លៃចុះឈ្មោះ $5.00 តាមរយៈ Bakong KHQR ឬធនាគារ (ABA / ACLEDA / Canadia / Wing)។",
+                        en: "Submit documents at the office and pay the $5.00 registration fee via Bakong KHQR or at a bank (ABA / ACLEDA / Canadia / Wing).",
+                    },
                     note: { kh: "ទទួលបានវិក្យបត្របង់ប្រាក់", en: "A payment receipt is issued" },
                 },
             },
@@ -1051,9 +1108,14 @@ const USHA_PROFILE: AdmissionsProfile = {
                     title: { kh: "ប្រឡងចូលរៀន", en: "Entrance Examination" },
                     date: { kh: "០៤ តុលា ២០២៥", en: "04 Oct 2025" },
                     dateTone: "red",
-                    description:
-                        { kh: "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា ឬក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជាដែលបានដាក់ក្នុងបញ្ជីបញ្ជាក់។", en: "Set by the Ministry of Education, Youth and Sport or the Ministry of Health, depending on the programme listed in the application form." },
-                    note: { kh: "សិស្សត្រូវយកអត្តសញ្ញាណបថណ្ណមកជាមួយខ្លួនឯង", en: "Students must bring their national ID with them" },
+                    description: {
+                        kh: "ប្រឡងដោយក្រសួងអប់រំ យុវជន និងកីឡា ឬក្រសួងសុខាភិបាល អាស្រ័តមុខវិជជាដែលបានដាក់ក្នុងបញ្ជីបញ្ជាក់។",
+                        en: "Set by the Ministry of Education, Youth and Sport or the Ministry of Health, depending on the programme listed in the application form.",
+                    },
+                    note: {
+                        kh: "សិស្សត្រូវយកអត្តសញ្ញាណបថណ្ណមកជាមួយខ្លួនឯង",
+                        en: "Students must bring their national ID with them",
+                    },
                 },
             },
             {
@@ -1089,7 +1151,10 @@ const USHA_PROFILE: AdmissionsProfile = {
                 item: {
                     title: { kh: "សេចក្តីថ្លគិតគន្ទុពិន្ទុ", en: "Official Transcript" },
                     subtitle: { kh: "ពិន្ទុប្រឡងជាតិ", en: "National Exam Score" },
-                    description: { kh: "ពិន្ទុប្រឡងចូលរៀនដែលបានបញ្ជាក់ពីក្រសួងអប់រំ យុវជន និងកីឡា។", en: "The entrance exam score certified by the Ministry of Education, Youth and Sport." },
+                    description: {
+                        kh: "ពិន្ទុប្រឡងចូលរៀនដែលបានបញ្ជាក់ពីក្រសួងអប់រំ យុវជន និងកីឡា។",
+                        en: "The entrance exam score certified by the Ministry of Education, Youth and Sport.",
+                    },
                 },
             },
             {
@@ -1106,7 +1171,10 @@ const USHA_PROFILE: AdmissionsProfile = {
                 item: {
                     title: { kh: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក", en: "4x6 Photos x 4" },
                     subtitle: { kh: "រូបថតបញ្ចាំង", en: "Portrait Photos" },
-                    description: { kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។", en: "4x6 photos, 4 pieces, with a clear white background." },
+                    description: {
+                        kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។",
+                        en: "4x6 photos, 4 pieces, with a clear white background.",
+                    },
                 },
             },
         ],
@@ -1154,13 +1222,19 @@ const USHA_PROFILE: AdmissionsProfile = {
         header: {
             icon: "HelpCircle",
             title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
-            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ UHS។", en: "Answers to the questions most often asked about admission to UHS." },
+            subtitle: {
+                kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ UHS។",
+                en: "Answers to the questions most often asked about admission to UHS.",
+            },
         },
         items: [
             {
                 exam: true,
                 item: {
-                    question: { kh: "តើប្រឡងចូលរៀនរបស់ UHS ខុសពីប្រឡងជាតិយ៉ាងណា?", en: "How does the UHS entrance exam differ from the national exam?" },
+                    question: {
+                        kh: "តើប្រឡងចូលរៀនរបស់ UHS ខុសពីប្រឡងជាតិយ៉ាងណា?",
+                        en: "How does the UHS entrance exam differ from the national exam?",
+                    },
                     answer: {
                         kh: "មហាវិទ្យាល័យវិទ្យាសាស្ត្រពេទុយ និងសុខាភិបាលសាធារណៈប្រើការប្រឡងចូលរៀនជាតិរបស់ក្រសួងអប់រំ យុវជន និងកីឡា ចន្លោះមហាវិទ្យាល័យឱសថកម្ម ទស្សនាយន្តបរិយាកាស និងគិលានុបដ្ឋាយន្ត សំឡី ប្រើការប្រឡងសមត្ថភាពរបស់ក្រសួងសុខាភិបាល។",
                         en: "The faculties of medicine and public health use the national entrance exam of the Ministry of Education, Youth and Sport, while the faculties of nursing, midwifery and medical laboratory science use the aptitude test of the Ministry of Health.",
@@ -1169,7 +1243,10 @@ const USHA_PROFILE: AdmissionsProfile = {
             },
             {
                 item: {
-                    question: { kh: "តើមានអាហារូបករណ៍សម្រាប់សិស្ស UHS ដែរឬទេ?", en: "Are scholarships available for UHS students?" },
+                    question: {
+                        kh: "តើមានអាហារូបករណ៍សម្រាប់សិស្ស UHS ដែរឬទេ?",
+                        en: "Are scholarships available for UHS students?",
+                    },
                     answer: {
                         kh: "មាន។ សាលាផ្តល់អាហារូបករណ៍រហូតដល់ ១០០% សម្រាប់សិស្សដែលមានពិន្ទុល្អ និងស្ថាប័នមួយនៅពេលប្រកាសលទ្ធផល។",
                         en: "Yes. The school offers scholarships of up to 100% for students with good grades who rank first when the results are announced.",
@@ -1194,7 +1271,10 @@ const USHA_PROFILE: AdmissionsProfile = {
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: { kh: "ឈមោះ: UHS Admissions Account", en: "Name: UHS Admissions Account" }, subtitle: KHQR_BANKS },
+        caption: {
+            title: { kh: "ឈមោះ: UHS Admissions Account", en: "Name: UHS Admissions Account" },
+            subtitle: KHQR_BANKS,
+        },
         action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $5.00" } },
     },
 
@@ -1211,11 +1291,20 @@ const USHA_PROFILE: AdmissionsProfile = {
         rows: [
             {
                 icon: "MapPin",
-                text: { kh: "ផ្លូវព្រះសីហមេនី លេខ ២៧១, រាជធានីភ្នំពេញ, កម្ពុជា", en: "Preah Sihanouk Blvd, No. 271, Phnom Penh, Cambodia" },
+                text: {
+                    kh: "ផ្លូវព្រះសីហមេនី លេខ ២៧១, រាជធានីភ្នំពេញ, កម្ពុជា",
+                    en: "Preah Sihanouk Blvd, No. 271, Phnom Penh, Cambodia",
+                },
             },
             { icon: "Globe", text: neutral("uhs.edu.kh") },
             { icon: "Clock", text: { kh: "ច័នទ - សុក្រ: 8:00 - 16:30", en: "Mon - Fri: 8:00 - 16:30" } },
-            { icon: "Info", text: { kh: "សូមផ្ទៀងផ្ទាត់ឯកសារនៅមហាវិទ្យាល័យដែលអ្នកចង់ចូលរៀន", en: "Please check the documents with the faculty you want to apply to" } },
+            {
+                icon: "Info",
+                text: {
+                    kh: "សូមផ្ទៀងផ្ទាត់ឯកសារនៅមហាវិទ្យាល័យដែលអ្នកចង់ចូលរៀន",
+                    en: "Please check the documents with the faculty you want to apply to",
+                },
+            },
         ],
         action: {
             icon: "ExternalLink",
@@ -1389,7 +1478,10 @@ const RUPP_PROFILE: AdmissionsProfile = {
                         kh: "ចុះឈ្មោះនៅលើគេហទំព័រសាកលវិទ្យាល័យ បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជាដែលចង់ចូលរៀន។",
                         en: "Register on the university website, fill in your own details and select the subject you want to study.",
                     },
-                    note: { kh: "អាចជ្រើសបានបីមុខវិជជតាមលំដាប់ចម្រើន", en: "Up to three subjects may be chosen, in order of preference" },
+                    note: {
+                        kh: "អាចជ្រើសបានបីមុខវិជជតាមលំដាប់ចម្រើន",
+                        en: "Up to three subjects may be chosen, in order of preference",
+                    },
                 },
             },
             {
@@ -1401,7 +1493,10 @@ const RUPP_PROFILE: AdmissionsProfile = {
                         kh: "ដាក់ឯកសារនៅការិយាល័យសាលា និងបង់ថ្លៃចុះឈ្មោះ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។",
                         en: "Submit the documents at the school office and pay the $10.00 registration fee via Bakong KHQR or a bank.",
                     },
-                    note: { kh: "ឯកសារដើមត្រូវបានទាក់ទងក្នុងសាខាកណ្ដាល", en: "Original documents must be submitted in person" },
+                    note: {
+                        kh: "ឯកសារដើមត្រូវបានទាក់ទងក្នុងសាខាកណ្ដាល",
+                        en: "Original documents must be submitted in person",
+                    },
                 },
             },
             {
@@ -1470,7 +1565,10 @@ const RUPP_PROFILE: AdmissionsProfile = {
                 item: {
                     title: { kh: "រូបថត ៤x៦ ចំនួន ២ សន្ឹក", en: "4x6 Photos x 2" },
                     subtitle: { kh: "រូបថតបញ្ហា", en: "Portrait Photos" },
-                    description: { kh: "រូបថតទំហំ ៤x៦ ចំនួន ២ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។", en: "Two 4x6 photos, with a clear white background." },
+                    description: {
+                        kh: "រូបថតទំហំ ៤x៦ ចំនួន ២ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។",
+                        en: "Two 4x6 photos, with a clear white background.",
+                    },
                 },
             },
         ],
@@ -1518,13 +1616,19 @@ const RUPP_PROFILE: AdmissionsProfile = {
         header: {
             icon: "HelpCircle",
             title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
-            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ RUPP។", en: "Answers to the questions most often asked about admission to RUPP." },
+            subtitle: {
+                kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ RUPP។",
+                en: "Answers to the questions most often asked about admission to RUPP.",
+            },
         },
         items: [
             {
                 exam: true,
                 item: {
-                    question: { kh: "តើត្រូវប្រឡងជ្រើសរើសទោះបានជាប្រឡងជាតិក៏ដែរឬទេ?", en: "Do I still have to sit the selection exam if I passed the national exam?" },
+                    question: {
+                        kh: "តើត្រូវប្រឡងជ្រើសរើសទោះបានជាប្រឡងជាតិក៏ដែរឬទេ?",
+                        en: "Do I still have to sit the selection exam if I passed the national exam?",
+                    },
                     answer: {
                         kh: "បាទ។ សិស្សដែលជាប់ការប្រឡងចូលរៀនជាតិ តែមិនមានចំណាប់តាមមុខវិជជ ត្រូវចូលរួមការប្រឡងជ្រើសរើសរបស់សាលាក្នុងវិធីបរិយាកាសទូទៅ។",
                         en: "Yes. Students who pass the national entrance exam but do not meet the subject thresholds must sit the school's selection exam in the general session.",
@@ -1533,7 +1637,10 @@ const RUPP_PROFILE: AdmissionsProfile = {
             },
             {
                 item: {
-                    question: { kh: "តើអាចជ្រើសរើសបានបីមុខវិជជឬនៅពេលចុះឈ្មោះឬទេ?", en: "Can I choose three subjects when I register?" },
+                    question: {
+                        kh: "តើអាចជ្រើសរើសបានបីមុខវិជជឬនៅពេលចុះឈ្មោះឬទេ?",
+                        en: "Can I choose three subjects when I register?",
+                    },
                     answer: {
                         kh: "អាច។ សិស្សមានសិទ្ធិជ្រើសរើសមុខវិជជបានដូចគ្នាទៅការជ្រើសលំដាប់ចម្រើន លុះត្រាក់តែជាតិបង្កើតការងារត្រូវបានផ្ទៀងផ្ទាត់ទាំងអស់។",
                         en: "Yes. Students may choose the same number of subjects in the same order of preference, provided the faculty quota is not exceeded.",
@@ -1558,7 +1665,10 @@ const RUPP_PROFILE: AdmissionsProfile = {
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: { kh: "ឈមោះ: RUPP Admissions Account", en: "Account name: RUPP Admissions Account" }, subtitle: KHQR_BANKS },
+        caption: {
+            title: { kh: "ឈមោះ: RUPP Admissions Account", en: "Account name: RUPP Admissions Account" },
+            subtitle: KHQR_BANKS,
+        },
         action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $10.00" } },
     },
 
@@ -1575,11 +1685,17 @@ const RUPP_PROFILE: AdmissionsProfile = {
         rows: [
             {
                 icon: "MapPin",
-                text: { kh: "ផ្លូវសហព័ន្ធរុស្សី, ខណ្ឌទួលគោក, រាជធានីភ្នំពេញ, កម្ពុជា", en: "Russian Federation Road, Toul Kork, Phnom Penh, Cambodia" },
+                text: {
+                    kh: "ផ្លូវសហព័ន្ធរុស្សី, ខណ្ឌទួលគោក, រាជធានីភ្នំពេញ, កម្ពុជា",
+                    en: "Russian Federation Road, Toul Kork, Phnom Penh, Cambodia",
+                },
             },
             { icon: "Globe", text: neutral("rupp.edu.kh") },
             { icon: "Clock", text: { kh: "ច័នទ - សុក្រ: 8:00 - 16:30", en: "Mon - Fri: 8:00 - 16:30" } },
-            { icon: "Users", text: { kh: "សុំតាមមហាវិទ្យាល័យដែលបានជ្រើសរើសជាមុន", en: "Ask the faculty you were admitted to" } },
+            {
+                icon: "Users",
+                text: { kh: "សុំតាមមហាវិទ្យាល័យដែលបានជ្រើសរើសជាមុន", en: "Ask the faculty you were admitted to" },
+            },
         ],
         action: {
             icon: "ExternalLink",
@@ -1597,17 +1713,19 @@ const IFL_PROFILE: AdmissionsProfile = {
                 tone: "green",
                 title: { kh: "កម្មវិធីប្រឡងភាសា & សំណួរពីមុន", en: "Language Test Format & Past Papers" },
                 subtitle: {
-                          kh: "ទម្រង់ប្រឡងភាសាអង់គ្លេស និងប្រឡងសមត្ថភាពភាសាបរទេស ដើមបីរៀបចំខ្លួនមុនចុះឈ្មោះ។",
-                          en: "The English test format and the foreign language aptitude test, to prepare before registering.",
-                      },
+                    kh: "ទម្រង់ប្រឡងភាសាអង់គ្លេស និងប្រឡងសមត្ថភាពភាសាបរទេស ដើមបីរៀបចំខ្លួនមុនចុះឈ្មោះ។",
+                    en: "The English test format and the foreign language aptitude test, to prepare before registering.",
+                },
             },
             items: [
                 {
                     icon: "BookOpen",
                     title: { kh: "ប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន", en: "Basic English Placement Test" },
                     meta: { kh: "ពេលវេលា: 90min", en: "Duration: 90 min" },
-                    description:
-                        { kh: "វេជ្ជាសាស្ត្រ ក្រាស្រយោធន៍ និងប្រយោគ សម្រាប់វាយតម្លៃកម្រិតភាសាពីមូលដ្ឋានដល់កម្រិតមួយ។", en: "Listening, reading and speaking, to place your language level from basic to intermediate." },
+                    description: {
+                        kh: "វេជ្ជាសាស្ត្រ ក្រាស្រយោធន៍ និងប្រយោគ សម្រាប់វាយតម្លៃកម្រិតភាសាពីមូលដ្ឋានដល់កម្រិតមួយ។",
+                        en: "Listening, reading and speaking, to place your language level from basic to intermediate.",
+                    },
                     file: neutral("PDF • Khmer-English"),
                     downloadLabel: { kh: "ទាញយកទម្រង់ PDF", en: "Download the PDF" },
                     tone: "blue",
@@ -1617,9 +1735,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                     title: { kh: "ប្រឡងសមត្ថភាពភាសាបរទេស", en: "Language Aptitude Test" },
                     meta: { kh: "ពេលវេលា: 60min", en: "Duration: 60 min" },
                     description: {
-                                     kh: "ប្រឡងសមត្ថភាពសម្រាប់ដេប៉ាតឺភាសាបារាំង និងដេប៉ាតឺបកប្រែ សរសេរ និងស្តាប់។",
-                                     en: "The aptitude test for the foreign language and translation departments: writing and dictation.",
-                                 },
+                        kh: "ប្រឡងសមត្ថភាពសម្រាប់ដេប៉ាតឺភាសាបារាំង និងដេប៉ាតឺបកប្រែ សរសេរ និងស្តាប់។",
+                        en: "The aptitude test for the foreign language and translation departments: writing and dictation.",
+                    },
                     file: neutral("PDF • Khmer"),
                     downloadLabel: { kh: "ទាញយកទម្រង់ PDF", en: "Download the PDF" },
                     tone: "purple",
@@ -1629,9 +1747,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                 icon: "Info",
                 title: { kh: "ចំណាំសំខាន់", en: "Note" },
                 text: {
-                          kh: "សិស្សដែលជាប់ការប្រឡងភាសាអង់គ្លេសត្រូវចូលរួមសម្រាប់ដេប៉ាតឺភាសាអង់គ្លេសដោយស្រាប់ ដេប៉ាតឺភាសាបរទេសដែលទាមទារការប្រឡងបន្ថែម។",
-                          en: "Students who pass the English test must join the English department, while the foreign language departments require an extra test.",
-                      },
+                    kh: "សិស្សដែលជាប់ការប្រឡងភាសាអង់គ្លេសត្រូវចូលរួមសម្រាប់ដេប៉ាតឺភាសាអង់គ្លេសដោយស្រាប់ ដេប៉ាតឺភាសាបរទេសដែលទាមទារការប្រឡងបន្ថែម។",
+                    en: "Students who pass the English test must join the English department, while the foreign language departments require an extra test.",
+                },
             },
         },
     },
@@ -1641,17 +1759,25 @@ const IFL_PROFILE: AdmissionsProfile = {
             eyebrow: { kh: "តារាងលក្ខខណ្ឌចូលរៀន", en: "Eligibility Matrix" },
             icon: "FileText",
             title: { kh: "លក្ខខណ្ឌចូលរៀនទូទៅ", en: "General Entry Criteria & BacII" },
-            subtitle:
-                { kh: "លក្ខខណ្ឌរបស់វិទ្យាស្ថានភាសាបរទេស (IFL) សម្រាប់សិស្សដែលចង់ចូលរៀននៅដេប៉ាតឺភាសាអង់គ្លេស ភាសាបារាំង និងបកប្រែ។", en: "Entry criteria for the Institute of Foreign Languages (IFL) for students who want to study in the English, foreign language and translation departments." },
+            subtitle: {
+                kh: "លក្ខខណ្ឌរបស់វិទ្យាស្ថានភាសាបរទេស (IFL) សម្រាប់សិស្សដែលចង់ចូលរៀននៅដេប៉ាតឺភាសាអង់គ្លេស ភាសាបារាំង និងបកប្រែ។",
+                en: "Entry criteria for the Institute of Foreign Languages (IFL) for students who want to study in the English, foreign language and translation departments.",
+            },
         },
         cells: [
             {
                 item: {
-                    label: [{ kh: "បរិញ្ញាបត្រ", en: "Diploma" }, { kh: "ស្មើគ្នា", en: "or equivalent" }],
+                    label: [
+                        { kh: "បរិញ្ញាបត្រ", en: "Diploma" },
+                        { kh: "ស្មើគ្នា", en: "or equivalent" },
+                    ],
                     badge: [neutral("BacII")],
                     tone: "green",
                     note: [
-                        { kh: "បរិញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII) ឬសញ្ញាបត្រស្មើគ្នា ដោយអាស្រ័តមុខវិជជរបស់វិទ្យាស្ថាន។", en: "A BacII (high school diploma) or an equivalent upper secondary diploma, depending on the institute's department." },
+                        {
+                            kh: "បរិញ្ញាបត្របឋមសិក្សាទុតិយភូមិ (BacII) ឬសញ្ញាបត្រស្មើគ្នា ដោយអាស្រ័តមុខវិជជរបស់វិទ្យាស្ថាន។",
+                            en: "A BacII (high school diploma) or an equivalent upper secondary diploma, depending on the institute's department.",
+                        },
                     ],
                 },
             },
@@ -1674,7 +1800,12 @@ const IFL_PROFILE: AdmissionsProfile = {
                     label: [{ kh: "កម្រិតភាសា", en: "Language Level" }],
                     badge: [neutral("B1 EN"), neutral("A2 NEW")],
                     tone: "purple",
-                    note: [{ kh: "សិស្សត្រូវអាចរៀនភាសាបរទេសពេញលេញ ហើយចូលរៀនភាសាបរទេសពីកម្រិតមូលដ្ឋានបាន។", en: "Students must be able to study a foreign language fully, and may enter the foreign language programme from a basic level." }],
+                    note: [
+                        {
+                            kh: "សិស្សត្រូវអាចរៀនភាសាបរទេសពេញលេញ ហើយចូលរៀនភាសាបរទេសពីកម្រិតមូលដ្ឋានបាន។",
+                            en: "Students must be able to study a foreign language fully, and may enter the foreign language programme from a basic level.",
+                        },
+                    ],
                 },
             },
         ],
@@ -1710,9 +1841,9 @@ const IFL_PROFILE: AdmissionsProfile = {
         notice: {
             icon: "AlertCircle",
             text: {
-                      kh: "ចំណាំសំខាន់៖ កម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំង ត្រូវចូលរួមនៅដេប៉ាតឺភាសាខ្មែរ ខ្មែន ឬចិន។",
-                      en: "Note: the foundation year programme for foreign languages must be taken at the Khmer, French or Chinese department.",
-                  },
+                kh: "ចំណាំសំខាន់៖ កម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំង ត្រូវចូលរួមនៅដេប៉ាតឺភាសាខ្មែរ ខ្មែន ឬចិន។",
+                en: "Note: the foundation year programme for foreign languages must be taken at the Khmer, French or Chinese department.",
+            },
         },
     },
 
@@ -1722,9 +1853,9 @@ const IFL_PROFILE: AdmissionsProfile = {
             meta: { kh: "បានកែសម្រួលឆ្នាំ ២០២៥", en: "Updated 2025" },
             title: { kh: "ដំណាក់កាលនៃការចូលរៀន៖ ៤ ជំហាន", en: "4-Step Admission Roadmap" },
             subtitle: {
-                          kh: "ដំណើរការចូលរៀននៅ IFL មាន ៤ ជំហាន ចាប់ពីការទាញយកបញ្ជីបញ្ជាក់ ដល់ការចុះឈ្មោះចូលរៀន។",
-                          en: "The admission process at IFL has four steps, from collecting the application form to registering for study.",
-                      },
+                kh: "ដំណើរការចូលរៀននៅ IFL មាន ៤ ជំហាន ចាប់ពីការទាញយកបញ្ជីបញ្ជាក់ ដល់ការចុះឈ្មោះចូលរៀន។",
+                en: "The admission process at IFL has four steps, from collecting the application form to registering for study.",
+            },
         },
         steps: [
             {
@@ -1733,10 +1864,13 @@ const IFL_PROFILE: AdmissionsProfile = {
                     date: { kh: "០១ - ១០ កញ្ញា ២០២៥", en: "01 - 10 Sep 2025" },
                     dateTone: "blue",
                     description: {
-                                     kh: "ទាញយកបញ្ជីបញ្ជាក់នៅសាខាកណ្ដាលវិទ្យាស្ថាន បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជ។",
-                                     en: "Collect the application form at the institute's central branch, fill in your personal details and choose your department.",
-                                 },
-                    note: { kh: "អាចចុះឈ្មោះតាមអ៊ីមែល ឬមកផ្ទាល់នៅសាខា", en: "You can register by email or come in person to the branch" },
+                        kh: "ទាញយកបញ្ជីបញ្ជាក់នៅសាខាកណ្ដាលវិទ្យាស្ថាន បំពេញព័ត៌មានផ្ទាល់ខ្លួន និងជ្រើសរើសមុខវិជជ។",
+                        en: "Collect the application form at the institute's central branch, fill in your personal details and choose your department.",
+                    },
+                    note: {
+                        kh: "អាចចុះឈ្មោះតាមអ៊ីមែល ឬមកផ្ទាល់នៅសាខា",
+                        en: "You can register by email or come in person to the branch",
+                    },
                 },
             },
             {
@@ -1744,7 +1878,10 @@ const IFL_PROFILE: AdmissionsProfile = {
                     title: { kh: "ដាក់ឯកសារ & បង់ថ្លៃ", en: "Document Submission & Fee" },
                     date: { kh: "១០ - ២៥ កញ្ញា ២០២៥", en: "10 - 25 Sep 2025" },
                     dateTone: "green",
-                    description: { kh: "ដាក់ឯកសារនៅសាខាកណ្ដាល និងបង់ថ្លៃ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។", en: "Submit documents at the branch and pay the $10.00 fee via Bakong KHQR or a bank." },
+                    description: {
+                        kh: "ដាក់ឯកសារនៅសាខាកណ្ដាល និងបង់ថ្លៃ $10.00 តាមរយៈ Bakong KHQR ឬធនាគារ។",
+                        en: "Submit documents at the branch and pay the $10.00 fee via Bakong KHQR or a bank.",
+                    },
                     note: { kh: "ទទួលបានវិក្យបត្របង់ប្រាក់", en: "A payment receipt is issued" },
                 },
             },
@@ -1755,9 +1892,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                     date: { kh: "០៩ តុលា ២០២៥", en: "09 Oct 2025" },
                     dateTone: "red",
                     description: {
-                                     kh: "សិស្សប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងប្រឡងសមត្ថភាពភាសា រួមមានការសម្រាប់ដេប៉ាតឺបកប្រែ។",
-                                     en: "Students sit the basic English test and the language aptitude test, together with an interview for the translation department.",
-                                 },
+                        kh: "សិស្សប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងប្រឡងសមត្ថភាពភាសា រួមមានការសម្រាប់ដេប៉ាតឺបកប្រែ។",
+                        en: "Students sit the basic English test and the language aptitude test, together with an interview for the translation department.",
+                    },
                     note: { kh: "អាស្រ័តមុខវិជជដែលបានជ្រើសរើស", en: "Depends on the department chosen" },
                 },
             },
@@ -1767,9 +1904,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                     date: { kh: "២០ តុលា ២០២៥", en: "20 Oct 2025" },
                     dateTone: "purple",
                     description: {
-                                     kh: "លទ្ធផលត្រូវបានប្រកាសនៅសាខាកណ្ដាល និងត្រូវចុះឈ្មោះចូលរៀនក្នុងរយៈពេល ៧ ថ្ងៃ។",
-                                     en: "Results are announced at the branch, and you must register for study within seven days.",
-                                 },
+                        kh: "លទ្ធផលត្រូវបានប្រកាសនៅសាខាកណ្ដាល និងត្រូវចុះឈ្មោះចូលរៀនក្នុងរយៈពេល ៧ ថ្ងៃ។",
+                        en: "Results are announced at the branch, and you must register for study within seven days.",
+                    },
                 },
             },
         ],
@@ -1784,9 +1921,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                     title: { kh: "សញ្ញាបត្របឋមសិក្សាទុតិយភូមិ", en: "BacII Certificate" },
                     subtitle: { kh: "ត្រាផ្លូវការ", en: "Official Stamps" },
                     description: {
-                                     kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា ឬសញ្ញាបត្រស្មើគ្នា។",
-                                     en: "The original document with a wet signature, or a copy certified by the school or an equivalent diploma.",
-                                 },
+                        kh: "ច្បាប់ដើមដែលមានត្រាផ្លូវការ ឬច្បាប់ចម្លងដែលបញ្ជាក់ពីសាលា ឬសញ្ញាបត្រស្មើគ្នា។",
+                        en: "The original document with a wet signature, or a copy certified by the school or an equivalent diploma.",
+                    },
                 },
             },
             {
@@ -1795,9 +1932,9 @@ const IFL_PROFILE: AdmissionsProfile = {
                     title: { kh: "វិក្យបត្រភាសា", en: "Language Certificate" },
                     subtitle: { kh: "B1 ឬសមមូល", en: "B1 or Equivalent" },
                     description: {
-                                     kh: "វិក្យបត្រភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ ឬវិក្យបត្រពីស្ថាប័នស្របសម្រាប់ដេប៉ាតឺបកប្រែ។",
-                                     en: "An English language certificate at level B1 or above, or a certificate from an institution recognised by the translation department.",
-                                 },
+                        kh: "វិក្យបត្រភាសាអង់គ្លេសកម្រិត B1 ឡើងវិញ ឬវិក្យបត្រពីស្ថាប័នស្របសម្រាប់ដេប៉ាតឺបកប្រែ។",
+                        en: "An English language certificate at level B1 or above, or a certificate from an institution recognised by the translation department.",
+                    },
                 },
             },
             {
@@ -1805,16 +1942,19 @@ const IFL_PROFILE: AdmissionsProfile = {
                     title: { kh: "សំបុត្រកំណើត & អតតសញ្ញាណបថណ្ណ", en: "Birth Certificate & National ID" },
                     subtitle: { kh: "ឯកសារអត្តសញ្ញាណ", en: "Identity Documents" },
                     description: {
-                                     kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ។",
-                                     en: "A copy of the birth certificate and the national ID.",
-                                 },
+                        kh: "ច្បាប់ចម្លងសំបុត្រកំណើត និងអតតសញ្ញាណបណ្ណ។",
+                        en: "A copy of the birth certificate and the national ID.",
+                    },
                 },
             },
             {
                 item: {
                     title: { kh: "រូបថត ៤x៦ ចំនួន ៤ សន្ឹក", en: "4x6 Photos x 4" },
                     subtitle: { kh: "រូបថតសម្គាល់", en: "Portrait Photos" },
-                    description: { kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។", en: "4x6 photos, four copies, with a clear white background." },
+                    description: {
+                        kh: "រូបថតទំហំ ៤x៦ ចំនួន ៤ សនលឹក ដោយមានផ្ទឃានខាងក្រោយពណ៌សច្បាស់។",
+                        en: "4x6 photos, four copies, with a clear white background.",
+                    },
                 },
             },
         ],
@@ -1862,26 +2002,35 @@ const IFL_PROFILE: AdmissionsProfile = {
         header: {
             icon: "HelpCircle",
             title: { kh: "សំណួរដែលសួរញឹកញាប់", en: "Admissions FAQ" },
-            subtitle: { kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ IFL។", en: "Answers to the questions most often asked about admission at IFL." },
+            subtitle: {
+                kh: "ចម្លើយសម្រាប់សំណួរដែលសួរញឹកញាប់អំពីការចូលរៀននៅ IFL។",
+                en: "Answers to the questions most often asked about admission at IFL.",
+            },
         },
         items: [
             {
                 exam: true,
                 item: {
-                    question: { kh: "តើមានការប្រឡងចូលរៀននៅវិទ្យាស្ថានភាសាបរទេសឬទេ?", en: "Is there an entrance test at the Institute of Foreign Languages?" },
+                    question: {
+                        kh: "តើមានការប្រឡងចូលរៀននៅវិទ្យាស្ថានភាសាបរទេសឬទេ?",
+                        en: "Is there an entrance test at the Institute of Foreign Languages?",
+                    },
                     answer: {
-                                kh: "មាន។ រួមមានការប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងការប្រឡងសមត្ថភាពភាសា ដែលបានកំណត់តាមមុខវិជជដែលសិស្សបានជ្រើសរើស។",
-                                en: "Yes. It includes the basic English test and the language aptitude test, set according to the department the student has chosen.",
-                            },
+                        kh: "មាន។ រួមមានការប្រឡងភាសាអង់គ្លេសមូលដ្ឋាន និងការប្រឡងសមត្ថភាពភាសា ដែលបានកំណត់តាមមុខវិជជដែលសិស្សបានជ្រើសរើស។",
+                        en: "Yes. It includes the basic English test and the language aptitude test, set according to the department the student has chosen.",
+                    },
                 },
             },
             {
                 item: {
-                    question: { kh: "តើអាចចូលរៀនភាសាបារាំងពីកម្រិតមូលដ្ឋានបានទេ?", en: "Can I study a foreign language from a basic level?" },
+                    question: {
+                        kh: "តើអាចចូលរៀនភាសាបារាំងពីកម្រិតមូលដ្ឋានបានទេ?",
+                        en: "Can I study a foreign language from a basic level?",
+                    },
                     answer: {
-                                kh: "បាទ។ ដេប៉ាតឺភាសាបារាំងគ្រប់គ្រាន់ទទួលសិស្សចាប់ពីកម្រិតមូលដ្ឋាន។ សូមពិនិត្យមើលកម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំងនៅលើគេហទំព័រសាខាកណ្ដាល។",
-                                en: "Yes. Every foreign language department accepts students from a basic level. Please check the foreign language foundation year programme on the branch website.",
-                            },
+                        kh: "បាទ។ ដេប៉ាតឺភាសាបារាំងគ្រប់គ្រាន់ទទួលសិស្សចាប់ពីកម្រិតមូលដ្ឋាន។ សូមពិនិត្យមើលកម្មវិធីឆ្នាំដំបូងសម្រាប់ភាសាបារាំងនៅលើគេហទំព័រសាខាកណ្ដាល។",
+                        en: "Yes. Every foreign language department accepts students from a basic level. Please check the foreign language foundation year programme on the branch website.",
+                    },
                 },
             },
         ],
@@ -1902,7 +2051,10 @@ const IFL_PROFILE: AdmissionsProfile = {
 
     payment: {
         brand: KHQR_BRAND,
-        caption: { title: { kh: "ឈមោះ: IFL Admissions Account", en: "Account name: IFL Admissions Account" }, subtitle: KHQR_BANKS },
+        caption: {
+            title: { kh: "ឈមោះ: IFL Admissions Account", en: "Account name: IFL Admissions Account" },
+            subtitle: KHQR_BANKS,
+        },
         action: { icon: "CreditCard", label: { kh: "បង់ថ្លៃពាក្យសុំឥឡូវ", en: "Pay $10.00" } },
     },
 
@@ -1919,11 +2071,20 @@ const IFL_PROFILE: AdmissionsProfile = {
         rows: [
             {
                 icon: "MapPin",
-                text: { kh: "ផ្លូវព្រះសីហមេនី, រាជធានីភ្នំពេញ, កម្ពុជា", en: "Preah Sihanouk Blvd, Phnom Penh, Cambodia" },
+                text: {
+                    kh: "ផ្លូវព្រះសីហមេនី, រាជធានីភ្នំពេញ, កម្ពុជា",
+                    en: "Preah Sihanouk Blvd, Phnom Penh, Cambodia",
+                },
             },
             { icon: "Globe", text: neutral("ifl.rupp.edu.kh") },
             { icon: "Clock", text: { kh: "ច័នទ - សុក្រ: 8:00 - 16:30", en: "Mon - Fri: 8:00 - 16:30" } },
-            { icon: "Info", text: { kh: "បញ្ជីបញ្ជាក់អាចទាញយកផ្ទាល់នៅសាខាកណ្ដាល", en: "The application form can be downloaded directly at the branch" } },
+            {
+                icon: "Info",
+                text: {
+                    kh: "បញ្ជីបញ្ជាក់អាចទាញយកផ្ទាល់នៅសាខាកណ្ដាល",
+                    en: "The application form can be downloaded directly at the branch",
+                },
+            },
         ],
         action: {
             icon: "ExternalLink",

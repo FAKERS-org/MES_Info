@@ -31,12 +31,12 @@ export default async function ScholarshipsPage({
   const data = getScholarshipsPageData(university, await readLang());
 
   return (
-    <div className="space-y-6 py-4 md:py-8">
+    <div className="space-y-4 py-3 md:py-6">
       <ScholarshipsHero data={data.hero} />
 
       <SectionLayout
         breakpoint="md"
-        mainClassName="space-y-6"
+        mainClassName="space-y-4"
         aside={data.howToApply && <HowToApply data={data.howToApply} />}
       >
         <ScholarshipListCard data={data.list} />
