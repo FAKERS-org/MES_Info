@@ -162,9 +162,7 @@ export default function FacultyCard() {
                                         variant="secondary"
                                         className="bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer gap-1 rounded-lg px-4 h-9 text-sm"
                                     >
-                                        ព័ត៌មាន
-                                        <br />
-                                        លម្អិត
+                                        ព័ត៌មានលម្អិត
                                         <ChevronRight className="w-4 h-4 ml-1" />
                                     </Button>
                                 </div>
