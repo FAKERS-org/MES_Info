@@ -64,7 +64,7 @@ const majorsData: Major[] = [
 
 export default function FacultyCard() {
     return (
-        <div className="w-full max-w-4xl mx-auto p-4 font-sans">
+        <div className="w-full max-w-4xl font-sans">
             {/* Main Container Card */}
             <Card className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white">
                 {/* --- Header Section --- */}

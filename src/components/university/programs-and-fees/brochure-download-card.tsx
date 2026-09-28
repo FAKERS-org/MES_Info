@@ -4,9 +4,8 @@ import { Download, FileText } from "lucide-react";
 
 export default function BrochureDownloadCard() {
     return (
-        <div className="w-full max-w-sm p-4 bg-gray-50/50">
-            <Card className="rounded-[24px] border-0 shadow-lg bg-gradient-to-br from-[#0f3455] to-[#0a253d] overflow-hidden">
-                <div className="p-6 flex flex-col gap-5">
+        <Card className="w-full max-w-sm rounded-[24px] border-0 shadow-lg bg-gradient-to-br from-[#0f3455] to-[#0a253d] overflow-hidden">
+            <div className="p-6 flex flex-col gap-5">
                     {/* --- Top Icon --- */}
                     <div className="bg-white/10 w-14 h-14 rounded-2xl flex items-center justify-center backdrop-blur-sm">
                         <FileText className="w-7 h-7 text-white" strokeWidth={1.5} />
@@ -29,6 +28,5 @@ export default function BrochureDownloadCard() {
                     </Button>
                 </div>
             </Card>
-        </div>
     );
 }

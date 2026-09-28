@@ -18,7 +18,7 @@ export default function UniversityMenu({ tabs }: { tabs: UniversityMenuTab[] }) 
   return (
     <nav
       aria-label="University sections"
-      className="w-full max-w-full rounded-xl border shadow-sm bg-white overflow-hidden p-1.5"
+      className="w-full max-w-full rounded-xl border shadow-sm bg-white overflow-hidden p-1"
     >
       <div className="w-full flex flex-wrap justify-start items-stretch gap-1.5">
         {tabs.map(({ href, icon, label, badge }) => {
