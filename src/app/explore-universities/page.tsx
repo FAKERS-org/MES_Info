@@ -5,7 +5,7 @@ import { FilterChip } from "@/components/shared/filter-chip";
 import { SearchInput } from "@/components/shared/search-input";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import UniversityHero from "@/components/university/university-hero";
+import UniversityHeader from "@/components/university/university-header";
 import UniversityPagination from "@/components/university/university-pagination";
 import { UniversityTile } from "@/components/university/university-tile";
 import { useUniversities } from "@/hooks/use-universities";
@@ -16,7 +16,7 @@ type SortKey = "name-asc" | "name-desc" | "departments-desc";
 
 export default function ExploreUniversitiesPage() {
     const { lang, t } = useLanguage();
-    const { universities, status, refresh } = useUniversities()
+    const { universities, status, refresh } = useUniversities();
 
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState<string | null>(null);
@@ -65,8 +65,8 @@ export default function ExploreUniversitiesPage() {
 
     return (
         <div className="space-y-6">
-            {/* Hero */}
-            <UniversityHero />
+            {/* Header */}
+            <UniversityHeader />
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <SearchInput
