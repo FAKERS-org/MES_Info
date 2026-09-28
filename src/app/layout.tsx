@@ -42,8 +42,9 @@ export const metadata: Metadata = {
 /**
  * Applies the persisted theme before first paint so SSR-rendered markup
  * never flashes the wrong theme while the client hydrates.
+ * Falls back to THEME_CONFIG.defaultTheme ("light") instead of system preference.
  */
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}if(t==="dark"){document.documentElement.classList.add("dark");}}catch(e){}})();`;
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t="light";}if(t==="dark"){document.documentElement.classList.add("dark");}}catch(e){}})();`;
 
 /**
  * Reads the language cookie once per request and hands it to the shell, which
