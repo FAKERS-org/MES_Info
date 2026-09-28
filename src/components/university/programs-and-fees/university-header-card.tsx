@@ -19,7 +19,7 @@ import {
 
 export default function UniversityHeaderCard() {
     return (
-        <div className="w-full max-w-full mt-auto font-sans bg-gray-50/50 p-1">
+        <div className="w-full max-w-full mt-auto font-sans">
             <Card className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden" padding="none">
                 {/* =========================================
             TOP SECTION: Blue Header Background
