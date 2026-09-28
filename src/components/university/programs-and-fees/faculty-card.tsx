@@ -66,7 +66,7 @@ export default function FacultyCard() {
     return (
         <div className="w-full max-w-4xl font-sans">
             {/* Main Container Card */}
-            <Card className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white">
+            <Card className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white" padding="none">
                 {/* --- Header Section --- */}
                 <div className="bg-[#124f70] text-white p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">

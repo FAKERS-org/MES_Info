@@ -1,4 +1,4 @@
-import UniversityHeaderCard from "@/components/university/programs-and-fees/university-header-card";
+import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import { findUniversity } from "@/data/universities-source";
 import { getUniversityPageData } from "@/data/university-page";
@@ -39,7 +39,7 @@ export default async function UniversityTabsLayout({ params, children }: Univers
     return (
         <div className="space-y-5">
             {/* <UniversityIdCard data={hero} /> */}
-            <UniversityHeaderCard />
+            <UniversityHero />
             <UniversityMenu tabs={menu} />
             {children}
         </div>
