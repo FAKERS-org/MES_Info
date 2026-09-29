@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Headphones, MessageSquare, Phone } from "lucide-react";
 
-export default function AdmissionsContactCard() {
+export default function AdmissionsContactCard({
+    
+}) {
     return (
         <Card className="w-full rounded-[24px] border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white overflow-hidden">
             <div className="p-5 flex flex-col gap-4">
