@@ -1,22 +1,12 @@
-import type { CSSProperties } from "react";
-import type { Metadata } from "next";
-import { Kantumruy_Pro, Lexend } from "next/font/google";
-import AppShell from "./app-shell";
 import { langAttributes } from "@/lib/language";
 import { readLang } from "@/lib/language.server";
+import type { Metadata } from "next";
+import { Kantumruy_Pro, Lexend } from "next/font/google";
+import type { CSSProperties } from "react";
+import AppShell from "./app-shell";
 
 import "@/styles/globals.css";
 
-/**
- * Self-hosted Google Fonts: downloaded at build time, served from `/_next`
- * and preloaded from the document head. Replaces the two render-blocking
- * `@import url('https://fonts.googleapis.com/…')` rules that used to sit at
- * the top of `globals.css` and gated first paint on two round trips.
- *
- * `variable` exposes each family to CSS as a custom property, composed into
- * the `--font-sans` / `--font-lexend` stacks in `styles/fonts.css`. The `-family`
- * suffix keeps them from colliding with those Tailwind `@theme` tokens.
- */
 const lexend = Lexend({
     subsets: ["latin", "latin-ext"],
     display: "swap",
@@ -31,12 +21,11 @@ const kantumruyPro = Kantumruy_Pro({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "MES Universities",
-    template: "%s | MES Universities",
-  },
-  description:
-    "Discover and browse Cambodian universities, their departments, and admission requirements.",
+    title: {
+        default: "MES Universities",
+        template: "%s | MES Universities",
+    },
+    description: "Discover and browse Cambodian universities, their departments, and admission requirements.",
 };
 
 /**
@@ -57,26 +46,24 @@ const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!==
  * trade for correct server-rendered language; with a database behind the app
  * they were dynamic anyway.
  */
-export default async function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  const lang = await readLang();
-  const { htmlLang, fontStack } = langAttributes(lang);
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+    const lang = await readLang();
+    const { htmlLang, fontStack } = langAttributes(lang);
 
-  return (
-    <html
-      lang={htmlLang}
-      /* Set here, not from an effect, so the first paint already uses the
-       * right face — the Khmer stack is narrower than the Latin one and the
-       * swap is visible. */
-      style={{ "--font-current": fontStack } as CSSProperties}
-      className={`${lexend.variable} ${kantumruyPro.variable}`}
-      suppressHydrationWarning
-    >
-      <body>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <AppShell initialLang={lang}>{children}</AppShell>
-      </body>
-    </html>
-  );
+    return (
+        <html
+            lang={htmlLang}
+            /* Set here, not from an effect, so the first paint already uses the
+             * right face — the Khmer stack is narrower than the Latin one and the
+             * swap is visible. */
+            style={{ "--font-current": fontStack } as CSSProperties}
+            className={`${lexend.variable} ${kantumruyPro.variable}`}
+            suppressHydrationWarning
+        >
+            <body>
+                <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+                <AppShell initialLang={lang}>{children}</AppShell>
+            </body>
+        </html>
+    );
 }

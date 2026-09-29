@@ -49,10 +49,10 @@ const RequiredDocuments = () => {
     ];
 
     return (
-        <div className="max-w-4xl mx-auto p-6 md:p-8 bg-slate-50/50 rounded-2xl font-sans">
+        <div className="w-full p-4 bg-black shadow-sm rounded-2xl font-sans">
             {/* --- Header Section --- */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
-                <div className="space-y-3">
+            <div className="flex flex-col gap-4 mb-6">
+                <div className="space-y-2">
                     <Badge
                         variant="secondary"
                         className="bg-sky-100 text-sky-700 hover:bg-sky-100 uppercase text-[10px] tracking-wider font-bold px-2 py-1"
@@ -60,45 +60,46 @@ const RequiredDocuments = () => {
                         Checklist
                     </Badge>
 
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-900 leading-tight">
-                        ឯកសារត្រូវភ្ជាប់មកជាមួយ (Required Application Documents)
+                    <h1 className="text-lg font-bold text-slate-900 leading-snug">
+                        ឯកសារត្រូវភ្ជាប់មកជាមួយ <br />
+                        <span className="text-sm font-medium text-slate-500">(Required Application Documents)</span>
                     </h1>
                 </div>
 
-                {/* Download Button */}
+                {/* Download Button - Full width for sidebar */}
                 <Button
-                    variant="ghost"
-                    className="text-sky-600 hover:text-sky-700 hover:bg-sky-50 shrink-0 flex items-center gap-2 p-0 h-auto font-medium"
+                    variant="outline"
+                    className="w-full text-sky-600 border-sky-100 hover:text-sky-700 hover:bg-sky-50 flex items-center justify-center gap-2 h-auto py-2.5 font-medium"
                 >
-                    <Download className="h-4 w-4" />
-                    <span className="flex flex-col items-start leading-none">
+                    <Download className="h-4 w-4 shrink-0" />
+                    <span className="flex flex-col items-start leading-tight">
                         <span className="text-xs">ទាញយកព័ត៌មានបន្ថែម</span>
-                        <span className="text-[10px] font-normal opacity-80">PDF</span>
+                        <span className="text-[10px] font-normal opacity-80">PDF Format</span>
                     </span>
                 </Button>
             </div>
 
-            {/* --- Grid Section --- */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+            {/* --- Vertical List Section --- */}
+            <div className="flex flex-col gap-3">
                 {documents.map(doc => (
                     <div
                         key={doc.id}
-                        className="bg-white p-5 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex gap-4 items-start"
+                        className="bg-white p-4 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex gap-3 items-start"
                     >
                         {/* Icon Box */}
-                        <div className={`${doc.iconBg} ${doc.iconColor} p-3 rounded-xl shrink-0`}>
-                            <doc.icon className="h-6 w-6" strokeWidth={1.5} />
+                        <div className={`${doc.iconBg} ${doc.iconColor} p-2.5 rounded-lg shrink-0`}>
+                            <doc.icon className="h-5 w-5" strokeWidth={1.5} />
                         </div>
 
                         {/* Content */}
-                        <div className="space-y-1.5 pt-0.5">
-                            <h3 className="font-bold text-slate-800 text-[15px] flex gap-1.5">
+                        <div className="space-y-1 pt-0.5">
+                            <h3 className="font-bold text-slate-800 text-sm flex gap-1.5 leading-tight">
                                 <span className="text-sky-600">{doc.khmerNumber}</span>
                                 {doc.title}
                             </h3>
-                            <p className="text-[13px] text-slate-500 leading-relaxed">
+                            <p className="text-xs text-slate-500 leading-relaxed">
                                 {doc.description}
-                                <span className="text-slate-400 ml-1">({doc.englishTitle}</span>
+                                <span className="text-slate-400 ml-1">{doc.englishTitle}</span>
                             </p>
                         </div>
                     </div>

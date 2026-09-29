@@ -65,17 +65,19 @@ function ShellChrome({ children }: { children: ReactNode }) {
                 onClick={() => setSidebarOpen(false)}
             />
 
-            <div className="flex min-w-0 flex-1 flex-col bg-muted/40 dark:bg-background">
+            <div className="flex min-w-0 flex-1 flex-col bg-muted/50 dark:bg-background">
                 <main className="flex h-screen flex-1 flex-col gap-4 overflow-y-auto pt-4 md:pt-6">
                     <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-                        <TopBar onOpenSidebar={() => setSidebarOpen(o => !o)} isDark={isDark} onThemeToggle={toggleTheme} />
+                        <TopBar
+                            onOpenSidebar={() => setSidebarOpen(o => !o)}
+                            isDark={isDark}
+                            onThemeToggle={toggleTheme}
+                        />
                         <div className="mt-4">
                             <Breadcrumbs />
                         </div>
                     </div>
-                    <div className="w-full max-w-7xl mx-auto flex-1 px-4 md:px-6 lg:px-8 pb-6 md:pb-8">
-                        {children}
-                    </div>
+                    <div className="w-full max-w-7xl mx-auto flex-1 px-4 md:px-6 lg:px-8 pb-6 md:pb-8">{children}</div>
                 </main>
             </div>
         </div>
