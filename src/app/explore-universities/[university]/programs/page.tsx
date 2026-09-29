@@ -1,21 +1,38 @@
-import { notFound } from "next/navigation";
-import { SearchFilterBar } from "@/components/shared/search-filter-bar";
 import { SectionLayout } from "@/components/shared/section-layout";
+import { SearchFilterBar } from "@/components/shared/search-filter-bar";
 import AdmissionsContactCard from "@/components/university/contact-card";
 import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
 import CampusMapCard from "@/components/university/programs-and-fees/campus-map-card";
+import { UnitListCard } from "@/components/university/programs-and-fees/unit-list-card";
 import UniversityHero from "@/components/university/university-hero";
-import { facultyDepartments, isSelfDepartment, type Unit } from "@/data/faculty-departments";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { ChevronRight, GraduationCap, Layers } from "lucide-react";
+import { getUniversity } from "@/data/universities";
+import { readLang } from "@/lib/language.server";
+import { notFound } from "next/navigation";
 
-export default function ProgramsPage() {
+interface ProgramsPageProps {
+    params: Promise<{ university: string }>;
+}
+
+/**
+ * Programs of a university: one card per top-level unit (faculty, or a
+ * department where a university has no faculties).
+ *
+ * This page used to ignore its own `university` param and render
+ * `facultyDepartments` — a module holding ITC's tree only — with `itc`
+ * hardcoded into every link. Every university in the catalogue showed ITC's
+ * faculties.
+ */
+export default async function ProgramsPage({ params }: ProgramsPageProps) {
+    const { university } = await params;
+
+    const uni = getUniversity(university);
+    if (!uni) notFound();
+
+    const lang = await readLang();
+
     return (
         <div className="space-y-5">
-            <UniversityHero />
+            <UniversityHero university={uni} lang={lang} />
             <SectionLayout
                 breakpoint="md"
                 mainClassName="space-y-4"
@@ -30,87 +47,18 @@ export default function ProgramsPage() {
                 <div className="space-y-4">
                     <SearchFilterBar pills={[]} placeholder="Search programs" />
 
-                    {/* Faculties and their departments from static hierarchy data */}
-                    {facultyDepartments.map(faculty => (
-                        <Card key={faculty.id} className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white" padding="none">
-                            <Link
-                                href={`/explore-universities/itc/programs/${faculty.id}`}
-                                className="bg-[#124f70] text-white p-5 flex items-center gap-4 hover:bg-[#0f425f] transition-colors"
-                            >
-                                <div className="bg-[#0b3c56] p-2.5 rounded-lg border border-[#1e607f]">
-                                    <GraduationCap className="w-6 h-6 text-white" strokeWidth={1.5} />
-                                </div>
-                                <div className="flex-1">
-                                    <h1 className="text-lg md:text-xl font-bold font-khmer leading-tight">
-                                        {faculty.name.kh}
-                                    </h1>
-                                    <p className="text-blue-100 text-xs md:text-sm mt-0.5">
-                                        {faculty.name.en}
-                                    </p>
-                                </div>
-                                <ChevronRight className="w-5 h-5" />
-                            </Link>
-
-                            <CardContent className="p-0">
-                                {faculty.departments.map((dept, index) => (
-                                    <div key={dept.id}>
-                                        <DepartmentRow department={dept} facultyId={faculty.id} />
-                                        {index < faculty.departments.length - 1 && <Separator className="bg-slate-100" />}
-                                    </div>
-                                ))}
-                            </CardContent>
-                        </Card>
+                    {uni.units.map(unit => (
+                        <UnitListCard
+                            key={unit.id}
+                            title={unit.name}
+                            titleHref={`/explore-universities/${university}/programs/${unit.id}`}
+                            units={(unit.units ?? []).filter(child => child.kind !== "faculty")}
+                            universityId={university}
+                            lang={lang}
+                        />
                     ))}
                 </div>
             </SectionLayout>
-        </div>
-    );
-}
-
-function DepartmentRow({ department, facultyId }: { department: Unit; facultyId: string }) {
-    const isSelf = isSelfDepartment(facultyId, department.id);
-
-    return (
-        <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-slate-50/50 transition-colors">
-            <div className="flex-1 space-y-2">
-                <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-xl font-bold text-slate-900 font-khmer">{department.name.kh}</h3>
-                    <Badge className="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
-                        {department.category.kh}
-                    </Badge>
-                    {isSelf && (
-                        <Badge className="bg-amber-50 text-amber-600 border border-amber-100 px-2 py-0.5 rounded-md text-xs font-normal font-khmer flex items-center gap-1">
-                            <Layers className="w-3 h-3" />
-                            ដេប៉ាតឺម៉ង់ទន្ទឹម
-                        </Badge>
-                    )}
-                </div>
-
-                <p className="text-slate-600 text-[15px]">{department.name.en}</p>
-
-                {isSelf && department.subDepartments && department.subDepartments.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-1">
-                        {department.subDepartments.map(sub => (
-                            <span
-                                key={sub.id}
-                                className="inline-flex items-center gap-1 bg-slate-100 text-slate-700 rounded-full px-3 py-1 text-xs font-khmer"
-                            >
-                                {sub.id.toUpperCase()}
-                            </span>
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            <div className="flex md:items-end">
-                <Link
-                    href={`/explore-universities/itc/programs/${facultyId}/${department.id}`}
-                    className="inline-flex items-center gap-1 bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer rounded-lg px-4 h-9 text-sm transition-colors"
-                >
-                    ព័ត៌មានលម្អិត
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                </Link>
-            </div>
         </div>
     );
 }

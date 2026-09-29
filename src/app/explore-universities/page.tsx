@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import UniversityHeader from "@/components/university/university-header";
 import UniversityPagination from "@/components/university/university-pagination";
 import { UniversityTile } from "@/components/university/university-tile";
+import { getFlatUnits } from "@/data";
 import { useUniversities } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
 import { useMemo, useState } from "react";
@@ -25,7 +26,7 @@ export default function ExploreUniversitiesPage() {
     const categories = useMemo(() => {
         const seen = new Map<string, { id: string; label: string }>();
         for (const u of universities) {
-            for (const d of u.departments) {
+            for (const d of getFlatUnits(u.id)) {
                 const label = d.category[lang] ?? d.category.en;
                 if (!seen.has(label)) seen.set(label, { id: label, label });
             }
@@ -40,7 +41,7 @@ export default function ExploreUniversitiesPage() {
             const address = u.address ? (u.address[lang] ?? u.address.en) : "";
             const matchesQuery = !q || name.toLowerCase().includes(q) || address.toLowerCase().includes(q);
             const matchesCategory =
-                !category || u.departments.some(d => (d.category[lang] ?? d.category.en) === category);
+                !category || getFlatUnits(u.id).some(d => (d.category[lang] ?? d.category.en) === category);
             return matchesQuery && matchesCategory;
         });
 
@@ -49,7 +50,7 @@ export default function ExploreUniversitiesPage() {
             const nameB = b.name[lang] ?? b.name.en;
             if (sort === "name-asc") return nameA.localeCompare(nameB);
             if (sort === "name-desc") return nameB.localeCompare(nameA);
-            return b.departments.length - a.departments.length;
+            return getFlatUnits(a.id).length - getFlatUnits(b.id).length;
         });
 
         return items;

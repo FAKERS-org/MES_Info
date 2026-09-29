@@ -13,6 +13,7 @@
  */
 
 import { LANGUAGE_CONFIG } from "@/config";
+import type { NamespacedText } from "@/data/universities";
 
 /** The languages the UI ships. */
 export type Lang = (typeof LANGUAGE_CONFIG.supportedLanguages)[number];
@@ -50,4 +51,19 @@ export function langAttributes(lang: Lang): { htmlLang: string; fontStack: strin
         htmlLang: lang === "en" ? "en" : "km",
         fontStack: lang === "en" ? "var(--font-lexend)" : "var(--font-sans)",
     };
+}
+
+/**
+ * Picks the text in `lang` out of a `NamespacedText` coming from the data
+ * layer, falling back to English. Shared by the server pages and the client
+ * components so both resolve a department name the same way — a page that
+ * resolved it differently from the breadcrumb above it would show two names
+ * for one unit.
+ *
+ * Type-only import of the data module: this file is imported by the client
+ * `LanguageProvider`, and it must not pull the data tables into the bundle.
+ */
+export function localize(text: NamespacedText | undefined, lang: Lang): string {
+    if (!text) return "";
+    return text[lang] || text.en;
 }

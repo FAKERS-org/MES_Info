@@ -1,7 +1,10 @@
+import { EntityLogo } from "@/components/shared/entity-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { Faculty, Unit } from "@/data/faculty-departments";
+import type { University, Unit } from "@/data/universities";
+import type { Lang } from "@/lib/language";
+import { localize } from "@/lib/language";
 import {
     Award,
     Bookmark,
@@ -18,18 +21,39 @@ import {
     Wallet,
 } from "lucide-react";
 
-interface DepartmentHeadingProps {
-    department?: Unit;
-    faculty?: Faculty;
+export interface DepartmentHeadingProps {
+    university: University;
+    /** The unit on the page. Omitted on the university hero, which shows the university itself. */
+    unit?: Unit;
+    /** The faculty the unit belongs to, shown under the title. */
+    faculty?: Unit;
+    lang: Lang;
 }
 
-export default function DepartmentHeading({ department, faculty }: DepartmentHeadingProps) {
+/**
+ * The hero of both `/explore-universities/{university}` and
+ * `/explore-universities/{university}/programs/{unit}`. It used to exist twice
+ * — `university-hero.tsx` and `department-heading.tsx` — as the same markup
+ * with ITC hardcoded in both, so the university page showed the same four
+ * statistics for every university in the catalogue. One component, one set of
+ * props: the university is always required, the unit is what makes it a
+ * department page.
+ */
+export default function DepartmentHeading({ university, unit, faculty, lang }: DepartmentHeadingProps) {
+    const name = unit?.name ?? university.name;
+    const code = (unit?.id ?? university.id).toUpperCase();
+    const logo = unit?.logo ?? university.logo;
+    const stats = [
+        { icon: MapPin, label: "ទីតាំង (Campus)", value: localize(university.address, lang) },
+        { icon: Users, label: "និស្សិតកំពុងសិក្សា", value: university.stats?.students },
+        { icon: Wallet, label: "ថ្លៃសិក្សាជាមធ្យម", value: university.stats?.tuition },
+        { icon: Phone, label: "ទំនាក់ទំនងផ្លូវការ", value: university.contact?.phone },
+    ].filter(stat => Boolean(stat.value));
+
     return (
-        <div className="w-full max-w-full mx-auto p-4 font-sans bg-gray-50/50">
-            <Card className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden">
-                {/* =========================================
-            TOP SECTION: Blue Header Background
-           ========================================= */}
+        <div className="w-full max-w-full mx-auto font-sans bg-gray-50/50">
+            <Card className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden" padding="none">
+                {/* TOP SECTION: Blue Header Background */}
                 <div className="relative bg-[#0d3b5c] h-[200px] sm:h-[220px] overflow-hidden">
                     {/* Subtle Background Graphic (Abstract Lines/Grid) */}
                     <div className="absolute inset-0 opacity-10 pointer-events-none">
@@ -47,7 +71,9 @@ export default function DepartmentHeading({ department, faculty }: DepartmentHea
                                 <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
                                 <span className="font-khmer">MoEYS Verified (ឌីជីថលផ្ទៀងផ្ទាត់ដោយ ក្រសួងអប់រំ)</span>
                             </div>
-                            <span className="font-khmer hidden sm:inline">Est. 1964 • ៦០ ឆ្នាំនៃឧត្តមភាព</span>
+                            {university.stats?.established && (
+                                <span className="font-khmer hidden sm:inline">{university.stats.established}</span>
+                            )}
                         </div>
 
                         {/* Right: Action Icons */}
@@ -74,41 +100,48 @@ export default function DepartmentHeading({ department, faculty }: DepartmentHea
             MIDDLE SECTION: Info & CTA (Overlapping)
            ========================================= */}
                 <div className="px-6 pb-6 relative">
-                    {/* Flex container for Logo, Title, and CTA */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 -mt-20 sm:-mt-24">
+                    {/* The logo hangs out of the blue band; the title block stays
+                        below it on white, so a long department name wraps on a
+                        surface it can be read against. */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                         {/* --- Logo & Titles --- */}
-                        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 z-20 pt-16 sm:pt-0">
+                        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 z-20">
                             {/* Logo Wrapper (Overlapping Element) */}
-                            <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-full flex items-center justify-center shadow-md border-4 border-white shrink-0">
-                                <div className="text-center p-2">
-                                    <p className="text-[10px] font-khmer text-slate-600 leading-tight">វិទ្យាស្ថាន</p>
-                                    <p className="text-xs font-khmer font-bold text-slate-800 leading-tight">
-                                        បច្ចេកវិទ្យាកម្ពុជា
-                                    </p>
-                                    <p className="text-[9px] font-bold text-slate-500 mt-1 leading-tight">
-                                        Institute of Technology
-                                    </p>
-                                </div>
-                                {/* Verification Checkmark */}
-                                <div className="absolute -bottom-1 -right-1 bg-[#0d3b5c] rounded-full p-1 border-2 border-white">
-                                    <CheckCircle2 className="w-4 h-4 text-white" />
-                                </div>
+                            <div className="relative -mt-16 sm:-mt-20">
+                                <EntityLogo
+                                    src={logo}
+                                    alt={localize(name, lang)}
+                                    className="w-28 h-28 sm:w-32 sm:h-32 bg-white rounded-full shadow-md border-4 border-white"
+                                    fallbackClassName="p-2"
+                                    fallback={
+                                        <span className="flex flex-col text-slate-800">
+                                            <span className="text-lg font-bold tracking-tight">{code}</span>
+                                        </span>
+                                    }
+                                >
+                                    {/* Verification Checkmark */}
+                                    <div className="absolute -bottom-1 -right-1 bg-[#0d3b5c] rounded-full p-1 border-2 border-white">
+                                        <CheckCircle2 className="w-4 h-4 text-white" />
+                                    </div>
+                                </EntityLogo>
                             </div>
 
                             {/* Titles */}
-                            <div className="space-y-1 md:mb-4">
-                                <div className="flex items-center gap-2">
-                                    <h1 className="text-2xl font-bold font-khmer text-white">
-                                        {department?.name.kh ?? "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា"}
+                            <div className="space-y-1 md:mb-4 md:pt-2">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <h1 className="text-2xl font-bold font-khmer text-slate-900">
+                                        {localize(name, lang)}
                                     </h1>
                                     <Badge className="bg-white text-[#0d3b5c] border border-slate-200 rounded-md font-bold px-1.5 py-0.5 text-xs shadow-sm">
-                                        {department?.id.toUpperCase() ?? "ITC"}
+                                        {code}
                                     </Badge>
                                 </div>
-                                <p className="text-slate-500 text-sm">{department?.name.en ?? "Institute of Technology of Cambodia"}</p>
+                                <p className="text-slate-500 text-sm">
+                                    {unit ? localize(university.name, lang) : localize(university.name, "en")}
+                                </p>
                                 {faculty && (
-                                    <p className="text-blue-100 text-xs font-khmer">
-                                        {faculty.name.kh} — {faculty.name.en}
+                                    <p className="text-slate-500 text-xs font-khmer">
+                                        {localize(faculty.name, lang)} — {faculty.name.en}
                                     </p>
                                 )}
                             </div>
@@ -130,7 +163,9 @@ export default function DepartmentHeading({ department, faculty }: DepartmentHea
                             className="bg-slate-100 text-slate-700 hover:bg-slate-100 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
                         >
                             <Building2 className="w-3.5 h-3.5 text-slate-500" />
-                            <span className="font-khmer">គ្រឹះស្ថានឧត្តមសិក្សា (Public University)</span>
+                            <span className="font-khmer">
+                                {localize(university.universityType, lang)} ({localize(university.universityCategory, lang)})
+                            </span>
                         </Badge>
                         <Badge
                             variant="secondary"
@@ -151,14 +186,18 @@ export default function DepartmentHeading({ department, faculty }: DepartmentHea
                         <div className="flex-1 hidden lg:block" />
 
                         {/* Website Link */}
-                        <a
-                            href="#"
-                            className="flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors text-sm group"
-                        >
-                            <Globe className="w-4 h-4" />
-                            <span className="font-medium">itc.edu.kh</span>
-                            <ExternalLink className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />
-                        </a>
+                        {university.website && (
+                            <a
+                                href={`https://${university.website.replace(/^https?:\/\//, "")}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors text-sm group"
+                            >
+                                <Globe className="w-4 h-4" />
+                                <span className="font-medium">{university.website}</span>
+                                <ExternalLink className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />
+                            </a>
+                        )}
                     </div>
                 </div>
 
@@ -167,49 +206,17 @@ export default function DepartmentHeading({ department, faculty }: DepartmentHea
            ========================================= */}
                 <div className="border-t border-slate-100 bg-[#fafbfc] px-6 py-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Stat 1: Location */}
-                        <div className="flex items-start gap-3">
-                            <div className="bg-blue-50 p-2 rounded-xl">
-                                <MapPin className="w-5 h-5 text-blue-600" />
+                        {stats.map(stat => (
+                            <div key={stat.label} className="flex items-start gap-3">
+                                <div className="bg-blue-50 p-2 rounded-xl">
+                                    <stat.icon className="w-5 h-5 text-blue-600" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-slate-500 font-khmer mb-0.5">{stat.label}</p>
+                                    <p className="text-sm font-semibold text-slate-800">{stat.value}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-khmer mb-0.5">ទីតាំង (Campus)</p>
-                                <p className="text-sm font-semibold text-slate-800">Russian Blvd, Toul Kork</p>
-                            </div>
-                        </div>
-
-                        {/* Stat 2: Students */}
-                        <div className="flex items-start gap-3">
-                            <div className="bg-blue-50 p-2 rounded-xl">
-                                <Users className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-khmer mb-0.5">និស្សិតកំពុងសិក្សា</p>
-                                <p className="text-sm font-semibold text-slate-800">12,000+ Students</p>
-                            </div>
-                        </div>
-
-                        {/* Stat 3: Tuition */}
-                        <div className="flex items-start gap-3">
-                            <div className="bg-blue-50 p-2 rounded-xl">
-                                <Wallet className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-khmer mb-0.5">ថ្លៃសិក្សាជាមធ្យម</p>
-                                <p className="text-sm font-semibold text-slate-800">$600 - $850 / ឆ្នាំ (Year)</p>
-                            </div>
-                        </div>
-
-                        {/* Stat 4: Phone */}
-                        <div className="flex items-start gap-3">
-                            <div className="bg-blue-50 p-2 rounded-xl">
-                                <Phone className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-khmer mb-0.5">ទំនាក់ទំនងផ្លូវការ</p>
-                                <p className="text-sm font-semibold text-slate-800">(+855) 23 880 370</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </Card>

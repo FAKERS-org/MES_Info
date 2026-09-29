@@ -5,17 +5,32 @@ import RequiredDocuments from "@/components/university/admissions/required-docum
 import AdmissionsContactCard from "@/components/university/contact-card";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu, { SimpleTab } from "@/components/university/university-menu";
+import { getUniversity } from "@/data/universities";
+import { readLang } from "@/lib/language.server";
+import { notFound } from "next/navigation";
 
-export default function AdmissionsPage() {
+interface AdmissionsPageProps {
+    params: Promise<{ university: string }>;
+}
+
+export default async function AdmissionsPage({ params }: AdmissionsPageProps) {
+    const { university } = await params;
+
+    const uni = getUniversity(university);
+    if (!uni) notFound();
+
+    const lang = await readLang();
+    const base = `/explore-universities/${university}`;
+
     const tabs: SimpleTab[] = [
-        { href: "/explore-universities/itc/programs", icon: "BookOpen", label: "Programs & Fees" },
-        { href: "/explore-universities/itc/admissions", icon: "GraduationCap", label: "Admissions", active: true },
-        // { href: "/explore-universities/itc/scholarships", icon: "Award", label: "Scholarships" },
+        { href: `${base}/programs`, icon: "BookOpen", label: "Programs & Fees" },
+        { href: `${base}/admissions`, icon: "GraduationCap", label: "Admissions", active: true },
+        { href: `${base}/scholarships`, icon: "Award", label: "Scholarships" },
     ];
 
     return (
         <div className="space-y-5">
-            <UniversityHero />
+            <UniversityHero university={uni} lang={lang} />
             <UniversityMenu tabs={tabs} />
             <SectionLayout
                 breakpoint="md"

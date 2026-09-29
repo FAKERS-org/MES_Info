@@ -1,7 +1,6 @@
 "use client";
 
-import type { University } from "@/data";
-import { universities as staticUniversities } from "@/data/universities";
+import { universities as staticUniversities, type University } from "@/data";
 import apiClient from "@/lib/api/client";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useCallback, useContext } from "react";

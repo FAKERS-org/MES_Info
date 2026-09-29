@@ -1,42 +1,26 @@
-import AcademicCurriculum from "@/components/department/academic-curriculum";
-import AdmissionContact from "@/components/department/admission-contact";
-import DepartmentHeading from "@/components/department/department-heading";
-import Facilities from "@/components/department/facilities";
-import { SectionLayout } from "@/components/shared/section-layout";
-import { universities } from "@/data/universities";
-import { notFound } from "next/navigation";
+import { findUnit, getUniversity } from "@/data/universities";
+import { notFound, redirect } from "next/navigation";
 
-interface DepartmentIdPageProps {
+interface LegacyDepartmentPageProps {
     params: Promise<{ university: string; department: string }>;
 }
 
-export default async function DepartmentIdPage({ params }: DepartmentIdPageProps) {
+/**
+ * `/explore-universities/{university}/{department}` — the original department
+ * URL, kept as a redirect.
+ *
+ * It used to render a page of its own, reading `university.departments`, a
+ * property the `University` type has not had since the tree moved to `units`;
+ * the lookup was a type error and a runtime `.find` on `undefined`. Links
+ * already in the wild still point here, so the unit is resolved by id at any
+ * depth and the visitor is sent to the route that owns the page.
+ */
+export default async function LegacyDepartmentPage({ params }: LegacyDepartmentPageProps) {
     const { university, department } = await params;
 
-    const dept = universities.find(u => u.id === university)?.departments.find(d => d.id === department);
+    const uni = getUniversity(university);
+    const unit = uni ? findUnit(uni, department) : undefined;
+    if (!unit) notFound();
 
-    if (!dept) {
-        notFound();
-    }
-
-    return (
-        <div className="space-y-0">
-            <DepartmentHeading />
-
-            <SectionLayout
-                background="muted"
-                aside={<>{/* <ScholarshipBriefCard data={departmentPageData.scholarship} /> */ <AdmissionContact />}</>}
-            >
-                <AcademicCurriculum />
-            </SectionLayout>
-
-            {/* <SectionLayout background="muted" aside={<DiscussionCard data={departmentPageData.discussion} />}>
-                <CareerPathCard data={departmentPageData.career} />
-            </SectionLayout> */}
-
-            <SectionLayout background="muted">
-                <Facilities />
-            </SectionLayout>
-        </div>
-    );
+    redirect(`/explore-universities/${university}/programs/${department}`);
 }

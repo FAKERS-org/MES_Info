@@ -2,20 +2,34 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { Unit } from "@/data/faculty-departments";
+import type { Unit } from "@/data/universities";
+import type { Lang } from "@/lib/language";
+import { localize } from "@/lib/language";
 import { ChevronRight, GraduationCap, Layers } from "lucide-react";
 import Link from "next/link";
 
-interface SubDepartmentListProps {
+export interface SubDepartmentListProps {
     subDepartments: Unit[];
     parentDepartment: Unit;
-    facultyId?: string;
+    universityId: string;
+    lang: Lang;
 }
 
 /**
  * Lists the sub-departments of a "self department" (e.g. GEE → AMS, GIC, GTR).
+ *
+ * `universityId` is required rather than optional. It used to be, and the
+ * fallback built the link out of `parentDepartment.id` in the university slot
+ * — so every "ព័ត៌មានលម្អិត" on this card led to
+ * `/explore-universities/gee/programs/gee/ams`, a university that does not
+ * exist, and every one of them 404'd.
  */
-export default function SubDepartmentList({ subDepartments, parentDepartment, facultyId }: SubDepartmentListProps) {
+export default function SubDepartmentList({
+    subDepartments,
+    parentDepartment,
+    universityId,
+    lang,
+}: SubDepartmentListProps) {
     if (subDepartments.length === 0) return null;
 
     return (
@@ -43,10 +57,10 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, fa
                             <div className="flex-1 space-y-2">
                                 <div className="flex flex-wrap items-center gap-3">
                                     <h3 className="text-xl font-bold text-slate-900 font-khmer">
-                                        {sub.name.kh}
+                                        {localize(sub.name, lang)}
                                     </h3>
                                     <Badge className="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
-                                        {sub.category.kh}
+                                        {localize(sub.category, lang)}
                                     </Badge>
                                 </div>
 
@@ -56,10 +70,16 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, fa
                                     <div className="pt-1">
                                         <p className="text-xs text-slate-500 font-khmer mb-1.5">តម្រូវការចូលសិក្សា</p>
                                         <ul className="space-y-1">
-                                            {sub.requirements.map((req, i) => (
-                                                <li key={i} className="flex items-start gap-1.5 text-sm text-slate-600">
-                                                    <GraduationCap className="w-3.5 h-3.5 text-blue-500 mt-0.5 shrink-0" strokeWidth={2} />
-                                                    <span className="font-khmer">{req.kh}</span>
+                                            {sub.requirements.map(req => (
+                                                <li
+                                                    key={req.en}
+                                                    className="flex items-start gap-1.5 text-sm text-slate-600"
+                                                >
+                                                    <GraduationCap
+                                                        className="w-3.5 h-3.5 text-blue-500 mt-0.5 shrink-0"
+                                                        strokeWidth={2}
+                                                    />
+                                                    <span className="font-khmer">{localize(req, lang)}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -73,13 +93,7 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, fa
                                     asChild
                                     className="bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer gap-1 rounded-lg px-4 h-9 text-sm"
                                 >
-                                    <Link
-                                        href={
-                                            facultyId
-                                                ? `/explore-universities/itc/programs/${facultyId}/${sub.id}`
-                                                : `/explore-universities/itc/programs/${parentDepartment.id}/${sub.id}`
-                                        }
-                                    >
+                                    <Link href={`/explore-universities/${universityId}/programs/${sub.id}`}>
                                         ព័ត៌មានលម្អិត
                                         <ChevronRight className="w-4 h-4 ml-1" />
                                     </Link>

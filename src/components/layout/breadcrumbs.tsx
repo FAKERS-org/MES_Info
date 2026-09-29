@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import { useUniversities } from "@/hooks/use-universities";
+import { getAncestors, getUniversity } from "@/data";
+import { localize } from "@/lib/language";
 import { cn } from "@/lib/utils";
 
 export interface Crumb {
@@ -21,14 +22,13 @@ export interface BreadcrumbsProps {
 function useDefaultCrumbs(): Crumb[] {
   const pathname = usePathname();
   const { lang, t } = useLanguage();
-  const { universities } = useUniversities();
   const segments = pathname.split("/").filter(Boolean);
 
   if (segments.length === 0) {
     return [{ label: t("nav.overview") }];
   }
 
-  const [section, param, subParam] = segments;
+  const [section, param, subParam, unitParam] = segments;
   const safeSection = section ?? "";
 
   const sectionLabels: Record<string, string> = {
@@ -42,14 +42,17 @@ function useDefaultCrumbs(): Crumb[] {
 
   if (sectionLabel) {
     let paramLabel = param;
-    if (safeSection === "explore-universities" && param) {
-      const university = universities.find((u) => u.id === param);
-      if (university) {
-        paramLabel = university.name[lang] ?? university.name.en;
-      }
+    // Read from the catalogue, not from the react-query provider: that query
+    // has no data on the first server render, so the university crumb came out
+    // as the raw slug ("itc") and the unit crumbs were missing entirely until
+    // hydration rewrote them. The data is a static import in both passes, so
+    // the first paint is already correct.
+    const university = getUniversity(param);
+    if (university) {
+      paramLabel = localize(university.name, lang);
     }
 
-    // Handle university sub-pages (tabs and departments)
+    // Handle university sub-pages (tabs and units)
     if (safeSection === "explore-universities" && param && subParam) {
       const tabLabels: Record<string, string> = {
         programs: t("nav.programsAndFees"),
@@ -59,23 +62,29 @@ function useDefaultCrumbs(): Crumb[] {
 
       const tabLabel = tabLabels[subParam];
       if (tabLabel) {
-        return [
+        const crumbs: Crumb[] = [
           { label: sectionLabel, href: `/${safeSection}` },
           { label: paramLabel ?? param, href: `/${safeSection}/${param}` },
           { label: tabLabel },
         ];
-      }
 
-      // Department page
-      const university = universities.find((u) => u.id === param);
-      const department = university?.departments.find((d) => d.id === subParam);
-      if (department) {
-        const deptLabel = department.name[lang] ?? department.name.en;
-        return [
-          { label: sectionLabel, href: `/${safeSection}` },
-          { label: paramLabel ?? param, href: `/${safeSection}/${param}` },
-          { label: deptLabel },
-        ];
+        // A unit page: /explore-universities/{u}/programs/{unitId}. The whole
+        // ancestor chain is listed, so GIC is reachable from FOE and GEE
+        // instead of arriving as an orphan.
+        if (unitParam && university) {
+          const chain = getAncestors(university, unitParam);
+          if (chain.length > 0) {
+            const base = `/${safeSection}/${param}/${subParam}`;
+            for (const [index, unit] of chain.entries()) {
+              crumbs.push({
+                label: localize(unit.name, lang),
+                href: index < chain.length - 1 ? `${base}/${unit.id}` : undefined,
+              });
+            }
+          }
+        }
+
+        return crumbs;
       }
     }
 

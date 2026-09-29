@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Bookmark, Globe, GraduationCap, MapPin } from "lucide-react";
-import { Avatar } from "@/components/shared/avatar";
+import { EntityLogo } from "@/components/shared/entity-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { IconList, IconListItem } from "@/components/shared/icon-list";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { University } from "@/data";
+import { getFlatUnits, type University } from "@/data";
 
 export interface UniversityTileProps {
   university: University;
@@ -44,7 +44,9 @@ export function UniversityTile({
     ? university.address[lang] ?? university.address.en
     : "";
   const href = `/explore-universities/${university.id}`;
-  const programCount = university.departments.length;
+  // Every unit at every depth, not just the top-level ones: a university with
+  // one faculty and four departments offers five programs, not one.
+  const programCount = getFlatUnits(university.id).length;
   const universityType =
     university.universityType[lang] ?? university.universityType.en;
   const universityCategory =
@@ -87,10 +89,12 @@ export function UniversityTile({
         )}
 
         <div className="absolute -bottom-10 left-6 right-6 z-10 flex items-end justify-between gap-3">
-          <Avatar
+          <EntityLogo
             src={university.logo}
             alt={name}
             className="h-20 w-20 shrink-0 border-4 border-white bg-white shadow-lg"
+            fallbackClassName="text-sm font-bold text-slate-700"
+            fallback={university.id.toUpperCase()}
           />
           {featured && (
             <div className="flex flex-row items-end gap-1 pb-1">
