@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import type { Faculty, Unit } from "@/data/faculty-departments";
 import {
     Award,
     Bookmark,
@@ -17,7 +18,12 @@ import {
     Wallet,
 } from "lucide-react";
 
-export default function DepartmentHeading() {
+interface DepartmentHeadingProps {
+    department?: Unit;
+    faculty?: Faculty;
+}
+
+export default function DepartmentHeading({ department, faculty }: DepartmentHeadingProps) {
     return (
         <div className="w-full max-w-full mx-auto p-4 font-sans bg-gray-50/50">
             <Card className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden">
@@ -93,13 +99,18 @@ export default function DepartmentHeading() {
                             <div className="space-y-1 md:mb-4">
                                 <div className="flex items-center gap-2">
                                     <h1 className="text-2xl font-bold font-khmer text-white">
-                                        វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា
+                                        {department?.name.kh ?? "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា"}
                                     </h1>
                                     <Badge className="bg-white text-[#0d3b5c] border border-slate-200 rounded-md font-bold px-1.5 py-0.5 text-xs shadow-sm">
-                                        ITC
+                                        {department?.id.toUpperCase() ?? "ITC"}
                                     </Badge>
                                 </div>
-                                <p className="text-slate-500 text-sm">Institute of Technology of Cambodia</p>
+                                <p className="text-slate-500 text-sm">{department?.name.en ?? "Institute of Technology of Cambodia"}</p>
+                                {faculty && (
+                                    <p className="text-blue-100 text-xs font-khmer">
+                                        {faculty.name.kh} — {faculty.name.en}
+                                    </p>
+                                )}
                             </div>
                         </div>
 

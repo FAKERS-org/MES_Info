@@ -143,21 +143,6 @@ export const universities: University[] = [
                 logo: "/images/ITC-logo.png",
                 requirements: [],
             },
-            {
-                id: "gar",
-                kind: "department",
-                faculty: { kh: "មហាវិទ្យាល័យវិស្វកម្ម", en: "Faculty of Engineering" },
-                name: {
-                    kh: "ដេប៉ាតឺម៉ង់ស្វ័យប្រវត្តិកម្ម និងមនុស្សយន្ត (GAR)",
-                    en: "Department of Automation and Robotics Engineering (GAR)",
-                },
-                category: {
-                    kh: "វិស្វកម្ម",
-                    en: "Engineering",
-                },
-                logo: "/images/ITC-logo.png",
-                requirements: [],
-            },
         ],
     },
 ];
