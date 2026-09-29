@@ -28,7 +28,7 @@ function useDefaultCrumbs(): Crumb[] {
     return [{ label: t("nav.overview") }];
   }
 
-  const [section, param] = segments;
+  const [section, param, subParam] = segments;
   const safeSection = section ?? "";
 
   const sectionLabels: Record<string, string> = {
@@ -46,6 +46,36 @@ function useDefaultCrumbs(): Crumb[] {
       const university = universities.find((u) => u.id === param);
       if (university) {
         paramLabel = university.name[lang] ?? university.name.en;
+      }
+    }
+
+    // Handle university sub-pages (tabs and departments)
+    if (safeSection === "explore-universities" && param && subParam) {
+      const tabLabels: Record<string, string> = {
+        programs: t("nav.programsAndFees"),
+        admissions: t("nav.admissions"),
+        scholarships: t("nav.scholarships"),
+      };
+
+      const tabLabel = tabLabels[subParam];
+      if (tabLabel) {
+        return [
+          { label: sectionLabel, href: `/${safeSection}` },
+          { label: paramLabel ?? param, href: `/${safeSection}/${param}` },
+          { label: tabLabel },
+        ];
+      }
+
+      // Department page
+      const university = universities.find((u) => u.id === param);
+      const department = university?.departments.find((d) => d.id === subParam);
+      if (department) {
+        const deptLabel = department.name[lang] ?? department.name.en;
+        return [
+          { label: sectionLabel, href: `/${safeSection}` },
+          { label: paramLabel ?? param, href: `/${safeSection}/${param}` },
+          { label: deptLabel },
+        ];
       }
     }
 
