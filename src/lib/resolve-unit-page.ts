@@ -1,16 +1,7 @@
-import { notFound, redirect } from "next/navigation";
-import {
-    findUnit,
-    getAncestors,
-    getChildren,
-    getCurriculumFor,
-    getFacultyFor,
-    getUniversity,
-    type University,
-    type Unit,
-} from "@/data/universities";
+import { notFound } from "next/navigation";
+import { getChildren, getCurriculumFor, getFacultyFor, getUniversity, type University, type Unit } from "@/data/universities";
 import { readLang } from "@/lib/language.server";
-import { unitHref, walkUnitPath } from "@/lib/unit-routes";
+import { walkUnitPath } from "@/lib/unit-routes";
 import type { Lang } from "@/lib/language";
 
 export interface ResolvedUnit {
@@ -36,28 +27,17 @@ export interface ResolvedUnit {
  * under `/explore-universities/{university}/programs` resolves here, which is
  * what keeps them from disagreeing about what a faculty is.
  *
- * A path that leaves the tree is either a broken link or a link from before the
- * chain was in the URL. The second case is recoverable: the unit is found by id
- * anywhere in the tree and the visitor is sent to the path that matches it, so
- * `/programs/gic` and `/explore-universities/{uni}/{unit}` keep working.
- *
- * Throws `notFound()` or `redirect()` rather than returning a union, so callers
- * keep their narrowing instead of an `if (!unit)` branch that can be forgotten.
+ * A path that leaves the tree is a `notFound()`, not a redirect: the URL shape
+ * follows the data, so a unit is always reached by the chain the data actually
+ * has. Throwing rather than returning a union keeps callers' narrowing instead
+ * of an `if (!unit)` branch that can be forgotten.
  */
 export async function resolveUnitPage(universityId: string, pathIds: string[]): Promise<ResolvedUnit> {
     const university = getUniversity(universityId);
     if (!university) notFound();
 
     const chain = walkUnitPath(university, pathIds);
-
-    if (chain.length < pathIds.length) {
-        // A first-match lookup across the whole tree: only reached for a path
-        // that does not follow the hierarchy, where there is no level to check
-        // the id against.
-        const unit = findUnit(university, pathIds[chain.length]);
-        if (!unit) notFound();
-        redirect(unitHref(universityId, getAncestors(university, unit.id).map(ancestor => ancestor.id)));
-    }
+    if (chain.length < pathIds.length) notFound();
 
     const unit = chain[chain.length - 1];
 

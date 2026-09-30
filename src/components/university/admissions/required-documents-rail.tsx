@@ -47,7 +47,7 @@ const RequiredDocumentsRail = () => {
   ];
 
   return (
-    <div className="p-4 bg-slate-50/50 rounded-xl font-sans">
+    <div className="p-4 md:p-6 bg-white rounded-2xl border border-slate-200 shadow-sm font-sans">
       {/* --- Header Section --- */}
       <div className="flex flex-col justify-between items-start gap-3 mb-4">
         <div className="space-y-2">
@@ -80,7 +80,7 @@ const RequiredDocumentsRail = () => {
         {documents.map(doc => (
           <div
             key={doc.id}
-            className="bg-white p-3 rounded-lg border border-slate-100 shadow-[0_1px_3px_-1px_rgba(0,0,0,0.05)] flex gap-3 items-start"
+            className="bg-slate-50/60 p-3 rounded-lg border border-slate-200 flex gap-3 items-start"
           >
             {/* Icon Box */}
             <div className={`${doc.iconBg} ${doc.iconColor} p-2 rounded-lg shrink-0`}>

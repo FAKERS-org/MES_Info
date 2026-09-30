@@ -1,19 +1,18 @@
 import type { SimpleTab } from "@/components/university/university-menu";
 
 /**
- * The tab bar of every `/explore-universities/{university}` page.
+ * The two pages of a university: the university itself, and its programs.
  *
- * Three pages each built their own copy of this list, and the one that mattered
- * most — the programs page — had none, so the tabs vanished on the page the
- * university root redirects to. One list, and the active tab is derived from
- * the pathname by the menu itself, so no page has to name the page it is on.
+ * Admissions and scholarships were tabs once, and were removed: both are open to
+ * any applicant regardless of faculty, so they belong on the university page. A
+ * scholarship limited to one unit is declared on that unit and shown on its own
+ * page. The active tab comes from the pathname, so no page names itself.
  */
 export function universityTabs(universityId: string): SimpleTab[] {
     const base = `/explore-universities/${universityId}`;
 
     return [
+        { href: base, icon: "Building2", label: "University" },
         { href: `${base}/programs`, icon: "BookOpen", label: "Programs & Fees" },
-        { href: `${base}/admissions`, icon: "GraduationCap", label: "Admissions" },
-        { href: `${base}/scholarships`, icon: "Award", label: "Scholarships" },
     ];
 }

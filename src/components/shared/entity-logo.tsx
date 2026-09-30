@@ -12,8 +12,6 @@ export interface EntityLogoProps {
     className?: string;
     /** Text surface of the fallback, so it matches the circle it sits in. */
     fallbackClassName?: string;
-    /** Overlay of the circle: a checkmark, a status dot… */
-    children?: ReactNode;
 }
 
 /**
@@ -27,7 +25,7 @@ export interface EntityLogoProps {
  * previous failure would still be in state, so the error resets on every
  * `src` change.
  */
-export function EntityLogo({ src, alt, fallback, className, fallbackClassName, children }: EntityLogoProps) {
+export function EntityLogo({ src, alt, fallback, className, fallbackClassName }: EntityLogoProps) {
     const [failed, setFailed] = useState(false);
 
     useEffect(() => {
@@ -51,7 +49,6 @@ export function EntityLogo({ src, alt, fallback, className, fallbackClassName, c
                     {fallback}
                 </span>
             )}
-            {children}
         </div>
     );
 }

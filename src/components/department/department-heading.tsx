@@ -118,12 +118,16 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                             <span className="text-lg font-bold tracking-tight">{code}</span>
                                         </span>
                                     }
-                                >
-                                    {/* Verification Checkmark */}
-                                    <div className="absolute -bottom-1 -right-1 bg-[#0d3b5c] rounded-full p-1 border-2 border-white">
-                                        <CheckCircle2 className="w-4 h-4 text-white" />
-                                    </div>
-                                </EntityLogo>
+                                />
+                                {/* Verification Checkmark — a sibling of the logo, not its
+                                    overlay: the circle is overflow-hidden and would clip it.
+                                    Pinned to the box corner, which a rounded-full circle
+                                    leaves empty, so it is pulled in by 3px — half of the
+                                    32px badge plus the corner's 18.75px gap to the ring,
+                                    which lands its centre on the edge. */}
+                                <div className="absolute bottom-0 right-0 -translate-x-[3px] -translate-y-[3px] w-8 h-8 rounded-full bg-[#0d3b5c] border-[3px] border-white flex items-center justify-center">
+                                    <CheckCircle2 className="w-[18px] h-[18px] text-white" />
+                                </div>
                             </div>
 
                             {/* Titles */}

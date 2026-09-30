@@ -3,6 +3,7 @@ import AdmissionContact from "@/components/department/admission-contact";
 import DepartmentHeading from "@/components/department/department-heading";
 import Facilities from "@/components/department/facilities";
 import SubDepartmentList from "@/components/department/sub-department-list";
+import UnitScholarships from "@/components/department/unit-scholarships";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getFacilitiesFor } from "@/data/universities";
 import { resolveUnitPage } from "@/lib/resolve-unit-page";
@@ -19,15 +20,19 @@ interface UnitPageProps {
  * faculty, `/programs/foe/gee` the department, `/programs/foe/gee/gic` the
  * sub-department. The path used to hold a single id, so a sub-department was
  * unreachable from the URL that named its faculty and the segment claimed all
- * three were "programs"; `resolveUnitPage` redirects an old one-segment link to
- * the chain that matches the tree.
+ * three were "programs".
  */
 export default async function UnitPage({ params }: UnitPageProps) {
     const { university, chain } = await params;
-    const { university: uni, universityId, unit, pathIds, faculty, curriculum, lang } = await resolveUnitPage(
-        university,
-        chain,
-    );
+    const {
+        university: uni,
+        universityId,
+        unit,
+        pathIds,
+        faculty,
+        curriculum,
+        lang,
+    } = await resolveUnitPage(university, chain);
 
     const facilities = getFacilitiesFor(universityId, unit.id);
 
@@ -59,6 +64,14 @@ export default async function UnitPage({ params }: UnitPageProps) {
             {facilities.length > 0 && (
                 <SectionLayout background="muted">
                     <Facilities facilities={facilities} />
+                </SectionLayout>
+            )}
+
+            {/* Scholarships this unit awards to its own students. The rest are on
+                the university page: they are open to any applicant. */}
+            {unit.scholarships && unit.scholarships.length > 0 && (
+                <SectionLayout background="muted">
+                    <UnitScholarships scholarships={unit.scholarships} lang={lang} />
                 </SectionLayout>
             )}
         </div>

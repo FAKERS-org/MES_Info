@@ -57,10 +57,11 @@ function useDefaultCrumbs(): Crumb[] {
 
     // Handle university sub-pages (tabs and units)
     if (safeSection === "explore-universities" && param && subParam) {
+      // The university page has no segment of its own; `programs` is the only
+      // tab left. Admissions and scholarships are sections of the university
+      // page, not routes.
       const tabLabels: Record<string, string> = {
         programs: t("nav.programsAndFees"),
-        admissions: t("nav.admissions"),
-        scholarships: t("nav.scholarships"),
       };
 
       const tabLabel = tabLabels[subParam];

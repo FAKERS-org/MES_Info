@@ -61,6 +61,22 @@ export interface UniversityContact {
     telegram?: string;
 }
 
+/**
+ * A scholarship open to students of one unit only, declared on that unit.
+ *
+ * A scholarship that any applicant to the university can take is not a unit's
+ * business and lives on the university page; this type exists for the ones that
+ * are — "GEE Excellence Scholarship", a lab grant for ISD. A unit with none
+ * omits the field and its page omits the section.
+ */
+export interface UnitScholarship {
+    id: string;
+    name: NamespacedText;
+    /** What it covers, already formatted for display ("50% of tuition"). */
+    coverage: NamespacedText;
+    requirements: NamespacedText[];
+}
+
 /** The fact row of the hero. Free text, already formatted for display. */
 export interface UniversityStats {
     students?: string;
@@ -81,6 +97,8 @@ export interface Unit {
     curriculum?: CurriculumSection;
     /** Labs and centres, inherited by child units that declare none. */
     facilities?: Facility[];
+    /** Scholarships open only to students of this unit. */
+    scholarships?: UnitScholarship[];
     /** Recursive children. Omit for leaf units. */
     units?: Unit[];
 }
@@ -259,6 +277,22 @@ export const universities: University[] = [
                             {
                                 kh: "យល់ដឹងពីការរចនាក្រដាសអគ្គិសនី",
                                 en: "Understanding of electrical power distribution",
+                            },
+                        ],
+                        // Open only to GEE students, so it belongs here and not on
+                        // the university page.
+                        scholarships: [
+                            {
+                                id: "gee-excellence",
+                                name: {
+                                    kh: "អាហារូបករណ៍ពិន្ទុដ៏ខ្ពស្ពោជន្ត (GEE)",
+                                    en: "GEE Excellence Scholarship",
+                                },
+                                coverage: { kh: "គ្រប់គ្រាប់ថ្លៃសិក្សា ៥០%", en: "50% of tuition" },
+                                requirements: [
+                                    { kh: "បញ្ជាក់ពិន្ទុសូមិកទំព័រពីសាលាយករណ៍ថ្មី", en: "Latest high-school transcript" },
+                                    { kh: "មានបទពិសោធន៍ជាមួយមហាវិទ្យាល័យវិស្វកម្មយ៉ាងតិចមួយឆ្នាំ", en: "At least one year of internship with FOE" },
+                                ],
                             },
                         ],
                         curriculum: {
@@ -666,6 +700,21 @@ export const universities: University[] = [
                                     {
                                         kh: "ជំនាញក្នុងម៉ាស៊ីនស្ថាប់ទិន្នន័យចំរើយ",
                                         en: "Skills in data-centre engineering",
+                                    },
+                                ],
+                                // A third-level unit: the scholarship follows the
+                                // unit that declares it, wherever it sits.
+                                scholarships: [
+                                    {
+                                        id: "isd-lab-grant",
+                                        name: {
+                                            kh: "មូលនិញ្ញកម្មមហាវិទ្យាល័យទិន្នន័យ (ISD)",
+                                            en: "ISD Lab Grant",
+                                        },
+                                        coverage: { kh: "រង្វាស់បន្ទប់ស្រាងមួយឆ្នាំ", en: "One year of lab fees" },
+                                        requirements: [
+                                            { kh: "បានចូលរួមសកម្មភាពស្រាងទិន្នន័យយ៉ាងតិចមួយដឺម", en: "At least one term of data-lab work" },
+                                        ],
                                     },
                                 ],
                                 curriculum: {
