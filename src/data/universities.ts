@@ -796,6 +796,17 @@ export function getChildren(unit: Unit): Unit[] {
     return unit.units ?? [];
 }
 
+/**
+ * Every unit below `unit`, depth-first. The program list of a faculty is its
+ * departments *and* their sub-departments: a sub-department is a program a
+ * student applies to, so a list built from `getChildren` alone left GIC, AMS
+ * and GTR out of the programs page entirely — reachable only as a code chip
+ * under their parent, and unfindable by search.
+ */
+export function getDescendants(unit: Unit): Unit[] {
+    return (unit.units ?? []).flatMap(child => [child, ...getDescendants(child)]);
+}
+
 /** Get the parent chain of a unit (root first). */
 export function getAncestors(uni: University, unitId: string): Unit[] {
     const chain: Unit[] = [];

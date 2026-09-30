@@ -50,7 +50,7 @@ export default function ExploreUniversitiesPage() {
             const nameB = b.name[lang] ?? b.name.en;
             if (sort === "name-asc") return nameA.localeCompare(nameB);
             if (sort === "name-desc") return nameB.localeCompare(nameA);
-            return getFlatUnits(a.id).length - getFlatUnits(b.id).length;
+            return getFlatUnits(b.id).length - getFlatUnits(a.id).length;
         });
 
         return items;

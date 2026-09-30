@@ -3,9 +3,10 @@ import HowToApply from "@/components/university/scholarships/how-to-apply";
 import ScholarshipOptions from "@/components/university/scholarships/scholarship-options";
 import ScholarshipsBanner from "@/components/university/scholarships/scholarships-banner";
 import UniversityHero from "@/components/university/university-hero";
-import UniversityMenu, { SimpleTab } from "@/components/university/university-menu";
+import UniversityMenu from "@/components/university/university-menu";
 import { getUniversity } from "@/data/universities";
 import { readLang } from "@/lib/language.server";
+import { universityTabs } from "@/lib/university-tabs";
 import { notFound } from "next/navigation";
 
 interface ScholarshipsPageProps {
@@ -19,18 +20,11 @@ export default async function ScholarshipsPage({ params }: ScholarshipsPageProps
     if (!uni) notFound();
 
     const lang = await readLang();
-    const base = `/explore-universities/${university}`;
-
-    const tabs: SimpleTab[] = [
-        { href: `${base}/programs`, icon: "BookOpen", label: "Programs & Fees" },
-        { href: `${base}/admissions`, icon: "GraduationCap", label: "Admissions" },
-        { href: `${base}/scholarships`, icon: "Award", label: "Scholarships", active: true },
-    ];
 
     return (
         <div className="space-y-5">
             <UniversityHero university={uni} lang={lang} />
-            <UniversityMenu tabs={tabs} />
+            <UniversityMenu tabs={universityTabs(university)} />
             <SectionLayout
                 breakpoint="md"
                 mainClassName="space-y-4"

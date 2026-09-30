@@ -1,4 +1,5 @@
-import { findUnit, getUniversity } from "@/data/universities";
+import { findUnit, getAncestors, getUniversity } from "@/data/universities";
+import { unitHref } from "@/lib/unit-routes";
 import { notFound, redirect } from "next/navigation";
 
 interface LegacyDepartmentPageProps {
@@ -6,21 +7,23 @@ interface LegacyDepartmentPageProps {
 }
 
 /**
- * `/explore-universities/{university}/{department}` — the original department
- * URL, kept as a redirect.
+ * `/explore-universities/{university}/{unit}` — the original unit URL, kept as
+ * a redirect.
  *
- * It used to render a page of its own, reading `university.departments`, a
- * property the `University` type has not had since the tree moved to `units`;
- * the lookup was a type error and a runtime `.find` on `undefined`. Links
- * already in the wild still point here, so the unit is resolved by id at any
- * depth and the visitor is sent to the route that owns the page.
+ * The unit is resolved by id anywhere in the tree and the visitor is sent to
+ * the path that names its whole chain, so a link from before the hierarchy was
+ * in the URL still lands on the right page. It used to render a page of its
+ * own, reading `university.departments`, a property the `University` type has
+ * not had since the tree moved to `units`.
  */
 export default async function LegacyDepartmentPage({ params }: LegacyDepartmentPageProps) {
     const { university, department } = await params;
 
     const uni = getUniversity(university);
+    if (!uni) notFound();
+
     const unit = uni ? findUnit(uni, department) : undefined;
     if (!unit) notFound();
 
-    redirect(`/explore-universities/${university}/programs/${department}`);
+    redirect(unitHref(university, getAncestors(uni, unit.id).map(ancestor => ancestor.id)));
 }

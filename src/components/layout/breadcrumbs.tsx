@@ -5,8 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import { getAncestors, getUniversity } from "@/data";
+import { getUniversity } from "@/data";
 import { localize } from "@/lib/language";
+import { walkUnitPath } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
 
 export interface Crumb {
@@ -28,8 +29,10 @@ function useDefaultCrumbs(): Crumb[] {
     return [{ label: t("nav.overview") }];
   }
 
-  const [section, param, subParam, unitParam] = segments;
+  const [section, param, subParam] = segments;
   const safeSection = section ?? "";
+  /** The unit ids of a unit page — one per level below the top-level unit. */
+  const unitIds = segments.slice(3);
 
   const sectionLabels: Record<string, string> = {
     "explore-universities": t("nav.exploreUniversities"),
@@ -68,20 +71,21 @@ function useDefaultCrumbs(): Crumb[] {
           { label: tabLabel },
         ];
 
-        // A unit page: /explore-universities/{u}/programs/{unitId}. The whole
-        // ancestor chain is listed, so GIC is reachable from FOE and GEE
-        // instead of arriving as an orphan.
-        if (unitParam && university) {
-          const chain = getAncestors(university, unitParam);
-          if (chain.length > 0) {
+        // A unit page: /explore-universities/{u}/programs/{faculty}/{unit}. The
+        // whole chain is listed, so GIC is reachable from FOE and GEE instead
+        // of arriving as an orphan. The path is walked level by level, so each
+        // crumb is named by the level it sits at and its href is the path up to
+        // that point.
+        if (unitIds.length > 0 && university) {
+            const chain = walkUnitPath(university, unitIds);
             const base = `/${safeSection}/${param}/${subParam}`;
-            for (const [index, unit] of chain.entries()) {
-              crumbs.push({
-                label: localize(unit.name, lang),
-                href: index < chain.length - 1 ? `${base}/${unit.id}` : undefined,
-              });
-            }
-          }
+
+            chain.forEach((unit, index) => {
+                crumbs.push({
+                    label: localize(unit.name, lang),
+                    href: index < chain.length - 1 ? `${base}/${unitIds.slice(0, index + 1).join("/")}` : undefined,
+                });
+            });
         }
 
         return crumbs;

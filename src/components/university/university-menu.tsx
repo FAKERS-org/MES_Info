@@ -11,12 +11,14 @@ export interface SimpleTab {
   icon: IconName;
   label: string;
   badge?: number;
-  active?: boolean;
 }
 
 /**
  * Tabs of `/explore-universities/{university}` — three real routes, so every
  * tab can be deep-linked and the back button walks between them.
+ *
+ * The active tab comes from the pathname, never from the caller: a page that
+ * hardcoded it was one rename away from highlighting the wrong tab.
  */
 export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
   const pathname = usePathname();
@@ -27,8 +29,8 @@ export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
       className="w-full max-w-full rounded-xl border shadow-sm bg-white overflow-hidden p-1"
     >
       <div className="w-full flex flex-wrap justify-start items-stretch gap-1.5">
-        {tabs.map(({ href, icon, label, badge, active }) => {
-          const isActive = active ?? pathname === href;
+        {tabs.map(({ href, icon, label, badge }) => {
+          const isActive = pathname === href;
 
           return (
             <Link

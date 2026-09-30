@@ -5,32 +5,42 @@ import { Separator } from "@/components/ui/separator";
 import type { Unit } from "@/data/universities";
 import type { Lang } from "@/lib/language";
 import { localize } from "@/lib/language";
+import type { UnitRow } from "@/lib/unit-routes";
 import { ChevronRight, GraduationCap, Layers } from "lucide-react";
 import Link from "next/link";
 
 export interface SubDepartmentListProps {
-    subDepartments: Unit[];
+    /** The children, each with the URL that reaches it — the page's own chain plus one id. */
+    subDepartments: UnitRow[];
     parentDepartment: Unit;
-    universityId: string;
     lang: Lang;
 }
 
 /**
+ * What the children of a unit are called. The same card lists a faculty's
+ * departments and a department's sub-departments, and it used to call both
+ * "sub-departments" — so the faculty page announced its departments as
+ * "ដេប៉ាតឺម៉ង់ទន្ទឹម".
+ */
+const KIND_LABEL: Record<Unit["kind"], { kh: string; en: string }> = {
+    faculty: { kh: "មហាវិទ្យាល័យ", en: "Faculties" },
+    department: { kh: "ដេប៉ាតឺម៉ង់", en: "Departments" },
+    "sub-department": { kh: "ដេប៉ាតឺម៉ង់ទន្ទឹម", en: "Sub-departments" },
+    foundation: { kh: "មូលដ្ឋាន", en: "Foundation" },
+};
+
+/**
  * Lists the sub-departments of a "self department" (e.g. GEE → AMS, GIC, GTR).
  *
- * `universityId` is required rather than optional. It used to be, and the
- * fallback built the link out of `parentDepartment.id` in the university slot
- * — so every "ព័ត៌មានលម្អិត" on this card led to
- * `/explore-universities/gee/programs/gee/ams`, a university that does not
- * exist, and every one of them 404'd.
+ * Each sub-department arrives with its own href — the chain of ids leading to
+ * it — because a link built from the university and an id alone sent visitors
+ * to `/explore-universities/gee/programs/gee/ams`, a university that does not
+ * exist, and every one of those 404'd.
  */
-export default function SubDepartmentList({
-    subDepartments,
-    parentDepartment,
-    universityId,
-    lang,
-}: SubDepartmentListProps) {
+export default function SubDepartmentList({ subDepartments, parentDepartment, lang }: SubDepartmentListProps) {
     if (subDepartments.length === 0) return null;
+
+    const label = KIND_LABEL[subDepartments[0].unit.kind];
 
     return (
         <Card className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white" padding="none">
@@ -41,7 +51,7 @@ export default function SubDepartmentList({
                     </div>
                     <div>
                         <CardTitle className="text-lg md:text-xl font-bold font-khmer leading-tight">
-                            ដេប៉ាតឺម៉ង់ទន្ទឹម ({subDepartments.length}) — Sub-departments
+                            {label.kh} ({subDepartments.length}) — {label.en}
                         </CardTitle>
                         <p className="text-blue-100 text-xs md:text-sm mt-0.5">
                             Under {parentDepartment.name.en}
@@ -51,7 +61,7 @@ export default function SubDepartmentList({
             </CardHeader>
 
             <CardContent className="p-0">
-                {subDepartments.map((sub, index) => (
+                {subDepartments.map(({ unit: sub, href }, index) => (
                     <div key={sub.id}>
                         <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-slate-50/50 transition-colors">
                             <div className="flex-1 space-y-2">
@@ -93,7 +103,7 @@ export default function SubDepartmentList({
                                     asChild
                                     className="bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer gap-1 rounded-lg px-4 h-9 text-sm"
                                 >
-                                    <Link href={`/explore-universities/${universityId}/programs/${sub.id}`}>
+                                    <Link href={href}>
                                         ព័ត៌មានលម្អិត
                                         <ChevronRight className="w-4 h-4 ml-1" />
                                     </Link>
