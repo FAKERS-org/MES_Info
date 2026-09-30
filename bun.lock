@@ -31,6 +31,7 @@
       },
       "devDependencies": {
         "@browsermcp/mcp": "^0.1.3",
+        "@dietrichgebert/ponytail": "^4.10.0",
         "@tailwindcss/postcss": "^4.1.11",
         "@types/js-cookie": "^3.0.6",
         "@types/katex": "^0.16.8",
@@ -53,6 +54,8 @@
     "@babel/helper-validator-identifier": ["@babel/helper-validator-identifier@7.29.7", "", {}, "sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg=="],
 
     "@browsermcp/mcp": ["@browsermcp/mcp@0.1.3", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.8.0", "commander": "^13.1.0", "ws": "^8.18.1", "zod": "^3.24.2", "zod-to-json-schema": "^3.24.3" }, "bin": { "mcp-server-browsermcp": "dist/index.js" } }, "sha512-qavCgrXBJ49IlX+c9lp3pHGdv1JCA5r2C3+NyVTa5W2OH046BEgzA+vqiV3oAWqDpTh5WTSJjQcEYMHkvisFYg=="],
+
+    "@dietrichgebert/ponytail": ["@dietrichgebert/ponytail@4.10.0", "", {}, "sha512-O2H+RWO0ojk8D8yz9q1F82ybKTXpYtrBb7mHkQT+/iCtsXndAxJo05KU1hkLPjV203ABq+cj89Th9jFvdnc6Mg=="],
 
     "@emnapi/runtime": ["@emnapi/runtime@1.11.3", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA=="],
 
