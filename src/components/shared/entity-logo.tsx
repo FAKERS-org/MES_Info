@@ -38,12 +38,7 @@ export function EntityLogo({ src, alt, fallback, className, fallbackClassName }:
         <div className={cn("relative flex shrink-0 items-center justify-center overflow-hidden", className)}>
             {showImage ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                    src={src}
-                    alt={alt}
-                    onError={() => setFailed(true)}
-                    className="h-full w-full object-contain"
-                />
+                <img src={src} alt={alt} onError={() => setFailed(true)} className="h-full w-full object-cover" />
             ) : (
                 <span className={cn("flex h-full w-full items-center justify-center text-center", fallbackClassName)}>
                     {fallback}
