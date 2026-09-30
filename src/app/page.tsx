@@ -1,28 +1,34 @@
 "use client";
 
-import { UniversityTile } from "@/components/university/university-tile";
-import { SkeletonGrid } from "@/components/shared/skeleton";
 import { ErrorState } from "@/components/shared/error-state";
+import { SkeletonGrid } from "@/components/shared/skeleton";
+import { UniversityTile } from "@/components/university/university-tile";
 import { useUniversities } from "@/hooks/use-universities";
+import { useLanguage } from "@/lib/i18n";
 
 export default function OverviewPage() {
-  const { universities, status, refresh } = useUniversities();
+    const { universities, status, refresh } = useUniversities();
+    const { t } = useLanguage();
 
-  if (status === "loading") {
-    return <SkeletonGrid count={4} />;
-  }
+    if (status === "loading") {
+        return <SkeletonGrid count={4} />;
+    }
 
-  if (status === "error") {
-    return <ErrorState onRetry={refresh} />;
-  }
+    if (status === "error") {
+        return <ErrorState onRetry={refresh} />;
+    }
 
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {universities.map((university) => (
-          <UniversityTile key={university.id} university={university} />
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <div className="w-full space-y-6">
+            <header>
+                <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">{t("nav.overview")}</h1>
+            </header>
+
+            <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {universities.map(university => (
+                    <UniversityTile key={university.id} university={university} />
+                ))}
+            </div>
+        </div>
+    );
 }

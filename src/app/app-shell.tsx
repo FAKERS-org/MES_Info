@@ -66,7 +66,7 @@ function ShellChrome({ children }: { children: ReactNode }) {
             />
 
             <div className="flex min-w-0 flex-1 flex-col bg-muted/50 dark:bg-background">
-                <main className="flex h-screen flex-1 flex-col gap-4 overflow-y-auto pt-4 md:pt-6">
+                <main className="flex h-screen flex-1 flex-col gap-4 overflow-y-auto [scrollbar-gutter:stable] pt-4 md:pt-6">
                     <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
                         <TopBar
                             onOpenSidebar={() => setSidebarOpen(o => !o)}
