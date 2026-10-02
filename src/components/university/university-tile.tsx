@@ -4,7 +4,7 @@ import { EntityLogo } from "@/components/shared/entity-logo";
 import { IconList, IconListItem } from "@/components/shared/icon-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getFlatUnits, type University } from "@/data";
+import { getProgramUnits, type University } from "@/data";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Bookmark, Globe, GraduationCap, MapPin } from "lucide-react";
@@ -37,9 +37,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
     const description = university.description[lang] ?? university.description.en;
     const address = university.address ? (university.address[lang] ?? university.address.en) : "";
     const href = `/explore-universities/${university.id}`;
-    // Every unit at every depth, not just the top-level ones: a university with
-    // one faculty and four departments offers five programs, not one.
-    const programCount = getFlatUnits(university.id).length;
+    const programCount = getProgramUnits(university.id).length;
     const universityType = university.universityType[lang] ?? university.universityType.en;
     const universityCategory = university.universityCategory[lang] ?? university.universityCategory.en;
 

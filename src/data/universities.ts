@@ -176,16 +176,14 @@ export const universities: University[] = [
                         subtitle: "Computing Lab",
                         description:
                             "បំពាក់ដោយ GPU Clusters សម្រាប់ការសិក្សា Deep Learning និងការសរសេរវប្បធម៌ AI ជាដើម។",
-                        image:
-                            "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
+                        image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
                     },
                     {
                         id: "foe-robotics",
                         title: "Robotics & IoT",
                         subtitle: "Arena",
                         description: "ទីលានសាកល្បង Autonomous Drones, Robot arms និង Sensor IoT ផ្សេងៗ។",
-                        image:
-                            "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
+                        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
                     },
                     {
                         id: "foe-cloud",
@@ -193,8 +191,7 @@ export const universities: University[] = [
                         subtitle: "(AWS/GCP)",
                         description:
                             "អនុញ្ញាតឱ្យនិស្សិតប្រើប្រាស់ Cloud Credits ដើម្បីរៀនសូត្រ និង Deploy Web/App ជាក់លាក់។",
-                        image:
-                            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
+                        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
                     },
                 ],
 
@@ -290,8 +287,14 @@ export const universities: University[] = [
                                 },
                                 coverage: { kh: "គ្រប់គ្រាប់ថ្លៃសិក្សា ៥០%", en: "50% of tuition" },
                                 requirements: [
-                                    { kh: "បញ្ជាក់ពិន្ទុសូមិកទំព័រពីសាលាយករណ៍ថ្មី", en: "Latest high-school transcript" },
-                                    { kh: "មានបទពិសោធន៍ជាមួយមហាវិទ្យាល័យវិស្វកម្មយ៉ាងតិចមួយឆ្នាំ", en: "At least one year of internship with FOE" },
+                                    {
+                                        kh: "បញ្ជាក់ពិន្ទុសូមិកទំព័រពីសាលាយករណ៍ថ្មី",
+                                        en: "Latest high-school transcript",
+                                    },
+                                    {
+                                        kh: "មានបទពិសោធន៍ជាមួយមហាវិទ្យាល័យវិស្វកម្មយ៉ាងតិចមួយឆ្នាំ",
+                                        en: "At least one year of internship with FOE",
+                                    },
                                 ],
                             },
                         ],
@@ -625,12 +628,7 @@ export const universities: University[] = [
                             credits: "60 Credits + Thesis",
                             description:
                                 "បង្កើតប្រព័ន្ធព័ត៌មាន និងសហគ្រាប់គ្រប់គ្រងទិន្នន័យសម្រាប់អាជីវភាពក្នុងតាំងជាតិ។",
-                            courses: [
-                                "Enterprise Systems",
-                                "Business Intelligence",
-                                "IT Security",
-                                "Capstone Project",
-                            ],
+                            courses: ["Enterprise Systems", "Business Intelligence", "IT Security", "Capstone Project"],
                             specialBadge: "3-Month Industry Internship",
                         },
                     ],
@@ -641,16 +639,14 @@ export const universities: University[] = [
                         id: "fit-cloud",
                         title: "Cloud & Data Lab",
                         subtitle: "(private cloud)",
-                        description:
-                            "ម៉ាស៊ីនមេ និងឃ្លាំងទិន្នន័យសម្រាប់សិក្សាប្រព័ន្ធព័ត៌មាន និង AI ថ្នាក់វិជ្ជា។",
+                        description: "ម៉ាស៊ីនមេ និងឃ្លាំងទិន្នន័យសម្រាប់សិក្សាប្រព័ន្ធព័ត៌មាន និង AI ថ្នាក់វិជ្ជា។",
                         image: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=800&auto=format&fit=crop",
                     },
                     {
                         id: "fit-cyber",
                         title: "Cyber Range",
                         subtitle: "(training)",
-                        description:
-                            "បរិយាកាសសុវភាពព័ត៌មានសម្រាប់ធ្វើត្រាងការវាយបន្ទាន់ក្នុងបរិយាកាសដែលគ្រប់គ្រង។",
+                        description: "បរិយាកាសសុវភាពព័ត៌មានសម្រាប់ធ្វើត្រាងការវាយបន្ទាន់ក្នុងបរិយាកាសដែលគ្រប់គ្រង។",
                         image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=800&auto=format&fit=crop",
                     },
                 ],
@@ -713,7 +709,10 @@ export const universities: University[] = [
                                         },
                                         coverage: { kh: "រង្វាស់បន្ទប់ស្រាងមួយឆ្នាំ", en: "One year of lab fees" },
                                         requirements: [
-                                            { kh: "បានចូលរួមសកម្មភាពស្រាងទិន្នន័យយ៉ាងតិចមួយដឺម", en: "At least one term of data-lab work" },
+                                            {
+                                                kh: "បានចូលរួមសកម្មភាពស្រាងទិន្នន័យយ៉ាងតិចមួយដឺម",
+                                                en: "At least one term of data-lab work",
+                                            },
                                         ],
                                     },
                                 ],
@@ -788,8 +787,7 @@ export const universities: University[] = [
                                     title: "ថាមអគ្គិសនី",
                                     englishTitle: "(Electrical Energy)",
                                     credits: "40 Credits",
-                                    description:
-                                        "សិក្សាពីបណ្តាញ ថាមថោម និងការបង្កើតថាមពលពីមេដែរ និងពាណិជ្ជកម្ម.",
+                                    description: "សិក្សាពីបណ្តាញ ថាមថោម និងការបង្កើតថាមពលពីមេដែរ និងពាណិជ្ជកម្ម.",
                                     courses: [
                                         "Electrical Circuits",
                                         "Power Distribution",
@@ -896,17 +894,18 @@ export function getFlatUnits(universityId: string): FlatUnit[] {
     return out;
 }
 
+/** Units shown as programs: exclude faculty containers from the flat tree. */
+export function getProgramUnits(universityId: string): FlatUnit[] {
+    return getFlatUnits(universityId).filter(unit => unit.kind !== "faculty");
+}
+
 /**
  * Walk a unit's ancestor chain from the unit itself upwards and return the
  * first value `select` produces. This is the one place the "inherit from the
  * parent when the child says nothing" rule lives, so curriculum and facilities
  * resolve the same way instead of each re-implementing the walk.
  */
-function resolveInherited<T>(
-    uni: University,
-    unitId: string,
-    select: (unit: Unit) => T | undefined,
-): T | undefined {
+function resolveInherited<T>(uni: University, unitId: string, select: (unit: Unit) => T | undefined): T | undefined {
     const chain = getAncestors(uni, unitId).reverse(); // nearest first
     for (const unit of chain) {
         const value = select(unit);
