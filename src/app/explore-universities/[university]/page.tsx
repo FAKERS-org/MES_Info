@@ -14,15 +14,6 @@ interface UniversityPageProps {
     params: Promise<{ university: string }>;
 }
 
-/**
- * The university page: admissions and the scholarships any applicant can take.
- *
- * Both used to be tabs of their own, which split one audience across three
- * routes — a scholarship open to every student was filed next to nothing about
- * the university's own entry requirements, and the university itself had no page
- * at all, only a hop into the programs tab. A scholarship that is *not* open to
- * everyone belongs to a unit, and is on that unit's page instead.
- */
 export default async function UniversityPage({ params }: UniversityPageProps) {
     const { university } = await params;
 

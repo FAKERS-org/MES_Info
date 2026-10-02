@@ -2,7 +2,7 @@ import { EntityLogo } from "@/components/shared/entity-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { University, Unit } from "@/data/universities";
+import type { Unit, University } from "@/data/universities";
 import type { Lang } from "@/lib/language";
 import { localize } from "@/lib/language";
 import {
@@ -23,22 +23,11 @@ import {
 
 export interface DepartmentHeadingProps {
     university: University;
-    /** The unit on the page. Omitted on the university hero, which shows the university itself. */
     unit?: Unit;
-    /** The faculty the unit belongs to, shown under the title. */
     faculty?: Unit;
     lang: Lang;
 }
 
-/**
- * The hero of both `/explore-universities/{university}` and
- * `/explore-universities/{university}/programs/{unit}`. It used to exist twice
- * — `university-hero.tsx` and `department-heading.tsx` — as the same markup
- * with ITC hardcoded in both, so the university page showed the same four
- * statistics for every university in the catalogue. One component, one set of
- * props: the university is always required, the unit is what makes it a
- * department page.
- */
 export default function DepartmentHeading({ university, unit, faculty, lang }: DepartmentHeadingProps) {
     const name = unit?.name ?? university.name;
     const code = (unit?.id ?? university.id).toUpperCase();
@@ -53,11 +42,12 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
     return (
         <div className="w-full max-w-full mx-auto font-sans bg-gray-50/50">
             <Card className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden" padding="none">
-                {/* TOP SECTION: Blue Header Background */}
+                {/* =========================================
+                    TOP SECTION: Blue Header
+                   ========================================= */}
                 <div className="relative bg-[#0d3b5c] h-[200px] sm:h-[220px] overflow-hidden">
-                    {/* Subtle Background Graphic (Abstract Lines/Grid) */}
+                    {/* Subtle Background Graphic */}
                     <div className="absolute inset-0 opacity-10 pointer-events-none">
-                        {/* Simple CSS representation of the background graphic */}
                         <div className="absolute right-0 top-0 w-1/2 h-full border-l border-white/20 transform skew-x-12" />
                         <div className="absolute right-1/4 top-0 w-px h-full bg-white/20" />
                         <div className="absolute right-1/4 top-1/2 w-32 h-32 border border-white/20 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -65,7 +55,6 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
 
                     {/* Top Bar: Badges & Actions */}
                     <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 gap-4">
-                        {/* Left: Trust Badges */}
                         <div className="flex flex-wrap items-center gap-3 text-xs text-blue-100">
                             <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
                                 <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
@@ -76,7 +65,6 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                             )}
                         </div>
 
-                        {/* Right: Action Icons */}
                         <div className="flex items-center gap-2">
                             <Button
                                 variant="ghost"
@@ -94,19 +82,44 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                             </Button>
                         </div>
                     </div>
+
+                    {/* =========================================================
+                        TITLE BLOCK — absolutely positioned in the blue band,
+                        anchored to its bottom edge so it stays vertically
+                        aligned regardless of the band's fixed height.
+
+                        left offset = px-6 (1.5rem) + logo width (7rem / 8rem)
+                        + gap (1rem / 1.5rem) ≈ 9.5rem / 11rem
+                       ========================================================= */}
+                    <div className="absolute bottom-0 left-6 sm:left-6 right-6 z-10 pb-4 sm:pb-6 pl-28 sm:pl-32 md:pl-36">
+                        <div className="space-y-0.5 max-w-full">
+                            <div className="flex flex-wrap items-center gap-2">
+                                <h1 className="text-xl sm:text-2xl font-bold font-khmer text-white leading-tight">
+                                    {localize(name, lang)}
+                                </h1>
+                                <Badge className="bg-white text-[#0d3b5c] border border-white/40 rounded-md font-bold px-1.5 py-0.5 text-xs shadow-sm">
+                                    {code}
+                                </Badge>
+                            </div>
+                            <p className="text-blue-100/80 text-sm leading-tight">
+                                {unit ? localize(university.name, lang) : localize(university.name, "en")}
+                            </p>
+                            {faculty && (
+                                <p className="text-blue-100/70 text-xs font-khmer leading-tight">
+                                    {localize(faculty.name, lang)} — {faculty.name.en}
+                                </p>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 {/* =========================================
-            MIDDLE SECTION: Info & CTA (Overlapping)
-           ========================================= */}
-                <div className="px-6 pb-6 relative">
-                    {/* The logo hangs out of the blue band; the title block stays
-                        below it on white, so a long department name wraps on a
-                        surface it can be read against. */}
+                    MIDDLE SECTION: Logo (original position) + CTA (on seam)
+                   ========================================= */}
+                <div className="px-6 relative">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                        {/* --- Logo & Titles --- */}
-                        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 z-20">
-                            {/* Logo Wrapper (Overlapping Element) */}
+                        {/* --- Logo: stays in original overlapping position --- */}
+                        <div className="flex items-start z-20">
                             <div className="relative -mt-16 sm:-mt-20">
                                 <EntityLogo
                                     src={logo}
@@ -119,48 +132,22 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                         </span>
                                     }
                                 />
-                                {/* Verification Checkmark — a sibling of the logo, not its
-                                    overlay: the circle is overflow-hidden and would clip it.
-                                    Pinned to the box corner, which a rounded-full circle
-                                    leaves empty, so it is pulled in by 3px — half of the
-                                    32px badge plus the corner's 18.75px gap to the ring,
-                                    which lands its centre on the edge. */}
                                 <div className="absolute bottom-0 right-0 -translate-x-[3px] -translate-y-[3px] w-8 h-8 rounded-full bg-[#0d3b5c] border-[3px] border-white flex items-center justify-center">
                                     <CheckCircle2 className="w-[18px] h-[18px] text-white" />
                                 </div>
                             </div>
-
-                            {/* Titles */}
-                            <div className="space-y-1 md:mb-4 md:pt-2">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <h1 className="text-2xl font-bold font-khmer text-slate-900">
-                                        {localize(name, lang)}
-                                    </h1>
-                                    <Badge className="bg-white text-[#0d3b5c] border border-slate-200 rounded-md font-bold px-1.5 py-0.5 text-xs shadow-sm">
-                                        {code}
-                                    </Badge>
-                                </div>
-                                <p className="text-slate-500 text-sm">
-                                    {unit ? localize(university.name, lang) : localize(university.name, "en")}
-                                </p>
-                                {faculty && (
-                                    <p className="text-slate-500 text-xs font-khmer">
-                                        {localize(faculty.name, lang)} — {faculty.name.en}
-                                    </p>
-                                )}
-                            </div>
                         </div>
 
-                        {/* --- Right CTA Button --- */}
-                        <div className="w-full md:w-auto md:mb-4 z-20">
-                            <Button className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-sm border-0">
+                        {/* --- CTA Button: straddles the blue/white seam --- */}
+                        <div className="w-full md:w-auto z-20 -mt-8 sm:-mt-9 md:-mt-9 md:mb-4">
+                            <Button className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-md border-0">
                                 <MessageSquare className="w-5 h-5 fill-white" />
                                 <span className="font-bold font-khmer text-[15px]">Chat Telegram (រៀងគ្នា)</span>
                             </Button>
                         </div>
                     </div>
 
-                    {/* --- Metadata Row --- */}
+                    {/* --- Metadata Row: the 3 badges (white area) --- */}
                     <div className="flex flex-wrap items-center gap-3 mt-6">
                         <Badge
                             variant="secondary"
@@ -168,7 +155,8 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         >
                             <Building2 className="w-3.5 h-3.5 text-slate-500" />
                             <span className="font-khmer">
-                                {localize(university.universityType, lang)} ({localize(university.universityCategory, lang)})
+                                {localize(university.universityType, lang)} (
+                                {localize(university.universityCategory, lang)})
                             </span>
                         </Badge>
                         <Badge
@@ -186,10 +174,8 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                             <span>AUN-QA Accredited</span>
                         </Badge>
 
-                        {/* Spacer to push website to the right */}
                         <div className="flex-1 hidden lg:block" />
 
-                        {/* Website Link */}
                         {university.website && (
                             <a
                                 href={`https://${university.website.replace(/^https?:\/\//, "")}`}
@@ -206,9 +192,9 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                 </div>
 
                 {/* =========================================
-            BOTTOM SECTION: Key Statistics
-           ========================================= */}
-                <div className="border-t border-slate-100 bg-[#fafbfc] px-6 py-5">
+                    BOTTOM SECTION: Key Statistics
+                   ========================================= */}
+                <div className="mt-6 border-t border-slate-100 bg-[#fafbfc] px-6 py-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map(stat => (
                             <div key={stat.label} className="flex items-start gap-3">
