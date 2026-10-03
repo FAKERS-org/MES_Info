@@ -4,6 +4,7 @@ import DepartmentHeading from "@/components/department/department-heading";
 import Facilities from "@/components/department/facilities";
 import SubDepartmentList from "@/components/department/sub-department-list";
 import UnitScholarships from "@/components/department/unit-scholarships";
+import LocalizedText from "@/components/shared/localized-text";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getFacilitiesFor } from "@/data/universities";
 import { resolveUnitPage } from "@/lib/resolve-unit-page";
@@ -46,7 +47,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
                     <AcademicCurriculum curriculum={curriculum} lang={lang} />
                 ) : (
                     <div className="max-w-4xl mx-auto p-8 text-center text-slate-500">
-                        មិនទាន់មានកម្មវិធីសិក្សាសម្រាប់ដេប៉ាតឺម៉ង់នេះទេ។
+                        <LocalizedText translationKey="miscellaneous.noAvailableProgramsForThisDepartment" />
                     </div>
                 )}
             </SectionLayout>

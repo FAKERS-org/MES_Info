@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getProgramUnits, type University } from "@/data";
 import { useLanguage } from "@/lib/i18n";
+import { universityHref } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Bookmark, Globe, GraduationCap, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -36,7 +37,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
     const name = university.name[lang] ?? university.name.en;
     const description = university.description[lang] ?? university.description.en;
     const address = university.address ? (university.address[lang] ?? university.address.en) : "";
-    const href = `/explore-universities/${university.id}`;
+    const href = universityHref(university.id);
     const programCount = getProgramUnits(university.id).length;
     const universityType = university.universityType[lang] ?? university.universityType.en;
     const universityCategory = university.universityCategory[lang] ?? university.universityCategory.en;
