@@ -13,15 +13,6 @@ interface UnitPageProps {
     params: Promise<{ university: string; chain: string[] }>;
 }
 
-/**
- * The detail page of a faculty, a department or a sub-department.
- *
- * One route for all three, and the path is the chain: `/programs/foe` is the
- * faculty, `/programs/foe/gee` the department, `/programs/foe/gee/gic` the
- * sub-department. The path used to hold a single id, so a sub-department was
- * unreachable from the URL that named its faculty and the segment claimed all
- * three were "programs".
- */
 export default async function UnitPage({ params }: UnitPageProps) {
     const { university, chain } = await params;
     const {
@@ -40,7 +31,6 @@ export default async function UnitPage({ params }: UnitPageProps) {
         <div className="space-y-0">
             <DepartmentHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
 
-            {/* Sub-departments of a "self department" (GEE → AMS, GIC, GTR) */}
             {unit.units && unit.units.length > 0 && (
                 <SectionLayout background="muted">
                     <SubDepartmentList
@@ -67,8 +57,6 @@ export default async function UnitPage({ params }: UnitPageProps) {
                 </SectionLayout>
             )}
 
-            {/* Scholarships this unit awards to its own students. The rest are on
-                the university page: they are open to any applicant. */}
             {unit.scholarships && unit.scholarships.length > 0 && (
                 <SectionLayout background="muted">
                     <UnitScholarships scholarships={unit.scholarships} lang={lang} />

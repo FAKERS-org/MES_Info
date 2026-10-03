@@ -23,7 +23,7 @@ export interface ResolvedUnit {
  * The one place a unit page turns its route path into data.
  *
  * The path is walked one level at a time, so a URL names the whole chain
- * (`foe` → `gee` → `gic`) and no unit is reachable by an id alone. Every page
+ * (`fit` → `ise` → `isd`) and no unit is reachable by an id alone. Every page
  * under `/explore-universities/{university}/programs` resolves here, which is
  * what keeps them from disagreeing about what a faculty is.
  *

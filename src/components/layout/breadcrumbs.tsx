@@ -73,7 +73,7 @@ function useDefaultCrumbs(): Crumb[] {
         ];
 
         // A unit page: /explore-universities/{u}/programs/{faculty}/{unit}. The
-        // whole chain is listed, so GIC is reachable from FOE and GEE instead
+        // whole chain is listed, so ISD is reachable from FIT and ISE instead
         // of arriving as an orphan. The path is walked level by level, so each
         // crumb is named by the level it sits at and its href is the path up to
         // that point.

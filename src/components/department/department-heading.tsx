@@ -83,14 +83,6 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         </div>
                     </div>
 
-                    {/* =========================================================
-                        TITLE BLOCK — absolutely positioned in the blue band,
-                        anchored to its bottom edge so it stays vertically
-                        aligned regardless of the band's fixed height.
-
-                        left offset = px-6 (1.5rem) + logo width (7rem / 8rem)
-                        + gap (1rem / 1.5rem) ≈ 9.5rem / 11rem
-                       ========================================================= */}
                     <div className="absolute bottom-0 left-6 sm:left-6 right-6 z-10 pb-4 sm:pb-6 pl-28 sm:pl-32 md:pl-36">
                         <div className="space-y-0.5 max-w-full">
                             <div className="flex flex-wrap items-center gap-2">

@@ -154,17 +154,20 @@ export const universities: University[] = [
         },
         units: [
             // ─────────────────────────────────────────────────────────────
-            // FACULTY OF ENGINEERING
+            // FACULTY OF ELECTRICAL ENGINEERING
             // ─────────────────────────────────────────────────────────────
             {
-                id: "foe",
+                id: "fee",
                 kind: "faculty",
                 name: {
-                    kh: "មហាវិទ្យាល័យវិស្វកម្ម",
-                    en: "Faculty of Engineering",
+                    kh: "មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី",
+                    en: "Faculty of Electrical Engineering",
                 },
-                category: { kh: "វិស្វកម្ម", en: "Engineering" },
-                logo: "/images/FOE-logo.png",
+                category: {
+                    kh: "វិស្វកម្មអគ្គិសនី",
+                    en: "Electrical Engineering",
+                },
+                logo: "/images/FEE-logo.png",
                 requirements: [],
 
                 // Faculty-level facilities, inherited by every department below
@@ -195,75 +198,20 @@ export const universities: University[] = [
                     },
                 ],
 
-                // Faculty-level overview curriculum
-                curriculum: {
-                    headingKh: "កម្មវិធីសិក្សា & មុខជំនាញស្នូល",
-                    headingEn: "Academic Curriculum & Specialization Milestones (140 Credits Total)",
-                    bannerText: "Practical Labs: 680 Hours",
-                    blocks: [
-                        {
-                            badgeText: "Year 1–2",
-                            badgeBg: "bg-[#1E293B]",
-                            title: "មូលដ្ឋានគ្រឹះវិស្វកម្ម & ក្បួនដោះស្រាយ",
-                            englishTitle: "(Foundation & Algorithms)",
-                            credits: "60 Credits",
-                            description: "ផ្តោតលើគ្រឹះវិស្វកម្ម និងក្បួនដោះស្រាយ...",
-                            courses: [
-                                "C / C++ Programming",
-                                "Data Structures & Algorithms",
-                                "Engineering Calculus I & II",
-                                "Discrete Mathematics",
-                                "Digital Logic Systems",
-                            ],
-                        },
-                        {
-                            badgeText: "Year 3",
-                            badgeBg: "bg-[#0284C7]",
-                            title: "បច្ចេកវិទ្យាកម្រិតខ្ពស់",
-                            englishTitle: "(Advanced Software & Cloud DevOps)",
-                            credits: "40 Credits",
-                            description: "អភិវឌ្ឍជំនាញ Software Architecture...",
-                            courses: [
-                                "Machine Learning Basics",
-                                "Relational & NoSQL Databases",
-                                "Cloud Computing & Docker",
-                                "Mobile & Web Architectures",
-                                "Computer Networks & Security",
-                            ],
-                        },
-                        {
-                            badgeText: "Year 4–5",
-                            badgeBg: "bg-[#0F4C81]",
-                            title: "ជំនាញ AI & ការអនុវត្តជាក់ស្តែង",
-                            englishTitle: "(AI Track & Capstone)",
-                            credits: "40 Credits + Thesis",
-                            description: "ផ្តោតលើបច្ចេកវិទ្យាកម្រិតខ្ពស់ AI...",
-                            courses: [
-                                "Deep Learning & Neural Nets",
-                                "Natural Language Processing (NLP)",
-                                "Computer Vision & Robotics",
-                                "Cybersecurity & Cryptography",
-                            ],
-                            specialBadge: "6-Month Industry Internship",
-                        },
-                    ],
-                },
-
                 units: [
                     // ─────────────────────────────────────────────────────
-                    // GEE — Department of Electrical Power Engineering
-                    // (a "self department" — has its own sub-departments)
+                    // GEE — Department of Electrical and Energy Engineering
                     // ─────────────────────────────────────────────────────
                     {
                         id: "gee",
                         kind: "department",
                         name: {
-                            kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មអគ្គិសនី (GEE)",
-                            en: "Department of Electrical Power Engineering (GEE)",
+                            kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មអគ្គិសនី និងថាមភាព (GEE)",
+                            en: "Department of Electrical and Energy Engineering (GEE)",
                         },
                         category: {
                             kh: "វិស្វកម្មអគ្គិសនី",
-                            en: "Electrical Power Engineering",
+                            en: "Electrical and Energy Engineering",
                         },
                         logo: "/images/GEE-logo.png",
                         requirements: [
@@ -292,22 +240,22 @@ export const universities: University[] = [
                                         en: "Latest high-school transcript",
                                     },
                                     {
-                                        kh: "មានបទពិសោធន៍ជាមួយមហាវិទ្យាល័យវិស្វកម្មយ៉ាងតិចមួយឆ្នាំ",
-                                        en: "At least one year of internship with FOE",
+                                        kh: "មានបទពិសោធន៍ជាមួយមហាវិទ្យាល័យវិស្វកម្មអគ្គិសនីយ៉ាងតិចមួយឆ្នាំ",
+                                        en: "At least one year of internship with FEE",
                                     },
                                 ],
                             },
                         ],
                         curriculum: {
-                            headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្មអគ្គិសនី",
-                            headingEn: "Curriculum — Department of Electrical Power Engineering (GEE)",
+                            headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្ម និងថាមភាពអគ្គិសនី",
+                            headingEn: "Curriculum — Department of Electrical and Energy Engineering (GEE)",
                             bannerText: "Practical Labs: 320 Hours",
                             blocks: [
                                 {
                                     badgeText: "Core",
                                     badgeBg: "bg-[#0F4C81]",
-                                    title: "មូលដ្ឋានវិស្វកម្មអគ្គិសនី",
-                                    englishTitle: "(Electrical Power Foundations)",
+                                    title: "មូលដ្ឋានវិស្វកម្ម និងថាមភាពអគ្គិសនី",
+                                    englishTitle: "(Electrical and Energy Foundations)",
                                     credits: "45 Credits",
                                     description: "សិក្សាពីគោលការណ៍អគ្គិសនី ការបង្កើត និងការចែកចាយថាមពលអគ្គិសនី។",
                                     courses: [
@@ -320,224 +268,216 @@ export const universities: University[] = [
                                 },
                             ],
                         },
-                        units: [
-                            {
-                                id: "ams",
-                                kind: "sub-department",
-                                name: {
-                                    kh: "ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាការិយាល័យ (AMS)",
-                                    en: "Department of Automation and Mechatronics Systems (AMS)",
-                                },
-                                category: {
-                                    kh: "បច្ចេកវិទ្យាការិយាល័យ",
-                                    en: "Automation and Mechatronics",
-                                },
-                                logo: "/images/AMS-logo.png",
-                                requirements: [
-                                    {
-                                        kh: "ចេះដឹងពី PLC និង SCADA",
-                                        en: "Proficient in PLC and SCADA",
-                                    },
-                                    {
-                                        kh: "មានជំនាញក្នុងការរចនាស្ថាបត្យកម្ម",
-                                        en: "Software engineering skills",
-                                    },
-                                ],
-                                curriculum: {
-                                    headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាការិយាល័យ",
-                                    headingEn: "Curriculum — Department of Automation and Mechatronics Systems (AMS)",
-                                    bannerText: "Practical Labs: 360 Hours",
-                                    blocks: [
-                                        {
-                                            badgeText: "Core",
-                                            badgeBg: "bg-[#0F4C81]",
-                                            title: "ស្វ័យប្រវត្តិកម្ម និងមេកាត្រូនិក",
-                                            englishTitle: "(Automation & Mechatronics)",
-                                            credits: "50 Credits",
-                                            description: "សិក្សាពី PLC, SCADA និងការរចនាប្រព័ន្ធស្វ័យប្រវត្តិ។",
-                                            courses: [
-                                                "PLC Programming",
-                                                "SCADA Systems",
-                                                "Robotics Fundamentals",
-                                                "Industrial Control",
-                                            ],
-                                        },
-                                    ],
-                                },
-                            },
-                            {
-                                id: "gic",
-                                kind: "sub-department",
-                                name: {
-                                    kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មព័ត៌មាន និងទំនាក់ទំនង (GIC)",
-                                    en: "Department of Information and Communication Engineering (GIC)",
-                                },
-                                category: {
-                                    kh: "វិស្វកម្មព័ត៌មាន",
-                                    en: "Information and Communication Engineering",
-                                },
-                                logo: "/images/GIC-logo.png",
-                                requirements: [
-                                    {
-                                        kh: "ស្គាល់ពីវិស័យ IT",
-                                        en: "Familiarity with the IT industry",
-                                    },
-                                    {
-                                        kh: "ចេះដឹងបច្ចេកវិទ្យា API, Database, Web Frontend",
-                                        en: "Mastery of API, Database, Web frontend technologies",
-                                    },
-                                    {
-                                        kh: "ប្រើប្រាស់បច្ចេកវិទ្យាច្រើនដូចជា Laravel, MySQL",
-                                        en: "Use of multiple tech stacks such as Laravel and MySQL",
-                                    },
-                                    {
-                                        kh: "យល់អំពីស្ថាបត្យកម្ម និងការដាក់ពង្រាយសូហ្វវែរ/ប្រព័ន្ធ",
-                                        en: "Understanding of software/system architecture and deployment",
-                                    },
-                                    {
-                                        kh: "មានជំនាញទំនាក់ទំនងភាសាអង់គ្លេស។ល។",
-                                        en: "English communication skills, etc.",
-                                    },
-                                ],
-                                curriculum: {
-                                    headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្មព័ត៌មាន និងទំនាក់ទំនង",
-                                    headingEn:
-                                        "Curriculum — Department of Information and Communication Engineering (GIC)",
-                                    bannerText: "Practical Labs: 480 Hours",
-                                    blocks: [
-                                        {
-                                            badgeText: "Year 1–2",
-                                            badgeBg: "bg-[#1E293B]",
-                                            title: "មូលដ្ឋានគ្រឹះ ICT",
-                                            englishTitle: "(ICT Foundations)",
-                                            credits: "60 Credits",
-                                            description: "ណែនាំអំពីគ្រឹះកុំព្យូទ័រ បណ្តាញ និងការសរសេរកម្មវិធី។",
-                                            courses: [
-                                                "Programming Fundamentals",
-                                                "Computer Networks",
-                                                "Web Frontend Technologies",
-                                                "Database Systems",
-                                            ],
-                                        },
-                                        {
-                                            badgeText: "Year 3–4",
-                                            badgeBg: "bg-[#0284C7]",
-                                            title: "ប្រព័ន្ធព័ត៌មានកម្រិតខ្ពស់",
-                                            englishTitle: "(Advanced Information Systems)",
-                                            credits: "45 Credits + Thesis",
-                                            description:
-                                                "អភិវឌ្ឍជំនាញ API, Cloud, និងស្ថាបត្យកម្មប្រព័ន្ធព័ត៌មានទំនើប។",
-                                            courses: [
-                                                "REST & GraphQL APIs",
-                                                "Cloud Architecture",
-                                                "Microservices",
-                                                "Information Security",
-                                            ],
-                                            specialBadge: "6-Month Industry Internship",
-                                        },
-                                    ],
-                                },
-                            },
-                            {
-                                id: "gtr",
-                                kind: "sub-department",
-                                name: {
-                                    kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ (GTR)",
-                                    en: "Department of Telecommunication and Network Engineering (GTR)",
-                                },
-                                category: {
-                                    kh: "វិស្វកម្មទូរគមនាគមន៍",
-                                    en: "Telecommunication and Network Engineering",
-                                },
-                                logo: "/images/GTR-logo.png",
-                                requirements: [
-                                    {
-                                        kh: "យល់ដឹងពីបណ្តាញកុំព្យូទ័រ",
-                                        en: "Understanding of computer networks",
-                                    },
-                                    {
-                                        kh: "មានជំនាញក្នុងវិស្វកម្មទូរគមនាគមន៍",
-                                        en: "Skills in telecommunication engineering",
-                                    },
-                                ],
-                                curriculum: {
-                                    headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ",
-                                    headingEn:
-                                        "Curriculum — Department of Telecommunication and Network Engineering (GTR)",
-                                    bannerText: "Practical Labs: 400 Hours",
-                                    blocks: [
-                                        {
-                                            badgeText: "Core",
-                                            badgeBg: "bg-[#0F4C81]",
-                                            title: "វិស្វកម្មទូរគមនាគមន៍",
-                                            englishTitle: "(Telecommunication Engineering)",
-                                            credits: "50 Credits",
-                                            description: "សិក្សាពីបណ្តាញ ការបញ្ជូនសញ្ញា និងប្រព័ន្ធទូរគមនាគមន៍ទំនើប។",
-                                            courses: [
-                                                "Signals & Systems",
-                                                "Wireless Communications",
-                                                "Network Protocols",
-                                                "Optical Networks",
-                                            ],
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
                     },
-
                     // ─────────────────────────────────────────────────────
-                    // GAR — Automation & Robotics
+                    // GIM — Department of Industrial and Mechanical Engineering
                     // ─────────────────────────────────────────────────────
                     {
-                        id: "gar",
+                        id: "gim",
                         kind: "department",
                         name: {
-                            kh: "ដេប៉ាតឺម៉ង់ស្វ័យប្រវត្តិកម្ម និងមនុស្សយន្ត (GAR)",
-                            en: "Department of Automation and Robotics Engineering (GAR)",
-                        },
-                        category: {
-                            kh: "ស្វ័យប្រវត្តិកម្ម",
-                            en: "Automation and Robotics",
-                        },
-                        logo: "/images/GAR-logo.png",
-                        requirements: [],
-                    },
-
-                    // ─────────────────────────────────────────────────────
-                    // GMC — Mechanical Engineering
-                    // ─────────────────────────────────────────────────────
-                    {
-                        id: "gmc",
-                        kind: "department",
-                        name: {
-                            kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មមេកានិកខ្មែរ (GMC)",
-                            en: "Department of Mechanical Engineering (GMC)",
+                            kh: "ដេប៉ាតឺម៉ង់ឧស្សាហកម្ម និងវិស្វកម្មមេកានិក (GIM)",
+                            en: "Department of Industrial and Mechanical Engineering (GIM)",
                         },
                         category: {
                             kh: "វិស្វកម្មមេកានិក",
-                            en: "Mechanical Engineering",
+                            en: "Industrial and Mechanical Engineering",
                         },
-                        logo: "/images/GMC-logo.png",
-                        requirements: [],
+                        logo: "/images/GIM-logo.png",
+                        requirements: [
+                            {
+                                kh: "មានចំណេះដឹងពីមេកានិកទូទៅ",
+                                en: "Solid grasp of general mechanical engineering",
+                            },
+                            {
+                                kh: "យល់ដឹងពីដំណើរការឧបករណ៍",
+                                en: "Understanding of industrial processes",
+                            },
+                        ],
+                        curriculum: {
+                            headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់ឧស្សាហកម្ម និងវិស្វកម្មមេកានិកខ្មែរ",
+                            headingEn: "Curriculum — Department of Industrial and Mechanical Engineering (GIM)",
+                            bannerText: "Practical Labs: 400 Hours",
+                            blocks: [
+                                {
+                                    badgeText: "Core",
+                                    badgeBg: "bg-[#0F4C81]",
+                                    title: "មេកានិកខ្មែរទូទៅ",
+                                    englishTitle: "(General Mechanical Engineering)",
+                                    credits: "45 Credits",
+                                    description: "សិក្សាពីមេកានិកខ្មែរទូទៅ ស្មារតី និងការបង្កើតម៉ាស៊ីន។",
+                                    courses: [
+                                        "Engineering Mechanics",
+                                        "Thermodynamics",
+                                        "Fluid Mechanics",
+                                        "Machine Design",
+                                        "Manufacturing Processes",
+                                    ],
+                                },
+                            ],
+                        },
                     },
-
-                    // ─────────────────────────────────────────────────────
-                    // GCE — Civil Engineering
-                    // ─────────────────────────────────────────────────────
                     {
-                        id: "gce",
+                        id: "gic",
                         kind: "department",
                         name: {
-                            kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មស្ថាបត្យកម្ម (GCE)",
-                            en: "Department of Civil Engineering (GCE)",
+                            kh: "ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាព័ត៌មាន និងបច្ចេកវិទ្យាទូរគមនាគមន៍ (GIC)",
+                            en: "Department of Information and Communication Technology (GIC)",
                         },
                         category: {
-                            kh: "វិស្វកម្មស្ថាបត្យកម្ម",
-                            en: "Civil Engineering",
+                            kh: "បច្ចេកវិទ្យាព័ត៌មាន",
+                            en: "Information and Communication Technology",
                         },
-                        logo: "/images/GCE-logo.png",
-                        requirements: [],
+                        logo: "/images/GIC-logo.png",
+                        requirements: [
+                            {
+                                kh: "ស្គាល់ពីវិស័យ IT",
+                                en: "Familiarity with the IT industry",
+                            },
+                            {
+                                kh: "ចេះដឹងបច្ចេកវិទ្យា API, Database, Web Frontend",
+                                en: "Mastery of API, Database, Web frontend technologies",
+                            },
+                            {
+                                kh: "ប្រើប្រាស់បច្ចេកវិទ្យាច្រើនដូចជា Laravel, MySQL",
+                                en: "Use of multiple tech stacks such as Laravel and MySQL",
+                            },
+                            {
+                                kh: "យល់អំពីស្ថាបត្យកម្ម និងការដាក់ពង្រាយសូហ្វវែរ/ប្រព័ន្ធ",
+                                en: "Understanding of software/system architecture and deployment",
+                            },
+                            {
+                                kh: "មានជំនាញទំនាក់ទំនងភាសាអង់គ្លេស។ល។",
+                                en: "English communication skills, etc.",
+                            },
+                        ],
+                        curriculum: {
+                            headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាព័ត៌មាន និងបច្ចេកវិទ្យាទូរគមនាគមន៍",
+                            headingEn: "Curriculum — Department of Information and Communication Technology (GIC)",
+                            bannerText: "Practical Labs: 480 Hours",
+                            blocks: [
+                                {
+                                    badgeText: "Year 1–2",
+                                    badgeBg: "bg-[#1E293B]",
+                                    title: "មូលដ្ឋានគ្រឹះ ICT",
+                                    englishTitle: "(ICT Foundations)",
+                                    credits: "60 Credits",
+                                    description: "ណែនាំអំពីគ្រឹះកុំព្យូទ័រ បណ្តាញ និងការសរសេរកម្មវិធី។",
+                                    courses: [
+                                        "Programming Fundamentals",
+                                        "Computer Networks",
+                                        "Web Frontend Technologies",
+                                        "Database Systems",
+                                    ],
+                                },
+                                {
+                                    badgeText: "Year 3–4",
+                                    badgeBg: "bg-[#0284C7]",
+                                    title: "ប្រព័ន្ធព័ត៌មានកម្រិតខ្ពស់",
+                                    englishTitle: "(Advanced Information Systems)",
+                                    credits: "45 Credits + Thesis",
+                                    description: "អភិវឌ្ឍជំនាញ API, Cloud, និងស្ថាបត្យកម្មប្រព័ន្ធព័ត៌មានទំនើប។",
+                                    courses: [
+                                        "REST & GraphQL APIs",
+                                        "Cloud Architecture",
+                                        "Microservices",
+                                        "Information Security",
+                                    ],
+                                    specialBadge: "6-Month Industry Internship",
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        id: "gtr",
+                        kind: "department",
+                        name: {
+                            kh: "ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ (GTR)",
+                            en: "Department of Telecommunication and Network Engineering (GTR)",
+                        },
+                        category: {
+                            kh: "វិស្វកម្មទូរគមនាគមន៍",
+                            en: "Telecommunication and Network Engineering",
+                        },
+                        logo: "/images/GTR-logo.png",
+                        requirements: [
+                            {
+                                kh: "យល់ដឹងពីបណ្តាញកុំព្យូទ័រ",
+                                en: "Understanding of computer networks",
+                            },
+                            {
+                                kh: "មានជំនាញក្នុងវិស្វកម្មទូរគមនាគមន៍",
+                                en: "Skills in telecommunication engineering",
+                            },
+                        ],
+                        curriculum: {
+                            headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ",
+                            headingEn: "Curriculum — Department of Telecommunication and Network Engineering (GTR)",
+                            bannerText: "Practical Labs: 400 Hours",
+                            blocks: [
+                                {
+                                    badgeText: "Core",
+                                    badgeBg: "bg-[#0F4C81]",
+                                    title: "វិស្វកម្មទូរគមនាគមន៍",
+                                    englishTitle: "(Telecommunication Engineering)",
+                                    credits: "50 Credits",
+                                    description: "សិក្សាពីបណ្តាញ ការបញ្ជូនសញ្ញា និងប្រព័ន្ធទូរគមនាគមន៍ទំនើប។",
+                                    courses: [
+                                        "Signals & Systems",
+                                        "Wireless Communications",
+                                        "Network Protocols",
+                                        "Optical Networks",
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                    // ─────────────────────────────────────────────────────
+                    // AMS — Department of Applied Mathematics and Statistics
+                    // ─────────────────────────────────────────────────────
+                    {
+                        id: "ams",
+                        kind: "department",
+                        name: {
+                            kh: "ដេប៉ាតឺម៉ង់គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ (AMS)",
+                            en: "Department of Applied Mathematics and Statistics (AMS)",
+                        },
+                        category: {
+                            kh: "គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ",
+                            en: "Applied Mathematics and Statistics",
+                        },
+                        logo: "/images/AMS-logo.png",
+                        requirements: [
+                            {
+                                kh: "ចេះដឹងគណិតវិទ្យាកម្រិតខ្ពស់",
+                                en: "Strong advanced mathematics skills",
+                            },
+                            {
+                                kh: "មានចំណេះដឹងស្ថិតធន្នទូទៅ",
+                                en: "Working knowledge of general statistics",
+                            },
+                        ],
+                        curriculum: {
+                            headingKh: "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ",
+                            headingEn: "Curriculum — Department of Applied Mathematics and Statistics (AMS)",
+                            bannerText: "Practical Labs: 220 Hours",
+                            blocks: [
+                                {
+                                    badgeText: "Core",
+                                    badgeBg: "bg-[#0F4C81]",
+                                    title: "គណិតវិទ្យា និងស្ថិតធន្នអន្តរវិស្ស័យ",
+                                    englishTitle: "(Applied Mathematics & Statistics)",
+                                    credits: "45 Credits",
+                                    description: "គណិតវិទ្យាអន្តរវិស្ស័យ ស្ថិតធន្ន និងវិធីវាស់ទំនាក់ទំនង។",
+                                    courses: [
+                                        "Linear Algebra",
+                                        "Numerical Analysis",
+                                        "Probability and Statistics",
+                                        "Optimization Methods",
+                                    ],
+                                },
+                            ],
+                        },
                     },
                 ],
             },
@@ -555,7 +495,7 @@ export const universities: University[] = [
     //     faculty's through getCurriculumFor,
     //   · a leaf with no facilities, inheriting through getFacilitiesFor,
     //   · a three-level chain (faculty → department → sub-department) that is
-    //     deeper than GEE, and a sub-department with no children of its own.
+    //     deeper than the ITC tree, and a sub-department with no children.
     // ═════════════════════════════════════════════════════════════════════
     {
         id: "intec",
@@ -707,7 +647,10 @@ export const universities: University[] = [
                                             kh: "មូលនិញ្ញកម្មមហាវិទ្យាល័យទិន្នន័យ (ISD)",
                                             en: "ISD Lab Grant",
                                         },
-                                        coverage: { kh: "រង្វាស់បន្ទប់ស្រាងមួយឆ្នាំ", en: "One year of lab fees" },
+                                        coverage: {
+                                            kh: "រង្វាស់បន្ទប់ស្រាងមួយឆ្នាំ",
+                                            en: "One year of lab fees",
+                                        },
                                         requirements: [
                                             {
                                                 kh: "បានចូលរួមសកម្មភាពស្រាងទិន្នន័យយ៉ាងតិចមួយដឺម",

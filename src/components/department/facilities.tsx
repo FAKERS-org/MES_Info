@@ -5,16 +5,11 @@ export interface FacilitiesProps {
     facilities: Facility[];
 }
 
-/**
- * The labs and centres strip. Resolved by the page through
- * `getFacilitiesFor`, so a department that declares none shows its faculty's
- * rather than a fixed set of three cards describing the same GPU cluster.
- */
 const Facilities = ({ facilities }: FacilitiesProps) => {
     if (facilities.length === 0) return null;
 
     return (
-        <div className="max-w-7xl mx-auto p-6 md:p-8 bg-slate-50/50 rounded-2xl font-sans">
+        <div className="max-w-7xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 md:p-8 font-sans">
             {/* --- Header Section --- */}
             <div className="flex items-center gap-4 mb-8">
                 <div className="bg-emerald-100 p-3 rounded-xl shrink-0 text-emerald-600">

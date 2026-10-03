@@ -10,18 +10,11 @@ import { ChevronRight, GraduationCap, Layers } from "lucide-react";
 import Link from "next/link";
 
 export interface SubDepartmentListProps {
-    /** The children, each with the URL that reaches it — the page's own chain plus one id. */
     subDepartments: UnitRow[];
     parentDepartment: Unit;
     lang: Lang;
 }
 
-/**
- * What the children of a unit are called. The same card lists a faculty's
- * departments and a department's sub-departments, and it used to call both
- * "sub-departments" — so the faculty page announced its departments as
- * "ដេប៉ាតឺម៉ង់ទន្ទឹម".
- */
 const KIND_LABEL: Record<Unit["kind"], { kh: string; en: string }> = {
     faculty: { kh: "មហាវិទ្យាល័យ", en: "Faculties" },
     department: { kh: "ដេប៉ាតឺម៉ង់", en: "Departments" },
@@ -29,14 +22,6 @@ const KIND_LABEL: Record<Unit["kind"], { kh: string; en: string }> = {
     foundation: { kh: "មូលដ្ឋាន", en: "Foundation" },
 };
 
-/**
- * Lists the sub-departments of a "self department" (e.g. GEE → AMS, GIC, GTR).
- *
- * Each sub-department arrives with its own href — the chain of ids leading to
- * it — because a link built from the university and an id alone sent visitors
- * to `/explore-universities/gee/programs/gee/ams`, a university that does not
- * exist, and every one of those 404'd.
- */
 export default function SubDepartmentList({ subDepartments, parentDepartment, lang }: SubDepartmentListProps) {
     if (subDepartments.length === 0) return null;
 
@@ -50,12 +35,10 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                         <Layers className="w-6 h-6 text-white" strokeWidth={1.5} />
                     </div>
                     <div>
-                        <CardTitle className="text-lg md:text-xl font-bold font-khmer leading-tight">
-                            {label.kh} ({subDepartments.length}) — {label.en}
+                        <CardTitle className="text-lg md:text-xl font-bold font-khmer text-white leading-tight">
+                            {label.kh} ({subDepartments.length}) - {label.en}
                         </CardTitle>
-                        <p className="text-blue-100 text-xs md:text-sm mt-0.5">
-                            Under {parentDepartment.name.en}
-                        </p>
+                        <p className="text-blue-100 text-xs md:text-sm mt-0.5">Under {parentDepartment.name.en}</p>
                     </div>
                 </div>
             </CardHeader>
@@ -101,11 +84,12 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                                 <Button
                                     variant="secondary"
                                     asChild
-                                    className="bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer gap-1 rounded-lg px-4 h-9 text-sm"
+                                    className="bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer gap-1 rounded-lg px-4 h-9 text-sm whitespace-nowrap"
                                 >
-                                    <Link href={href}>
+                                    <Link href={href} className="flex items-center">
+                                        {" "}
                                         ព័ត៌មានលម្អិត
-                                        <ChevronRight className="w-4 h-4 ml-1" />
+                                        <ChevronRight className="w-4 h-4 ml-1 shrink-0" />{" "}
                                     </Link>
                                 </Button>
                             </div>
