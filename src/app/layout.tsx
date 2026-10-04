@@ -28,24 +28,8 @@ export const metadata: Metadata = {
     description: "Discover and browse Cambodian universities, their departments, and admission requirements.",
 };
 
-/**
- * Applies the persisted theme before first paint so SSR-rendered markup
- * never flashes the wrong theme while the client hydrates.
- * Falls back to THEME_CONFIG.defaultTheme ("light") instead of system preference.
- */
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t="light";}if(t==="dark"){document.documentElement.classList.add("dark");}}catch(e){}})();`;
 
-/**
- * Reads the language cookie once per request and hands it to the shell, which
- * seeds both the client provider and — through the builders it calls — the copy
- * every Server Component renders. That is what lets a page be written in one
- * language instead of showing Khmer and English side by side.
- *
- * The cost is that reading a cookie opts the whole tree out of static
- * prerendering, so these routes are now rendered per request. That is the
- * trade for correct server-rendered language; with a database behind the app
- * they were dynamic anyway.
- */
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     const lang = await readLang();
     const { htmlLang, fontStack } = langAttributes(lang);

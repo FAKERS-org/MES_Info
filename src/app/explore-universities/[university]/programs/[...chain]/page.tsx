@@ -30,9 +30,6 @@ export default async function UnitPage({ params }: UnitPageProps) {
 
     return (
         <div>
-            {/* The hero is banded like every section below it: its own wrapper
-                adds no padding, so leaving it bare left a half-width gap under
-                it against the full-width gap between the sections. */}
             <SectionLayout background="muted">
                 <DepartmentHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
             </SectionLayout>

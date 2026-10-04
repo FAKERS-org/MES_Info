@@ -26,7 +26,9 @@ function useDefaultCrumbs(): Crumb[] {
   const segments = pathname.split("/").filter(Boolean);
 
   if (segments.length === 0) {
-    return [{ label: t("nav.overview") }];
+    // `/` is the university listing now (see app/page.tsx), so the root crumb is
+    // the explore section, not the overview that used to live there.
+    return [{ label: t("nav.exploreUniversities") }];
   }
 
   const [section, param, subParam] = segments;

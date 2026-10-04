@@ -12,14 +12,6 @@ import { BookOpen, Coins, Diff, LayoutGrid, University } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
-/**
- * Dashboard chrome: sidebar, top bar, breadcrumbs and the routed page.
- * Replaces the react-router `RootLayout` (its `<Outlet />` is `children`).
- * Providers sit above the chrome because it consumes their contexts.
- *
- * `initialLang` is resolved by the root layout from the language cookie, so
- * the chrome and the server-rendered page body below it always agree.
- */
 export default function AppShell({ children, initialLang }: { children: ReactNode; initialLang: Lang }) {
     return (
         <QueryProvider>
@@ -38,16 +30,17 @@ function ShellChrome({ children }: { children: ReactNode }) {
     const { t } = useLanguage();
     const pathname = usePathname();
 
-    const isDashboard = pathname === "/";
-    const isExplore = pathname.startsWith("/explore-universities");
+    // `/` renders the university listing (see app/page.tsx), so both URLs light
+    // up Explore. Overview is gone with its page, commented out in app/page.tsx.
+    const isExplore = pathname === "/" || pathname.startsWith("/explore-universities");
 
     const navItems: NavItem[] = [
-        { icon: <LayoutGrid className="size-4" />, label: t("nav.overview"), active: isDashboard, href: "/" },
+        // { icon: <LayoutGrid className="size-4" />, label: t("nav.overview"), href: "/" },
         {
             icon: <University className="size-4" />,
             label: t("nav.exploreUniversities"),
             active: isExplore,
-            href: "/explore-universities",
+            href: "/",
         },
         { icon: <BookOpen className="size-4" />, label: t("nav.majors&Careers"), href: "/majors-and-careers" },
         { icon: <Coins className="size-4" />, label: t("nav.scholarships"), href: "/scholarships" },
