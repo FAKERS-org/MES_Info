@@ -25,7 +25,7 @@ export interface TagProps {
 }
 
 const TAG_CLASS =
-    "inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition-colors";
+    "inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground transition-colors";
 
 /** Chip used by the tag rows of both detail pages. */
 export function Tag({ children, icon, className, as = "span", onClick, type }: TagProps) {

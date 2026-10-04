@@ -15,9 +15,9 @@ export interface FeatureCardHeader {
     accentClassName?: string;
     /** Gradient wash behind the head — the programme cards carry one. */
     washClassName?: string;
-    /** Replaces the `text-xl font-bold text-slate-900` default of the title. */
+    /** Replaces the `text-xl font-bold text-foreground` default of the title. */
     titleClassName?: string;
-    /** Replaces the `text-sm text-slate-500` default of the subtitle. */
+    /** Replaces the `text-sm text-muted-foreground` default of the subtitle. */
     subtitleClassName?: string;
 }
 
@@ -69,11 +69,11 @@ export function FeatureCard({ header, className, bodyClassName, children }: Feat
                                 </span>
                                 {header.action}
                             </div>
-                            <h3 className={cn("mt-2 text-xl font-bold text-slate-900", header.titleClassName)}>
+                            <h3 className={cn("mt-2 text-xl font-bold text-foreground", header.titleClassName)}>
                                 {header.title}
                             </h3>
                             {header.subtitle !== undefined && (
-                                <p className={cn("mt-1 text-sm text-slate-500", header.subtitleClassName)}>
+                                <p className={cn("mt-1 text-sm text-muted-foreground", header.subtitleClassName)}>
                                     {header.subtitle}
                                 </p>
                             )}
@@ -81,7 +81,7 @@ export function FeatureCard({ header, className, bodyClassName, children }: Feat
                     ) : (
                         <>
                             <div className="flex items-center justify-between gap-3">
-                                <h3 className={cn("min-w-0 text-xl font-bold text-slate-900", header.titleClassName)}>
+                                <h3 className={cn("min-w-0 text-xl font-bold text-foreground", header.titleClassName)}>
                                     {header.title}
                                 </h3>
                                 {(header.icon !== undefined || header.action !== undefined) && (
@@ -92,7 +92,7 @@ export function FeatureCard({ header, className, bodyClassName, children }: Feat
                                 )}
                             </div>
                             {header.subtitle !== undefined && (
-                                <p className={cn("mt-1 text-sm text-slate-500", header.subtitleClassName)}>
+                                <p className={cn("mt-1 text-sm text-muted-foreground", header.subtitleClassName)}>
                                     {header.subtitle}
                                 </p>
                             )}

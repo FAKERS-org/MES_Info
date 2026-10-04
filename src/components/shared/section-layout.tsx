@@ -7,7 +7,7 @@ export interface SectionLayoutProps {
     aside?: ReactNode;
     /** Breakpoint of the 2/1 split: `xl` on the department page, `md` on the university page. */
     breakpoint?: "md" | "xl";
-    /** `muted` renders the `bg-slate-50` band used by the department page. */
+    /** `muted` renders the `bg-muted` band used by the department page. */
     background?: "none" | "muted";
     mainClassName?: string;
     asideClassName?: string;
@@ -49,7 +49,7 @@ export function SectionLayout({
     className,
 }: SectionLayoutProps) {
     return (
-        <div className={cn(background === "muted" && "flex items-start justify-center bg-slate-50 py-6", className)}>
+        <div className={cn(background === "muted" && "flex items-start justify-center bg-muted py-6", className)}>
             <div className={cn("grid w-full max-w-full grid-cols-1 gap-4", aside && GRID_COLS[breakpoint])}>
                 <div className={cn(aside && MAIN_SPAN[breakpoint], mainClassName)}>{children}</div>
 

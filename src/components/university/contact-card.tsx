@@ -6,18 +6,18 @@ export default function AdmissionsContactCard({
     
 }) {
     return (
-        <Card className="w-full rounded-[24px] border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white overflow-hidden">
+        <Card className="w-full rounded-[24px] border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-card overflow-hidden">
             <div className="p-5 flex flex-col gap-4">
                     {/* --- Header --- */}
                     <div className="flex items-center gap-2 mb-1">
-                        <Headphones className="w-6 h-6 text-blue-600" strokeWidth={2} />
-                        <h2 className="text-[17px] font-bold text-slate-800 font-khmer">
+                        <Headphones className="w-6 h-6 text-blue-600 dark:text-blue-400" strokeWidth={2} />
+                        <h2 className="text-[17px] font-bold text-foreground font-khmer">
                             ទីប្រឹក្សាការសិក្សា (Admissions)
                         </h2>
                     </div>
 
                     {/* --- Profile Card --- */}
-                    <div className="bg-[#f0f4f8] rounded-2xl p-4 flex items-center gap-4">
+                    <div className="bg-muted rounded-2xl p-4 flex items-center gap-4">
                         {/* Avatar Wrapper */}
                         <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-sm">
                             {/* Replace src with your actual image path */}
@@ -30,16 +30,16 @@ export default function AdmissionsContactCard({
 
                         {/* Profile Info */}
                         <div className="flex flex-col">
-                            <h3 className="font-bold text-[#1e3a5f] font-khmer text-[15px] truncate max-w-[180px]">
+                            <h3 className="font-bold text-foreground font-khmer text-[15px] truncate max-w-[180px]">
                                 លោក គ្រូ វណ្ណារឹទ្ធ (Vannar...
                             </h3>
-                            <p className="text-slate-600 text-[13px] mt-0.5">Head of Student Admissions</p>
+                            <p className="text-muted-foreground text-[13px] mt-0.5">Head of Student Admissions</p>
 
                             {/* Online Status */}
                             <div className="flex items-center gap-1.5 mt-1">
                                 <div className="w-2 h-2 rounded-full bg-[#10b981]" />
                                 <span className="text-[#10b981] text-xs font-semibold">Online</span>
-                                <span className="text-slate-500 text-xs font-khmer">ឆ្លើយតបរហ័ស</span>
+                                <span className="text-muted-foreground text-xs font-khmer">ឆ្លើយតបរហ័ស</span>
                             </div>
                         </div>
                     </div>
@@ -49,18 +49,18 @@ export default function AdmissionsContactCard({
                         {/* Telegram Button */}
                         <Button
                             variant="secondary"
-                            className="w-full bg-[#e6f0f8] hover:bg-[#dbe9f6] text-[#1e3a5f] h-12 rounded-xl flex items-center justify-center gap-2 transition-colors border-0"
+                            className="w-full bg-accent hover:bg-border text-foreground h-12 rounded-xl flex items-center justify-center gap-2 transition-colors border-0"
                         >
-                            <MessageSquare className="w-5 h-5 text-[#1e3a5f]" strokeWidth={2} />
+                            <MessageSquare className="w-5 h-5 text-foreground" strokeWidth={2} />
                             <span className="font-bold text-[15px] font-khmer">ផ្ញើសារសាកសួរ (Telegram Q&amp;A)</span>
                         </Button>
 
                         {/* Hotline Button */}
                         <Button
                             variant="secondary"
-                            className="w-full bg-[#f4f6fb] hover:bg-[#eaeef5] text-slate-700 h-12 rounded-xl flex items-center justify-center gap-2 transition-colors border-0"
+                            className="w-full bg-muted hover:bg-border text-foreground h-12 rounded-xl flex items-center justify-center gap-2 transition-colors border-0"
                         >
-                            <Phone className="w-4 h-4 text-slate-700" strokeWidth={2} />
+                            <Phone className="w-4 h-4 text-foreground" strokeWidth={2} />
                             <span className="font-medium text-[15px]">Hotline: 023 880 370</span>
                         </Button>
                     </div>

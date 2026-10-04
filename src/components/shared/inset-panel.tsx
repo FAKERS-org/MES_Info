@@ -17,7 +17,7 @@ export interface InsetPanelProps {
  */
 export function InsetPanel({ children, className, toneClassName }: InsetPanelProps) {
     return (
-        <div className={cn("rounded-lg border border-slate-200 bg-slate-50 p-4", toneClassName, className)}>
+        <div className={cn("rounded-lg border border-border bg-muted p-4", toneClassName, className)}>
             {children}
         </div>
     );

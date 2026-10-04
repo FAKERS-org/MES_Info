@@ -44,17 +44,17 @@ export function SearchFilterBar({
 
     return (
         <div
-            className={cn("flex w-full flex-wrap items-center gap-1.5 rounded-2xl bg-white p-1.5 shadow-sm", className)}
+            className={cn("flex w-full flex-wrap items-center gap-1.5 rounded-2xl bg-card p-1.5 shadow-sm", className)}
         >
             {/* Search Input Pill */}
-            <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2">
-                <Search className="h-4 w-4 shrink-0 text-slate-500" />
+            <div className="flex items-center gap-2 rounded-xl bg-muted px-3 py-2">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
                 <input
                     type="text"
                     value={query}
                     onChange={event => setQuery(event.target.value)}
                     placeholder={placeholder}
-                    className="w-36 bg-transparent font-sans text-sm outline-none placeholder:text-slate-500 md:w-44"
+                    className="w-36 bg-transparent font-sans text-sm outline-none placeholder:text-muted-foreground md:w-44"
                 />
             </div>
 
@@ -70,7 +70,7 @@ export function SearchFilterBar({
                                 "whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-colors",
                                 pill === selected
                                     ? "bg-[#0a2540] text-white hover:bg-[#0a2540]/90" // Active: Dark Navy
-                                    : "bg-slate-100 text-slate-700 hover:bg-slate-200", // Inactive: Light Grey
+                                    : "bg-muted text-foreground hover:bg-border", // Inactive: Muted
                             )}
                         >
                             {pill}
@@ -83,13 +83,13 @@ export function SearchFilterBar({
             <div className="ml-auto flex items-center gap-1.5">
                 <button
                     type="button"
-                    className="whitespace-nowrap rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200"
+                    className="whitespace-nowrap rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border"
                 >
                     វិស្វករ (Ingénieur 5Y)
                 </button>
                 <button
                     type="button"
-                    className="whitespace-nowrap rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200"
+                    className="whitespace-nowrap rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border"
                 >
                     បរិញ្ញាបត្រ (Bachelor)
                 </button>

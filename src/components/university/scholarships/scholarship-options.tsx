@@ -7,18 +7,18 @@ const ScholarshipCard = ({ data }: { data: any }) => {
 
     // Theme Colors
     const theme = {
-        iconBg: isMoEYS ? "bg-sky-50" : "bg-blue-50",
-        iconColor: isMoEYS ? "text-sky-600" : "text-blue-600",
-        titleColor: "text-slate-900",
-        subtitleColor: "text-slate-500",
+        iconBg: isMoEYS ? "bg-sky-50 dark:bg-sky-950/30" : "bg-blue-50 dark:bg-blue-950/30",
+        iconColor: isMoEYS ? "text-sky-600 dark:text-sky-400" : "text-blue-600 dark:text-blue-400",
+        titleColor: "text-foreground",
+        subtitleColor: "text-muted-foreground",
         buttonBg: isMoEYS ? "bg-[#15628F] hover:bg-[#114b6f]" : "bg-[#15628F] hover:bg-[#114b6f]",
         badgeBg: isMoEYS
-            ? "bg-orange-50 text-orange-600 border-orange-100"
-            : "bg-blue-50 text-blue-600 border-blue-100",
+            ? "bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-950/30 dark:text-orange-400 dark:border-orange-800/60"
+            : "bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-800/60",
     };
 
     return (
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 font-sans mb-6">
+        <div className="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border font-sans mb-6">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
                 <div className="flex items-start gap-4">
@@ -48,29 +48,29 @@ const ScholarshipCard = ({ data }: { data: any }) => {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-slate-50/80 rounded-xl p-4 mb-6 border border-slate-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-muted/80 rounded-xl p-4 mb-6 border border-border">
                 {data.stats.map((stat: any, idx: number) => (
                     <div key={idx} className="flex flex-col">
-                        <span className="text-xs text-slate-500 mb-1">{stat.label}</span>
+                        <span className="text-xs text-muted-foreground mb-1">{stat.label}</span>
                         <span
-                            className={`text-[15px] font-bold ${stat.valueColor || "text-slate-800"} leading-tight mb-0.5`}
+                            className={`text-[15px] font-bold ${stat.valueColor || "text-foreground"} leading-tight mb-0.5`}
                         >
                             {stat.value}
                         </span>
-                        <span className="text-[11px] text-slate-400">{stat.subValue}</span>
+                        <span className="text-[11px] text-muted-foreground/70">{stat.subValue}</span>
                     </div>
                 ))}
             </div>
 
             {/* Key Selection Criteria */}
             <div className="mb-8">
-                <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                     {data.criteriaTitle}
-                    {!isMoEYS && <Info className="h-4 w-4 text-slate-400" />}
+                    {!isMoEYS && <Info className="h-4 w-4 text-muted-foreground/70" />}
                 </h3>
                 <ul className="space-y-2.5">
                     {data.criteria.map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
+                        <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground leading-relaxed">
                             <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
                             <span dangerouslySetInnerHTML={{ __html: item }} />
                         </li>
@@ -79,10 +79,10 @@ const ScholarshipCard = ({ data }: { data: any }) => {
             </div>
 
             {/* Footer Actions */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-border">
                 <Button
                     variant="link"
-                    className="text-[#15628F] font-semibold hover:no-underline flex items-center gap-1 p-0 h-auto text-sm"
+                    className="text-foreground font-semibold hover:no-underline flex items-center gap-1 p-0 h-auto text-sm"
                 >
                     {data.detailsText}
                     <ChevronRight className="h-4 w-4" />
@@ -107,8 +107,8 @@ const ScholarshipOptions = () => {
             title: "អាហារូបករណ៍រដ្ឋាភិបាលកម្ពុជា MoEYS (Cambodian Government State Quota)",
             subtitle: "ក្រសួងអប់រំ យុវជន និងកីឡា (Ministry of Education, Youth and Sport)",
             badges: [
-                { text: "១០០% កម្ចីសិក្សា", colorClass: "bg-slate-50 text-slate-600 border-slate-200" },
-                { text: "ជ្រើសរើស៖ មាន កញ្ចប់ថវិកា", colorClass: "bg-rose-50 text-rose-600 border-rose-100" },
+                { text: "១០០% កម្ចីសិក្សា", colorClass: "bg-muted text-muted-foreground border-border" },
+                { text: "ជ្រើសរើស៖ មាន កញ្ចប់ថវិកា", colorClass: "bg-rose-50 text-rose-600 border-rose-100 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-800/60" },
             ],
             stats: [
                 { label: "រយៈពេលសិក្សា", value: "៥ ឆ្នាំ (Full 5 Years)", subValue: "គិតជាឆ្នាំ (Including)" },
@@ -131,10 +131,10 @@ const ScholarshipOptions = () => {
             badges: [
                 {
                     text: "១០០% + ជូនថវិកា",
-                    colorClass: "bg-slate-50 text-blue-600 border-blue-100",
+                    colorClass: "bg-muted text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-800/60",
                     icon: CheckCircle2,
                 },
-                { text: "STEM Priority", colorClass: "bg-indigo-50 text-indigo-600 border-indigo-100" },
+                { text: "STEM Priority", colorClass: "bg-indigo-50 text-indigo-600 border-indigo-100 dark:bg-indigo-950/30 dark:text-indigo-400 dark:border-indigo-800/60" },
             ],
             stats: [
                 {
@@ -147,7 +147,7 @@ const ScholarshipOptions = () => {
                     label: "ជំនាញអាទិភាព",
                     value: "GIC, AI, Telecom",
                     subValue: "Computer Science & Cybersecurity",
-                    valueColor: "text-[#15628F]",
+                    valueColor: "text-foreground",
                 },
                 {
                     label: "ចំនួនកៅអីសរុប",
@@ -167,7 +167,7 @@ const ScholarshipOptions = () => {
     ];
 
     return (
-        <div className="max-w-5xl mx-auto p-4 md:p-6 bg-slate-50 min-h-screen font-sans">
+        <div className="max-w-5xl mx-auto p-4 md:p-6 bg-muted min-h-screen font-sans">
             {scholarshipData.map((data, index) => (
                 <ScholarshipCard key={index} data={data} />
             ))}

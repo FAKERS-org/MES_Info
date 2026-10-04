@@ -43,7 +43,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
     const universityCategory = university.universityCategory[lang] ?? university.universityCategory.en;
 
     const surface = cn(
-        "relative flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg transition-shadow",
+        "relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-shadow",
         featured ? "hover:shadow-md" : "hover:shadow-xl",
         className,
     );
@@ -98,27 +98,27 @@ export function UniversityTile({ university, variant = "compact", className }: U
             </div>
 
             <div className="flex flex-1 flex-col px-6 pb-6 pt-14">
-                <h2 className="text-xl font-bold leading-snug text-slate-900">{name}</h2>
+                <h2 className="text-xl font-bold leading-snug text-foreground">{name}</h2>
 
-                {featured && <p className="mt-1 line-clamp-2 text-sm text-slate-500">{description}</p>}
+                {featured && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{description}</p>}
 
                 <IconList className="mt-4 gap-2.5">
                     <IconListItem
-                        className="gap-2.5 text-sm text-slate-600"
-                        icon={<Globe className="h-4 w-4 shrink-0 text-slate-400" />}
+                        className="gap-2.5 text-sm text-muted-foreground"
+                        icon={<Globe className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
                     >
                         <span className="truncate">{university.website || "\u00A0"}</span>
                     </IconListItem>
                     <IconListItem
-                        className="gap-2.5 text-sm text-slate-600"
-                        icon={<MapPin className="h-4 w-4 shrink-0 text-slate-400" />}
+                        className="gap-2.5 text-sm text-muted-foreground"
+                        icon={<MapPin className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
                     >
                         <span className="truncate">{address || "\u00A0"}</span>
                     </IconListItem>
                     {featured && (
                         <IconListItem
-                            className="gap-2.5 text-sm text-slate-600"
-                            icon={<GraduationCap className="h-4 w-4 shrink-0 text-slate-400" />}
+                            className="gap-2.5 text-sm text-muted-foreground"
+                            icon={<GraduationCap className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
                         >
                             {programCount} {t("miscellaneous.programs.plural")}
                         </IconListItem>
@@ -130,7 +130,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
                         <Button
                             asChild
                             variant="secondary"
-                            className="h-12 flex-1 rounded-2xl bg-sky-50 p-0 font-semibold text-sky-600 hover:bg-sky-100"
+                            className="h-12 flex-1 rounded-2xl bg-sky-50 dark:bg-sky-950/30 p-0 font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-950/50"
                         >
                             <Link href={href} className="flex h-full w-full items-center justify-center">
                                 {t("miscellaneous.viewProgram")}
@@ -140,7 +140,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
                             asChild
                             variant="outline"
                             size="icon"
-                            className="h-11 w-11 shrink-0 rounded-2xl border-slate-200 p-0 text-slate-500"
+                            className="h-11 w-11 shrink-0 rounded-2xl border-border p-0 text-muted-foreground"
                         >
                             <Link href={href} className="flex h-full w-full items-center justify-center">
                                 <ArrowUpRight className="h-4 w-4" />

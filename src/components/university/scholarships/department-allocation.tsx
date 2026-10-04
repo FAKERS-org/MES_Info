@@ -33,23 +33,23 @@ export function DepartmentAllocation({ data }: DepartmentAllocationProps) {
           return (
             <div
               key={dept.code}
-              className="rounded-lg border border-slate-200 bg-white p-4 transition hover:shadow-md"
+              className="rounded-lg border border-border bg-card p-4 transition hover:shadow-md"
             >
               <div className="mb-2 flex items-center justify-between">
                 <Badge className={badgeTone[dept.tone]}>{dept.code}</Badge>
-                <span className="text-2xl font-bold text-slate-900">
+                <span className="text-2xl font-bold text-foreground">
                   {dept.count}
                 </span>
               </div>
-              <h4 className="text-sm font-bold text-slate-900">{dept.name}</h4>
-              <p className="text-xs text-slate-500">{dept.nameEn}</p>
-              <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100">
+              <h4 className="text-sm font-bold text-foreground">{dept.name}</h4>
+              <p className="text-xs text-muted-foreground">{dept.nameEn}</p>
+              <div className="mt-2 h-1.5 w-full rounded-full bg-muted">
                 <div
                   className={cn("h-1.5 rounded-full", barTone[dept.tone])}
                   style={{ width: `${share}%` }}
                 />
               </div>
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {share.toFixed(1)}% of total
               </p>
             </div>
@@ -58,13 +58,13 @@ export function DepartmentAllocation({ data }: DepartmentAllocationProps) {
       </div>
 
       <InsetPanel className="text-center">
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           {summary.label}{" "}
-          <span className="font-bold text-slate-900">
+          <span className="font-bold text-foreground">
             {total} {summary.unit}
           </span>
         </p>
-        <p className="text-xs text-slate-500">{summary.caption}</p>
+        <p className="text-xs text-muted-foreground">{summary.caption}</p>
       </InsetPanel>
     </ScholarshipCard>
   );

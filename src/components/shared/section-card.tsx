@@ -9,21 +9,21 @@ export interface SectionCardProps {
 
 /**
  * Surface shared by the cards of `/explore-universities/{university}` and
- * `/explore-universities/{university}/{department}`: white, rounded, bordered
+ * `/explore-universities/{university}/{department}`: rounded, bordered
  * and softly shadowed.
  */
 export function SectionCard({ children, className }: SectionCardProps) {
     return (
-        <div className={cn("w-full overflow-hidden rounded-xl border border-slate-100 bg-white shadow-sm", className)}>
+        <div className={cn("w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm", className)}>
             {children}
         </div>
     );
 }
 
-const DEFAULT_ICON_TILE = "flex-shrink-0 rounded-lg bg-blue-100 p-2.5 text-blue-600";
+const DEFAULT_ICON_TILE = "flex-shrink-0 rounded-lg bg-blue-100 dark:bg-blue-950/50 p-2.5 text-blue-600 dark:text-blue-400";
 const DEFAULT_PADDING = "p-4 pb-1.5";
-const DEFAULT_TITLE = "text-lg font-bold text-slate-800";
-const DEFAULT_SUBTITLE = "mt-0.5 text-sm font-medium text-slate-500";
+const DEFAULT_TITLE = "text-lg font-bold text-foreground";
+const DEFAULT_SUBTITLE = "mt-0.5 text-sm font-medium text-muted-foreground";
 
 export interface SectionCardHeaderProps {
     title: ReactNode;

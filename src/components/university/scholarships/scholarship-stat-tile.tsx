@@ -41,7 +41,7 @@ export function ScholarshipStatTile({
         <span
           className={cn(
             "text-xs",
-            glass ? "text-slate-300" : "font-medium text-slate-600"
+            glass ? "text-slate-300" : "font-medium text-muted-foreground"
           )}
         >
           {label}
@@ -53,7 +53,7 @@ export function ScholarshipStatTile({
           className={cn(
             glass
               ? "text-3xl font-bold text-white"
-              : "text-lg font-bold text-slate-900"
+              : "text-lg font-bold text-foreground"
           )}
         >
           {value}
@@ -74,7 +74,7 @@ export function ScholarshipStatTile({
         <p
           className={cn(
             "mt-1 text-xs",
-            glass ? "text-slate-400" : "text-slate-500"
+            glass ? "text-slate-400" : "text-muted-foreground"
           )}
         >
           {caption}

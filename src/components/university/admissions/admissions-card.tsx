@@ -12,9 +12,9 @@ export interface AdmissionsCardProps {
   header?: AdmissionsCardHeader;
   /** Right aligned slot of the head: download link, badge… */
   headerAction?: ReactNode;
-  /** Merged into the `text-xl font-bold text-slate-900` title. */
+  /** Merged into the `text-xl font-bold text-foreground` title. */
   titleClassName?: string;
-  /** Merged into the `text-sm text-slate-500` subtitle. */
+  /** Merged into the `text-sm text-muted-foreground` subtitle. */
   subtitleClassName?: string;
   /** Merged into the `px-5 pb-5 pt-4` body. */
   bodyClassName?: string;
@@ -46,7 +46,7 @@ export function AdmissionsCard({
       (header.meta || headerAction) && (
         <>
           {header.meta && (
-            <span className="text-xs text-slate-400">{header.meta}</span>
+            <span className="text-xs text-muted-foreground/70">{header.meta}</span>
           )}
           {headerAction}
         </>

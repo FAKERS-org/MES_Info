@@ -28,7 +28,7 @@ export interface AvatarProps {
  */
 export function Avatar({ src, alt, fallback, className, imageClassName, sizes = "80px", children }: AvatarProps) {
     return (
-        <div className={cn("relative shrink-0 overflow-hidden rounded-full bg-slate-200", className)}>
+        <div className={cn("relative shrink-0 overflow-hidden rounded-full bg-muted", className)}>
             {src !== undefined ? (
                 <Image
                     fill

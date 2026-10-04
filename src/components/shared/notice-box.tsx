@@ -29,14 +29,14 @@ export function NoticeBox({ children, icon, title, action, size = "md", classNam
     return (
         <div
             className={cn(
-                "flex items-start rounded-lg border border-amber-200 bg-amber-50",
+                "flex items-start rounded-lg border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/30",
                 sm ? "gap-2 p-3" : "gap-3 p-4",
                 className,
             )}
         >
             <span
                 className={cn(
-                    "flex shrink-0 items-start text-amber-600 [&>svg]:h-full [&>svg]:w-full",
+                    "flex shrink-0 items-start text-amber-600 dark:text-amber-400 [&>svg]:h-full [&>svg]:w-full",
                     sm ? "h-4 w-4" : "h-5 w-5",
                 )}
             >
@@ -44,8 +44,8 @@ export function NoticeBox({ children, icon, title, action, size = "md", classNam
             </span>
 
             <div className="min-w-0">
-                {title !== undefined && <p className="text-sm font-medium text-amber-800">{title}</p>}
-                <div className={cn("text-sm text-amber-800", title !== undefined && "mt-0.5")}>{children}</div>
+                {title !== undefined && <p className="text-sm font-medium text-amber-800 dark:text-amber-200">{title}</p>}
+                <div className={cn("text-sm text-amber-800 dark:text-amber-200", title !== undefined && "mt-0.5")}>{children}</div>
                 {action !== undefined && <div className="mt-2">{action}</div>}
             </div>
         </div>

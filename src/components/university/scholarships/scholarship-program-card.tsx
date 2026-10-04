@@ -65,7 +65,7 @@ export function ScholarshipProgramCard({ data }: ScholarshipProgramCardProps) {
       {(deadline || action) && (
         <div className="flex flex-wrap items-center justify-between gap-3">
           {deadline && (
-            <div className="flex items-center gap-2 text-sm text-slate-500">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Icon name="Calendar" className="h-4 w-4" />
               <span>{deadline}</span>
             </div>
@@ -140,13 +140,13 @@ function PanelRow({
       <div className="min-w-0">
         <p
           className={cn(
-            "text-sm text-slate-600",
-            row.caption && "font-medium text-slate-800"
+            "text-sm text-muted-foreground",
+            row.caption && "font-medium text-foreground"
           )}
         >
           {row.title}
         </p>
-        {row.caption && <p className="text-xs text-slate-500">{row.caption}</p>}
+        {row.caption && <p className="text-xs text-muted-foreground">{row.caption}</p>}
       </div>
     </div>
   );
@@ -164,14 +164,14 @@ function ScholarshipGroup({ group }: { group: ScholarshipGroupData }) {
           className={cn("h-5 w-5 shrink-0", iconTone[group.tone])}
         />
         <div className="min-w-0">
-          <h4 className="text-sm font-bold text-slate-900">{group.title}</h4>
+          <h4 className="text-sm font-bold text-foreground">{group.title}</h4>
           {group.subtitle && (
-            <p className="text-xs text-slate-500">{group.subtitle}</p>
+            <p className="text-xs text-muted-foreground">{group.subtitle}</p>
           )}
         </div>
       </div>
 
-      <CheckList className="gap-1.5 text-sm text-slate-600">
+      <CheckList className="gap-1.5 text-sm text-muted-foreground">
         {group.items.map((item) => (
           <CheckItem key={item} iconClassName={cn("h-3.5 w-3.5", iconTone[accent])}>
             {item}

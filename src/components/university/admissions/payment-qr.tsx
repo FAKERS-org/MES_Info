@@ -49,29 +49,29 @@ const StylizedQRCode = () => {
 
 const PaymentQR = () => {
     return (
-        <div className="w-full max-w-sm mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-5 font-sans">
+        <div className="w-full max-w-sm mx-auto bg-card rounded-2xl shadow-sm border border-border p-5 font-sans">
             {/* --- Header --- */}
             <div className="flex justify-between items-start mb-6">
                 <div>
-                    <h2 className="text-lg font-bold text-slate-800 leading-tight">ថ្លៃពាក្យប្រឡង និងការទុកទីតាំង</h2>
-                    <p className="text-xs text-slate-500 mt-1">Registration & Exam Fee</p>
+                    <h2 className="text-lg font-bold text-foreground leading-tight">ថ្លៃពាក្យប្រឡង និងការទុកទីតាំង</h2>
+                    <p className="text-xs text-muted-foreground mt-1">Registration & Exam Fee</p>
                 </div>
-                <div className="bg-sky-50 p-2 rounded-lg text-sky-600">
+                <div className="bg-sky-50 dark:bg-sky-950/30 p-2 rounded-lg text-sky-600 dark:text-sky-400">
                     <Wallet className="h-5 w-5" />
                 </div>
             </div>
 
             {/* --- Fee Amount Card --- */}
-            <div className="bg-slate-50 rounded-xl p-4 flex justify-between items-center mb-6">
+            <div className="bg-muted rounded-xl p-4 flex justify-between items-center mb-6">
                 <div>
-                    <p className="text-xs text-slate-500 mb-1">ទឹកប្រាក់តម្រូវឱ្យសម្រាយ</p>
+                    <p className="text-xs text-muted-foreground mb-1">ទឹកប្រាក់តម្រូវឱ្យសម្រាយ</p>
                     <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-bold text-[#0B1F3A]">$15.00</span>
-                        <span className="text-sm font-medium text-slate-400">/</span>
+                        <span className="text-3xl font-bold text-foreground">$15.00</span>
+                        <span className="text-sm font-medium text-muted-foreground/70">/</span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-0.5">៦០,០០០ រៀល</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">៦០,០០០ រៀល</p>
                 </div>
-                <div className="bg-emerald-100 text-emerald-700 text-xs font-medium px-3 py-1.5 rounded-md text-center leading-tight">
+                <div className="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-200 text-xs font-medium px-3 py-1.5 rounded-md text-center leading-tight">
                     Non-
                     <br />
                     refundable
@@ -88,23 +88,23 @@ const PaymentQR = () => {
                         QR
                     </div>
                     <div>
-                        <p className="text-sm font-bold text-slate-800">Bakong KHQR</p>
-                        <p className="text-xs text-slate-500">Payment</p>
+                        <p className="text-sm font-bold text-foreground">Bakong KHQR</p>
+                        <p className="text-xs text-muted-foreground">Payment</p>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-xs text-slate-400">Instant</p>
-                    <p className="text-xs text-slate-400">Verify</p>
+                    <p className="text-xs text-muted-foreground/70">Instant</p>
+                    <p className="text-xs text-muted-foreground/70">Verify</p>
                 </div>
             </div>
 
             {/* --- QR Code Area --- */}
-            <div className="bg-slate-50/50 rounded-xl p-4 flex flex-col items-center justify-center border border-slate-100 mb-6">
+            <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center justify-center border border-border mb-6">
                 <StylizedQRCode />
 
                 <div className="mt-4 text-center">
-                    <p className="text-sm font-bold text-slate-800">គណនី: ITC Admissions Fund</p>
-                    <p className="text-[11px] text-slate-500 mt-0.5">ABA / ACLEDA / Canada / Wing</p>
+                    <p className="text-sm font-bold text-foreground">គណនី: ITC Admissions Fund</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">ABA / ACLEDA / Canada / Wing</p>
                 </div>
             </div>
 

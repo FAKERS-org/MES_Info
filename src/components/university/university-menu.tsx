@@ -26,7 +26,7 @@ export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
   return (
     <nav
       aria-label="University sections"
-      className="w-full max-w-full rounded-xl border shadow-sm bg-white overflow-hidden p-1"
+      className="w-full max-w-full rounded-xl border shadow-sm bg-card overflow-hidden p-1"
     >
       <div className="w-full flex flex-wrap justify-start items-stretch gap-1.5">
         {tabs.map(({ href, icon, label, badge }) => {
@@ -39,8 +39,8 @@ export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
               aria-current={isActive ? "page" : undefined}
               className={`group relative flex flex-1 basis-[220px] items-center justify-center gap-2 px-3 py-3 h-full rounded-lg border-none font-medium transition-all duration-200 outline-none ${
                 isActive
-                  ? "bg-blue-50 text-[#0056b3] font-semibold shadow-none"
-                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  ? "bg-blue-50 dark:bg-blue-950/30 text-[#0056b3] font-semibold shadow-none"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <Icon name={icon} className="w-4.5 h-4.5" strokeWidth={2.5} />
@@ -49,7 +49,7 @@ export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
                 {badge != null && (
                   <Badge
                     variant="secondary"
-                    className="bg-blue-100 text-[#0056b3] hover:bg-blue-200 rounded-full px-1.5 py-0.5 text-xs font-bold ml-1"
+                    className="bg-blue-100 dark:bg-blue-950/50 text-[#0056b3] hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded-full px-1.5 py-0.5 text-xs font-bold ml-1"
                   >
                     {badge}
                   </Badge>

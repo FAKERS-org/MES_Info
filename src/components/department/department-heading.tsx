@@ -40,8 +40,8 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
     ].filter(stat => Boolean(stat.value));
 
     return (
-        <div className="w-full max-w-full mx-auto font-sans bg-gray-50/50">
-            <Card className="rounded-2xl border border-slate-200 shadow-sm bg-white overflow-hidden" padding="none">
+        <div className="w-full max-w-full mx-auto font-sans bg-muted/50">
+            <Card className="rounded-2xl border border-border shadow-sm bg-card overflow-hidden" padding="none">
                 {/* =========================================
                     TOP SECTION: Blue Header
                    ========================================= */}
@@ -130,7 +130,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                             </div>
                         </div>
 
-                        {/* --- CTA Button: straddles the blue/white seam --- */}
+                        {/* --- CTA Button: straddles the blue/card seam --- */}
                         <div className="w-full md:w-auto z-20 -mt-8 sm:-mt-9 md:-mt-9 md:mb-4">
                             <Button className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-md border-0">
                                 <MessageSquare className="w-5 h-5 fill-white" />
@@ -139,13 +139,13 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         </div>
                     </div>
 
-                    {/* --- Metadata Row: the 3 badges (white area) --- */}
+                    {/* --- Metadata Row: the 3 badges (card area) --- */}
                     <div className="flex flex-wrap items-center gap-3 mt-6">
                         <Badge
                             variant="secondary"
-                            className="bg-slate-100 text-slate-700 hover:bg-slate-100 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
+                            className="bg-muted text-foreground hover:bg-muted font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
                         >
-                            <Building2 className="w-3.5 h-3.5 text-slate-500" />
+                            <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
                             <span className="font-khmer">
                                 {localize(university.universityType, lang)} (
                                 {localize(university.universityCategory, lang)})
@@ -153,16 +153,16 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         </Badge>
                         <Badge
                             variant="secondary"
-                            className="bg-green-50 text-green-700 hover:bg-green-50 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
+                            className="bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-200 hover:bg-green-50 dark:hover:bg-green-950/40 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
                         >
-                            <Leaf className="w-3.5 h-3.5 text-green-600" />
+                            <Leaf className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
                             <span>STEM Excellence Leader</span>
                         </Badge>
                         <Badge
                             variant="secondary"
-                            className="bg-blue-50 text-blue-700 hover:bg-blue-50 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
+                            className="bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950/40 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
                         >
-                            <Award className="w-3.5 h-3.5 text-blue-600" />
+                            <Award className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                             <span>AUN-QA Accredited</span>
                         </Badge>
 
@@ -173,7 +173,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                 href={`https://${university.website.replace(/^https?:\/\//, "")}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors text-sm group"
+                                className="flex items-center gap-2 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm group"
                             >
                                 <Globe className="w-4 h-4" />
                                 <span className="font-medium">{university.website}</span>
@@ -186,16 +186,16 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                 {/* =========================================
                     BOTTOM SECTION: Key Statistics
                    ========================================= */}
-                <div className="mt-6 border-t border-slate-100 bg-[#fafbfc] px-6 py-5">
+                <div className="mt-6 border-t border-border bg-muted px-6 py-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map(stat => (
                             <div key={stat.label} className="flex items-start gap-3">
-                                <div className="bg-blue-50 p-2 rounded-xl">
-                                    <stat.icon className="w-5 h-5 text-blue-600" />
+                                <div className="bg-blue-50 dark:bg-blue-950/30 p-2 rounded-xl">
+                                    <stat.icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <div>
-                                    <p className="text-xs text-slate-500 font-khmer mb-0.5">{stat.label}</p>
-                                    <p className="text-sm font-semibold text-slate-800">{stat.value}</p>
+                                    <p className="text-xs text-muted-foreground font-khmer mb-0.5">{stat.label}</p>
+                                    <p className="text-sm font-semibold text-foreground">{stat.value}</p>
                                 </div>
                             </div>
                         ))}

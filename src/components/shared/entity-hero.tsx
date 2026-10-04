@@ -20,14 +20,14 @@ export interface EntityHeroProps {
 
 /**
  * Shell shared by the profile headers of `/explore-universities/{university}`
- * and `/explore-universities/{university}/{department}`: white card → gradient
+ * and `/explore-universities/{university}/{department}`: card → gradient
  * banner → content area.
  */
 export function EntityHero({ children, className, bannerClassName, banner, bodyClassName }: EntityHeroProps) {
     return (
         <div
             className={cn(
-                "relative w-full max-w-full overflow-hidden rounded-2xl border bg-white shadow-lg",
+                "relative w-full max-w-full overflow-hidden rounded-2xl border bg-card shadow-lg",
                 className,
             )}
         >
@@ -79,7 +79,7 @@ export function EntityHeroLogo({
     return (
         <div className={cn("relative", containerClassName)}>
             <div className="relative">
-                <div className={cn("flex items-center justify-center rounded-full bg-white", className)}>
+                <div className={cn("flex items-center justify-center rounded-full bg-card", className)}>
                     <div
                         className={cn(
                             "relative flex h-full w-full items-center justify-center overflow-hidden rounded-full",

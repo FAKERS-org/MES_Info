@@ -8,7 +8,7 @@ export function SkeletonCard({ className }: SkeletonCardProps) {
     return (
         <div
             className={cn(
-                "animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-card shadow-lg",
+                "animate-pulse overflow-hidden rounded-2xl border border-border bg-card shadow-lg",
                 className,
             )}
         >

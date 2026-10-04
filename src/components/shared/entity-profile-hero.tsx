@@ -95,7 +95,7 @@ export function EntityProfileHero({
                         className="h-40 w-40 p-1 shadow-xl"
                         check={
                             logo.check ?? (
-                                <CheckCircle2 className="absolute -bottom-1 -right-1 h-6 w-6 fill-white text-green-500" />
+                                <CheckCircle2 className="absolute -bottom-1 -right-1 h-6 w-6 fill-white text-green-500 dark:text-green-400" />
                             )
                         }
                     />
@@ -106,10 +106,10 @@ export function EntityProfileHero({
             {/* Name: in flow on mobile, on the banner split from md up. */}
             <div className="mb-3 md:absolute md:left-[196px] md:-top-11 md:right-6 md:-translate-y-1/2 md:mb-0">
                 <div className="flex flex-wrap items-center gap-1.5">
-                    <h1 className="text-xl font-bold text-gray-900 md:text-white">{title}</h1>
+                    <h1 className="text-xl font-bold text-foreground md:text-white">{title}</h1>
                     {titleBadge}
                 </div>
-                {subtitle !== undefined && <p className="mt-0.5 text-sm text-gray-600 md:text-teal-100">{subtitle}</p>}
+                {subtitle !== undefined && <p className="mt-0.5 text-sm text-muted-foreground md:text-teal-100">{subtitle}</p>}
             </div>
 
             {/* Fact chips + actions — next to the logo, just below the split. */}
@@ -118,17 +118,17 @@ export function EntityProfileHero({
                 <div className="flex flex-wrap items-center justify-end gap-2 md:flex-nowrap">{actions}</div>
             </div>
 
-            <hr className="my-4 border-slate-200" />
+            <hr className="my-4 border-border" />
 
             <EntityHeroStats
                 className="grid-cols-2 gap-4 md:grid-cols-4"
                 items={stats.map(stat => ({
-                    icon: <Icon name={stat.icon} className="h-5 w-5 text-slate-400" />,
+                    icon: <Icon name={stat.icon} className="h-5 w-5 text-muted-foreground/70" />,
                     iconClassName: "mt-0.5",
                     label: stat.label,
-                    labelClassName: "mb-0.5 text-xs text-slate-500",
+                    labelClassName: "mb-0.5 text-xs text-muted-foreground",
                     value: stat.value,
-                    valueClassName: "text-sm font-semibold text-slate-900",
+                    valueClassName: "text-sm font-semibold text-foreground",
                     className: "items-start gap-3",
                 }))}
             />

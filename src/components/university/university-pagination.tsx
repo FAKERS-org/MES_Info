@@ -9,12 +9,12 @@ export default function UniversityPagination() {
 
     return (
         // Container wrapper to simulate the card/list boundary
-        <div className="w-full max-w-full mx-auto bg-white p-6 border rounded-xl shadow-sm mt-6">
+        <div className="w-full max-w-full mx-auto bg-card p-6 border rounded-xl shadow-sm mt-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
                 {/* Left Side: Info Text */}
-                <div className="text-sm font-medium text-gray-600 order-1">
+                <div className="text-sm font-medium text-muted-foreground order-1">
                     {t("miscellaneous.showing")} 6 {t("miscellaneous.of")} 42 {t("miscellaneous.university.plural")}{" "}
-                    <span className="text-gray-400 hidden sm:inline">
+                    <span className="text-muted-foreground/70 hidden sm:inline">
                         ({t("miscellaneous.showing")} 6 {t("miscellaneous.of")} 42{" "}
                         {t("miscellaneous.university.plural")})
                     </span>
@@ -26,13 +26,13 @@ export default function UniversityPagination() {
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
 
-                    <Button variant="default" size="sm" className="h-8 w-8 p-0 bg-gray-900 hover:bg-gray-800">
+                    <Button variant="default" size="sm" className="h-8 w-8 p-0 bg-foreground text-background hover:bg-foreground/90">
                         1
                     </Button>
-                    <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent text-gray-700">
+                    <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent text-foreground">
                         2
                     </Button>
-                    <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent text-gray-700">
+                    <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent text-foreground">
                         3
                     </Button>
 
@@ -43,7 +43,7 @@ export default function UniversityPagination() {
 
                 {/* Middle: Load More Button */}
                 <div className="order-3 sm:order-2 w-full sm:w-auto">
-                    <Button variant="outline" className="w-full sm:w-auto text-gray-700 bg-transparent">
+                    <Button variant="outline" className="w-full sm:w-auto text-foreground bg-transparent">
                         {t("miscellaneous.loadMoreUniversities")}
                     </Button>
                 </div>

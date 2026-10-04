@@ -28,7 +28,7 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
     const label = KIND_LABEL[subDepartments[0].unit.kind];
 
     return (
-        <Card className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white" padding="none">
+        <Card className="overflow-hidden border border-border shadow-sm rounded-xl bg-card" padding="none">
             <CardHeader className="bg-[#124f70] text-white p-5">
                 <div className="flex items-center gap-3">
                     <div className="bg-[#0b3c56] p-2.5 rounded-lg border border-[#1e607f]">
@@ -46,30 +46,30 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
             <CardContent className="p-0">
                 {subDepartments.map(({ unit: sub, href }, index) => (
                     <div key={sub.id}>
-                        <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-slate-50/50 transition-colors">
+                        <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-muted/50 transition-colors">
                             <div className="flex-1 space-y-2">
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <h3 className="text-xl font-bold text-slate-900 font-khmer">
+                                    <h3 className="text-xl font-bold text-foreground font-khmer">
                                         {localize(sub.name, lang)}
                                     </h3>
-                                    <Badge className="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
+                                    <Badge className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800/60 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
                                         {localize(sub.category, lang)}
                                     </Badge>
                                 </div>
 
-                                <p className="text-slate-600 text-[15px]">{sub.name.en}</p>
+                                <p className="text-muted-foreground text-[15px]">{sub.name.en}</p>
 
                                 {sub.requirements.length > 0 && (
                                     <div className="pt-1">
-                                        <p className="text-xs text-slate-500 font-khmer mb-1.5">តម្រូវការចូលសិក្សា</p>
+                                        <p className="text-xs text-muted-foreground font-khmer mb-1.5">តម្រូវការចូលសិក្សា</p>
                                         <ul className="space-y-1">
                                             {sub.requirements.map(req => (
                                                 <li
                                                     key={req.en}
-                                                    className="flex items-start gap-1.5 text-sm text-slate-600"
+                                                    className="flex items-start gap-1.5 text-sm text-muted-foreground"
                                                 >
                                                     <GraduationCap
-                                                        className="w-3.5 h-3.5 text-blue-500 mt-0.5 shrink-0"
+                                                        className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 mt-0.5 shrink-0"
                                                         strokeWidth={2}
                                                     />
                                                     <span className="font-khmer">{localize(req, lang)}</span>
@@ -84,7 +84,7 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                                 <Button
                                     variant="secondary"
                                     asChild
-                                    className="bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer gap-1 rounded-lg px-4 h-9 text-sm whitespace-nowrap"
+                                    className="bg-muted text-foreground hover:bg-border font-khmer gap-1 rounded-lg px-4 h-9 text-sm whitespace-nowrap"
                                 >
                                     <Link href={href} className="flex items-center">
                                         {" "}
@@ -95,7 +95,7 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                             </div>
                         </div>
 
-                        {index < subDepartments.length - 1 && <Separator className="bg-slate-100" />}
+                        {index < subDepartments.length - 1 && <Separator className="bg-muted" />}
                     </div>
                 ))}
             </CardContent>

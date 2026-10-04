@@ -37,7 +37,7 @@ export function CheckItem({ children, icon, iconClassName, className, as = "li" 
         <IconListItem
             as={as}
             className={cn("gap-2.5", className)}
-            icon={icon ?? <CheckCircle2 className={cn("mt-0.5 h-4 w-4 shrink-0 text-blue-600", iconClassName)} />}
+            icon={icon ?? <CheckCircle2 className={cn("mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400", iconClassName)} />}
         >
             {children}
         </IconListItem>

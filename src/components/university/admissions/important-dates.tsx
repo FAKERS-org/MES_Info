@@ -3,11 +3,11 @@ import { CalendarDays, CalendarPlus, Clock, GraduationCap, Send } from "lucide-r
 
 const ImportantDates = () => {
     return (
-        <div className="w-full max-w-sm mx-auto bg-white rounded-2xl shadow-sm border border-slate-100 p-5 font-sans">
+        <div className="w-full max-w-sm mx-auto bg-card rounded-2xl shadow-sm border border-border p-5 font-sans">
             {/* --- Header --- */}
             <div className="flex justify-between items-center mb-5">
-                <h2 className="text-lg font-bold text-slate-800">កាលបរិច្ឆេទសំខាន់ៗ</h2>
-                <div className="text-sky-500">
+                <h2 className="text-lg font-bold text-foreground">កាលបរិច្ឆេទសំខាន់ៗ</h2>
+                <div className="text-sky-500 dark:text-sky-400">
                     <CalendarDays className="h-5 w-5" />
                 </div>
             </div>
@@ -52,46 +52,46 @@ const ImportantDates = () => {
             </div>
 
             {/* --- Timeline List --- */}
-            <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[19px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+            <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[19px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent">
                 {/* Item 1 */}
                 <div className="relative flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center shrink-0 z-10 text-sky-600">
+                    <div className="w-10 h-10 rounded-full bg-sky-50 dark:bg-sky-950/30 flex items-center justify-center shrink-0 z-10 text-sky-600 dark:text-sky-400">
                         <CalendarDays className="h-5 w-5" />
                     </div>
                     <div className="pt-0.5">
-                        <p className="text-xs text-slate-500 mb-1">ថ្ងៃប្រឡងជ្រើសរើសចូលរៀន</p>
-                        <h4 className="text-[15px] font-bold text-slate-800 leading-snug mb-1">
+                        <p className="text-xs text-muted-foreground mb-1">ថ្ងៃប្រឡងជ្រើសរើសចូលរៀន</p>
+                        <h4 className="text-[15px] font-bold text-foreground leading-snug mb-1">
                             ១៥ តុលា ២០២៥ (15 Oct 2025)
                         </h4>
-                        <p className="text-xs text-slate-500">មណ្ឌលប្រឡងស្ថិតនៅវិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (ITC)</p>
+                        <p className="text-xs text-muted-foreground">មណ្ឌលប្រឡងស្ថិតនៅវិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (ITC)</p>
                     </div>
                 </div>
 
                 {/* Item 2 */}
                 <div className="relative flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 z-10 text-emerald-500">
+                    <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center shrink-0 z-10 text-emerald-500 dark:text-emerald-400">
                         <Send className="h-5 w-5 -ml-1 mt-1" />
                     </div>
                     <div className="pt-0.5">
-                        <p className="text-xs text-slate-500 mb-1">ប្រកាសលទ្ធផលប្រឡងជាផ្លូវការ</p>
-                        <h4 className="text-[15px] font-bold text-slate-800 leading-snug mb-1">
+                        <p className="text-xs text-muted-foreground mb-1">ប្រកាសលទ្ធផលប្រឡងជាផ្លូវការ</p>
+                        <h4 className="text-[15px] font-bold text-foreground leading-snug mb-1">
                             ២៨ តុលា ២០២៥ (28 Oct 2025)
                         </h4>
-                        <p className="text-xs text-slate-500">ផ្សាយតាម Telegram & ITC Portal</p>
+                        <p className="text-xs text-muted-foreground">ផ្សាយតាម Telegram & ITC Portal</p>
                     </div>
                 </div>
 
                 {/* Item 3 */}
                 <div className="relative flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 z-10 text-indigo-500">
+                    <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-950/30 flex items-center justify-center shrink-0 z-10 text-indigo-500 dark:text-indigo-400">
                         <GraduationCap className="h-5 w-5" />
                     </div>
                     <div className="pt-0.5">
-                        <p className="text-xs text-slate-500 mb-1">ចាប់ផ្ដើមចុះឈ្មោះចូលរៀន</p>
-                        <h4 className="text-[15px] font-bold text-slate-800 leading-snug mb-1">
+                        <p className="text-xs text-muted-foreground mb-1">ចាប់ផ្ដើមចុះឈ្មោះចូលរៀន</p>
+                        <h4 className="text-[15px] font-bold text-foreground leading-snug mb-1">
                             ១៧ វិច្ឆិកា ២០២៥ (17 Nov 2025)
                         </h4>
-                        <p className="text-xs text-slate-500">ផ្ទៀងផ្ទាត់ឯកសារនៅ (TRC)</p>
+                        <p className="text-xs text-muted-foreground">ផ្ទៀងផ្ទាត់ឯកសារនៅ (TRC)</p>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@ const ImportantDates = () => {
             <div className="mt-8">
                 <Button
                     variant="secondary"
-                    className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-6 rounded-xl flex items-center justify-center gap-2"
+                    className="w-full bg-muted hover:bg-border text-foreground font-medium py-6 rounded-xl flex items-center justify-center gap-2"
                 >
                     <CalendarPlus className="h-4 w-4" />
                     បន្ថែមទៅក្នុង Google Calendar

@@ -61,7 +61,7 @@ export default function ProgramsExplorer({ groups, lang }: ProgramsExplorerProps
             <SearchFilterBar value={query} onValueChange={setQuery} placeholder="Search programs" />
 
             {filtered.length === 0 && (
-                <p className="p-6 text-center text-sm text-slate-500">រកមិនឃើញកម្មវិធីសិក្សាណាមួយទេ។</p>
+                <p className="p-6 text-center text-sm text-muted-foreground">រកមិនឃើញកម្មវិធីសិក្សាណាមួយទេ។</p>
             )}
 
             {filtered.map(group => (

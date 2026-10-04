@@ -46,7 +46,7 @@ export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitLis
     );
 
     return (
-        <Card className="overflow-hidden border border-slate-200 shadow-sm rounded-xl bg-white" padding="none">
+        <Card className="overflow-hidden border border-border shadow-sm rounded-xl bg-card" padding="none">
             {titleHref ? (
                 <Link href={titleHref} className="block hover:bg-[#0f425f] transition-colors">
                     {Header}
@@ -57,35 +57,35 @@ export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitLis
 
             <CardContent className="p-0">
                 {rows.length === 0 && (
-                    <p className="p-6 text-sm text-slate-500">មិនទាន់មានដេប៉ាតឺម៉ង់ជាក់ស្តែងទេ។</p>
+                    <p className="p-6 text-sm text-muted-foreground">មិនទាន់មានដេប៉ាតឺម៉ង់ជាក់ស្តែងទេ។</p>
                 )}
 
                 {rows.map(({ unit, href }, index) => (
                     <div key={unit.id}>
-                        <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-slate-50/50 transition-colors">
+                        <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-muted/50 transition-colors">
                             <div className="flex-1 space-y-2">
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <h3 className="text-xl font-bold text-slate-900 font-khmer">
+                                    <h3 className="text-xl font-bold text-foreground font-khmer">
                                         {localize(unit.name, lang)}
                                     </h3>
-                                    <Badge className="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
+                                    <Badge className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800/60 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
                                         {localize(unit.category, lang)}
                                     </Badge>
                                     {unit.units && unit.units.length > 0 && (
-                                        <Badge className="bg-amber-50 text-amber-600 border border-amber-100 px-2 py-0.5 rounded-md text-xs font-normal font-khmer flex items-center gap-1">
+                                        <Badge className="bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/60 px-2 py-0.5 rounded-md text-xs font-normal font-khmer flex items-center gap-1">
                                             <Layers className="w-3 h-3" />
                                             ដេប៉ាតឺម៉ង់ទន្ទឹម
                                         </Badge>
                                     )}
                                 </div>
 
-                                <p className="text-slate-600 text-[15px]">{unit.name.en}</p>
+                                <p className="text-muted-foreground text-[15px]">{unit.name.en}</p>
                             </div>
 
                             <div className="flex md:items-end">
                                 <Link
                                     href={href}
-                                    className="inline-flex items-center gap-1 bg-[#f0f4f8] text-[#1e3a5f] hover:bg-[#e2e8f0] font-khmer rounded-lg px-4 h-9 text-sm transition-colors"
+                                    className="inline-flex items-center gap-1 bg-muted text-foreground hover:bg-border font-khmer rounded-lg px-4 h-9 text-sm transition-colors"
                                 >
                                     ព័ត៌មានលម្អិត
                                     <ChevronRight className="w-4 h-4 ml-1" />
@@ -93,7 +93,7 @@ export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitLis
                             </div>
                         </div>
 
-                        {index < rows.length - 1 && <Separator className="bg-slate-100" />}
+                        {index < rows.length - 1 && <Separator className="bg-muted" />}
                     </div>
                 ))}
             </CardContent>

@@ -46,7 +46,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
                 {curriculum ? (
                     <AcademicCurriculum curriculum={curriculum} lang={lang} />
                 ) : (
-                    <div className="max-w-4xl mx-auto p-8 text-center text-slate-500">
+                    <div className="max-w-4xl mx-auto p-8 text-center text-muted-foreground">
                         <LocalizedText translationKey="miscellaneous.noAvailableProgramsForThisDepartment" />
                     </div>
                 )}
