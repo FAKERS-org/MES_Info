@@ -10,6 +10,8 @@
     "filter.all": "All",
     "topbar.searchPlaceholder": "Search...",
     "topbar.toggleMenu": "Toggle menu",
+    "topbar.selectLanguage": "Select language",
+    "topbar.toggleTheme": "Toggle theme",
     "lang.kh": "Khmer",
     "lang.en": "English",
     "explore.title": "Explore Universities",

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
+import ChromeSettings from "@/components/layout/chrome-settings";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -96,6 +97,8 @@ function Sidebar({
             )
           )}
         </nav>
+
+        <ChromeSettings className="justify-between border-t border-border px-3 py-3 sm:hidden" />
       </div>
     </aside>
   );

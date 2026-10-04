@@ -1,57 +1,28 @@
 "use client";
 
 import { useState, type ChangeEvent } from "react";
-import { ChevronDown, Menu, Moon, Search, Sun } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import ChromeSettings from "@/components/layout/chrome-settings";
 import { useLanguage } from "@/lib/i18n";
 
 interface TopBarProps {
   onSearch?: (query: string) => void;
-  onLanguageChange?: (lang: string) => void;
-  onThemeToggle?: () => void;
   onOpenSidebar?: () => void;
-  isDark?: boolean;
 }
 
-const flagByLang: Record<string, string> = {
-  kh: "fi-kh",
-  en: "fi-gb",
-};
-
-function TopBar({
-  onSearch,
-  onLanguageChange,
-  onThemeToggle,
-  onOpenSidebar,
-  isDark = false,
-}: TopBarProps) {
+function TopBar({ onSearch, onOpenSidebar }: TopBarProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { lang, setLang, t } = useLanguage();
+  const { t } = useLanguage();
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     onSearch?.(e.target.value);
   };
 
-  const handleLanguageChange = (value: string) => {
-    const next = value === "en" ? "en" : "kh";
-    setLang(next);
-    onLanguageChange?.(next);
-  };
-
-  const iconButton =
-    "p-2.5 rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground";
-
   return (
-    <header className="flex w-full items-center justify-between rounded-xl border bg-card px-6 py-3 shadow-sm">
-      <div className="flex items-center gap-3">
+    <header className="flex w-full items-center justify-between gap-3 rounded-xl border bg-card px-4 py-3 shadow-sm sm:px-6">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         {onOpenSidebar && (
           <Button
             variant="ghost"
@@ -63,7 +34,9 @@ function TopBar({
             <Menu className="size-5" />
           </Button>
         )}
-        <div className="relative w-40 sm:w-72">
+        {/* min-w-0 + flex-1 so the field yields to the buttons instead of
+            pushing them past the card; sm:flex-none pins the wide width back. */}
+        <div className="relative min-w-0 flex-1 sm:w-72 sm:flex-none">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <Search className="size-5 text-muted-foreground" />
           </div>
@@ -77,42 +50,9 @@ function TopBar({
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              aria-label="Select language"
-            >
-              <span className={`fi ${flagByLang[lang]} size-5 rounded-full`} />
-              <span>{lang.toUpperCase()}</span>
-              <ChevronDown className="size-4 text-muted-foreground" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuRadioGroup value={lang} onValueChange={handleLanguageChange}>
-              <DropdownMenuRadioItem value="kh">
-                <span className={`fi ${flagByLang.kh} size-4 rounded-full`} />
-                {t("lang.kh")}
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="en">
-                <span className={`fi ${flagByLang.en} size-4 rounded-full`} />
-                {t("lang.en")}
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <button
-          type="button"
-          onClick={onThemeToggle}
-          className={iconButton}
-          aria-label="Toggle theme"
-        >
-          {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
-        </button>
-      </div>
+      {/* Below `sm` this row cannot hold them beside the search field, so the
+          drawer owns them there. */}
+      <ChromeSettings className="hidden sm:flex" />
     </header>
   );
 }

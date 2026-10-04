@@ -6,7 +6,6 @@ import TopBar from "@/components/layout/top-bar";
 import { UniversitiesProvider } from "@/hooks/use-universities";
 import { LanguageProvider, useLanguage } from "@/lib/i18n";
 import type { Lang } from "@/lib/language";
-import { useTheme } from "@/lib/theme";
 import { QueryProvider } from "@/providers/query-provider";
 import { BookOpen, Coins, Diff, LayoutGrid, University } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -26,7 +25,6 @@ export default function AppShell({ children, initialLang }: { children: ReactNod
 
 function ShellChrome({ children }: { children: ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const { isDark, toggleTheme } = useTheme();
     const { t } = useLanguage();
     const pathname = usePathname();
 
@@ -61,11 +59,7 @@ function ShellChrome({ children }: { children: ReactNode }) {
             <div className="flex min-w-0 flex-1 flex-col bg-muted/50 dark:bg-background">
                 <main className="flex h-screen flex-1 flex-col gap-4 overflow-y-auto [scrollbar-gutter:stable] pt-4 md:pt-6">
                     <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-                        <TopBar
-                            onOpenSidebar={() => setSidebarOpen(o => !o)}
-                            isDark={isDark}
-                            onThemeToggle={toggleTheme}
-                        />
+                        <TopBar onOpenSidebar={() => setSidebarOpen(o => !o)} />
                         <div className="mt-4">
                             <Breadcrumbs />
                         </div>
