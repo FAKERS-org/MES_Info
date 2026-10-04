@@ -26,6 +26,7 @@ export const metadata: Metadata = {
         template: "%s | MES Universities",
     },
     description: "Discover and browse Cambodian universities, their departments, and admission requirements.",
+    icons: { icon: "/images/MES-main-logo.png" },
 };
 
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t="light";}if(t==="dark"){document.documentElement.classList.add("dark");}}catch(e){}})();`;
@@ -37,9 +38,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     return (
         <html
             lang={htmlLang}
-            /* Set here, not from an effect, so the first paint already uses the
-             * right face — the Khmer stack is narrower than the Latin one and the
-             * swap is visible. */
             style={{ "--font-current": fontStack } as CSSProperties}
             className={`${lexend.variable} ${kantumruyPro.variable}`}
             suppressHydrationWarning
