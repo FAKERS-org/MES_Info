@@ -30,7 +30,12 @@ export default async function UnitPage({ params }: UnitPageProps) {
 
     return (
         <div className="space-y-0">
-            <DepartmentHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
+            {/* The hero is banded like every section below it: its own wrapper
+                adds no padding, so leaving it bare left a 24px gap under it
+                against the 48px between the sections. */}
+            <SectionLayout background="muted">
+                <DepartmentHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
+            </SectionLayout>
 
             {unit.units && unit.units.length > 0 && (
                 <SectionLayout background="muted">

@@ -7,7 +7,14 @@ export interface SectionLayoutProps {
     aside?: ReactNode;
     /** Breakpoint of the 2/1 split: `xl` on the department page, `md` on the university page. */
     breakpoint?: "md" | "xl";
-    /** `muted` renders the `bg-muted` band used by the department page. */
+    /**
+     * `muted` renders the band the department page stacks its sections in.
+     * The band is the padding around a card, so it must stay *recessive*: a
+     * shade off the page (`bg-muted` on light) and the page colour itself in
+     * dark, where a lighter band would out-shout the `bg-card` it frames.
+     * Its `py-6` is also the page's only vertical rhythm — stack bands with
+     * no `space-y-*` between them and each gap is two of them.
+     */
     background?: "none" | "muted";
     mainClassName?: string;
     asideClassName?: string;
@@ -49,7 +56,7 @@ export function SectionLayout({
     className,
 }: SectionLayoutProps) {
     return (
-        <div className={cn(background === "muted" && "flex items-start justify-center bg-muted py-6", className)}>
+        <div className={cn(background === "muted" && "flex items-start justify-center bg-muted py-6 dark:bg-background", className)}>
             <div className={cn("grid w-full max-w-full grid-cols-1 gap-4", aside && GRID_COLS[breakpoint])}>
                 <div className={cn(aside && MAIN_SPAN[breakpoint], mainClassName)}>{children}</div>
 
