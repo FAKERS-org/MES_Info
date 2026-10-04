@@ -12,8 +12,10 @@ export interface SectionLayoutProps {
      * The band is the padding around a card, so it must stay *recessive*: a
      * shade off the page (`bg-muted` on light) and the page colour itself in
      * dark, where a lighter band would out-shout the `bg-card` it frames.
-     * Its `py-6` is also the page's only vertical rhythm — stack bands with
-     * no `space-y-*` between them and each gap is two of them.
+     * Its `py-3` is also the page's only vertical rhythm — stack bands with
+     * no `space-y-*` between them and each gap is two of them, which is why
+     * `py-3` and not `py-6`: the page scale is 24px, and two halves of it
+     * must land on 24.
      */
     background?: "none" | "muted";
     mainClassName?: string;
@@ -56,7 +58,7 @@ export function SectionLayout({
     className,
 }: SectionLayoutProps) {
     return (
-        <div className={cn(background === "muted" && "flex items-start justify-center bg-muted py-6 dark:bg-background", className)}>
+        <div className={cn(background === "muted" && "flex items-start justify-center bg-muted py-3 dark:bg-background", className)}>
             <div className={cn("grid w-full max-w-full grid-cols-1 gap-4", aside && GRID_COLS[breakpoint])}>
                 <div className={cn(aside && MAIN_SPAN[breakpoint], mainClassName)}>{children}</div>
 

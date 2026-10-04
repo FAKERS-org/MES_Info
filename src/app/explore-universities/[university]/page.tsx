@@ -23,7 +23,7 @@ export default async function UniversityPage({ params }: UniversityPageProps) {
     const lang = await readLang();
 
     return (
-        <div className="space-y-5">
+        <div className="space-y-6">
             <UniversityHero university={uni} lang={lang} />
             <UniversityMenu tabs={universityTabs(university)} />
 

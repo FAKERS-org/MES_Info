@@ -77,7 +77,7 @@ function ShellChrome({ children }: { children: ReactNode }) {
                             <Breadcrumbs />
                         </div>
                     </div>
-                    <div className="w-full max-w-7xl mx-auto flex-1 px-4 md:px-6 lg:px-8 pb-6 md:pb-8">{children}</div>
+                    <div className="w-full max-w-7xl mx-auto flex-1 px-4 md:px-6 lg:px-8 pb-4 md:pb-6">{children}</div>
                 </main>
             </div>
         </div>
