@@ -40,7 +40,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
     ].filter(stat => Boolean(stat.value));
 
     return (
-        <div className="w-full max-w-full mx-auto font-sans bg-muted/50">
+        <div className="w-full max-w-full mx-auto font-sans">
             <Card className="rounded-2xl border border-border shadow-sm bg-card overflow-hidden" padding="none">
                 {/* =========================================
                     TOP SECTION: Blue Header
