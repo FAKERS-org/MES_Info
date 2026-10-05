@@ -4,6 +4,7 @@ import { FilterChip } from "@/components/shared/filter-chip";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 export interface SearchFilterBarProps {
     pills?: string[];
@@ -81,18 +82,18 @@ export function SearchFilterBar({
 
             {/* Right-aligned Action Buttons */}
             <div className="ml-auto flex items-center gap-1.5">
-                <button
+                <Button
                     type="button"
                     className="whitespace-nowrap rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border"
                 >
                     វិស្វករ
-                </button>
-                <button
+                </Button>
+                <Button
                     type="button"
                     className="whitespace-nowrap rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border"
                 >
                     បរិញ្ញាបត្រ
-                </button>
+                </Button>
             </div>
         </div>
     );
