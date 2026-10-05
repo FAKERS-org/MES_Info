@@ -20,6 +20,7 @@ import {
     Users,
     Wallet,
 } from "lucide-react";
+import LocalizedText from "../shared/localized-text";
 
 export interface DepartmentHeadingProps {
     university: University;
@@ -33,10 +34,10 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
     const code = (unit?.id ?? university.id).toUpperCase();
     const logo = unit?.logo ?? university.logo;
     const stats = [
-        { icon: MapPin, label: "ទីតាំង (Campus)", value: localize(university.address, lang) },
-        { icon: Users, label: "និស្សិតកំពុងសិក្សា", value: university.stats?.students },
-        { icon: Wallet, label: "ថ្លៃសិក្សាជាមធ្យម", value: university.stats?.tuition },
-        { icon: Phone, label: "ទំនាក់ទំនងផ្លូវការ", value: university.contact?.phone },
+        { icon: MapPin, label: <LocalizedText translationKey="miscellaneous.location" />, value: localize(university.address, lang) },
+        { icon: Users, label: <LocalizedText translationKey="miscellaneous.students.plural" />, value: university.stats?.students },
+        { icon: Wallet, label: <LocalizedText translationKey="miscellaneous.tuitionFee" />, value: university.stats?.tuition },
+        { icon: Phone, label: <LocalizedText translationKey="contact.phone" />, value: university.contact?.phone },
     ].filter(stat => Boolean(stat.value));
 
     return (
@@ -58,7 +59,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         <div className="flex flex-wrap items-center gap-3 text-xs text-blue-100">
                             <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
                                 <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
-                                <span className="font-khmer">MoEYS Verified (ឌីជីថលផ្ទៀងផ្ទាត់ដោយ ក្រសួងអប់រំ)</span>
+                                <span className="font-khmer">MoEYS Verified</span>
                             </div>
                             {university.stats?.established && (
                                 <span className="font-khmer hidden sm:inline">{university.stats.established}</span>
@@ -134,7 +135,9 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         <div className="w-full md:w-auto z-20 -mt-8 sm:-mt-9 md:-mt-9 md:mb-4">
                             <Button className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-md border-0">
                                 <MessageSquare className="w-5 h-5 fill-white" />
-                                <span className="font-bold font-khmer text-[15px]">Chat Telegram (រៀងគ្នា)</span>
+                                <span className="font-bold font-khmer text-[15px]">
+                                    <LocalizedText translationKey="contact.telegram" />
+                                </span>
                             </Button>
                         </div>
                     </div>
@@ -151,7 +154,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                 {localize(university.universityCategory, lang)})
                             </span>
                         </Badge>
-                        <Badge
+                        {/* <Badge
                             variant="secondary"
                             className="bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-200 hover:bg-green-50 dark:hover:bg-green-950/40 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
                         >
@@ -164,7 +167,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         >
                             <Award className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                             <span>AUN-QA Accredited</span>
-                        </Badge>
+                        </Badge> */}
 
                         <div className="flex-1 hidden lg:block" />
 

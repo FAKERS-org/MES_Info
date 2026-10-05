@@ -85,13 +85,13 @@ export function SearchFilterBar({
                     type="button"
                     className="whitespace-nowrap rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border"
                 >
-                    វិស្វករ (Ingénieur 5Y)
+                    វិស្វករ
                 </button>
                 <button
                     type="button"
                     className="whitespace-nowrap rounded-xl bg-muted px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border"
                 >
-                    បរិញ្ញាបត្រ (Bachelor)
+                    បរិញ្ញាបត្រ
                 </button>
             </div>
         </div>

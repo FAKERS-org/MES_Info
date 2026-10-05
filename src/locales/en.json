@@ -86,11 +86,13 @@
     "comingSoon.profile.features.account": "Account",
     "comingSoon.profile.features.info": "Personal Info",
     "comingSoon.profile.features.settings": "Preferences",
+    "contact.telegram": "Contact Telegram",
+    "contact.phone": "Official Contact Phone",
     "miscellaneous.university.singular": "University",
     "miscellaneous.university.plural": "Universities",
     "miscellaneous.faculty.singular": "Faculty",
     "miscellaneous.faculty.plural": "Faculties",
-    "miscellaneous.location": "Phnom Penh & Provinces",
+    "miscellaneous.location": "Location",
     "miscellaneous.viewProgram": "View Program",
     "miscellaneous.public": "Public",
     "miscellaneous.private": "Private",
@@ -117,5 +119,10 @@
     "miscellaneous.of": "of",
     "miscellaneous.loadMoreUniversities": "Load More",
     "miscellaneous.notAvailable": "Not Available",
-    "miscellaneous.noAvailableProgramsForThisDepartment": "No available programs for this department."
+    "miscellaneous.noAvailableProgramsForThisDepartment": "No available programs for this department.",
+    "miscellaneous.students.singular": "Student",
+    "miscellaneous.students.plural": "Students",
+    "miscellaneous.consultation": "Consultation",
+    "miscellaneous.advisor": "Advisor",
+    "addressName.mister": "Mr."
 }

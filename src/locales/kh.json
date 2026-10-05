@@ -86,11 +86,13 @@
     "comingSoon.profile.features.account": "គណនី",
     "comingSoon.profile.features.info": "ព័ត៌មានផ្ទាល់ខ្លួន",
     "comingSoon.profile.features.settings": "ការកំណត់",
+    "contact.telegram": "ទំនាក់ទំនងតាមតេលេក្រាម",
+    "contact.phone": "ទូរស័ព្ទទំនាក់ទំនងផ្លូវការ",
     "miscellaneous.university.singular": "សាកលវិទ្យាល័យ",
     "miscellaneous.university.plural": "សាកលវិទ្យាល័យ",
     "miscellaneous.faculty.singular": "ដេប៉ាតឺម៉ង់",
     "miscellaneous.faculty.plural": "ដេប៉ាតឺម៉ង់",
-    "miscellaneous.location": "រាជធានីភ្នំពេញ & បណ្តាខេត្ត",
+    "miscellaneous.location": "ទីតាំង",
     "miscellaneous.viewProgram": "ម់ើលកម្មវិធីសិក្សា",
     "miscellaneous.public": "Public",
     "miscellaneous.private": "Private",
@@ -117,5 +119,11 @@
     "miscellaneous.of": "នៃ",
     "miscellaneous.loadMoreUniversities": "បង្ហាញទៀត",
     "miscellaneous.notAvailable": "មិនមាន",
-    "miscellaneous.noAvailableProgramsForThisDepartment": "មិនទាន់មានកម្មវិធីសិក្សាសម្រាប់ដេប៉ាតឺម៉ង់នេះទេ។"
+    "miscellaneous.noAvailableProgramsForThisDepartment": "មិនទាន់មានកម្មវិធីសិក្សាសម្រាប់ដេប៉ាតឺម៉ង់នេះទេ។",
+    "miscellaneous.students.singular": "និស្សិត",
+    "miscellaneous.students.plural": "និស្សិត",
+    "miscellaneous.consultation": "ទំនាក់ទំនងសម្រាប់ពិគ្រោះយោបល់",
+    "miscellaneous.advisor": "ទីព្រឺក្សា",
+    "addressName.mister": "លោក"
+    
 }
