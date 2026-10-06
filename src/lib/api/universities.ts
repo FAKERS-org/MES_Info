@@ -1,8 +1,10 @@
 import type { components } from "@/lib/api/schema";
 import type { UniversityHeadingData } from "@/components/department/department-heading";
+import type { Unit, UnitKind } from "@/data/universities";
 
 export type UniversityDetail = components["schemas"]["UniversityDetail"];
 export type UniversityProgram = components["schemas"]["ProgramSummary"];
+export type UnitSummary = components["schemas"]["UnitSummary"];
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
 
@@ -35,4 +37,76 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
             ? { established: `Est. ${detail.established_year}` }
             : undefined,
     };
+}
+
+/** A university's degree programs, flat, straight from the API. */
+export async function getUniversityPrograms(universityId: string): Promise<UniversityProgram[]> {
+    const res = await fetch(`${API_URL}/public/universities/${encodeURIComponent(universityId)}`, {
+        headers: { Accept: "application/json" },
+        next: { revalidate: 60 },
+    });
+    if (res.status === 404 || res.status === 403) return [];
+    if (!res.ok) throw new Error(`API /public/universities/${universityId} failed: ${res.status}`);
+    return ((await res.json()) as UniversityDetail).programs;
+}
+
+/**
+ * A university's unit tree, flat with `parent_id` — the API's shape.
+ * An unknown or unpublished university reads as "no units"; any other
+ * failure throws to the error boundary.
+ */
+export async function getUniversityUnits(universityId: string): Promise<UnitSummary[]> {
+    const res = await fetch(`${API_URL}/public/universities/${encodeURIComponent(universityId)}/units`, {
+        headers: { Accept: "application/json" },
+        next: { revalidate: 60 },
+    });
+    if (res.status === 404 || res.status === 403) return [];
+    if (!res.ok) throw new Error(`API /public/universities/${universityId}/units failed: ${res.status}`);
+    return (await res.json()) as UnitSummary[];
+}
+
+/** API kind → the UI's unit kind; the tree components match on these. */
+const KIND_TO_UI: Record<UnitSummary["kind"], UnitKind> = {
+    FACULTY: "faculty",
+    DEPARTMENT: "department",
+    SUB_DEPARTMENT: "sub-department",
+    FOUNDATION: "foundation",
+};
+
+/**
+ * Build the nested unit tree from the API's flat list. Siblings keep
+ * the position order the API returns them in.
+ *
+ * ponytail: `requirements` is hard-empty — the API does not serve
+ * admission requirements yet (stage 3b); SubDepartmentList hides that
+ * section when the list is empty.
+ */
+export function buildUnitTree(units: UnitSummary[]): Unit[] {
+    const nodes = new Map(
+        units.map(row => [
+            row.id,
+            {
+                id: row.id,
+                kind: KIND_TO_UI[row.kind],
+                name: { en: row.name_en, kh: row.name_kh ?? "" },
+                category: { en: row.category_en, kh: row.category_kh ?? "" },
+                logo: row.logo ?? undefined,
+                requirements: [],
+                units: [] as Unit[],
+            } satisfies Unit,
+        ]),
+    );
+
+    const roots: Unit[] = [];
+    for (const row of units) {
+        const node = nodes.get(row.id)!;
+        const parent = row.parent_id ? nodes.get(row.parent_id) : undefined;
+        if (parent) {
+            parent.units.push(node);
+        } else {
+            roots.push(node);
+        }
+    }
+
+    return roots;
 }

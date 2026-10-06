@@ -1,134 +1,444 @@
 [
-    {
-        "universityNameEn": "Institute of Technology of Cambodia",
-        "slug": "fee",
-        "parentSlug": null,
-        "kind": "faculty",
-        "nameEn": "Faculty of Electrical Engineering",
-        "nameKh": "មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី",
-        "categoryEn": "Electrical Engineering",
-        "categoryKh": "វិស្វកម្មអគ្គិសនី",
-        "logo": "/images/FEE-logo.png",
-        "position": 0
+  {
+    "universityNameEn": "Institute of Technology of Cambodia",
+    "slug": "fee",
+    "parentSlug": null,
+    "kind": "faculty",
+    "nameEn": "Faculty of Electrical Engineering",
+    "nameKh": "មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី",
+    "categoryEn": "Electrical Engineering",
+    "categoryKh": "វិស្វកម្មអគ្គិសនី",
+    "logo": "/images/FEE-logo.png",
+    "position": 0,
+    "curriculum": null,
+    "facilities": [
+      {
+        "title": "AI & HPC",
+        "subtitle": "Computing Lab",
+        "description": "បំពាក់ដោយ GPU Clusters សម្រាប់ការសិក្សា Deep Learning និងការសរសេរវប្បធម៌ AI ជាដើម។",
+        "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Robotics & IoT",
+        "subtitle": "Arena",
+        "description": "ទីលានសាកល្បង Autonomous Drones, Robot arms និង Sensor IoT ផ្សេងៗ។",
+        "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Cloud Sandbox",
+        "subtitle": "(AWS/GCP)",
+        "description": "អនុញ្ញាតឱ្យនិស្សិតប្រើប្រាស់ Cloud Credits ដើម្បីរៀនសូត្រ និង Deploy Web/App ជាក់លាក់។",
+        "image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop"
+      }
+    ],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "Institute of Technology of Cambodia",
+    "slug": "gee",
+    "parentSlug": "fee",
+    "kind": "department",
+    "nameEn": "Department of Electrical and Energy Engineering (GEE)",
+    "nameKh": "ដេប៉ាតឺម៉ង់វិស្វកម្មអគ្គិសនី និងថាមភាព (GEE)",
+    "categoryEn": "Electrical and Energy Engineering",
+    "categoryKh": "វិស្វកម្មអគ្គិសនី",
+    "logo": "/images/GEE-logo.png",
+    "position": 0,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Electrical and Energy Engineering (GEE)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្ម និងថាមភាពអគ្គិសនី",
+      "bannerText": "Practical Labs: 320 Hours",
+      "blocks": [
+        {
+          "badge_text": "Core",
+          "badge_bg": "bg-[#0F4C81]",
+          "title": "មូលដ្ឋានវិស្វកម្ម និងថាមភាពអគ្គិសនី",
+          "english_title": "(Electrical and Energy Foundations)",
+          "credits": "45 Credits",
+          "description": "សិក្សាពីគោលការណ៍អគ្គិសនី ការបង្កើត និងការចែកចាយថាមពលអគ្គិសនី។",
+          "courses": [
+            "Circuit Analysis",
+            "Electromagnetic Fields",
+            "Power Systems I",
+            "Electrical Machines",
+            "Control Systems"
+          ],
+          "special_badge": null
+        }
+      ]
     },
-    {
-        "universityNameEn": "Institute of Technology of Cambodia",
-        "slug": "gee",
-        "parentSlug": "fee",
-        "kind": "department",
-        "nameEn": "Department of Electrical and Energy Engineering (GEE)",
-        "nameKh": "ដេប៉ាតឺម៉ង់វិស្វកម្មអគ្គិសនី និងថាមភាព (GEE)",
-        "categoryEn": "Electrical and Energy Engineering",
-        "categoryKh": "វិស្វកម្មអគ្គិសនី",
-        "logo": "/images/GEE-logo.png",
-        "position": 0
+    "facilities": [],
+    "scholarships": [
+      {
+        "name": {
+          "kh": "អាហារូបករណ៍ពិន្ទុដ៏ខ្ពស្ពោជន្ត (GEE)",
+          "en": "GEE Excellence Scholarship"
+        },
+        "coverage": {
+          "kh": "គ្រប់គ្រាប់ថ្លៃសិក្សា ៥០%",
+          "en": "50% of tuition"
+        },
+        "requirements": [
+          {
+            "kh": "បញ្ជាក់ពិន្ទុសូមិកទំព័រពីសាលាយករណ៍ថ្មី",
+            "en": "Latest high-school transcript"
+          },
+          {
+            "kh": "មានបទពិសោធន៍ជាមួយមហាវិទ្យាល័យវិស្វកម្មអគ្គិសនីយ៉ាងតិចមួយឆ្នាំ",
+            "en": "At least one year of internship with FEE"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "universityNameEn": "Institute of Technology of Cambodia",
+    "slug": "gim",
+    "parentSlug": "fee",
+    "kind": "department",
+    "nameEn": "Department of Industrial and Mechanical Engineering (GIM)",
+    "nameKh": "ដេប៉ាតឺម៉ង់ឧស្សាហកម្ម និងវិស្វកម្មមេកានិក (GIM)",
+    "categoryEn": "Industrial and Mechanical Engineering",
+    "categoryKh": "វិស្វកម្មមេកានិក",
+    "logo": "/images/GIM-logo.png",
+    "position": 1,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Industrial and Mechanical Engineering (GIM)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់ឧស្សាហកម្ម និងវិស្វកម្មមេកានិកខ្មែរ",
+      "bannerText": "Practical Labs: 400 Hours",
+      "blocks": [
+        {
+          "badge_text": "Core",
+          "badge_bg": "bg-[#0F4C81]",
+          "title": "មេកានិកខ្មែរទូទៅ",
+          "english_title": "(General Mechanical Engineering)",
+          "credits": "45 Credits",
+          "description": "សិក្សាពីមេកានិកខ្មែរទូទៅ ស្មារតី និងការបង្កើតម៉ាស៊ីន។",
+          "courses": [
+            "Engineering Mechanics",
+            "Thermodynamics",
+            "Fluid Mechanics",
+            "Machine Design",
+            "Manufacturing Processes"
+          ],
+          "special_badge": null
+        }
+      ]
     },
-    {
-        "universityNameEn": "Institute of Technology of Cambodia",
-        "slug": "gim",
-        "parentSlug": "fee",
-        "kind": "department",
-        "nameEn": "Department of Industrial and Mechanical Engineering (GIM)",
-        "nameKh": "ដេប៉ាតឺម៉ង់ឧស្សាហកម្ម និងវិស្វកម្មមេកានិក (GIM)",
-        "categoryEn": "Industrial and Mechanical Engineering",
-        "categoryKh": "វិស្វកម្មមេកានិក",
-        "logo": "/images/GIM-logo.png",
-        "position": 1
+    "facilities": [],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "Institute of Technology of Cambodia",
+    "slug": "gic",
+    "parentSlug": "fee",
+    "kind": "department",
+    "nameEn": "Department of Information and Communication Technology (GIC)",
+    "nameKh": "ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាព័ត៌មាន និងបច្ចេកវិទ្យាទូរគមនាគមន៍ (GIC)",
+    "categoryEn": "Information and Communication Technology",
+    "categoryKh": "បច្ចេកវិទ្យាព័ត៌មាន",
+    "logo": "/images/GIC-logo.png",
+    "position": 2,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Information and Communication Technology (GIC)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាព័ត៌មាន និងបច្ចេកវិទ្យាទូរគមនាគមន៍",
+      "bannerText": "Practical Labs: 480 Hours",
+      "blocks": [
+        {
+          "badge_text": "Year 1–2",
+          "badge_bg": "bg-[#1E293B]",
+          "title": "មូលដ្ឋានគ្រឹះ ICT",
+          "english_title": "(ICT Foundations)",
+          "credits": "60 Credits",
+          "description": "ណែនាំអំពីគ្រឹះកុំព្យូទ័រ បណ្តាញ និងការសរសេរកម្មវិធី។",
+          "courses": [
+            "Programming Fundamentals",
+            "Computer Networks",
+            "Web Frontend Technologies",
+            "Database Systems"
+          ],
+          "special_badge": null
+        },
+        {
+          "badge_text": "Year 3–4",
+          "badge_bg": "bg-[#0284C7]",
+          "title": "ប្រព័ន្ធព័ត៌មានកម្រិតខ្ពស់",
+          "english_title": "(Advanced Information Systems)",
+          "credits": "45 Credits + Thesis",
+          "description": "អភិវឌ្ឍជំនាញ API, Cloud, និងស្ថាបត្យកម្មប្រព័ន្ធព័ត៌មានទំនើប។",
+          "courses": [
+            "REST & GraphQL APIs",
+            "Cloud Architecture",
+            "Microservices",
+            "Information Security"
+          ],
+          "special_badge": "6-Month Industry Internship"
+        }
+      ]
     },
-    {
-        "universityNameEn": "Institute of Technology of Cambodia",
-        "slug": "gic",
-        "parentSlug": "fee",
-        "kind": "department",
-        "nameEn": "Department of Information and Communication Technology (GIC)",
-        "nameKh": "ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាព័ត៌មាន និងបច្ចេកវិទ្យាទូរគមនាគមន៍ (GIC)",
-        "categoryEn": "Information and Communication Technology",
-        "categoryKh": "បច្ចេកវិទ្យាព័ត៌មាន",
-        "logo": "/images/GIC-logo.png",
-        "position": 2
+    "facilities": [],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "Institute of Technology of Cambodia",
+    "slug": "gtr",
+    "parentSlug": "fee",
+    "kind": "department",
+    "nameEn": "Department of Telecommunication and Network Engineering (GTR)",
+    "nameKh": "ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ (GTR)",
+    "categoryEn": "Telecommunication and Network Engineering",
+    "categoryKh": "វិស្វកម្មទូរគមនាគមន៍",
+    "logo": "/images/GTR-logo.png",
+    "position": 3,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Telecommunication and Network Engineering (GTR)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ",
+      "bannerText": "Practical Labs: 400 Hours",
+      "blocks": [
+        {
+          "badge_text": "Core",
+          "badge_bg": "bg-[#0F4C81]",
+          "title": "វិស្វកម្មទូរគមនាគមន៍",
+          "english_title": "(Telecommunication Engineering)",
+          "credits": "50 Credits",
+          "description": "សិក្សាពីបណ្តាញ ការបញ្ជូនសញ្ញា និងប្រព័ន្ធទូរគមនាគមន៍ទំនើប។",
+          "courses": [
+            "Signals & Systems",
+            "Wireless Communications",
+            "Network Protocols",
+            "Optical Networks"
+          ],
+          "special_badge": null
+        }
+      ]
     },
-    {
-        "universityNameEn": "Institute of Technology of Cambodia",
-        "slug": "gtr",
-        "parentSlug": "fee",
-        "kind": "department",
-        "nameEn": "Department of Telecommunication and Network Engineering (GTR)",
-        "nameKh": "ដេប៉ាតឺម៉ង់វិស្វកម្មទូរគមនាគមន៍ និងបណ្តាញ (GTR)",
-        "categoryEn": "Telecommunication and Network Engineering",
-        "categoryKh": "វិស្វកម្មទូរគមនាគមន៍",
-        "logo": "/images/GTR-logo.png",
-        "position": 3
+    "facilities": [],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "Institute of Technology of Cambodia",
+    "slug": "ams",
+    "parentSlug": "fee",
+    "kind": "department",
+    "nameEn": "Department of Applied Mathematics and Statistics (AMS)",
+    "nameKh": "ដេប៉ាតឺម៉ង់គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ (AMS)",
+    "categoryEn": "Applied Mathematics and Statistics",
+    "categoryKh": "គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ",
+    "logo": "/images/AMS-logo.png",
+    "position": 4,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Applied Mathematics and Statistics (AMS)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ",
+      "bannerText": "Practical Labs: 220 Hours",
+      "blocks": [
+        {
+          "badge_text": "Core",
+          "badge_bg": "bg-[#0F4C81]",
+          "title": "គណិតវិទ្យា និងស្ថិតធន្នអន្តរវិស្ស័យ",
+          "english_title": "(Applied Mathematics & Statistics)",
+          "credits": "45 Credits",
+          "description": "គណិតវិទ្យាអន្តរវិស្ស័យ ស្ថិតធន្ន និងវិធីវាស់ទំនាក់ទំនង។",
+          "courses": [
+            "Linear Algebra",
+            "Numerical Analysis",
+            "Probability and Statistics",
+            "Optimization Methods"
+          ],
+          "special_badge": null
+        }
+      ]
     },
-    {
-        "universityNameEn": "Institute of Technology of Cambodia",
-        "slug": "ams",
-        "parentSlug": "fee",
-        "kind": "department",
-        "nameEn": "Department of Applied Mathematics and Statistics (AMS)",
-        "nameKh": "ដេប៉ាតឺម៉ង់គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ (AMS)",
-        "categoryEn": "Applied Mathematics and Statistics",
-        "categoryKh": "គណិតវិទ្យាអនុវត្តន៍ និងស្ថិតិ",
-        "logo": "/images/AMS-logo.png",
-        "position": 4
+    "facilities": [],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "National Institute of Technology (Cambodia)",
+    "slug": "fit",
+    "parentSlug": null,
+    "kind": "faculty",
+    "nameEn": "Faculty of Information Technology",
+    "nameKh": "មហាវិទ្យាល័យបច្ចេកវិទ្យាព័ត៌មាន",
+    "categoryEn": "Information Technology",
+    "categoryKh": "ព័ត៌មាន",
+    "logo": "/images/FIT-logo.png",
+    "position": 0,
+    "curriculum": {
+      "headingEn": "Faculty Curriculum — Information Technology (120 Credits Total)",
+      "headingKh": "កម្មវិធីសិក្សា មហាវិទ្យាល័យបច្ចេកវិទ្យាព័ត៌មាន",
+      "bannerText": "Practical Labs: 420 Hours",
+      "blocks": [
+        {
+          "badge_text": "Year 1–2",
+          "badge_bg": "bg-[#1E293B]",
+          "title": "មូលដ្ឋានបច្ចេកវិទ្យាព័ត៌មាន",
+          "english_title": "(Computing Foundations)",
+          "credits": "60 Credits",
+          "description": "គ្រឹះកុឆ្រៀវ ប្រភពទិន្នន័យ និងបណ្តាញកុំព្យូទ័រ ដើម្បីបង្កើតមូលដ្ឋានរឹងមាំសម្រាប់របរខាងក្រោយ។",
+          "courses": [
+            "Programming Fundamentals",
+            "Digital Systems",
+            "Database Systems",
+            "Computer Networks"
+          ],
+          "special_badge": null
+        },
+        {
+          "badge_text": "Year 3–4",
+          "badge_bg": "bg-[#0284C7]",
+          "title": "បច្ចេកវិទ្យាព័ត៌មានអនុវត្ត",
+          "english_title": "(Applied Information Technology)",
+          "credits": "60 Credits + Thesis",
+          "description": "បង្កើតប្រព័ន្ធព័ត៌មាន និងសហគ្រាប់គ្រប់គ្រងទិន្នន័យសម្រាប់អាជីវភាពក្នុងតាំងជាតិ។",
+          "courses": [
+            "Enterprise Systems",
+            "Business Intelligence",
+            "IT Security",
+            "Capstone Project"
+          ],
+          "special_badge": "3-Month Industry Internship"
+        }
+      ]
     },
-    {
-        "universityNameEn": "National Institute of Technology (Cambodia)",
-        "slug": "fit",
-        "parentSlug": null,
-        "kind": "faculty",
-        "nameEn": "Faculty of Information Technology",
-        "nameKh": "មហាវិទ្យាល័យបច្ចេកវិទ្យាព័ត៌មាន",
-        "categoryEn": "Information Technology",
-        "categoryKh": "ព័ត៌មាន",
-        "logo": "/images/FIT-logo.png",
-        "position": 0
+    "facilities": [
+      {
+        "title": "Cloud & Data Lab",
+        "subtitle": "(private cloud)",
+        "description": "ម៉ាស៊ីនមេ និងឃ្លាំងទិន្នន័យសម្រាប់សិក្សាប្រព័ន្ធព័ត៌មាន និង AI ថ្នាក់វិជ្ជា។",
+        "image": "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Cyber Range",
+        "subtitle": "(training)",
+        "description": "បរិយាកាសសុវភាពព័ត៌មានសម្រាប់ធ្វើត្រាងការវាយបន្ទាន់ក្នុងបរិយាកាសដែលគ្រប់គ្រង។",
+        "image": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=800&auto=format&fit=crop"
+      }
+    ],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "National Institute of Technology (Cambodia)",
+    "slug": "ise",
+    "parentSlug": "fit",
+    "kind": "department",
+    "nameEn": "Department of Information Systems Engineering (ISE)",
+    "nameKh": "ដេប៉ាតឺម៉ង់វិស្វកម្មប្រព័ន្ធព័ត៌មាន (ISE)",
+    "categoryEn": "Information Systems",
+    "categoryKh": "ប្រព័ន្ធព័ត៌មាន",
+    "logo": "/images/ISE-logo.png",
+    "position": 0,
+    "curriculum": null,
+    "facilities": [],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "National Institute of Technology (Cambodia)",
+    "slug": "isd",
+    "parentSlug": "ise",
+    "kind": "sub-department",
+    "nameEn": "Department of Data Systems (ISD)",
+    "nameKh": "ដេប៉ាតឺម៉ង់ប្រព័ន្ធទិន្នន័យ (ISD)",
+    "categoryEn": "Data Systems",
+    "categoryKh": "ទិន្នន័យ",
+    "logo": "/images/ISD-logo.png",
+    "position": 0,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Data Systems (ISD)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់ប្រព័ន្ធទិន្នន័យ",
+      "bannerText": "Practical Labs: 300 Hours",
+      "blocks": [
+        {
+          "badge_text": "Core",
+          "badge_bg": "bg-[#0F4C81]",
+          "title": "ប្រព័ន្ធទិន្នន័យ",
+          "english_title": "(Data Systems)",
+          "credits": "45 Credits",
+          "description": "ការរចនាឃ្លាំងទិន្នន័យ និងប្រព័ន្ធខ្សែអ្នកការវាយតម្លៃធំទូរគេរ។",
+          "courses": [
+            "Data Modelling",
+            "Data Engineering",
+            "Analytics Platforms",
+            "Big Data Storage"
+          ],
+          "special_badge": null
+        }
+      ]
     },
-    {
-        "universityNameEn": "National Institute of Technology (Cambodia)",
-        "slug": "ise",
-        "parentSlug": "fit",
-        "kind": "department",
-        "nameEn": "Department of Information Systems Engineering (ISE)",
-        "nameKh": "ដេប៉ាតឺម៉ង់វិស្វកម្មប្រព័ន្ធព័ត៌មាន (ISE)",
-        "categoryEn": "Information Systems",
-        "categoryKh": "ប្រព័ន្ធព័ត៌មាន",
-        "logo": "/images/ISE-logo.png",
-        "position": 0
+    "facilities": [],
+    "scholarships": [
+      {
+        "name": {
+          "kh": "មូលនិញ្ញកម្មមហាវិទ្យាល័យទិន្នន័យ (ISD)",
+          "en": "ISD Lab Grant"
+        },
+        "coverage": {
+          "kh": "រង្វាស់បន្ទប់ស្រាងមួយឆ្នាំ",
+          "en": "One year of lab fees"
+        },
+        "requirements": [
+          {
+            "kh": "បានចូលរួមសកម្មភាពស្រាងទិន្នន័យយ៉ាងតិចមួយដឺម",
+            "en": "At least one term of data-lab work"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "universityNameEn": "National Institute of Technology (Cambodia)",
+    "slug": "fee",
+    "parentSlug": null,
+    "kind": "faculty",
+    "nameEn": "Faculty of Electrical Engineering",
+    "nameKh": "មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី",
+    "categoryEn": "Electrical Engineering",
+    "categoryKh": "អគ្គិសនី",
+    "logo": "/images/FEE-logo.png",
+    "position": 1,
+    "curriculum": null,
+    "facilities": [],
+    "scholarships": []
+  },
+  {
+    "universityNameEn": "National Institute of Technology (Cambodia)",
+    "slug": "fep",
+    "parentSlug": "fee",
+    "kind": "department",
+    "nameEn": "Department of Power Engineering Technology (FEP)",
+    "nameKh": "ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាអគ្គិសនីពាណិជ្ជកម្ម (FEP)",
+    "categoryEn": "Power Engineering",
+    "categoryKh": "អគ្គិសនីពាណិជ្ជកម្ម",
+    "logo": "/images/FEP-logo.png",
+    "position": 0,
+    "curriculum": {
+      "headingEn": "Curriculum — Department of Power Engineering Technology (FEP)",
+      "headingKh": "កម្មវិធីសិក្សា ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាអគ្គិសនីពាណិជ្ជកម្ម",
+      "bannerText": "Practical Labs: 260 Hours",
+      "blocks": [
+        {
+          "badge_text": "Core",
+          "badge_bg": "bg-[#0F4C81]",
+          "title": "ថាមអគ្គិសនី",
+          "english_title": "(Electrical Energy)",
+          "credits": "40 Credits",
+          "description": "សិក្សាពីបណ្តាញ ថាមថោម និងការបង្កើតថាមពលពីមេដែរ និងពាណិជ្ជកម្ម.",
+          "courses": [
+            "Electrical Circuits",
+            "Power Distribution",
+            "Renewable Integration",
+            "Grid Operations"
+          ],
+          "special_badge": null
+        }
+      ]
     },
-    {
-        "universityNameEn": "National Institute of Technology (Cambodia)",
-        "slug": "isd",
-        "parentSlug": "ise",
-        "kind": "sub-department",
-        "nameEn": "Department of Data Systems (ISD)",
-        "nameKh": "ដេប៉ាតឺម៉ង់ប្រព័ន្ធទិន្នន័យ (ISD)",
-        "categoryEn": "Data Systems",
-        "categoryKh": "ទិន្នន័យ",
-        "logo": "/images/ISD-logo.png",
-        "position": 0
-    },
-    {
-        "universityNameEn": "National Institute of Technology (Cambodia)",
-        "slug": "fee",
-        "parentSlug": null,
-        "kind": "faculty",
-        "nameEn": "Faculty of Electrical Engineering",
-        "nameKh": "មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី",
-        "categoryEn": "Electrical Engineering",
-        "categoryKh": "អគ្គិសនី",
-        "logo": "/images/FEE-logo.png",
-        "position": 1
-    },
-    {
-        "universityNameEn": "National Institute of Technology (Cambodia)",
-        "slug": "fep",
-        "parentSlug": "fee",
-        "kind": "department",
-        "nameEn": "Department of Power Engineering Technology (FEP)",
-        "nameKh": "ដេប៉ាតឺម៉ង់បច្ចេកវិទ្យាអគ្គិសនីពាណិជ្ជកម្ម (FEP)",
-        "categoryEn": "Power Engineering",
-        "categoryKh": "អគ្គិសនីពាណិជ្ជកម្ម",
-        "logo": "/images/FEP-logo.png",
-        "position": 0
-    }
+    "facilities": [
+      {
+        "title": "High-Voltage Lab",
+        "subtitle": "(HV test bay)",
+        "description": "បន្ទប់សាកល្បងតង់ស្តង់ខ្ពស់ សម្រាប់វាយតម្លៃបណ្តាញអគ្គិសនីនិងការការពារបណ្តាញ។",
+        "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=800&auto=format&fit=crop"
+      }
+    ],
+    "scholarships": []
+  }
 ]

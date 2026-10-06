@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
-import type { University } from "@/data/universities";
+import type { UniversityHeadingData } from "@/components/department/department-heading";
 import type { Lang } from "@/lib/language";
 import { Headset, Phone, Send } from "lucide-react";
 
 export interface AdmissionContactProps {
-    university: University;
+    university: UniversityHeadingData;
     lang: Lang;
 }
 
 /**
- * The aside card of the department page. Every line of it — the desk name, the
- * phone, the mailbox — was typed in as an ITC string, so it offered the ITC
- * admissions desk on the page of every other university in the catalogue.
+ * The aside card of the department page. Every line of it — the desk
+ * name, the phone, the mailbox — was typed in as an ITC string, so it
+ * offered the ITC admissions desk on the page of every other university
+ * in the catalogue. The API serves no contact fields yet, so the card
+ * renders without them until the detail payload grows them.
  */
 const AdmissionContact = ({ university, lang }: AdmissionContactProps) => {
     const { contact } = university;
+    const code = (university.code ?? university.id).toUpperCase();
 
     return (
         <div className="w-full max-w-md bg-[#0B1F3A] rounded-2xl p-6 font-sans shadow-lg border border-white/5 mx-auto">
@@ -29,7 +32,7 @@ const AdmissionContact = ({ university, lang }: AdmissionContactProps) => {
                 <div className="flex flex-col">
                     <h2 className="text-[17px] font-bold text-white leading-snug">ផ្នែកប្រឹក្សាយាបល់ជំនាញ</h2>
                     <p className="text-[13px] text-sky-200/80 font-medium mt-0.5">
-                        {university.id.toUpperCase()} {lang === "en" ? "Admissions Desk" : "ផ្នែកប្រឹក្សាយាបល់"}
+                        {code} {lang === "en" ? "Admissions Desk" : "ផ្នែកប្រឹក្សាយាបល់"}
                     </p>
                 </div>
             </div>

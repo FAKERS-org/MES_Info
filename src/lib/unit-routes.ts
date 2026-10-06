@@ -1,4 +1,4 @@
-import { getChildren, type Unit, type University } from "@/data/universities";
+import type { Unit } from "@/data/universities";
 
 export interface UnitRow {
     unit: Unit;
@@ -17,10 +17,11 @@ export function unitHref(universityId: string, pathIds: string[]): string {
     return `/explore-universities/${universityId}/programs/${pathIds.join("/")}`;
 }
 
-export function walkUnitPath(university: University, pathIds: string[]): Unit[] {
+/** Walk a path of unit ids down a tree, one level at a time. */
+export function walkUnitPath(units: Unit[], pathIds: string[]): Unit[] {
     const chain: Unit[] = [];
 
-    let level: Unit[] = university.units;
+    let level = units;
     for (const id of pathIds) {
         const next = level.find(unit => unit.id === id);
         if (!next) break;
@@ -31,21 +32,28 @@ export function walkUnitPath(university: University, pathIds: string[]): Unit[] 
     return chain;
 }
 
-export function childRows(university: University, unit: Unit, pathIds: string[]): UnitRow[] {
-    return getChildren(unit).map(child => ({ unit: child, href: unitHref(university.id, [...pathIds, child.id]) }));
+function getChildren(unit: Unit): Unit[] {
+    return unit.units ?? [];
 }
 
-export function programGroups(university: University): ProgramGroup[] {
+export function childRows(universityId: string, unit: Unit, pathIds: string[]): UnitRow[] {
+    return getChildren(unit).map(child => ({
+        unit: child,
+        href: unitHref(universityId, [...pathIds, child.id]),
+    }));
+}
+
+export function programGroups(universityId: string, units: Unit[]): ProgramGroup[] {
     const rows = (unit: Unit, pathIds: string[]): UnitRow[] =>
         getChildren(unit).flatMap(child => {
             const childPath = [...pathIds, child.id];
-            const row = { unit: child, href: unitHref(university.id, childPath) };
+            const row = { unit: child, href: unitHref(universityId, childPath) };
             return child.kind === "faculty" ? rows(child, childPath) : [row, ...rows(child, childPath)];
         });
 
-    return university.units.map(unit => ({
+    return units.map(unit => ({
         unit,
-        href: unitHref(university.id, [unit.id]),
+        href: unitHref(universityId, [unit.id]),
         rows: rows(unit, [unit.id]),
     }));
 }

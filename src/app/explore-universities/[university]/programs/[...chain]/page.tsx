@@ -26,6 +26,8 @@ export default async function UnitPage({ params }: UnitPageProps) {
         lang,
     } = await resolveUnitPage(university, chain);
 
+    // Stage 3b: the facilities table does not exist yet, so this
+    // resolves empty for API universities and the section stays hidden.
     const facilities = getFacilitiesFor(universityId, unit.id);
 
     return (
@@ -37,7 +39,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
             {unit.units && unit.units.length > 0 && (
                 <SectionLayout background="muted">
                     <SubDepartmentList
-                        subDepartments={childRows(uni, unit, pathIds)}
+                        subDepartments={childRows(universityId, unit, pathIds)}
                         parentDepartment={unit}
                         lang={lang}
                     />
