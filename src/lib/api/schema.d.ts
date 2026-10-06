@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+    "/api/v1/admin/upload/generate-presigned-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Get Upload Url
+         * @description Generate a presigned URL for direct frontend upload to R2.
+         */
+        post: operations["get_upload_url_api_v1_admin_upload_generate_presigned_url_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -76,6 +96,26 @@ export interface paths {
          * @description Get detailed information about a specific published university.
          */
         get: operations["get_university_detail_api_v1_public_universities__university_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/universities/{university_id}/units": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List University Units
+         * @description Get the unit tree (flat, with parent_id) of a published university.
+         */
+        get: operations["list_university_units_api_v1_public_universities__university_id__units_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -223,6 +263,20 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** PresignedUrlRequest */
+        PresignedUrlRequest: {
+            /** File Name */
+            file_name: string;
+            /** Content Type */
+            content_type: string;
+            /** Abbreviation */
+            abbreviation: string;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "logo" | "cover";
+        };
         /**
          * ProgramCreate
          * @description Schema for creating a new program.
@@ -302,6 +356,36 @@ export interface components {
          */
         Status: "DRAFT" | "PUBLISHED";
         /**
+         * UnitKind
+         * @enum {string}
+         */
+        UnitKind: "FACULTY" | "DEPARTMENT" | "SUB_DEPARTMENT" | "FOUNDATION";
+        /** UnitSummary */
+        UnitSummary: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Slug */
+            slug: string;
+            /** Parent Id */
+            parent_id?: string | null;
+            kind: components["schemas"]["UnitKind"];
+            /** Name En */
+            name_en: string;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** Category En */
+            category_en: string;
+            /** Category Kh */
+            category_kh?: string | null;
+            /** Logo */
+            logo?: string | null;
+            /** Position */
+            position: number;
+        };
+        /**
          * UniversityCreate
          * @description Schema for creating a new university.
          */
@@ -311,7 +395,7 @@ export interface components {
             /** Name Kh */
             name_kh?: string | null;
             /** Abbreviation */
-            abbreviation?: string | null;
+            abbreviation: string;
             type: components["schemas"]["UniversityType"];
             /** Province */
             province: string;
@@ -458,6 +542,39 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    get_upload_url_api_v1_admin_upload_generate_presigned_url_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresignedUrlRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health_check_health_get: {
         parameters: {
             query?: never;
@@ -568,6 +685,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UniversityDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_university_units_api_v1_public_universities__university_id__units_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitSummary"][];
                 };
             };
             /** @description Validation Error */

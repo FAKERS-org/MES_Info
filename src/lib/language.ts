@@ -67,3 +67,14 @@ export function localize(text: NamespacedText | undefined, lang: Lang): string {
     if (!text) return "";
     return text[lang] || text.en;
 }
+
+/**
+ * Server-side counterpart of `localize` for API rows, which carry
+ * flat `name_en`/`name_kh` columns instead of a `NamespacedText`.
+ */
+export function apiName(
+    row: { name_en: string; name_kh?: string | null },
+    lang: Lang,
+): string {
+    return lang === "kh" ? (row.name_kh || row.name_en) : row.name_en;
+}

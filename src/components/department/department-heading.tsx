@@ -2,7 +2,12 @@ import { EntityLogo } from "@/components/shared/entity-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { Unit, University } from "@/data/universities";
+import type {
+    NamespacedText,
+    UniversityContact,
+    UniversityStats,
+    Unit,
+} from "@/data/universities";
 import type { Lang } from "@/lib/language";
 import { localize } from "@/lib/language";
 import {
@@ -22,8 +27,27 @@ import {
 } from "lucide-react";
 import LocalizedText from "../shared/localized-text";
 
+/**
+ * The university fields the heading renders. A full `University`
+ * satisfies it, so the static pages pass theirs unchanged; API-driven
+ * pages pass only what the endpoint serves.
+ */
+export interface UniversityHeadingData {
+    id: string;
+    /** Short badge code — the API's abbreviation when it has one. */
+    code?: string;
+    name: NamespacedText;
+    logo?: string;
+    universityType: NamespacedText;
+    universityCategory?: NamespacedText;
+    address?: NamespacedText;
+    website?: string;
+    stats?: UniversityStats;
+    contact?: UniversityContact;
+}
+
 export interface DepartmentHeadingProps {
-    university: University;
+    university: UniversityHeadingData;
     unit?: Unit;
     faculty?: Unit;
     lang: Lang;
@@ -31,13 +55,13 @@ export interface DepartmentHeadingProps {
 
 export default function DepartmentHeading({ university, unit, faculty, lang }: DepartmentHeadingProps) {
     const name = unit?.name ?? university.name;
-    const code = (unit?.id ?? university.id).toUpperCase();
+    const code = (unit?.id ?? university.code ?? university.id).toUpperCase();
     const logo = unit?.logo ?? university.logo;
     const stats = [
-        { icon: MapPin, label: <LocalizedText translationKey="miscellaneous.location" />, value: localize(university.address, lang) },
-        { icon: Users, label: <LocalizedText translationKey="miscellaneous.students.plural" />, value: university.stats?.students },
-        { icon: Wallet, label: <LocalizedText translationKey="miscellaneous.tuitionFee" />, value: university.stats?.tuition },
-        { icon: Phone, label: <LocalizedText translationKey="contact.phone" />, value: university.contact?.phone },
+        { key: "location", icon: MapPin, label: <LocalizedText translationKey="miscellaneous.location" />, value: localize(university.address, lang) },
+        { key: "students", icon: Users, label: <LocalizedText translationKey="miscellaneous.students.plural" />, value: university.stats?.students },
+        { key: "tuition", icon: Wallet, label: <LocalizedText translationKey="miscellaneous.tuitionFee" />, value: university.stats?.tuition },
+        { key: "phone", icon: Phone, label: <LocalizedText translationKey="contact.phone" />, value: university.contact?.phone },
     ].filter(stat => Boolean(stat.value));
 
     return (
@@ -150,8 +174,9 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         >
                             <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
                             <span className="font-khmer">
-                                {localize(university.universityType, lang)} (
-                                {localize(university.universityCategory, lang)})
+                                {localize(university.universityType, lang)}
+                                {university.universityCategory &&
+                                    ` (${localize(university.universityCategory, lang)})`}
                             </span>
                         </Badge>
                         {/* <Badge
@@ -178,7 +203,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                 rel="noreferrer"
                                 className="flex items-center gap-2 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm group"
                             >
-                                <Globe className="w-4 h-4" />
+                                <Globe className="w-4 w-4" />
                                 <span className="font-medium">{university.website}</span>
                                 <ExternalLink className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />
                             </a>
@@ -192,7 +217,7 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                 <div className="mt-6 border-t border-border bg-muted px-6 py-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map(stat => (
-                            <div key={stat.label} className="flex items-start gap-3">
+                            <div key={stat.key} className="flex items-start gap-3">
                                 <div className="bg-blue-50 dark:bg-blue-950/30 p-2 rounded-xl">
                                     <stat.icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                 </div>

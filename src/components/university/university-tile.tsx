@@ -4,15 +4,16 @@ import { EntityLogo } from "@/components/shared/entity-logo";
 import { IconList, IconListItem } from "@/components/shared/icon-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getProgramUnits, type University } from "@/data";
+import type { UniversitySummary } from "@/hooks/use-universities";
+import { apiName } from "@/lib/language";
 import { useLanguage } from "@/lib/i18n";
 import { universityHref } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight, Bookmark, Globe, GraduationCap, MapPin } from "lucide-react";
+import { ArrowUpRight, Bookmark, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export interface UniversityTileProps {
-    university: University;
+    university: UniversitySummary;
     /**
      * `featured` is the rich card of `/explore-universities` (gradient head,
      * fact rows, call to action); `compact` the link tile of the overview and
@@ -24,23 +25,17 @@ export interface UniversityTileProps {
 }
 
 /**
- * One university in a grid. The two cards that used to serve those grids —
- * `university-card.tsx` and `uni-info-card.tsx` — had drifted into two
- * design systems (hex gradients, `rounded-3xl`, no shared markup); this is
- * their single implementation, with the entity specific bits gated by
- * `variant`.
+ * One university in a grid, fed by the API's `UniversitySummary`.
+ * Fields the API does not serve yet (description, website, category,
+ * program count) are simply not rendered — they return with the
+ * detail endpoints, not with placeholder rows.
  */
 export function UniversityTile({ university, variant = "compact", className }: UniversityTileProps) {
     const { lang, t } = useLanguage();
     const featured = variant === "featured";
 
-    const name = university.name[lang] ?? university.name.en;
-    const description = university.description[lang] ?? university.description.en;
-    const address = university.address ? (university.address[lang] ?? university.address.en) : "";
+    const name = apiName(university, lang);
     const href = universityHref(university.id);
-    const programCount = getProgramUnits(university.id).length;
-    const universityType = university.universityType[lang] ?? university.universityType.en;
-    const universityCategory = university.universityCategory[lang] ?? university.universityCategory.en;
 
     const surface = cn(
         "relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-shadow",
@@ -78,19 +73,16 @@ export function UniversityTile({ university, variant = "compact", className }: U
 
                 <div className="absolute -bottom-10 left-6 right-6 z-10 flex items-end justify-between gap-3">
                     <EntityLogo
-                        src={university.logo}
+                        src={university.logo_url ?? undefined}
                         alt={name}
                         className="h-20 w-20 shrink-0 rounded-full bg-white shadow-lg"
                         fallbackClassName="text-sm font-bold text-slate-700"
-                        fallback={university.id.toUpperCase()}
+                        fallback={university.abbreviation || name.charAt(0)}
                     />
                     {featured && (
                         <div className="flex flex-row items-end gap-1 pb-1">
                             <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
-                                {universityCategory}
-                            </Badge>
-                            <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
-                                {universityType}
+                                {university.type === "PUBLIC" ? "Public" : "Private"}
                             </Badge>
                         </div>
                     )}
@@ -100,29 +92,13 @@ export function UniversityTile({ university, variant = "compact", className }: U
             <div className="flex flex-1 flex-col px-6 pb-6 pt-14">
                 <h2 className="text-xl font-bold leading-snug text-foreground">{name}</h2>
 
-                {featured && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{description}</p>}
-
                 <IconList className="mt-4 gap-2.5">
-                    <IconListItem
-                        className="gap-2.5 text-sm text-muted-foreground"
-                        icon={<Globe className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
-                    >
-                        <span className="truncate">{university.website || "\u00A0"}</span>
-                    </IconListItem>
                     <IconListItem
                         className="gap-2.5 text-sm text-muted-foreground"
                         icon={<MapPin className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
                     >
-                        <span className="truncate">{address || "\u00A0"}</span>
+                        <span className="truncate">{university.province}</span>
                     </IconListItem>
-                    {featured && (
-                        <IconListItem
-                            className="gap-2.5 text-sm text-muted-foreground"
-                            icon={<GraduationCap className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
-                        >
-                            {programCount} {t("miscellaneous.programs.plural")}
-                        </IconListItem>
-                    )}
                 </IconList>
 
                 {featured && (

@@ -1,15 +1,23 @@
 "use client";
 
-import { universities as staticUniversities, type University } from "@/data";
 import apiClient from "@/lib/api/client";
+import type { components } from "@/lib/api/schema";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useCallback, useContext } from "react";
 
-// Switch: "static" | "api"
-const DATA_SOURCE = "static" as const;
+/**
+ * The API seam for universities. List views read `UniversitySummary`
+ * straight from the generated OpenAPI types, so a backend schema
+ * change fails here at compile time instead of in the adapter.
+ *
+ * Detail pages still read the static data in `@/data` — the API's
+ * detail endpoint has no units tree yet, which the programs explorer
+ * needs. Wiring them is the next stage.
+ */
+export type UniversitySummary = components["schemas"]["UniversitySummary"];
 
 type UniversitiesContextType = {
-    universities: University[];
+    universities: UniversitySummary[];
     status: "loading" | "error" | "success";
     error: Error | null;
     refresh: () => void;
@@ -17,12 +25,9 @@ type UniversitiesContextType = {
 
 const UniversitiesContext = createContext<UniversitiesContextType | undefined>(undefined);
 
-async function fetchUniversities(): Promise<University[]> {
-    if (DATA_SOURCE === "static") {
-        return staticUniversities as University[];
-    }
-    const response = await apiClient.get("/public/universities");
-    return response.data as University[];
+async function fetchUniversities(): Promise<UniversitySummary[]> {
+    const response = await apiClient.get<{ items: UniversitySummary[] }>("/public/universities/");
+    return response.data.items;
 }
 
 export function UniversitiesProvider({ children }: { children: React.ReactNode }) {
@@ -60,7 +65,7 @@ export function UniversitiesProvider({ children }: { children: React.ReactNode }
 
 export function useUniversities() {
     const context = useContext(UniversitiesContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error("useUniversities must be used within a UniversitiesProvider");
     }
     return context;

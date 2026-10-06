@@ -1,60 +1,42 @@
 "use client";
 
 import { ErrorState } from "@/components/shared/error-state";
-import { FilterChip } from "@/components/shared/filter-chip";
 import { SearchInput } from "@/components/shared/search-input";
 import { SkeletonGrid } from "@/components/shared/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import UniversityHeader from "@/components/university/university-header";
 import UniversityPagination from "@/components/university/university-pagination";
 import { UniversityTile } from "@/components/university/university-tile";
-import { getProgramUnits } from "@/data";
 import { useUniversities } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
+import { apiName } from "@/lib/language";
 import { useMemo, useState } from "react";
 
-type SortKey = "name-asc" | "name-desc" | "departments-desc";
+type SortKey = "name-asc" | "name-desc";
 
 export default function ExploreUniversitiesPage() {
     const { lang, t } = useLanguage();
     const { universities, status, refresh } = useUniversities();
 
     const [query, setQuery] = useState("");
-    const [category, setCategory] = useState<string | null>(null);
     const [sort, setSort] = useState<SortKey>("name-asc");
-
-    const categories = useMemo(() => {
-        const seen = new Map<string, { id: string; label: string }>();
-        for (const u of universities) {
-            for (const d of getProgramUnits(u.id)) {
-                const label = d.category[lang] ?? d.category.en;
-                if (!seen.has(label)) seen.set(label, { id: label, label });
-            }
-        }
-        return [...seen.values()];
-    }, [universities, lang]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
-        let items = universities.filter(u => {
-            const name = u.name[lang] ?? u.name.en;
-            const address = u.address ? (u.address[lang] ?? u.address.en) : "";
-            const matchesQuery = !q || name.toLowerCase().includes(q) || address.toLowerCase().includes(q);
-            const matchesCategory =
-                !category || getProgramUnits(u.id).some(d => (d.category[lang] ?? d.category.en) === category);
-            return matchesQuery && matchesCategory;
+        const items = universities.filter(u => {
+            const name = apiName(u, lang).toLowerCase();
+            const province = u.province.toLowerCase();
+            return !q || name.includes(q) || province.includes(q);
         });
 
-        items = [...items].sort((a, b) => {
-            const nameA = a.name[lang] ?? a.name.en;
-            const nameB = b.name[lang] ?? b.name.en;
-            if (sort === "name-asc") return nameA.localeCompare(nameB);
-            if (sort === "name-desc") return nameB.localeCompare(nameA);
-            return getProgramUnits(b.id).length - getProgramUnits(a.id).length;
+        return [...items].sort((a, b) => {
+            const nameA = apiName(a, lang);
+            const nameB = apiName(b, lang);
+            return sort === "name-asc"
+                ? nameA.localeCompare(nameB)
+                : nameB.localeCompare(nameA);
         });
-
-        return items;
-    }, [universities, lang, query, category, sort]);
+    }, [universities, lang, query, sort]);
 
     if (status === "loading") {
         return <SkeletonGrid count={8} />;
@@ -84,28 +66,9 @@ export default function ExploreUniversitiesPage() {
                     <SelectContent>
                         <SelectItem value="name-asc">{t("explore.sortNameAsc")}</SelectItem>
                         <SelectItem value="name-desc">{t("explore.sortNameDesc")}</SelectItem>
-                        <SelectItem value="departments-desc">{t("explore.sortByDepartments")}</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
-
-            {/* Filter */}
-            {categories.length > 0 && (
-                <div className="flex flex-wrap items-center gap-2">
-                    <FilterChip active={category === null} onClick={() => setCategory(null)}>
-                        {t("filter.all")}
-                    </FilterChip>
-                    {categories.map(cat => (
-                        <FilterChip
-                            key={cat.id}
-                            active={category === cat.id}
-                            onClick={() => setCategory(category === cat.id ? null : cat.id)}
-                        >
-                            {cat.label}
-                        </FilterChip>
-                    ))}
-                </div>
-            )}
 
             {/* Results Count */}
             <p className="text-sm text-muted-foreground">{t("explore.resultsCount", { count: filtered.length })}</p>

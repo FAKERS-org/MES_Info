@@ -5,7 +5,7 @@ import RequiredDocuments from "@/components/university/admissions/required-docum
 import AdmissionsContactCard from "@/components/university/contact-card";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
-import { getUniversity } from "@/data/universities";
+import { getUniversityDetail, toHeadingData } from "@/lib/api/universities";
 import { readLang } from "@/lib/language.server";
 import { universityTabs } from "@/lib/university-tabs";
 import { notFound } from "next/navigation";
@@ -15,17 +15,17 @@ interface UniversityPageProps {
 }
 
 export default async function UniversityPage({ params }: UniversityPageProps) {
-    const { university } = await params;
+    const { university: id } = await params;
 
-    const uni = getUniversity(university);
-    if (!uni) notFound();
+    const detail = await getUniversityDetail(id);
+    if (!detail) notFound();
 
     const lang = await readLang();
 
     return (
         <div className="space-y-6">
-            <UniversityHero university={uni} lang={lang} />
-            <UniversityMenu tabs={universityTabs(university)} />
+            <UniversityHero university={toHeadingData(detail)} lang={lang} />
+            <UniversityMenu tabs={universityTabs(id)} />
 
             <SectionLayout
                 breakpoint="md"
@@ -41,21 +41,6 @@ export default async function UniversityPage({ params }: UniversityPageProps) {
                     <AdmissionRoadmap />
                 </Card>
             </SectionLayout>
-
-            {/* <SectionLayout
-                breakpoint="md"
-                mainClassName="space-y-4"
-                aside={
-                    <div className="space-y-4">
-                        <HowToApply />
-                    </div>
-                }
-            >
-                <div className="space-y-4">
-                    <ScholarshipsBanner />
-                    <ScholarshipOptions />
-                </div>
-            </SectionLayout> */}
         </div>
     );
 }

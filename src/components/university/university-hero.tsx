@@ -1,9 +1,9 @@
 import DepartmentHeading from "@/components/department/department-heading";
-import type { University } from "@/data/universities";
+import type { UniversityHeadingData } from "@/components/department/department-heading";
 import type { Lang } from "@/lib/language";
 
 export interface UniversityHeroProps {
-    university: University;
+    university: UniversityHeadingData;
     lang: Lang;
 }
 
