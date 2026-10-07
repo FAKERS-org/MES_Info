@@ -325,6 +325,8 @@ export interface components {
          * @description A lab or centre of a unit.
          */
         Facilities: {
+            /** Id */
+            id: string;
             /** Title */
             title: string;
             /** Subtitle */
@@ -338,6 +340,19 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** LocalizedText */
+        LocalizedText: {
+            /**
+             * Kh
+             * @default
+             */
+            kh: string;
+            /**
+             * En
+             * @default
+             */
+            en: string;
         };
         /** PresignedUrlRequest */
         PresignedUrlRequest: {
@@ -397,6 +412,10 @@ export interface components {
             tuition_fee?: number | null;
             /** @default USD */
             fee_currency: components["schemas"]["Currency"];
+            /** Tuition Per Year */
+            tuition_per_year?: number | null;
+            /** Tuition Per Credit */
+            tuition_per_credit?: number | null;
         };
         /**
          * ProgramUpdate
@@ -459,10 +478,10 @@ export interface components {
             /** Position */
             position: number;
             /**
-             * Curriculum
+             * Curriculum Sections
              * @default []
              */
-            curriculum: components["schemas"]["CurriculumSection"][];
+            curriculum_sections: components["schemas"]["CurriculumSection"][];
             /**
              * Facilities
              * @default []
@@ -473,6 +492,12 @@ export interface components {
              * @default []
              */
             scholarships: components["schemas"]["UnitScholarship"][];
+            /**
+             * Requirements
+             * @default []
+             */
+            requirements: components["schemas"]["LocalizedText"][];
+            readonly curriculum: components["schemas"]["CurriculumSection"] | null;
         };
         /**
          * UnitKind
@@ -484,6 +509,8 @@ export interface components {
          * @description A scholarship open to students of one unit only.
          */
         UnitScholarship: {
+            /** Id */
+            id: string;
             /** Name En */
             name_en: string;
             /** Name Kh */
@@ -521,6 +548,15 @@ export interface components {
             logo?: string | null;
             /** Position */
             position: number;
+        };
+        /** UniversityContact */
+        UniversityContact: {
+            /** Phone */
+            phone?: string | null;
+            /** Email */
+            email?: string | null;
+            /** Telegram */
+            telegram?: string | null;
         };
         /**
          * UniversityCreate
@@ -585,6 +621,41 @@ export interface components {
              * @default []
              */
             programs: components["schemas"]["ProgramSummary"][];
+            /** University Category En */
+            university_category_en?: string | null;
+            /** University Category Kh */
+            university_category_kh?: string | null;
+            /** Description En */
+            description_en?: string | null;
+            /** Description Kh */
+            description_kh?: string | null;
+            /** Embed Map Url */
+            embed_map_url?: string | null;
+            /** Contact Phone */
+            contact_phone?: string | null;
+            /** Contact Email */
+            contact_email?: string | null;
+            /** Contact Telegram */
+            contact_telegram?: string | null;
+            /** Stats Students */
+            stats_students?: string | null;
+            /** Stats Tuition */
+            stats_tuition?: string | null;
+            /** Stats Established */
+            stats_established?: string | null;
+            readonly university_category: components["schemas"]["LocalizedText"] | null;
+            readonly description: components["schemas"]["LocalizedText"] | null;
+            readonly contact: components["schemas"]["UniversityContact"] | null;
+            readonly stats: components["schemas"]["UniversityStats"] | null;
+        };
+        /** UniversityStats */
+        UniversityStats: {
+            /** Students */
+            students?: string | null;
+            /** Tuition */
+            tuition?: string | null;
+            /** Established */
+            established?: string | null;
         };
         /**
          * UniversitySummary

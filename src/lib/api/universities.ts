@@ -26,15 +26,34 @@ export async function getUniversityDetail(id: string): Promise<UniversityDetail 
 
 /** Map the API's detail payload onto the data the heading renders. */
 export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
+    const stats = {
+        students: detail.stats_students ?? undefined,
+        tuition: detail.stats_tuition ?? undefined,
+        established:
+            detail.stats_established ??
+            (detail.established_year ? `Est. ${detail.established_year}` : undefined),
+    };
     return {
         id: detail.id,
         code: detail.abbreviation ?? undefined,
         name: { en: detail.name_en, kh: detail.name_kh ?? "" },
         logo: detail.logo_url ?? undefined,
         universityType: { en: detail.type === "PUBLIC" ? "Public" : "Private", kh: "" },
+        universityCategory:
+            detail.university_category_en || detail.university_category_kh
+                ? { en: detail.university_category_en ?? "", kh: detail.university_category_kh ?? "" }
+                : undefined,
         address: detail.address ? { en: detail.address, kh: detail.address } : undefined,
         website: detail.website ?? undefined,
-        stats: detail.established_year ? { established: `Est. ${detail.established_year}` } : undefined,
+        contact:
+            detail.contact_phone || detail.contact_email || detail.contact_telegram
+                ? {
+                      phone: detail.contact_phone ?? undefined,
+                      email: detail.contact_email ?? undefined,
+                      telegram: detail.contact_telegram ?? undefined,
+                  }
+                : undefined,
+        stats: stats.students || stats.tuition || stats.established ? stats : undefined,
     };
 }
 
@@ -115,7 +134,7 @@ export async function getUnitDetail(
     }));
 
     return {
-        curriculum: detail.curriculum ? detail.curriculum.map(mapCurriculum) : [],
+        curriculum: detail.curriculum_sections.map(mapCurriculum),
         facilities,
         scholarships,
     };
