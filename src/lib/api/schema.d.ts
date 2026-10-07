@@ -124,6 +124,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/public/universities/{university_id}/units/{unit_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Unit
+         * @description Get one unit with its curriculum, facilities and scholarships.
+         */
+        get: operations["get_unit_api_v1_public_universities__university_id__units__unit_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/universities/": {
         parameters: {
             query?: never;
@@ -254,10 +274,66 @@ export interface components {
          */
         Currency: "USD" | "KHR";
         /**
+         * CurriculumBlock
+         * @description One block of a curriculum section, e.g. a paragraph or a video.
+         */
+        CurriculumBlock: {
+            /** Badge Text */
+            badge_text: string;
+            /** Badge Background */
+            badge_background?: string | null;
+            /** Title */
+            title: string;
+            /** English Title */
+            english_title?: string | null;
+            /** Credits */
+            credits: string;
+            /** Description */
+            description: string;
+            /**
+             * Courses
+             * @default []
+             */
+            courses: string[];
+            /** Special Badge */
+            special_badge?: string | null;
+        };
+        /**
+         * CurriculumSection
+         * @description One curriculum section of a unit — a heading plus its blocks.
+         */
+        CurriculumSection: {
+            /** Heading Kh */
+            heading_kh: string;
+            /** Heading En */
+            heading_en: string;
+            /** Banner Text */
+            banner_text?: string | null;
+            /**
+             * Blocks
+             * @default []
+             */
+            blocks: components["schemas"]["CurriculumBlock"][];
+        };
+        /**
          * DegreeLevel
          * @enum {string}
          */
         DegreeLevel: "DIPLOMA" | "ASSOCIATE" | "BACHELOR" | "MASTER" | "PHD";
+        /**
+         * Facilities
+         * @description A lab or centre of a unit.
+         */
+        Facilities: {
+            /** Title */
+            title: string;
+            /** Subtitle */
+            subtitle?: string | null;
+            /** Description */
+            description: string;
+            /** Image */
+            image: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -356,10 +432,71 @@ export interface components {
          */
         Status: "DRAFT" | "PUBLISHED";
         /**
+         * UnitDetail
+         * @description UnitSummary plus the content a unit page renders.
+         */
+        UnitDetail: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Slug */
+            slug: string;
+            /** Parent Id */
+            parent_id?: string | null;
+            kind: components["schemas"]["UnitKind"];
+            /** Name En */
+            name_en: string;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** Category En */
+            category_en: string;
+            /** Category Kh */
+            category_kh?: string | null;
+            /** Logo */
+            logo?: string | null;
+            /** Position */
+            position: number;
+            /**
+             * Curriculum
+             * @default []
+             */
+            curriculum: components["schemas"]["CurriculumSection"][];
+            /**
+             * Facilities
+             * @default []
+             */
+            facilities: components["schemas"]["Facilities"][];
+            /**
+             * Scholarships
+             * @default []
+             */
+            scholarships: components["schemas"]["UnitScholarship"][];
+        };
+        /**
          * UnitKind
          * @enum {string}
          */
         UnitKind: "FACULTY" | "DEPARTMENT" | "SUB_DEPARTMENT" | "FOUNDATION";
+        /**
+         * UnitScholarship
+         * @description A scholarship open to students of one unit only.
+         */
+        UnitScholarship: {
+            /** Name En */
+            name_en: string;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** Coverage En */
+            coverage_en: string;
+            /** Coverage Kh */
+            coverage_kh?: string | null;
+            /** Requirements */
+            requirements?: {
+                [key: string]: unknown;
+            }[] | null;
+        };
         /** UnitSummary */
         UnitSummary: {
             /**
@@ -716,6 +853,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnitSummary"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_unit_api_v1_public_universities__university_id__units__unit_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+                unit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitDetail"];
                 };
             };
             /** @description Validation Error */

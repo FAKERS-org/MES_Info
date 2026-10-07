@@ -1,49 +1,38 @@
-import { notFound } from "next/navigation";
+import type { UniversityHeadingData } from "@/components/department/department-heading";
+import type { CurriculumSection, Unit } from "@/data/universities";
+import { getChildren } from "@/data/universities";
 import {
     buildUnitTree,
+    getUnitDetail,
     getUniversityDetail,
     getUniversityUnits,
     toHeadingData,
 } from "@/lib/api/universities";
-import { walkUnitPath } from "@/lib/unit-routes";
-import { readLang } from "@/lib/language.server";
 import type { Lang } from "@/lib/language";
-import type { CurriculumSection, Unit } from "@/data/universities";
-import type { UniversityHeadingData } from "@/components/department/department-heading";
-import { getChildren } from "@/data/universities";
+import { readLang } from "@/lib/language.server";
+import { walkUnitPath } from "@/lib/unit-routes";
+import { notFound } from "next/navigation";
 
 export interface ResolvedUnit {
     university: UniversityHeadingData;
     universityId: string;
-    /** The unit on the page — the last segment of the path. */
     unit: Unit;
-    /** The top-level unit the path starts at. */
     root: Unit;
-    /** Ids from the top-level unit down to `unit`, as they appear in the URL. */
     pathIds: string[];
     faculty: Unit | undefined;
     children: Unit[];
-    /** Stage 3b: the curriculum table does not exist yet. */
     curriculum: CurriculumSection | undefined;
+    facilities: any[];
+    scholarships: any[];
     lang: Lang;
 }
 
-/**
- * The one place a unit page turns its route path into data.
- *
- * The path is walked one level at a time, so a URL names the whole
- * chain and no unit is reachable by an id alone. Every page under
- * `/explore-universities/{university}/programs` resolves here, which
- * is what keeps them from disagreeing about what a faculty is.
- *
- * A path that leaves the tree is a `notFound()`, not a redirect: the
- * URL shape follows the data, so a unit is always reached by the
- * chain the data actually has.
- */
 export async function resolveUnitPage(universityId: string, pathIds: string[]): Promise<ResolvedUnit> {
-    const [detail, units] = await Promise.all([
+    const unitId = pathIds[pathIds.length - 1] ?? "";
+    const [detail, units, unitDetail] = await Promise.all([
         getUniversityDetail(universityId),
         getUniversityUnits(universityId),
+        getUnitDetail(universityId, unitId),
     ]);
     if (!detail) notFound();
 
@@ -61,7 +50,25 @@ export async function resolveUnitPage(universityId: string, pathIds: string[]): 
         pathIds,
         faculty: chain.find(candidate => candidate.kind === "faculty"),
         children: getChildren(unit),
-        curriculum: undefined,
+        curriculum: unitDetail?.curriculum
+            ? {
+                  headingKh: unitDetail.curriculum[0].headingKh,
+                  headingEn: unitDetail.curriculum[0].headingEn,
+                  bannerText: unitDetail.curriculum[0].bannerText ?? undefined,
+                  blocks: unitDetail.curriculum[0].blocks.map(block => ({
+                      badgeText: block.badgeText,
+                      badgeBg: block.badgeBg ?? undefined,
+                      title: block.title,
+                      englishTitle: block.englishTitle ?? undefined,
+                      credits: block.credits,
+                      description: block.description,
+                      courses: block.courses,
+                      specialBadge: block.specialBadge ?? undefined,
+                  })),
+              }
+            : undefined,
+        facilities: unitDetail?.facilities ?? [],
+        scholarships: unitDetail?.scholarships ?? [],
         lang: await readLang(),
     };
 }

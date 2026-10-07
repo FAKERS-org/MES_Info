@@ -61,14 +61,6 @@ export interface UniversityContact {
     telegram?: string;
 }
 
-/**
- * A scholarship open to students of one unit only, declared on that unit.
- *
- * A scholarship that any applicant to the university can take is not a unit's
- * business and lives on the university page; this type exists for the ones that
- * are — "GEE Excellence Scholarship", a lab grant for ISD. A unit with none
- * omits the field and its page omits the section.
- */
 export interface UnitScholarship {
     id: string;
     name: NamespacedText;
@@ -93,13 +85,9 @@ export interface Unit {
     category: NamespacedText;
     logo?: string;
     requirements: NamespacedText[];
-    /** Inline curriculum — replaces the separate academicCurriculum.ts file. */
     curriculum?: CurriculumSection;
-    /** Labs and centres, inherited by child units that declare none. */
     facilities?: Facility[];
-    /** Scholarships open only to students of this unit. */
     scholarships?: UnitScholarship[];
-    /** Recursive children. Omit for leaf units. */
     units?: Unit[];
 }
 
@@ -115,7 +103,6 @@ export interface University {
     embedMapUrl?: string;
     contact?: UniversityContact;
     stats?: UniversityStats;
-    /** Top-level units (faculties, departments, foundation years…). */
     units: Unit[];
 }
 

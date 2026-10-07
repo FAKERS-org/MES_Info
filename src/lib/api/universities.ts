@@ -1,8 +1,9 @@
-import type { components } from "@/lib/api/schema";
 import type { UniversityHeadingData } from "@/components/department/department-heading";
-import type { Unit, UnitKind } from "@/data/universities";
+import type { CurriculumSection, Facility, Unit, UnitKind, UnitScholarship } from "@/data/universities";
+import type { components } from "@/lib/api/schema";
 
 export type UniversityDetail = components["schemas"]["UniversityDetail"];
+export type UnitDetail = components["schemas"]["UnitDetail"];
 export type UniversityProgram = components["schemas"]["ProgramSummary"];
 export type UnitSummary = components["schemas"]["UnitSummary"];
 
@@ -33,9 +34,7 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
         universityType: { en: detail.type === "PUBLIC" ? "Public" : "Private", kh: "" },
         address: detail.address ? { en: detail.address, kh: detail.address } : undefined,
         website: detail.website ?? undefined,
-        stats: detail.established_year
-            ? { established: `Est. ${detail.established_year}` }
-            : undefined,
+        stats: detail.established_year ? { established: `Est. ${detail.established_year}` } : undefined,
     };
 }
 
@@ -63,6 +62,63 @@ export async function getUniversityUnits(universityId: string): Promise<UnitSumm
     if (res.status === 404 || res.status === 403) return [];
     if (!res.ok) throw new Error(`API /public/universities/${universityId}/units failed: ${res.status}`);
     return (await res.json()) as UnitSummary[];
+}
+
+export async function getUnitDetail(
+    universityId: string,
+    unitId: string,
+): Promise<{ curriculum: CurriculumSection[]; facilities: Facility[]; scholarships: UnitScholarship[] } | null> {
+    const res = await fetch(
+        `${API_URL}/public/universities/${encodeURIComponent(universityId)}/units/${encodeURIComponent(unitId)}`,
+        {
+            headers: { Accept: "application/json" },
+            next: { revalidate: 60 },
+        },
+    );
+    if (res.status === 404 || res.status === 403) return null;
+    if (!res.ok) throw new Error(`API /public/universities/${universityId}/units/${unitId} failed: ${res.status}`);
+    const detail = (await res.json()) as UnitDetail;
+
+    // Map API snake_case → UI camelCase so downstream consumers see the
+    // static-data shapes they already type against.
+    const mapCurriculum = (sec: any): CurriculumSection => ({
+        headingKh: sec.heading_kh,
+        headingEn: sec.heading_en,
+        bannerText: sec.banner_text ?? undefined,
+        blocks: sec.blocks.map((b: any) => ({
+            badgeText: b.badge_text,
+            badgeBg: b.badge_background ?? undefined,
+            title: b.title,
+            englishTitle: b.english_title ?? undefined,
+            credits: b.credits,
+            description: b.description,
+            courses: b.courses,
+            specialBadge: b.special_badge ?? undefined,
+        })),
+    });
+
+    const facilities: Facility[] = detail.facilities.map((facility, index) => ({
+        id: `${unitId}-facility-${index}`,
+        title: facility.title,
+        subtitle: facility.subtitle ?? undefined,
+        description: facility.description,
+        image: facility.image,
+    }));
+    const scholarships: UnitScholarship[] = detail.scholarships.map((scholarship, index) => ({
+        id: `${unitId}-scholarship-${index}`,
+        name: { en: scholarship.name_en, kh: scholarship.name_kh ?? "" },
+        coverage: { en: scholarship.coverage_en, kh: scholarship.coverage_kh ?? "" },
+        requirements: (scholarship.requirements ?? []).map(requirement => ({
+            en: String(requirement.en ?? ""),
+            kh: String(requirement.kh ?? ""),
+        })),
+    }));
+
+    return {
+        curriculum: detail.curriculum ? detail.curriculum.map(mapCurriculum) : [],
+        facilities,
+        scholarships,
+    };
 }
 
 /** API kind → the UI's unit kind; the tree components match on these. */
