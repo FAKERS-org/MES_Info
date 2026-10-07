@@ -5,31 +5,19 @@ import { IconList, IconListItem } from "@/components/shared/icon-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { UniversitySummary } from "@/hooks/use-universities";
-import { apiName } from "@/lib/language";
 import { useLanguage } from "@/lib/i18n";
+import { apiName } from "@/lib/language";
 import { universityHref } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight, Bookmark, MapPin } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, Bookmark, CalendarDays, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export interface UniversityTileProps {
     university: UniversitySummary;
-    /**
-     * `featured` is the rich card of `/explore-universities` (gradient head,
-     * fact rows, call to action); `compact` the link tile of the overview and
-     * the coming-soon boards. Both share the surface, the head with its logo
-     * and the fact rows, so the grids read as one system.
-     */
     variant?: "featured" | "compact";
     className?: string;
 }
 
-/**
- * One university in a grid, fed by the API's `UniversitySummary`.
- * Fields the API does not serve yet (description, website, category,
- * program count) are simply not rendered — they return with the
- * detail endpoints, not with placeholder rows.
- */
 export function UniversityTile({ university, variant = "compact", className }: UniversityTileProps) {
     const { lang, t } = useLanguage();
     const featured = variant === "featured";
@@ -54,13 +42,15 @@ export function UniversityTile({ university, variant = "compact", className }: U
             >
                 {featured && (
                     <div className="flex items-center justify-between px-6">
-                        <Badge
-                            variant="secondary"
-                            className="gap-1.5 rounded-full bg-white/15 text-white backdrop-blur hover:bg-white/20"
-                        >
-                            <ArrowUpRight className="h-3.5 w-3.5" />
-                            Top 1 Tech
-                        </Badge>
+                        {university.moeys_accredited && (
+                            <Badge
+                                variant="secondary"
+                                className="gap-1.5 rounded-full bg-white/15 text-white backdrop-blur hover:bg-white/20"
+                            >
+                                <BadgeCheck className="h-3.5 w-3.5" />
+                                {t("miscellaneous.accredited")}
+                            </Badge>
+                        )}
                         <Button
                             variant="ghost"
                             size="icon"
@@ -82,7 +72,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
                     {featured && (
                         <div className="flex flex-row items-end gap-1 pb-1">
                             <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
-                                {university.type === "PUBLIC" ? "Public" : "Private"}
+                                {university.type === "PUBLIC" ? t("miscellaneous.public") : t("miscellaneous.private")}
                             </Badge>
                         </div>
                     )}
@@ -99,6 +89,16 @@ export function UniversityTile({ university, variant = "compact", className }: U
                     >
                         <span className="truncate">{university.province}</span>
                     </IconListItem>
+                    {university.established_year != null && (
+                        <IconListItem
+                            className="gap-2.5 text-sm text-muted-foreground"
+                            icon={<CalendarDays className="h-4 w-4 shrink-0 text-muted-foreground/70" />}
+                        >
+                            <span className="truncate">
+                                {t("miscellaneous.established")} {university.established_year}
+                            </span>
+                        </IconListItem>
+                    )}
                 </IconList>
 
                 {featured && (

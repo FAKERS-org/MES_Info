@@ -5,15 +5,6 @@ import type { components } from "@/lib/api/schema";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useCallback, useContext } from "react";
 
-/**
- * The API seam for universities. List views read `UniversitySummary`
- * straight from the generated OpenAPI types, so a backend schema
- * change fails here at compile time instead of in the adapter.
- *
- * Detail pages still read the static data in `@/data` — the API's
- * detail endpoint has no units tree yet, which the programs explorer
- * needs. Wiring them is the next stage.
- */
 export type UniversitySummary = components["schemas"]["UniversitySummary"];
 
 type UniversitiesContextType = {

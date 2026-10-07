@@ -93,6 +93,8 @@
     "miscellaneous.faculty.singular": "Faculty",
     "miscellaneous.faculty.plural": "Faculties",
     "miscellaneous.location": "Location",
+    "miscellaneous.accredited": "MoEYS Accredited",
+    "miscellaneous.established": "Est.",
     "miscellaneous.viewProgram": "View Program",
     "miscellaneous.public": "Public",
     "miscellaneous.private": "Private",
