@@ -35,3 +35,13 @@ export function localize(text: NamespacedText | undefined, lang: Lang): string {
 export function apiName(row: { name_en: string; name_kh?: string | null }, lang: Lang): string {
     return lang === "kh" ? row.name_kh || row.name_en : row.name_en;
 }
+
+/** Bilingual overview from the API; English fallback, `undefined` when absent. */
+export function apiOverview(
+    row: { overview_en?: string | null; overview_kh?: string | null },
+    lang: Lang,
+): string | undefined {
+    return lang === "kh"
+        ? row.overview_kh || row.overview_en || undefined
+        : row.overview_en || undefined;
+}

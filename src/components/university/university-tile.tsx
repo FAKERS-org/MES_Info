@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { UniversitySummary } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
-import { apiName } from "@/lib/language";
+import { apiName, apiOverview } from "@/lib/language";
 import { universityHref } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, BadgeCheck, Bookmark, CalendarDays, MapPin } from "lucide-react";
@@ -24,6 +24,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
 
     const name = apiName(university, lang);
     const href = universityHref(university.id);
+    const overview = apiOverview(university, lang);
 
     const surface = cn(
         "relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-shadow",
@@ -81,6 +82,8 @@ export function UniversityTile({ university, variant = "compact", className }: U
 
             <div className="flex flex-1 flex-col px-6 pb-6 pt-14">
                 <h2 className="text-xl font-bold leading-snug text-foreground">{name}</h2>
+
+                {overview && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{overview}</p>}
 
                 <IconList className="mt-4 gap-2.5">
                     <IconListItem

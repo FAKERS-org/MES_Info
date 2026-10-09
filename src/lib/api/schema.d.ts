@@ -240,6 +240,58 @@ export interface paths {
         patch: operations["update_program_api_v1_admin_programs__program_id__patch"];
         trace?: never;
     };
+    "/api/v1/admin/universities/{university_id}/units/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Units Endpoint
+         * @description List all units of a university.
+         */
+        get: operations["list_units_endpoint_api_v1_admin_universities__university_id__units__get"];
+        put?: never;
+        /**
+         * Create Unit Endpoint
+         * @description Create a new unit (Faculty/Department) under a university.
+         */
+        post: operations["create_unit_endpoint_api_v1_admin_universities__university_id__units__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/universities/{university_id}/units/{unit_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Unit Endpoint
+         * @description Get one unit with its curriculum, facilities and scholarships.
+         */
+        get: operations["get_unit_endpoint_api_v1_admin_universities__university_id__units__unit_id__get"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete Unit Endpoint
+         * @description Delete a unit with child cascade.
+         */
+        delete: operations["delete_unit_endpoint_api_v1_admin_universities__university_id__units__unit_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Unit Endpoint
+         * @description Partial update - only send fields you want to change.
+         */
+        patch: operations["update_unit_endpoint_api_v1_admin_universities__university_id__units__unit_id__patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -436,6 +488,28 @@ export interface components {
          */
         Status: "DRAFT" | "PUBLISHED";
         /**
+         * UnitCreate
+         * @description The data required to create a new unit.
+         */
+        UnitCreate: {
+            /** Name En */
+            name_en: string;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** @default FACULTY */
+            kind: components["schemas"]["UnitKind"];
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Category En */
+            category_en: string;
+            /** Category Kh */
+            category_kh?: string | null;
+            /** Logo */
+            logo?: string | null;
+            /** Position */
+            position: number;
+        };
+        /**
          * UnitDetail
          * @description UnitSummary plus the content a unit page renders.
          */
@@ -536,6 +610,28 @@ export interface components {
             position: number;
         };
         /**
+         * UnitUpdate
+         * @description The data required to update a unit (partial update).
+         */
+        UnitUpdate: {
+            /** Name En */
+            name_en?: string | null;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** Kind */
+            kind?: string | null;
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Category En */
+            category_en?: string | null;
+            /** Category Kh */
+            category_kh?: string | null;
+            /** Logo */
+            logo?: string | null;
+            /** Position */
+            position?: number | null;
+        };
+        /**
          * UniversityCreate
          * @description Schema for creating a new university.
          */
@@ -571,6 +667,10 @@ export interface components {
             province: string;
             /** Logo Url */
             logo_url?: string | null;
+            /** Overview En */
+            overview_en?: string | null;
+            /** Overview Kh */
+            overview_kh?: string | null;
             /** Moeys Accredited */
             moeys_accredited: boolean;
             /** Established Year */
@@ -581,10 +681,6 @@ export interface components {
             website?: string | null;
             /** Cover Image Url */
             cover_image_url?: string | null;
-            /** Overview En */
-            overview_en?: string | null;
-            /** Overview Kh */
-            overview_kh?: string | null;
             /** Has Scholarships */
             has_scholarships: boolean;
             /** Scholarship Info */
@@ -642,6 +738,10 @@ export interface components {
             province: string;
             /** Logo Url */
             logo_url?: string | null;
+            /** Overview En */
+            overview_en?: string | null;
+            /** Overview Kh */
+            overview_kh?: string | null;
             /** Moeys Accredited */
             moeys_accredited: boolean;
             /** Established Year */
@@ -1001,7 +1101,7 @@ export interface operations {
         };
         responses: {
             /** @description Successful Response */
-            200: {
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1131,7 +1231,7 @@ export interface operations {
         };
         responses: {
             /** @description Successful Response */
-            200: {
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1201,6 +1301,170 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProgramSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_units_endpoint_api_v1_admin_universities__university_id__units__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitSummary"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_unit_endpoint_api_v1_admin_universities__university_id__units__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnitCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_unit_endpoint_api_v1_admin_universities__university_id__units__unit_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+                unit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_unit_endpoint_api_v1_admin_universities__university_id__units__unit_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+                unit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_unit_endpoint_api_v1_admin_universities__university_id__units__unit_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                university_id: string;
+                unit_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnitUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitSummary"];
                 };
             };
             /** @description Validation Error */
