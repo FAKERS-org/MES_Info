@@ -341,19 +341,6 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
-        /** LocalizedText */
-        LocalizedText: {
-            /**
-             * Kh
-             * @default
-             */
-            kh: string;
-            /**
-             * En
-             * @default
-             */
-            en: string;
-        };
         /** PresignedUrlRequest */
         PresignedUrlRequest: {
             /** File Name */
@@ -408,8 +395,6 @@ export interface components {
             degree_level: components["schemas"]["DegreeLevel"];
             /** Duration Years */
             duration_years?: number | null;
-            /** Tuition Fee */
-            tuition_fee?: number | null;
             /** @default USD */
             fee_currency: components["schemas"]["Currency"];
             /** Tuition Per Year */
@@ -496,8 +481,9 @@ export interface components {
              * Requirements
              * @default []
              */
-            requirements: components["schemas"]["LocalizedText"][];
-            readonly curriculum: components["schemas"]["CurriculumSection"] | null;
+            requirements: {
+                [key: string]: unknown;
+            }[];
         };
         /**
          * UnitKind
@@ -548,15 +534,6 @@ export interface components {
             logo?: string | null;
             /** Position */
             position: number;
-        };
-        /** UniversityContact */
-        UniversityContact: {
-            /** Phone */
-            phone?: string | null;
-            /** Email */
-            email?: string | null;
-            /** Telegram */
-            telegram?: string | null;
         };
         /**
          * UniversityCreate
@@ -643,19 +620,6 @@ export interface components {
             stats_tuition?: string | null;
             /** Stats Established */
             stats_established?: string | null;
-            readonly university_category: components["schemas"]["LocalizedText"] | null;
-            readonly description: components["schemas"]["LocalizedText"] | null;
-            readonly contact: components["schemas"]["UniversityContact"] | null;
-            readonly stats: components["schemas"]["UniversityStats"] | null;
-        };
-        /** UniversityStats */
-        UniversityStats: {
-            /** Students */
-            students?: string | null;
-            /** Tuition */
-            tuition?: string | null;
-            /** Established */
-            established?: string | null;
         };
         /**
          * UniversitySummary
@@ -727,6 +691,28 @@ export interface components {
             has_dormitory?: boolean | null;
             /** Dormitory Details */
             dormitory_details?: string | null;
+            /** University Category En */
+            university_category_en?: string | null;
+            /** University Category Kh */
+            university_category_kh?: string | null;
+            /** Description En */
+            description_en?: string | null;
+            /** Description Kh */
+            description_kh?: string | null;
+            /** Embed Map Url */
+            embed_map_url?: string | null;
+            /** Contact Phone */
+            contact_phone?: string | null;
+            /** Contact Email */
+            contact_email?: string | null;
+            /** Contact Telegram */
+            contact_telegram?: string | null;
+            /** Stats Students */
+            stats_students?: string | null;
+            /** Stats Tuition */
+            stats_tuition?: string | null;
+            /** Stats Established */
+            stats_established?: string | null;
         };
         /** ValidationError */
         ValidationError: {

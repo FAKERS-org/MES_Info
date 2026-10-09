@@ -1,5 +1,6 @@
 import type { UniversityHeadingData } from "@/components/department/department-heading";
 import type { CurriculumSection, Facility, Unit, UnitKind, UnitScholarship } from "@/data/universities";
+import { apiFetch } from "@/lib/api/fetch";
 import type { components } from "@/lib/api/schema";
 
 export type UniversityDetail = components["schemas"]["UniversityDetail"];
@@ -7,21 +8,13 @@ export type UnitDetail = components["schemas"]["UnitDetail"];
 export type UniversityProgram = components["schemas"]["ProgramSummary"];
 export type UnitSummary = components["schemas"]["UnitSummary"];
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
-
 /**
  * Server-side read of one university through the public API.
  * 404 (unknown id) and 403 (not published) both read as "no page";
  * any other failure throws to the error boundary.
  */
 export async function getUniversityDetail(id: string): Promise<UniversityDetail | null> {
-    const res = await fetch(`${API_URL}/public/universities/${encodeURIComponent(id)}`, {
-        headers: { Accept: "application/json" },
-        next: { revalidate: 60 },
-    });
-    if (res.status === 404 || res.status === 403) return null;
-    if (!res.ok) throw new Error(`API /public/universities/${id} failed: ${res.status}`);
-    return (await res.json()) as UniversityDetail;
+    return apiFetch<UniversityDetail>(`/public/universities/${encodeURIComponent(id)}`);
 }
 
 /** Map the API's detail payload onto the data the heading renders. */
@@ -57,46 +50,26 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
     };
 }
 
-/** A university's degree programs, flat, straight from the API. */
-export async function getUniversityPrograms(universityId: string): Promise<UniversityProgram[]> {
-    const res = await fetch(`${API_URL}/public/universities/${encodeURIComponent(universityId)}`, {
-        headers: { Accept: "application/json" },
-        next: { revalidate: 60 },
-    });
-    if (res.status === 404 || res.status === 403) return [];
-    if (!res.ok) throw new Error(`API /public/universities/${universityId} failed: ${res.status}`);
-    return ((await res.json()) as UniversityDetail).programs;
-}
-
 /**
  * A university's unit tree, flat with `parent_id` — the API's shape.
  * An unknown or unpublished university reads as "no units"; any other
  * failure throws to the error boundary.
  */
 export async function getUniversityUnits(universityId: string): Promise<UnitSummary[]> {
-    const res = await fetch(`${API_URL}/public/universities/${encodeURIComponent(universityId)}/units`, {
-        headers: { Accept: "application/json" },
-        next: { revalidate: 60 },
-    });
-    if (res.status === 404 || res.status === 403) return [];
-    if (!res.ok) throw new Error(`API /public/universities/${universityId}/units failed: ${res.status}`);
-    return (await res.json()) as UnitSummary[];
+    const units = await apiFetch<UnitSummary[]>(
+        `/public/universities/${encodeURIComponent(universityId)}/units`,
+    );
+    return units ?? [];
 }
 
 export async function getUnitDetail(
     universityId: string,
     unitId: string,
 ): Promise<{ curriculum: CurriculumSection[]; facilities: Facility[]; scholarships: UnitScholarship[] } | null> {
-    const res = await fetch(
-        `${API_URL}/public/universities/${encodeURIComponent(universityId)}/units/${encodeURIComponent(unitId)}`,
-        {
-            headers: { Accept: "application/json" },
-            next: { revalidate: 60 },
-        },
+    const detail = await apiFetch<UnitDetail>(
+        `/public/universities/${encodeURIComponent(universityId)}/units/${encodeURIComponent(unitId)}`,
     );
-    if (res.status === 404 || res.status === 403) return null;
-    if (!res.ok) throw new Error(`API /public/universities/${universityId}/units/${unitId} failed: ${res.status}`);
-    const detail = (await res.json()) as UnitDetail;
+    if (!detail) return null;
 
     // Map API snake_case → UI camelCase so downstream consumers see the
     // static-data shapes they already type against.

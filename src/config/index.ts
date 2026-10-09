@@ -23,3 +23,8 @@ export const LANGUAGE_CONFIG = {
   defaultLanguage: "kh" as const,
   supportedLanguages: ["kh", "en"] as const,
 } as const;
+
+export const API_CONFIG = {
+  /** Base URL of the external MES API. Override with NEXT_PUBLIC_API_URL. */
+  baseUrl: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1",
+} as const;

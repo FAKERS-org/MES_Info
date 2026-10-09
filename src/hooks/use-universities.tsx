@@ -29,7 +29,7 @@ export function UniversitiesProvider({ children }: { children: React.ReactNode }
 
     const refresh = useCallback(() => {
         queryResult.refetch();
-    }, [queryResult]);
+    }, [queryResult.refetch]);
 
     let status: "loading" | "error" | "success";
     if (queryResult.isLoading) {

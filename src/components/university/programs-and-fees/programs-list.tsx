@@ -78,10 +78,10 @@ export default function ProgramsList({ programs, lang }: ProgramsListProps) {
                                                 {program.duration_years} {t("miscellaneous.year.plural")}
                                             </span>
                                         )}
-                                        {program.tuition_fee != null && (
+                                        {program.tuition_per_year != null && (
                                             <span className="inline-flex items-center gap-1.5">
                                                 <Wallet className="h-4 w-4" />
-                                                {program.tuition_fee} {program.fee_currency}
+                                                {program.tuition_per_year} {program.fee_currency}
                                             </span>
                                         )}
                                     </div>
