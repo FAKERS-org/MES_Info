@@ -27,7 +27,7 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
             (detail.established_year ? `Est. ${detail.established_year}` : undefined),
     };
     return {
-        id: detail.id,
+        id: detail.public_id,
         code: detail.abbreviation ?? undefined,
         name: { en: detail.name_en, kh: detail.name_kh ?? "" },
         logo: detail.logo_url ?? undefined,
@@ -130,27 +130,32 @@ const KIND_TO_UI: Record<UnitSummary["kind"], UnitKind> = {
  * section when the list is empty.
  */
 export function buildUnitTree(units: UnitSummary[]): Unit[] {
-    const nodes = new Map(
-        units.map(row => [
-            row.id,
-            {
-                id: row.id,
-                kind: KIND_TO_UI[row.kind],
-                name: { en: row.name_en, kh: row.name_kh ?? "" },
-                category: { en: row.category_en, kh: row.category_kh ?? "" },
-                logo: row.logo ?? undefined,
-                requirements: [],
-                units: [] as Unit[],
-            } satisfies Unit,
-        ]),
-    );
+    // Rows are linked by the integer `parent_id`, but the public URLs carry
+    // `public_id` - so nodes are keyed by public_id for routing, and a second
+    // map by the integer PK is kept purely to reassemble the parent chain.
+    const byPublicId = new Map<string, Unit>();
+    const byPk = new Map<number, Unit>();
+
+    for (const row of units) {
+        const node: Unit = {
+            id: row.public_id,
+            kind: KIND_TO_UI[row.kind],
+            name: { en: row.name_en, kh: row.name_kh ?? "" },
+            category: { en: row.category_en, kh: row.category_kh ?? "" },
+            logo: row.logo ?? undefined,
+            requirements: [],
+            units: [],
+        };
+        byPublicId.set(row.public_id, node);
+        byPk.set(row.id, node);
+    }
 
     const roots: Unit[] = [];
     for (const row of units) {
-        const node = nodes.get(row.id)!;
-        const parent = row.parent_id ? nodes.get(row.parent_id) : undefined;
+        const node = byPublicId.get(row.public_id)!;
+        const parent = row.parent_id != null ? byPk.get(row.parent_id) : undefined;
         if (parent) {
-            parent.units.push(node);
+            parent.units!.push(node);
         } else {
             roots.push(node);
         }

@@ -123,7 +123,7 @@ export const universities: University[] = [
             kh: "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (ITC) ជាសាលាវិស្វកម្មសាធារណៈឈានមុខគេនៅកម្ពុជា...",
             en: "The Institute of Technology of Cambodia (ITC) is the leading public engineering school in Cambodia...",
         },
-        logo: "/images/ITC-logo.png",
+        logo: "https://pub-395f4b6a8d8a4a269a18f80c088e2d47.r2.dev/uploads/itc/logo.webp",
         website: "itc.edu.kh",
         address: {
             kh: "វិថីសហព័ន្ធរុស្សី ខណ្ឌទួលគោក រាជធានីភ្នំពេញ",
