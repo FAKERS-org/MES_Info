@@ -13,6 +13,7 @@ import { apiName } from "@/lib/language";
 import { useMemo, useState } from "react";
 
 type SortKey = "name-asc" | "name-desc";
+const PAGE_SIZE = 6;
 
 export default function ExploreUniversitiesPage() {
     const { lang, t } = useLanguage();
@@ -20,6 +21,7 @@ export default function ExploreUniversitiesPage() {
 
     const [query, setQuery] = useState("");
     const [sort, setSort] = useState<SortKey>("name-asc");
+    const [currentPage, setCurrentPage] = useState(1);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -38,8 +40,34 @@ export default function ExploreUniversitiesPage() {
         });
     }, [universities, lang, query, sort]);
 
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+    const paginated = useMemo(() => {
+        const start = (safeCurrentPage - 1) * PAGE_SIZE;
+        return filtered.slice(start, start + PAGE_SIZE);
+    }, [filtered, safeCurrentPage]);
+
+    const handleQueryChange = (val: string) => {
+        setQuery(val);
+        setCurrentPage(1);
+    };
+
+    const handleSortChange = (val: SortKey) => {
+        setSort(val);
+        setCurrentPage(1);
+    };
+
+    const handlePageChange = (page: number) => {
+        const target = Math.min(Math.max(1, page), totalPages);
+        setCurrentPage(target);
+        if (typeof window !== "undefined") {
+            window.scrollTo({ top: 320, behavior: "smooth" });
+        }
+    };
+
     if (status === "loading") {
-        return <SkeletonGrid count={8} />;
+        return <SkeletonGrid count={6} />;
     }
 
     if (status === "error") {
@@ -54,12 +82,12 @@ export default function ExploreUniversitiesPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <SearchInput
                     value={query}
-                    onChange={setQuery}
+                    onChange={handleQueryChange}
                     placeholder={t("topbar.searchPlaceholder")}
                     className="w-full sm:max-w-md"
                 />
 
-                <Select value={sort} onValueChange={v => setSort(v as SortKey)}>
+                <Select value={sort} onValueChange={v => handleSortChange(v as SortKey)}>
                     <SelectTrigger className="w-48">
                         <SelectValue placeholder={t("explore.sortLabel")} />
                     </SelectTrigger>
@@ -76,15 +104,24 @@ export default function ExploreUniversitiesPage() {
             {filtered.length === 0 ? (
                 <p className="py-12 text-center text-sm text-muted-foreground">{t("explore.noResults")}</p>
             ) : (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                    {filtered.map(university => (
-                        <UniversityTile key={university.id} university={university} variant="featured" />
-                    ))}
-                </div>
-            )}
+                <>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                        {paginated.map(university => (
+                            <UniversityTile key={university.id} university={university} variant="featured" />
+                        ))}
+                    </div>
 
-            {/* Pagination */}
-            <UniversityPagination />
+                    {filtered.length > 0 && (
+                        <UniversityPagination
+                            currentPage={safeCurrentPage}
+                            totalPages={totalPages}
+                            totalItems={filtered.length}
+                            pageSize={PAGE_SIZE}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
+                </>
+            )}
         </div>
     );
 }
