@@ -17,7 +17,7 @@ export default function UniversityHeader() {
                     className="bg-sky-100 text-sky-700 hover:bg-sky-100 dark:bg-sky-950/50 dark:text-sky-200 dark:hover:bg-sky-950/50 px-4 py-1.5 text-sm font-medium rounded-full flex items-center gap-2 border-0"
                 >
                     <BadgeCheck className="h-4 w-4 text-sky-600 dark:text-sky-400" />
-                    បញ្ជាក់សាលារៀនដែលមានអនុម័ត • Verified Accreditation
+                    {t("miscellaneous.verifiedAccreditation")}
                 </Badge>
 
                 {/* Main Title */}
@@ -26,7 +26,9 @@ export default function UniversityHeader() {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">{t("explore.subtitle")}</p>
+                <p className="max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
+                    {t("explore.subtitle")}
+                </p>
 
                 {/* Stats Row */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
