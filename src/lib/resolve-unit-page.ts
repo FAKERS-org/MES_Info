@@ -22,6 +22,7 @@ export interface ResolvedUnit {
     faculty: Unit | undefined;
     children: Unit[];
     curriculum: CurriculumSection | undefined;
+    curriculums: CurriculumSection[];
     facilities: any[];
     scholarships: any[];
     lang: Lang;
@@ -50,23 +51,8 @@ export async function resolveUnitPage(universityId: string, pathIds: string[]): 
         pathIds,
         faculty: chain.find(candidate => candidate.kind === "faculty"),
         children: getChildren(unit),
-        curriculum: unitDetail?.curriculum
-            ? {
-                  headingKh: unitDetail.curriculum[0].headingKh,
-                  headingEn: unitDetail.curriculum[0].headingEn,
-                  bannerText: unitDetail.curriculum[0].bannerText ?? undefined,
-                  blocks: unitDetail.curriculum[0].blocks.map(block => ({
-                      badgeText: block.badgeText,
-                      badgeBg: block.badgeBg ?? undefined,
-                      title: block.title,
-                      englishTitle: block.englishTitle ?? undefined,
-                      credits: block.credits,
-                      description: block.description,
-                      courses: block.courses,
-                      specialBadge: block.specialBadge ?? undefined,
-                  })),
-              }
-            : undefined,
+        curriculum: unitDetail?.curriculum?.[0],
+        curriculums: unitDetail?.curriculum ?? [],
         facilities: unitDetail?.facilities ?? [],
         scholarships: unitDetail?.scholarships ?? [],
         lang: await readLang(),

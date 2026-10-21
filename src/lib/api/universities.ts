@@ -7,6 +7,7 @@ export type UniversityDetail = components["schemas"]["UniversityDetail"];
 export type UnitDetail = components["schemas"]["UnitDetail"];
 export type UniversityProgram = components["schemas"]["ProgramSummary"];
 export type UnitSummary = components["schemas"]["UnitSummary"];
+export type PageUnitSummary = components["schemas"]["Page_UnitSummary_"];
 
 /**
  * Server-side read of one university through the public API.
@@ -56,10 +57,12 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
  * failure throws to the error boundary.
  */
 export async function getUniversityUnits(universityId: string): Promise<UnitSummary[]> {
-    const units = await apiFetch<UnitSummary[]>(
-        `/public/universities/${encodeURIComponent(universityId)}/units`,
+    const res = await apiFetch<PageUnitSummary | UnitSummary[]>(
+        `/public/universities/${encodeURIComponent(universityId)}/units?limit=100`,
     );
-    return units ?? [];
+    if (!res) return [];
+    if (Array.isArray(res)) return res;
+    return res.items ?? [];
 }
 
 export async function getUnitDetail(

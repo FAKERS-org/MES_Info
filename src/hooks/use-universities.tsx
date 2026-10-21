@@ -17,7 +17,7 @@ type UniversitiesContextType = {
 const UniversitiesContext = createContext<UniversitiesContextType | undefined>(undefined);
 
 async function fetchUniversities(): Promise<UniversitySummary[]> {
-    const response = await apiClient.get<{ items: UniversitySummary[] }>("/public/universities/");
+    const response = await apiClient.get<{ items: UniversitySummary[] }>("/public/universities/?limit=100");
     return response.data.items;
 }
 

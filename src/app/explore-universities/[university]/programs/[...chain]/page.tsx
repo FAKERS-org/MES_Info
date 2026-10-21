@@ -23,12 +23,13 @@ export default async function UnitPage({ params }: UnitPageProps) {
         pathIds,
         faculty,
         curriculum,
+        curriculums,
+        facilities,
+        scholarships,
         lang,
     } = await resolveUnitPage(university, chain);
 
-    // Stage 3b: the facilities table does not exist yet, so this
-    // resolves empty for API universities and the section stays hidden.
-    const facilities = getFacilitiesFor(universityId, unit.id);
+    const displayFacilities = facilities.length > 0 ? facilities : getFacilitiesFor(universityId, unit.id);
 
     return (
         <div>
@@ -47,7 +48,13 @@ export default async function UnitPage({ params }: UnitPageProps) {
             )}
 
             <SectionLayout background="muted" aside={<AdmissionContact university={uni} lang={lang} />}>
-                {curriculum ? (
+                {curriculums.length > 0 ? (
+                    <div className="space-y-6">
+                        {curriculums.map((curr, idx) => (
+                            <AcademicCurriculum key={idx} curriculum={curr} lang={lang} />
+                        ))}
+                    </div>
+                ) : curriculum ? (
                     <AcademicCurriculum curriculum={curriculum} lang={lang} />
                 ) : (
                     <div className="max-w-4xl mx-auto p-8 text-center text-muted-foreground">
@@ -56,15 +63,15 @@ export default async function UnitPage({ params }: UnitPageProps) {
                 )}
             </SectionLayout>
 
-            {facilities.length > 0 && (
+            {displayFacilities.length > 0 && (
                 <SectionLayout background="muted">
-                    <Facilities facilities={facilities} />
+                    <Facilities facilities={displayFacilities} />
                 </SectionLayout>
             )}
 
-            {unit.scholarships && unit.scholarships.length > 0 && (
+            {scholarships.length > 0 && (
                 <SectionLayout background="muted">
-                    <UnitScholarships scholarships={unit.scholarships} lang={lang} />
+                    <UnitScholarships scholarships={scholarships} lang={lang} />
                 </SectionLayout>
             )}
         </div>
