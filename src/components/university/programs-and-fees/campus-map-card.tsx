@@ -1,7 +1,17 @@
 import { Card } from "@/components/ui/card";
 import { ExternalLink, Map, MapPin } from "lucide-react";
 
-export default function CampusMapCard() {
+export interface CampusMapCardProps {
+    address?: string | null;
+    mapUrl?: string | null;
+    locationName?: string | null;
+}
+
+export default function CampusMapCard({
+    address,
+    mapUrl,
+    locationName,
+}: CampusMapCardProps = {}) {
     return (
         <Card className="w-full rounded-[24px] border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-card overflow-hidden">
             <div className="p-5 flex flex-col gap-4">
@@ -13,7 +23,11 @@ export default function CampusMapCard() {
                                 ទីតាំង និងផែនទី (Campus Map)
                             </h2>
                         </div>
-                        <span className="text-blue-600 dark:text-blue-400 font-bold text-sm whitespace-nowrap pt-1">Toul Kork</span>
+                        {locationName && (
+                            <span className="text-blue-600 dark:text-blue-400 font-bold text-sm whitespace-nowrap pt-1">
+                                {locationName}
+                            </span>
+                        )}
                     </div>
 
                     {/* --- Map Container --- */}
@@ -29,20 +43,28 @@ export default function CampusMapCard() {
                         <div className="absolute bottom-3 left-3 right-3 bg-card rounded-xl p-2.5 flex items-center justify-between shadow-md">
                             <div className="flex items-center gap-2 overflow-hidden">
                                 <MapPin className="w-5 h-5 text-[#e55c5c] shrink-0" strokeWidth={2.5} />
-                                <span className="text-foreground font-bold text-sm truncate">Russian ...</span>
+                                <span className="text-foreground font-bold text-sm truncate">
+                                    {address || "Main Campus Location"}
+                                </span>
                             </div>
 
-                            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400 cursor-pointer hover:underline shrink-0">
-                                <span className="font-bold text-sm font-khmer">ទិសដៅ (Directions)</span>
-                                <ExternalLink className="w-4 h-4" strokeWidth={2.5} />
-                            </div>
+                            {mapUrl && (
+                                <a
+                                    href={mapUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="flex items-center gap-1 text-blue-600 dark:text-blue-400 cursor-pointer hover:underline shrink-0"
+                                >
+                                    <span className="font-bold text-sm font-khmer">ទិសដៅ (Directions)</span>
+                                    <ExternalLink className="w-4 h-4" strokeWidth={2.5} />
+                                </a>
+                            )}
                         </div>
                     </div>
 
                     {/* --- Description Text --- */}
                     <p className="text-muted-foreground text-[14px] leading-relaxed font-khmer mt-1">
-                        ស្ថិតនៅលើមហាវិថីព្រះចន្ទចំបូរ ជិតស្ថានអាកាសព្យាបាល ប្រទេសកម្ពុជា និងជិតស្ថានីយ៍ប្រេងឥន្ធនៈ
-                        (Techno Flyover), រាជធានីភ្នំពេញ។
+                        {address || "ស្ថិតនៅលើមហាវិថីសហព័ន្ធរុស្ស៊ី រាជធានីភ្នំពេញ។"}
                     </p>
                 </div>
             </Card>

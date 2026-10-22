@@ -4,6 +4,7 @@ import { apiFetch } from "@/lib/api/fetch";
 import type { components } from "@/lib/api/schema";
 
 export type UniversityDetail = components["schemas"]["UniversityDetail"];
+export type CampusSummary = components["schemas"]["CampusSummary"];
 export type UnitDetail = components["schemas"]["UnitDetail"];
 export type UniversityProgram = components["schemas"]["ProgramSummary"];
 export type UnitSummary = components["schemas"]["UnitSummary"];
