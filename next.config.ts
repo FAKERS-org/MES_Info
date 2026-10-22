@@ -7,6 +7,7 @@ import type { NextConfig } from "next";
  * keeps the two apart. Overridable so the same file can serve a normal build.
  */
 const nextConfig: NextConfig = {
+  output: "standalone",
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   images: {
     remotePatterns: [
