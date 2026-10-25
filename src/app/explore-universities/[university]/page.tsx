@@ -9,15 +9,17 @@ import CampusMapCard from "@/components/university/programs-and-fees/campus-map-
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import { getUniversityDetail, toHeadingData } from "@/lib/api/universities";
-import { apiName } from "@/lib/language";
-import { readLang } from "@/lib/language.server";
+import { apiDescription, apiName, apiOverview } from "@/lib/language";
+import { getServerTranslator, readLang } from "@/lib/language.server";
 import { universityTabs } from "@/lib/university-tabs";
 import {
     ArrowRight,
+    Award,
     BadgeCheck,
     BookOpen,
     Building2,
     CalendarDays,
+    GraduationCap,
     Home,
     MapPin,
 } from "lucide-react";
@@ -49,17 +51,11 @@ export default async function UniversityPage({ params, searchParams }: Universit
             : rootDetail;
 
     const lang = await readLang();
+    const t = getServerTranslator(lang);
     const uniName = apiName(activeDetail, lang);
 
-    const description =
-        (lang === "kh" ? activeDetail.description_kh || activeDetail.description_en : activeDetail.description_en || activeDetail.description_kh) ??
-        (lang === "kh" ? activeDetail.overview_kh || activeDetail.overview_en : activeDetail.overview_en || activeDetail.overview_kh);
-
-    const overview =
-        lang === "kh"
-            ? activeDetail.overview_kh || activeDetail.overview_en
-            : activeDetail.overview_en || activeDetail.overview_kh;
-
+    const overview = apiOverview(activeDetail, lang);
+    const description = apiDescription(activeDetail, lang);
     const programsCount = activeDetail.programs?.length ?? 0;
 
     return (
@@ -94,7 +90,7 @@ export default async function UniversityPage({ params, searchParams }: Universit
                     <CardHeader className="pb-3">
                         <CardTitle className="text-xl font-bold flex items-center gap-2">
                             <Building2 className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                            {lang === "kh" ? "អំពីគ្រឹះស្ថានសិក្សា" : "About the University"}
+                            {t("university.aboutTitle")}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4 text-foreground leading-relaxed">
@@ -109,9 +105,7 @@ export default async function UniversityPage({ params, searchParams }: Universit
                             </div>
                         ) : !overview ? (
                             <p className="text-sm text-muted-foreground italic">
-                                {lang === "kh"
-                                    ? "មិនទាន់មានការពិពណ៌នាលម្អិតនៅឡើយទេ។"
-                                    : "Detailed profile and description not available yet."}
+                                {t("university.noDescription")}
                             </p>
                         ) : null}
                     </CardContent>
@@ -121,7 +115,7 @@ export default async function UniversityPage({ params, searchParams }: Universit
                 <Card className="border border-border shadow-sm rounded-2xl bg-card">
                     <CardHeader className="pb-3">
                         <CardTitle className="text-lg font-bold">
-                            {lang === "kh" ? "ព័ត៌មានសំខាន់ៗ" : "Key Information"}
+                            {t("university.keyInfo")}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -130,16 +124,12 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                 <BadgeCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">
-                                        {lang === "kh" ? "ការទទួលស្គាល់ផ្លូវការ" : "Accreditation"}
+                                        {t("university.accreditation")}
                                     </p>
                                     <p className="font-semibold text-sm">
                                         {activeDetail.moeys_accredited
-                                            ? lang === "kh"
-                                                ? "ទទួលស្គាល់ដោយក្រសួងអប់រំ (MoEYS)"
-                                                : "Accredited by MoEYS"
-                                            : lang === "kh"
-                                              ? "កំពុងរង់ចាំការបញ្ជាក់"
-                                              : "Standard Recognition"}
+                                            ? t("university.accreditedMoEYS")
+                                            : t("university.standardRecognition")}
                                     </p>
                                 </div>
                             </div>
@@ -148,10 +138,10 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                 <MapPin className="h-5 w-5 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">
-                                        {lang === "kh" ? "ខេត្ត / រាជធានី" : "Province / City"}
+                                        {t("university.provinceCity")}
                                     </p>
                                     <p className="font-semibold text-sm">
-                                        {activeDetail.province || (lang === "kh" ? "ភ្នំពេញ" : "Phnom Penh")}
+                                        {activeDetail.province || t("university.phnomPenh")}
                                     </p>
                                 </div>
                             </div>
@@ -160,14 +150,12 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                 <CalendarDays className="h-5 w-5 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">
-                                        {lang === "kh" ? "ឆ្នាំបង្កើត" : "Established Year"}
+                                        {t("university.establishedYear")}
                                     </p>
                                     <p className="font-semibold text-sm">
                                         {activeDetail.established_year
-                                            ? `Est. ${activeDetail.established_year}`
-                                            : lang === "kh"
-                                              ? "មិនបានបញ្ជាក់"
-                                              : "Not specified"}
+                                            ? `${t("miscellaneous.established")} ${activeDetail.established_year}`
+                                            : t("university.notSpecified")}
                                     </p>
                                 </div>
                             </div>
@@ -176,15 +164,12 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                 <Home className="h-5 w-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">
-                                        {lang === "kh" ? "អន្តេវាសិកដ្ឋាន (កន្លែងស្នាក់)" : "Dormitory"}
+                                        {t("university.dormitory")}
                                     </p>
                                     <p className="font-semibold text-sm">
                                         {activeDetail.has_dormitory
-                                            ? activeDetail.dormitory_details ||
-                                              (lang === "kh" ? "មានកន្លែងស្នាក់នៅសម្រាប់និស្សិត" : "Dormitory available")
-                                            : lang === "kh"
-                                              ? "មិនមានកន្លែងស្នាក់នៅផ្ទាល់"
-                                              : "No on-campus dormitory"}
+                                            ? activeDetail.dormitory_details || t("university.dormitoryAvailable")
+                                            : t("university.noDormitory")}
                                     </p>
                                 </div>
                             </div>
@@ -192,12 +177,57 @@ export default async function UniversityPage({ params, searchParams }: Universit
                     </CardContent>
                 </Card>
 
+                {/* Quick Pathways Hub */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Link
+                        href={`/explore-universities/${id}/admissions`}
+                        className="group p-4 rounded-2xl border border-border bg-card hover:bg-muted/50 transition-all flex items-center justify-between shadow-xs"
+                    >
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 group-hover:scale-105 transition-transform">
+                                <GraduationCap className="h-5 w-5" />
+                            </div>
+                            <div>
+                                <p className="font-bold text-sm text-foreground">
+                                    {t("university.admissionRoadmapTitle")}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    {t("university.admissionRoadmapDesc")}
+                                </p>
+                            </div>
+                        </div>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+                    </Link>
+
+                    <Link
+                        href={`/explore-universities/${id}/scholarships`}
+                        className="group p-4 rounded-2xl border border-border bg-card hover:bg-muted/50 transition-all flex items-center justify-between shadow-xs"
+                    >
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 group-hover:scale-105 transition-transform">
+                                <Award className="h-5 w-5" />
+                            </div>
+                            <div>
+                                <p className="font-bold text-sm text-foreground">
+                                    {t("university.scholarshipsTitle")}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    {activeDetail.has_scholarships
+                                        ? t("university.scholarshipsAvailable")
+                                        : t("university.scholarshipsInquire")}
+                                </p>
+                            </div>
+                        </div>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+                    </Link>
+                </div>
+
                 {/* Programs Quick Access Card */}
                 <Card className="border border-border shadow-sm rounded-2xl bg-card">
                     <CardHeader className="flex flex-row items-center justify-between pb-3">
                         <CardTitle className="text-lg font-bold flex items-center gap-2">
                             <BookOpen className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                            {lang === "kh" ? "កម្មវិធីសិក្សា" : "Academic Programs"}
+                            {t("university.academicPrograms")}
                             {programsCount > 0 && (
                                 <Badge variant="secondary" className="ml-2 font-semibold">
                                     {programsCount}
@@ -206,7 +236,7 @@ export default async function UniversityPage({ params, searchParams }: Universit
                         </CardTitle>
                         <Button asChild variant="ghost" size="sm" className="gap-1 text-sky-600 dark:text-sky-400">
                             <Link href={`/explore-universities/${id}/programs`}>
-                                {lang === "kh" ? "មើលទាំងអស់" : "View all"}
+                                {t("university.viewAll")}
                                 <ArrowRight className="h-4 w-4" />
                             </Link>
                         </Button>
@@ -235,9 +265,7 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                 <div className="pt-2 text-center">
                                     <Button asChild variant="outline" className="w-full rounded-xl">
                                         <Link href={`/explore-universities/${id}/programs`}>
-                                            {lang === "kh"
-                                                ? `ស្វែងយល់កម្មវិធីសិក្សាទាំង ${programsCount} ជំនាញ`
-                                                : `Explore all ${programsCount} academic programs`}
+                                            {t("university.exploreAllPrograms", { count: programsCount })}
                                         </Link>
                                     </Button>
                                 </div>
@@ -245,13 +273,11 @@ export default async function UniversityPage({ params, searchParams }: Universit
                         ) : (
                             <div className="py-6 text-center text-sm text-muted-foreground">
                                 <p>
-                                    {lang === "kh"
-                                        ? "សូមចូលទៅកាន់ផ្ទាំងកម្មវិធីសិក្សា ដើម្បីពិនិត្យមើលមហាវិទ្យាល័យ និងដេប៉ាតឺម៉ង់។"
-                                        : "Check the Programs & Faculties tab to explore unit hierarchy and departments."}
+                                    {t("university.exploreProgramsHint")}
                                 </p>
                                 <Button asChild variant="outline" className="mt-4 rounded-xl">
                                     <Link href={`/explore-universities/${id}/programs`}>
-                                        {lang === "kh" ? "ចូលមើលកម្មវិធីសិក្សា" : "Go to Programs"}
+                                        {t("university.goToPrograms")}
                                     </Link>
                                 </Button>
                             </div>

@@ -44,7 +44,8 @@ export default function ExploreUniversitiesPage() {
         const items = universities.filter(u => {
             const name = apiName(u, lang).toLowerCase();
             const province = (u.province || "").toLowerCase();
-            const matchesQuery = !q || name.includes(q) || province.includes(q);
+            const abbrev = (u.abbreviation || "").toLowerCase();
+            const matchesQuery = !q || name.includes(q) || province.includes(q) || abbrev.includes(q);
             const matchesType = selectedType === "ALL" || u.type === selectedType;
             const matchesProvince = selectedProvince === "ALL" || u.province === selectedProvince;
 

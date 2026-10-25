@@ -8,9 +8,9 @@ import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import { getUniversityDetail, toHeadingData } from "@/lib/api/universities";
 import { apiName } from "@/lib/language";
-import { readLang } from "@/lib/language.server";
+import { getServerTranslator, readLang } from "@/lib/language.server";
 import { universityTabs } from "@/lib/university-tabs";
-import { Award, CheckCircle2, Gift, Info } from "lucide-react";
+import { Award, CheckCircle2, Info } from "lucide-react";
 import { notFound } from "next/navigation";
 
 interface ScholarshipsPageProps {
@@ -38,6 +38,7 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
             : rootDetail;
 
     const lang = await readLang();
+    const t = getServerTranslator(lang);
     const uniName = apiName(activeDetail, lang);
     const scholarships = activeDetail.scholarships ?? [];
 
@@ -72,13 +73,11 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
                             </div>
                             <div className="space-y-1">
                                 <h1 className="text-xl font-bold text-foreground">
-                                    {lang === "kh" ? "អាហារូបករណ៍ និងការឧបត្ថម្ភ" : "Scholarships & Financial Aid"}
+                                    {t("university.scholarshipsHeading")}
                                 </h1>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {activeDetail.scholarship_info ||
-                                        (lang === "kh"
-                                            ? `ព័ត៌មានអាហារូបករណ៍ផ្លូវការ និងការលើកទឹកចិត្តការសិក្សាសម្រាប់ ${uniName}`
-                                            : `Official scholarship programs and merit-based financial aid at ${uniName}.`)}
+                                        t("university.scholarshipsDefaultInfo", { name: uniName })}
                                 </p>
                             </div>
                         </div>
@@ -110,7 +109,7 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
                                     {sch.requirements && sch.requirements.length > 0 && (
                                         <CardContent className="space-y-2 pt-0">
                                             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                                {lang === "kh" ? "លក្ខខណ្ឌតម្រូវ" : "Requirements"}
+                                                {t("university.requirementsLabel")}
                                             </p>
                                             <ul className="space-y-1.5 text-sm text-foreground">
                                                 {sch.requirements.map((req: any, idx: number) => {
@@ -140,16 +139,12 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
                                 <Info className="h-6 w-6" />
                             </div>
                             <h2 className="text-base font-semibold text-foreground">
-                                {lang === "kh" ? "មិនទាន់មានទិន្នន័យអាហារូបករណ៍ផ្ទាល់" : "No Specific Scholarships Listed"}
+                                {t("university.noScholarshipsTitle")}
                             </h2>
                             <p className="text-sm text-muted-foreground leading-relaxed">
                                 {activeDetail.has_scholarships
-                                    ? lang === "kh"
-                                        ? "គ្រឹះស្ថាននេះមានអាហារូបករណ៍។ សូមទាក់ទងការិយាល័យចូលរៀន ឬពិនិត្យគេហទំព័រផ្លូវការសម្រាប់ព័ត៌មានលម្អិត។"
-                                        : "This university provides scholarships. Please contact the admissions office or consult their official portal for application guidelines."
-                                    : lang === "kh"
-                                      ? "សូមទាក់ទងមកកាន់ការិយាល័យកិច្ចការនិស្សិត ដើម្បីសាកសួរអំពីអាហារូបករណ៍របស់រដ្ឋ ឬដៃគូ។"
-                                      : "Please contact the admissions desk to inquire about governmental or partner scholarship options."}
+                                    ? t("university.scholarshipsAvailableNotice")
+                                    : t("university.scholarshipsInquireNotice")}
                             </p>
                         </div>
                     </Card>

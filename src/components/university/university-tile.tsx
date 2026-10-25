@@ -63,16 +63,25 @@ export function UniversityTile({ university, variant = "compact", className }: U
                 )}
 
                 <div className="absolute -bottom-10 left-6 right-6 z-10 flex items-end justify-between gap-3">
-                    <EntityLogo
-                        src={university.logo_url ?? undefined}
-                        alt={name}
-                        className="h-20 w-20 shrink-0 rounded-full bg-white shadow-lg"
-                        fallbackClassName="text-sm font-bold text-slate-700"
-                        fallback={university.abbreviation || name.charAt(0)}
-                    />
+                    <Link href={href} className="shrink-0 transition-transform hover:scale-105">
+                        <EntityLogo
+                            src={university.logo_url ?? undefined}
+                            alt={name}
+                            className="h-20 w-20 shrink-0 rounded-full bg-white shadow-lg"
+                            fallbackClassName="text-sm font-bold text-slate-700"
+                            fallback={university.abbreviation || name.charAt(0)}
+                        />
+                    </Link>
                     {featured && (
                         <div className="flex flex-row items-end gap-1 pb-1">
-                            <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
+                            <Badge
+                                className={cn(
+                                    "border-0 font-medium",
+                                    university.type === "PUBLIC"
+                                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 hover:bg-emerald-100"
+                                        : "bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300 hover:bg-sky-100",
+                                )}
+                            >
                                 {university.type === "PUBLIC" ? t("miscellaneous.public") : t("miscellaneous.private")}
                             </Badge>
                         </div>
@@ -81,7 +90,11 @@ export function UniversityTile({ university, variant = "compact", className }: U
             </div>
 
             <div className="flex flex-1 flex-col px-6 pb-6 pt-14">
-                <h2 className="text-xl font-bold leading-snug text-foreground">{name}</h2>
+                <Link href={href} className="group/title">
+                    <h2 className="text-xl font-bold leading-snug text-foreground group-hover/title:text-sky-600 dark:group-hover/title:text-sky-400 transition-colors">
+                        {name}
+                    </h2>
+                </Link>
 
                 {overview && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{overview}</p>}
 

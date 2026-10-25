@@ -45,3 +45,20 @@ export function apiOverview(
         ? row.overview_kh || row.overview_en || undefined
         : row.overview_en || undefined;
 }
+
+/** Bilingual description or overview from the API. */
+export function apiDescription(
+    row: {
+        description_en?: string | null;
+        description_kh?: string | null;
+        overview_en?: string | null;
+        overview_kh?: string | null;
+    },
+    lang: Lang,
+): string | undefined {
+    const desc =
+        lang === "kh"
+            ? row.description_kh || row.description_en
+            : row.description_en || row.description_kh;
+    return desc || apiOverview(row, lang);
+}
