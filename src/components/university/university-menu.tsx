@@ -30,7 +30,10 @@ export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
     >
       <div className="w-full flex flex-wrap justify-start items-stretch gap-1.5">
         {tabs.map(({ href, icon, label, badge }) => {
-          const isActive = pathname === href;
+          const isProgramsTab = href.endsWith("/programs");
+          const isActive = isProgramsTab
+            ? pathname === href || pathname.startsWith(`${href}/`)
+            : pathname === href;
 
           return (
             <Link

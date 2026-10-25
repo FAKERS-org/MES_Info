@@ -10,7 +10,7 @@ export interface ProgramGroup extends UnitRow {
 }
 
 export function universityHref(universityId: string): string {
-    return `/explore-universities/${universityId}/programs`;
+    return `/explore-universities/${universityId}`;
 }
 
 export function unitHref(universityId: string, pathIds: string[]): string {

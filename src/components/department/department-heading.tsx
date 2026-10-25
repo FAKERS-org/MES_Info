@@ -39,6 +39,7 @@ export interface UniversityHeadingData {
     name: NamespacedText;
     logo?: string;
     universityType: NamespacedText;
+    moeysAccredited?: boolean;
     universityCategory?: NamespacedText;
     address?: NamespacedText;
     website?: string;
@@ -64,6 +65,17 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
         { key: "phone", icon: Phone, label: <LocalizedText translationKey="contact.phone" />, value: university.contact?.phone },
     ].filter(stat => Boolean(stat.value));
 
+    const telegramUser = university.contact?.telegram?.replace(/^@/, "").trim();
+    const ctaUrl = telegramUser
+        ? telegramUser.startsWith("http")
+            ? telegramUser
+            : `https://t.me/${telegramUser}`
+        : university.contact?.phone
+          ? `tel:${university.contact.phone.replace(/\s+/g, "")}`
+          : university.website
+            ? `https://${university.website.replace(/^https?:\/\//, "")}`
+            : null;
+
     return (
         <div className="w-full max-w-full mx-auto font-sans">
             <Card className="rounded-2xl border border-border shadow-sm bg-card overflow-hidden" padding="none">
@@ -81,10 +93,12 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                     {/* Top Bar: Badges & Actions */}
                     <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 gap-4">
                         <div className="flex flex-wrap items-center gap-3 text-xs text-blue-100">
-                            <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
-                                <span className="font-khmer">MoEYS Verified</span>
-                            </div>
+                            {university.moeysAccredited && (
+                                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
+                                    <span className="font-khmer">MoEYS Verified</span>
+                                </div>
+                            )}
                             {university.stats?.established && (
                                 <span className="font-khmer hidden sm:inline">{university.stats.established}</span>
                             )}
@@ -157,12 +171,19 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
 
                         {/* --- CTA Button: straddles the blue/card seam --- */}
                         <div className="w-full md:w-auto z-20 -mt-8 sm:-mt-9 md:-mt-9 md:mb-4">
-                            <Button className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-md border-0">
-                                <MessageSquare className="w-5 h-5 fill-white" />
-                                <span className="font-bold font-khmer text-[15px]">
-                                    <LocalizedText translationKey="contact.telegram" />
-                                </span>
-                            </Button>
+                            {ctaUrl ? (
+                                <Button
+                                    asChild
+                                    className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-md border-0"
+                                >
+                                    <a href={ctaUrl} target="_blank" rel="noopener noreferrer">
+                                        <MessageSquare className="w-5 h-5 fill-white" />
+                                        <span className="font-bold font-khmer text-[15px]">
+                                            <LocalizedText translationKey="contact.telegram" />
+                                        </span>
+                                    </a>
+                                </Button>
+                            ) : null}
                         </div>
                     </div>
 

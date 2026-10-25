@@ -33,7 +33,11 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
         code: detail.abbreviation ?? undefined,
         name: { en: detail.name_en, kh: detail.name_kh ?? "" },
         logo: detail.logo_url ?? undefined,
-        universityType: { en: detail.type === "PUBLIC" ? "Public" : "Private", kh: "" },
+        universityType: {
+            en: detail.type === "PUBLIC" ? "Public" : "Private",
+            kh: detail.type === "PUBLIC" ? "សាធារណៈ" : "ឯកជន",
+        },
+        moeysAccredited: detail.moeys_accredited,
         universityCategory:
             detail.university_category_en || detail.university_category_kh
                 ? { en: detail.university_category_en ?? "", kh: detail.university_category_kh ?? "" }

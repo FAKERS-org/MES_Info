@@ -112,7 +112,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
                             className="h-12 flex-1 rounded-2xl bg-sky-50 dark:bg-sky-950/30 p-0 font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-950/50"
                         >
                             <Link href={href} className="flex h-full w-full items-center justify-center">
-                                {t("miscellaneous.viewProgram")}
+                                {t("explore.viewUniversity")}
                             </Link>
                         </Button>
                         <Button

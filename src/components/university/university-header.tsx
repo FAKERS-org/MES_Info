@@ -5,7 +5,19 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/i18n";
 import { BadgeCheck, Building2, GraduationCap, MapPin } from "lucide-react";
 
-export default function UniversityHeader() {
+export interface UniversityHeaderProps {
+    totalCount?: number;
+    publicCount?: number;
+    privateCount?: number;
+    provincesCount?: number;
+}
+
+export default function UniversityHeader({
+    totalCount,
+    publicCount,
+    privateCount,
+    provincesCount,
+}: UniversityHeaderProps = {}) {
     const { t } = useLanguage();
 
     return (
@@ -31,30 +43,27 @@ export default function UniversityHeader() {
                 </p>
 
                 {/* Stats Row */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
-                    <Button
-                        variant="outline"
-                        className="h-auto py-3 px-6 rounded-full border-border bg-card hover:bg-muted text-foreground flex items-center gap-3"
-                    >
-                        <GraduationCap className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                        <span className="font-medium">{t("miscellaneous.university.plural")}</span>
-                    </Button>
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+                    <div className="py-2 px-4 rounded-full border border-border bg-card text-foreground flex items-center gap-2 text-sm shadow-xs">
+                        <GraduationCap className="h-4 w-4 text-sky-600 dark:text-sky-400" />
+                        <span className="font-semibold">{totalCount ?? 0}</span>
+                        <span className="text-muted-foreground">{t("miscellaneous.university.plural")}</span>
+                    </div>
 
-                    <Button
-                        variant="outline"
-                        className="h-auto py-3 px-6 rounded-full border-border bg-card hover:bg-muted text-foreground flex items-center gap-3"
-                    >
-                        <Building2 className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                        <span className="font-medium">{t("miscellaneous.programs.plural")}</span>
-                    </Button>
+                    <div className="py-2 px-4 rounded-full border border-border bg-card text-foreground flex items-center gap-2 text-sm shadow-xs">
+                        <Building2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                        <span className="font-semibold">{publicCount ?? 0}</span>
+                        <span className="text-muted-foreground">{t("miscellaneous.public")}</span>
+                        <span className="text-muted-foreground/60">•</span>
+                        <span className="font-semibold">{privateCount ?? 0}</span>
+                        <span className="text-muted-foreground">{t("miscellaneous.private")}</span>
+                    </div>
 
-                    <Button
-                        variant="outline"
-                        className="h-auto py-3 px-6 rounded-full border-border bg-card hover:bg-muted text-foreground flex items-center gap-3"
-                    >
-                        <MapPin className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                        <span className="font-medium">{t("miscellaneous.location")}</span>
-                    </Button>
+                    <div className="py-2 px-4 rounded-full border border-border bg-card text-foreground flex items-center gap-2 text-sm shadow-xs">
+                        <MapPin className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                        <span className="font-semibold">{provincesCount ?? 0}</span>
+                        <span className="text-muted-foreground">{t("miscellaneous.location")}</span>
+                    </div>
                 </div>
             </div>
         </section>

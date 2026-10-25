@@ -13,6 +13,7 @@ import {
     getUniversityUnits,
     toHeadingData,
 } from "@/lib/api/universities";
+import { apiName } from "@/lib/language";
 import { readLang } from "@/lib/language.server";
 import { programGroups } from "@/lib/unit-routes";
 import { universityTabs } from "@/lib/university-tabs";
@@ -47,6 +48,7 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
 
     const displayDetail = activeDetail ?? rootDetail;
     const lang = await readLang();
+    const uniName = apiName(displayDetail, lang);
     const tree = buildUnitTree(units);
 
     return (
@@ -64,15 +66,32 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                             mapUrl={displayDetail.embed_map_url}
                             locationName={displayDetail.campus_name || displayDetail.province}
                         />
-                        <AdmissionsContactCard />
-                        <BrochureDownloadCard />
+                        <AdmissionsContactCard
+                            phone={displayDetail.contact_phone}
+                            email={displayDetail.contact_email}
+                            telegram={displayDetail.contact_telegram}
+                            website={displayDetail.website}
+                            universityName={uniName}
+                        />
+                        <BrochureDownloadCard website={displayDetail.website} universityName={uniName} />
                     </div>
                 }
             >
-                {tree.length > 0 && (
-                    <ProgramsExplorer groups={programGroups(id, tree)} lang={lang} />
+                {tree.length > 0 ? (
+                    <div className="space-y-6">
+                        <ProgramsExplorer groups={programGroups(id, tree)} lang={lang} />
+                        {displayDetail.programs && displayDetail.programs.length > 0 && (
+                            <div className="space-y-3 pt-4 border-t border-border">
+                                <h2 className="text-lg font-bold text-foreground">
+                                    {lang === "kh" ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រផ្ទាល់" : "Direct Degree Programs"}
+                                </h2>
+                                <ProgramsList programs={displayDetail.programs} lang={lang} />
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <ProgramsList programs={displayDetail.programs} lang={lang} />
                 )}
-                <ProgramsList programs={displayDetail.programs} lang={lang} />
             </SectionLayout>
         </div>
     );

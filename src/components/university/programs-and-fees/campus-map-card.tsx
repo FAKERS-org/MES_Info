@@ -64,7 +64,7 @@ export default function CampusMapCard({
 
                     {/* --- Description Text --- */}
                     <p className="text-muted-foreground text-[14px] leading-relaxed font-khmer mt-1">
-                        {address || "ស្ថិតនៅលើមហាវិថីសហព័ន្ធរុស្ស៊ី រាជធានីភ្នំពេញ។"}
+                        {address || "ព័ត៌មានអាសយដ្ឋានផ្លូវការរបស់សាកលវិទ្យាល័យ។"}
                     </p>
                 </div>
             </Card>

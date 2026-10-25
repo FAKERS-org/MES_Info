@@ -21,6 +21,7 @@
     "explore.sortNameDesc": "Name (Z–A)",
     "explore.sortByDepartments": "Programs (most first)",
     "explore.resultsCount": "{count} university(s) found",
+    "explore.viewUniversity": "Explore University",
     "explore.noResults": "No universities match your search.",
     "explore.universityNotFound": "University not found",
     "info.detail.about": "About",

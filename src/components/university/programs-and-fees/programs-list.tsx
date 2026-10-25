@@ -31,14 +31,21 @@ const DEGREE_LEVELS: Record<UniversityProgram["degree_level"], string> = {
 export default function ProgramsList({ programs, lang }: ProgramsListProps) {
     const { t } = useLanguage();
     const [query, setQuery] = useState("");
+    const [selectedDegree, setSelectedDegree] = useState<string>("ALL");
+
+    const availableDegrees = useMemo(() => {
+        const degrees = Array.from(new Set(programs.map(p => p.degree_level).filter(Boolean)));
+        return degrees;
+    }, [programs]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
-        if (!q) return programs;
-        return programs.filter(p =>
-            [p.name_en, p.name_kh, p.faculty].some(field => field?.toLowerCase().includes(q)),
-        );
-    }, [programs, query]);
+        return programs.filter(p => {
+            const matchesQuery = !q || [p.name_en, p.name_kh, p.faculty].some(field => field?.toLowerCase().includes(q));
+            const matchesDegree = selectedDegree === "ALL" || p.degree_level === selectedDegree;
+            return matchesQuery && matchesDegree;
+        });
+    }, [programs, query, selectedDegree]);
 
     if (programs.length === 0) {
         return <p className="p-6 text-center text-sm text-muted-foreground">{t("explore.noResults")}</p>;
@@ -46,7 +53,33 @@ export default function ProgramsList({ programs, lang }: ProgramsListProps) {
 
     return (
         <div className="space-y-4">
-            <SearchInput value={query} onChange={setQuery} placeholder="Search programs" />
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                <SearchInput value={query} onChange={setQuery} placeholder="Search programs" className="flex-1" />
+                {availableDegrees.length > 1 && (
+                    <div className="flex flex-wrap gap-1.5 shrink-0">
+                        <Badge
+                            variant={selectedDegree === "ALL" ? "default" : "outline"}
+                            className="cursor-pointer px-3 py-1 text-xs rounded-lg transition-colors"
+                            onClick={() => setSelectedDegree("ALL")}
+                        >
+                            All ({programs.length})
+                        </Badge>
+                        {availableDegrees.map(deg => {
+                            const count = programs.filter(p => p.degree_level === deg).length;
+                            return (
+                                <Badge
+                                    key={deg}
+                                    variant={selectedDegree === deg ? "default" : "outline"}
+                                    className="cursor-pointer px-3 py-1 text-xs rounded-lg transition-colors"
+                                    onClick={() => setSelectedDegree(deg)}
+                                >
+                                    {DEGREE_LEVELS[deg] || deg} ({count})
+                                </Badge>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
 
             <Card className="overflow-hidden border border-border shadow-sm rounded-xl bg-card" padding="none">
                 <CardContent className="p-0">

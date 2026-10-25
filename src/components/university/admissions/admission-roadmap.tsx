@@ -2,7 +2,19 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Globe, Landmark } from "lucide-react";
 
-const AdmissionRoadmap = () => {
+export interface AdmissionRoadmapProps {
+    universityName?: string;
+    website?: string | null;
+}
+
+const AdmissionRoadmap = ({ universityName, website }: AdmissionRoadmapProps) => {
+    const uniLabel = universityName || "សាកលវិទ្យាល័យ";
+    const regUrl = website
+        ? website.startsWith("http")
+            ? website
+            : `https://${website}`
+        : "#";
+
     return (
         <div className="max-w-4xl mx-auto bg-muted/50 rounded-2xl font-sans">
             {/* --- Header Section --- */}
@@ -17,18 +29,18 @@ const AdmissionRoadmap = () => {
 
                     <div>
                         <h1 className="text-xl md:text-2xl font-bold text-sky-900 dark:text-sky-100 leading-tight">
-                            ដំណាក់កាលនៃការចុះឈ្មោះ និងជ្រើសរើស (4-Step Admission Roadmap)
+                            ដំណាក់កាលនៃការចុះឈ្មោះ និងជ្រើសរើស (Admission Roadmap)
                         </h1>
                         <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                            វិធីសាស្ត្រចុះឈ្មោះចូលរៀនសម្រាប់វិទ្យាស្ថានបច្ចេកវិទ្យា ឆ្នាំសិក្សា ២០២៥-២០២៦
+                            ដំណើរការនៃការដាក់ពាក្យ និងការប្រឡងជ្រើសរើសសម្រាប់ {uniLabel}
                         </p>
                     </div>
                 </div>
 
                 {/* Top Right Updated Badge */}
                 <div className="bg-sky-50 dark:bg-sky-950/30 rounded-full px-4 py-1.5 flex flex-col items-center justify-center shrink-0 border border-sky-100 dark:border-sky-800/60">
-                    <span className="text-[10px] text-sky-600 dark:text-sky-400 font-medium uppercase tracking-wide">Updated</span>
-                    <span className="text-sky-800 dark:text-sky-200 font-bold text-sm">2025</span>
+                    <span className="text-[10px] text-sky-600 dark:text-sky-400 font-medium uppercase tracking-wide">Academic Year</span>
+                    <span className="text-sky-800 dark:text-sky-200 font-bold text-sm">2025–2026</span>
                 </div>
             </div>
 
@@ -36,7 +48,6 @@ const AdmissionRoadmap = () => {
             <div className="relative border-l-2 border-border ml-4 md:ml-6 space-y-8 pb-4">
                 {/* STEP 1 */}
                 <div className="relative pl-8 md:pl-10">
-                    {/* Timeline Dot */}
                     <div className="absolute -left-[21px] top-0 flex h-10 w-10 items-center justify-center rounded-full bg-sky-600 text-white font-bold shadow-md ring-4 ring-border">
                         1
                     </div>
@@ -44,30 +55,27 @@ const AdmissionRoadmap = () => {
                     <Card className="border-0 shadow-sm bg-card overflow-hidden">
                         <CardContent className="p-5">
                             <h3 className="text-lg font-bold text-sky-900 dark:text-sky-100 mb-2">
-                                បញ្ជាក់ព័ត៌មានអនឡាញ (Online Registration & Form Submission)
+                                បំពេញពាក្យចុះឈ្មោះ (Online Registration & Application)
                             </h3>
                             <Badge className="bg-sky-100 text-sky-700 hover:bg-sky-100 dark:bg-sky-950/50 dark:text-sky-200 dark:hover:bg-sky-950/50 border-0 mb-3 font-medium rounded-sm">
-                                ០៨ មិថុនា - ០៥ កក្កដា ២០២៥
+                                ដំណាក់កាលទី ១
                             </Badge>
 
                             <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                                បេក្ខជនត្រូវបំពេញពាក្យសុំចូលរៀន តាមរយៈគេហទំព័រ ITC Admissions Portal
-                                បន្ទាប់មកទើបគណៈកម្មការចម្រាញ់ និងជ្រើសរើសបេក្ខជនតាមរយៈបញ្ជីឈ្មោះជម្រើសទី១ (First &
-                                Second Choice)។
+                                បេក្ខជនត្រូវបំពេញពាក្យសុំចូលរៀនតាមរយៈគេហទំព័រ ឬការិយាល័យចុះឈ្មោះផ្ទាល់របស់ {uniLabel} ដោយជ្រើសរើសជំនាញ និងមហាវិទ្យាល័យដែលចង់បន្តការសិក្សា។
                             </p>
 
                             <div className="flex flex-wrap items-center gap-4 text-sm text-foreground bg-muted p-3 rounded-md">
                                 <div className="flex items-center gap-2">
                                     <Globe className="h-4 w-4 text-sky-600 dark:text-sky-400" />
-                                    <span className="font-medium">គេហទំព័រចុះឈ្មោះ:</span>
-                                    <a href="#" className="text-sky-600 dark:text-sky-400 hover:underline">
-                                        ចុចទីនេះ
-                                    </a>
-                                </div>
-                                <div className="flex items-center gap-2 border-l border-border pl-4">
-                                    <Clock className="h-4 w-4 text-sky-600 dark:text-sky-400" />
-                                    <span className="font-medium">រយៈពេលប្រឡង:</span>
-                                    <span className="text-muted-foreground">~ 15 ថ្ងៃ</span>
+                                    <span className="font-medium">គេហទំព័រ / ព័ត៌មានចុះឈ្មោះ:</span>
+                                    {website ? (
+                                        <a href={regUrl} target="_blank" rel="noopener noreferrer" className="text-sky-600 dark:text-sky-400 hover:underline">
+                                            {website.replace(/^https?:\/\//, "")}
+                                        </a>
+                                    ) : (
+                                        <span className="text-muted-foreground">ទាក់ទងផ្ទាល់នៅសាកលវិទ្យាល័យ</span>
+                                    )}
                                 </div>
                             </div>
                         </CardContent>
@@ -83,24 +91,22 @@ const AdmissionRoadmap = () => {
                     <Card className="border-0 shadow-sm bg-card overflow-hidden">
                         <CardContent className="p-5">
                             <h3 className="text-lg font-bold text-sky-900 dark:text-sky-100 mb-2">
-                                ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃសិក្សា (Document Verification & Fee)
+                                ផ្ទៀងផ្ទាត់ឯកសារ & បង់ថ្លៃពាក្យ (Document Verification & Fee)
                             </h3>
                             <div className="flex items-center gap-2 mb-3">
                                 <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/50 dark:text-amber-200 dark:hover:bg-amber-950/50 border-0 font-medium rounded-sm">
-                                    អត្រាថ្លៃ $15 (60,000៛)
+                                    ដំណាក់កាលទី ២
                                 </Badge>
                             </div>
 
                             <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                                ក្រុមការងារនឹងពិនិត្យឯកសារផ្ទាល់ខ្លួនរបស់បេក្ខជនដូចជា៖ ព័ត៌មានលើប័ណ្ណសម្គាល់ខ្លួន និង
-                                វិញ្ញាសាប្រឡង។ បេក្ខជនត្រូវបង់ថ្លៃសិក្សាតាមរយៈធនាគារ KHQR ដើម្បីទទួលបានសិទ្ធិប្រឡង (Exam
-                                Hall Ticket)។
+                                គណៈកម្មការពិនិត្យឯកសារសម្គាល់ខ្លួន និងសញ្ញាបត្របាក់ឌុប ឬលិខិតបញ្ជាក់ការសិក្សា។ បេក្ខជនបង់ថ្លៃរដ្ឋបាល/ពាក្យប្រឡងតាមរយៈប្រព័ន្ធធនាគារ ឬបញ្ជរផ្ទាល់។
                             </p>
 
                             <div className="flex items-center gap-2 text-sm text-foreground bg-muted p-3 rounded-md">
                                 <Landmark className="h-4 w-4 text-sky-600 dark:text-sky-400" />
-                                <span className="font-medium">ធនាគារដែលអាចបង់បាន:</span>
-                                <span className="text-muted-foreground">Bakong KHQR / ABA / Wing Bank</span>
+                                <span className="font-medium">ការទូទាត់ប្រាក់:</span>
+                                <span className="text-muted-foreground">Bakong KHQR / ធនាគារដៃគូ ឬការិយាល័យគណនេយ្យ</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -115,36 +121,17 @@ const AdmissionRoadmap = () => {
                     <Card className="border-0 shadow-sm bg-card overflow-hidden">
                         <CardContent className="p-5">
                             <h3 className="text-lg font-bold text-sky-900 dark:text-sky-100 mb-2">
-                                ប្រឡងជ្រើសរើសចូលរៀន (National Entrance Examination)
+                                ការវាយតម្លៃ / ប្រឡងជ្រើសរើស (Assessment & Entrance Exam)
                             </h3>
                             <div className="flex items-center gap-2 mb-3">
                                 <Badge className="bg-rose-100 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/50 dark:text-rose-200 dark:hover:bg-rose-950/50 border-0 font-medium rounded-sm">
-                                    ១៥ កក្កដា ២០២៥ (Tech Campus)
+                                    ដំណាក់កាលទី ៣
                                 </Badge>
                             </div>
 
-                            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                                បេក្ខជនត្រូវមកប្រឡងដោយផ្ទាល់នៅវិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា (ភ្នំពេញ)។ មានវិញ្ញាសាចំនួន
-                                ៣ គឺ៖ គណិតវិទ្យា (Math), រូបវិទ្យា (Physics), និង អក្សរសាស្ត្រខ្មែរ/អង់គ្លេស ឬ
-                                តក្កវិជ្ជា (Logic & General Science)។
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                បេក្ខជនចូលរួមប្រឡង ឬឆ្លងកាត់ការវាយតម្លៃលក្ខណៈសម្បត្តិយោងតាមជំនាញនីមួយៗ (វិទ្យាសាស្ត្រ បច្ចេកវិទ្យា ភាសា ឬសម្ភាសន៍ផ្ទាល់មាត់)។
                             </p>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-muted p-3 rounded-md">
-                                <div className="flex flex-col gap-1 border-b md:border-b-0 md:border-r border-border pb-2 md:pb-0">
-                                    <span className="text-xs text-muted-foreground">ព្រឹក (08:00 - 10:30)</span>
-                                    <span className="font-semibold text-foreground text-sm">គណិតវិទ្យា (150mn)</span>
-                                </div>
-                                <div className="flex flex-col gap-1 border-b md:border-b-0 md:border-r border-border pb-2 md:pb-0 md:pl-2">
-                                    <span className="text-xs text-muted-foreground">រសៀល (13:30 - 15:00)</span>
-                                    <span className="font-semibold text-foreground text-sm">រូបវិទ្យា (90mn)</span>
-                                </div>
-                                <div className="flex flex-col gap-1 md:pl-2">
-                                    <span className="text-xs text-muted-foreground">ល្ងាច (15:30 - 16:30)</span>
-                                    <span className="font-semibold text-foreground text-sm">
-                                        អក្សរសាស្ត្រ & តក្ក (60mn)
-                                    </span>
-                                </div>
-                            </div>
                         </CardContent>
                     </Card>
                 </div>
@@ -162,13 +149,12 @@ const AdmissionRoadmap = () => {
                             </h3>
                             <div className="flex items-center gap-2 mb-3">
                                 <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:text-emerald-200 dark:hover:bg-emerald-950/50 border-0 font-medium rounded-sm">
-                                    ២៨ កក្កដា ២០២៥
+                                    ដំណាក់កាលទី ៤
                                 </Badge>
                             </div>
 
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                                លទ្ធផលប្រឡងនឹងត្រូវប្រកាសជាផ្លូវការ និងផ្សព្វផ្សាយតាមគេហទំព័រផ្លូវការរបស់វិទ្យាស្ថាន។
-                                បេក្ខជនដែលជាប់ត្រូវមកចុះឈ្មោះចូលរៀនផ្ទាល់នៅវិទ្យាស្ថានរយៈពេល ១ សប្តាហ៍ដំបូង។
+                                លទ្ធផលនឹងត្រូវប្រកាសជាផ្លូវការតាមរយៈគេហទំព័រ ឬក្តារព័ត៌មានរបស់ {uniLabel}។ បេក្ខជនជាប់ត្រូវមកបញ្ជាក់ការចុះឈ្មោះ និងទទួលកាលវិភាគសិក្សា។
                             </p>
                         </CardContent>
                     </Card>
