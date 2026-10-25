@@ -85,12 +85,12 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                                 <h2 className="text-lg font-bold text-foreground">
                                     {lang === "kh" ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រផ្ទាល់" : "Direct Degree Programs"}
                                 </h2>
-                                <ProgramsList programs={displayDetail.programs} lang={lang} />
+                                <ProgramsList programs={displayDetail.programs} lang={lang} university={displayDetail} />
                             </div>
                         )}
                     </div>
                 ) : (
-                    <ProgramsList programs={displayDetail.programs} lang={lang} />
+                    <ProgramsList programs={displayDetail.programs} lang={lang} university={displayDetail} />
                 )}
             </SectionLayout>
         </div>

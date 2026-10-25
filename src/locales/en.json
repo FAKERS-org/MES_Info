@@ -157,5 +157,8 @@
     "university.requirementsLabel": "Requirements",
     "university.noScholarshipsTitle": "No Specific Scholarships Listed",
     "university.scholarshipsAvailableNotice": "This university provides scholarships. Please contact the admissions office or consult their official portal for application guidelines.",
-    "university.scholarshipsInquireNotice": "Please contact the admissions desk to inquire about governmental or partner scholarship options."
+    "university.scholarshipsInquireNotice": "Please contact the admissions desk to inquire about governmental or partner scholarship options.",
+    "university.tuitionMale": "General / Male",
+    "university.tuitionFemale": "Female",
+    "university.perYear": "/ yr"
 }

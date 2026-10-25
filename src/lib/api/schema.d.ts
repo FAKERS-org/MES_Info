@@ -1203,6 +1203,8 @@ export interface components {
             duration_years: number;
             /** Tuition Per Year */
             tuition_per_year?: number | null;
+            /** Tuition Female Per Year */
+            tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
             /** @default USD */
@@ -1235,6 +1237,8 @@ export interface components {
             fee_currency: components["schemas"]["Currency"];
             /** Tuition Per Year */
             tuition_per_year?: number | null;
+            /** Tuition Female Per Year */
+            tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
             /** University Name */
@@ -1269,6 +1273,8 @@ export interface components {
             fee_currency: components["schemas"]["Currency"];
             /** Tuition Per Year */
             tuition_per_year?: number | null;
+            /** Tuition Female Per Year */
+            tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
         };
@@ -1288,6 +1294,8 @@ export interface components {
             duration_years?: number | null;
             /** Tuition Per Year */
             tuition_per_year?: number | null;
+            /** Tuition Female Per Year */
+            tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
             fee_currency?: components["schemas"]["Currency"] | null;
@@ -1743,6 +1751,10 @@ export interface components {
             stats_tuition?: string | null;
             /** Stats Established */
             stats_established?: string | null;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
         };
         /**
          * UniversitySummary
@@ -1851,6 +1863,10 @@ export interface components {
             stats_tuition?: string | null;
             /** Stats Established */
             stats_established?: string | null;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
             /** Parent Id */
             parent_id?: number | null;
             /** Campus Name */
