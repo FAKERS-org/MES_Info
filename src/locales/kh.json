@@ -160,5 +160,12 @@
     "university.scholarshipsInquireNotice": "សូមទាក់ទងមកកាន់ការិយាល័យកិច្ចការនិស្សិត ដើម្បីសាកសួរអំពីអាហារូបករណ៍របស់រដ្ឋ ឬដៃគូ។",
     "university.tuitionMale": "ទូទៅ / បុរស",
     "university.tuitionFemale": "នារី",
-    "university.perYear": "/ ឆ្នាំ"
+    "university.perYear": "/ ឆ្នាំ",
+    "university.tuitionUniformTitle": "តម្លៃសិក្សាស្មើភាពទូទាំងសាកលវិទ្យាល័យ",
+    "university.tuitionUniformDesc": "គ្រប់ជំនាញទាំងអស់អនុវត្តតាមតម្លៃសិក្សាប្រចាំឆ្នាំស្មើគ្នា។",
+    "university.tuitionVariableTitle": "តម្លៃសិក្សាតាមជំនាញនីមួយៗ",
+    "university.tuitionVariableDesc": "តម្លៃសិក្សាប្រែប្រួលទៅតាមមុខជំនាញដែលបានជ្រើសរើស។",
+    "university.tuitionUnsetTitle": "មិនទាន់បានបញ្ជាក់តម្លៃសិក្សា",
+    "university.tuitionUnsetDesc": "សូមទាក់ទងការិយាល័យចុះឈ្មោះសម្រាប់តារាងតម្លៃសិក្សាជាក់ស្តែង។",
+    "university.femaleDiscountApplied": "មានអត្រាលើកទឹកចិត្តពិសេសសម្រាប់សិស្ស-និស្សិតនារី"
 }

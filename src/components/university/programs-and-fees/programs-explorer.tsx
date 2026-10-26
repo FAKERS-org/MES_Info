@@ -65,7 +65,15 @@ export default function ProgramsExplorer({ groups, lang }: ProgramsExplorerProps
             )}
 
             {filtered.map(group => (
-                <UnitListCard key={group.unit.id} title={group.unit.name} titleHref={group.href} rows={group.rows} lang={lang} />
+                <UnitListCard
+                    key={group.unit.id}
+                    title={group.unit.name}
+                    titleHref={group.href}
+                    rows={group.rows}
+                    lang={lang}
+                    tuitionFee={group.unit.defaultTuition}
+                    tuitionFemaleFee={group.unit.defaultTuitionFemale}
+                />
             ))}
         </div>
     );

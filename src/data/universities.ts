@@ -89,6 +89,8 @@ export interface Unit {
     facilities?: Facility[];
     scholarships?: UnitScholarship[];
     units?: Unit[];
+    defaultTuition?: number;
+    defaultTuitionFemale?: number;
 }
 
 export interface University {

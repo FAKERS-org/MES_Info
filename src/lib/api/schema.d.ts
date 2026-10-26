@@ -1207,6 +1207,12 @@ export interface components {
             tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
+            /** Effective Tuition Per Year */
+            effective_tuition_per_year?: number | null;
+            /** Effective Tuition Female Per Year */
+            effective_tuition_female_per_year?: number | null;
+            /** Tuition Discount Percent */
+            tuition_discount_percent?: number | null;
             /** @default USD */
             fee_currency: components["schemas"]["Currency"];
         };
@@ -1224,6 +1230,8 @@ export interface components {
             public_id: string;
             /** University Id */
             university_id?: number | null;
+            /** Unit Id */
+            unit_id?: number | null;
             /** Name En */
             name_en: string;
             /** Name Kh */
@@ -1241,6 +1249,12 @@ export interface components {
             tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
+            /** Effective Tuition Per Year */
+            effective_tuition_per_year?: number | null;
+            /** Effective Tuition Female Per Year */
+            effective_tuition_female_per_year?: number | null;
+            /** Tuition Discount Percent */
+            tuition_discount_percent?: number | null;
             /** University Name */
             university_name?: string | null;
             /** University Abbreviation */
@@ -1260,6 +1274,8 @@ export interface components {
             public_id: string;
             /** University Id */
             university_id?: number | null;
+            /** Unit Id */
+            unit_id?: number | null;
             /** Name En */
             name_en: string;
             /** Name Kh */
@@ -1277,6 +1293,12 @@ export interface components {
             tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
+            /** Effective Tuition Per Year */
+            effective_tuition_per_year?: number | null;
+            /** Effective Tuition Female Per Year */
+            effective_tuition_female_per_year?: number | null;
+            /** Tuition Discount Percent */
+            tuition_discount_percent?: number | null;
         };
         /**
          * ProgramUpdate
@@ -1298,6 +1320,12 @@ export interface components {
             tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
+            /** Effective Tuition Per Year */
+            effective_tuition_per_year?: number | null;
+            /** Effective Tuition Female Per Year */
+            effective_tuition_female_per_year?: number | null;
+            /** Tuition Discount Percent */
+            tuition_discount_percent?: number | null;
             fee_currency?: components["schemas"]["Currency"] | null;
             /** Overview En */
             overview_en?: string | null;
@@ -1391,6 +1419,8 @@ export interface components {
             university_id?: number | null;
             /** Unit Id */
             unit_id?: number | null;
+            /** Unit Id */
+            unit_id?: number | null;
         };
         /**
          * ScholarshipListItem
@@ -1425,6 +1455,8 @@ export interface components {
             unit_id?: number | null;
             /** University Id */
             university_id?: number | null;
+            /** Unit Id */
+            unit_id?: number | null;
             /** University Name */
             university_name?: string | null;
             /** Unit Name */
@@ -1463,6 +1495,8 @@ export interface components {
             unit_id?: number | null;
             /** University Id */
             university_id?: number | null;
+            /** Unit Id */
+            unit_id?: number | null;
         };
         /**
          * ScholarshipUpdate
@@ -1532,6 +1566,18 @@ export interface components {
             category_kh?: string | null;
             /** Logo */
             logo?: string | null;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Tuition Model */
+            tuition_model?: string | null;
+            /** Tuition Min Per Year */
+            tuition_min_per_year?: number | null;
+            /** Tuition Max Per Year */
+            tuition_max_per_year?: number | null;
+            /** Has Female Tuition Discount */
+            has_female_tuition_discount?: boolean;
         };
         /**
          * UnitDetail
@@ -1582,6 +1628,11 @@ export interface components {
             requirements: {
                 [key: string]: unknown;
             }[];
+            /**
+             * Programs
+             * @default []
+             */
+            programs?: components["schemas"]["ProgramSummary"][];
         };
         /**
          * UnitKind
@@ -1615,6 +1666,18 @@ export interface components {
             category_kh?: string | null;
             /** Logo */
             logo?: string | null;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Tuition Model */
+            tuition_model?: string | null;
+            /** Tuition Min Per Year */
+            tuition_min_per_year?: number | null;
+            /** Tuition Max Per Year */
+            tuition_max_per_year?: number | null;
+            /** Has Female Tuition Discount */
+            has_female_tuition_discount?: boolean;
         };
         /**
          * UnitUpdate
@@ -1635,6 +1698,18 @@ export interface components {
             category_kh?: string | null;
             /** Logo */
             logo?: string | null;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Tuition Model */
+            tuition_model?: string | null;
+            /** Tuition Min Per Year */
+            tuition_min_per_year?: number | null;
+            /** Tuition Max Per Year */
+            tuition_max_per_year?: number | null;
+            /** Has Female Tuition Discount */
+            has_female_tuition_discount?: boolean;
         };
         /**
          * UniversityCreate
@@ -1755,6 +1830,14 @@ export interface components {
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
+            /** Tuition Model */
+            tuition_model?: string | null;
+            /** Tuition Min Per Year */
+            tuition_min_per_year?: number | null;
+            /** Tuition Max Per Year */
+            tuition_max_per_year?: number | null;
+            /** Has Female Tuition Discount */
+            has_female_tuition_discount?: boolean;
         };
         /**
          * UniversitySummary

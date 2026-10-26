@@ -4,6 +4,7 @@ import DepartmentHeading from "@/components/department/department-heading";
 import Facilities from "@/components/department/facilities";
 import SubDepartmentList from "@/components/department/sub-department-list";
 import UnitScholarships from "@/components/department/unit-scholarships";
+import ProgramsList from "@/components/university/programs-and-fees/programs-list";
 import LocalizedText from "@/components/shared/localized-text";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getFacilitiesFor } from "@/data/universities";
@@ -18,6 +19,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
     const { university, chain } = await params;
     const {
         university: uni,
+        universityDetail,
         universityId,
         unit,
         pathIds,
@@ -26,6 +28,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
         curriculums,
         facilities,
         scholarships,
+        programs,
         lang,
     } = await resolveUnitPage(university, chain);
 
@@ -36,6 +39,17 @@ export default async function UnitPage({ params }: UnitPageProps) {
             <SectionLayout background="muted">
                 <DepartmentHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
             </SectionLayout>
+
+            {programs && programs.length > 0 && (
+                <SectionLayout background="muted">
+                    <div className="space-y-3">
+                        <h2 className="text-xl font-bold font-khmer text-foreground">
+                            {lang === "kh" ? "សញ្ញាបត្រ និងកម្មវិធីសិក្សាក្នុងដេប៉ាតឺម៉ង់នេះ" : "Degrees & Majors in this Department"}
+                        </h2>
+                        <ProgramsList programs={programs} lang={lang} university={universityDetail} />
+                    </div>
+                </SectionLayout>
+            )}
 
             {unit.units && unit.units.length > 0 && (
                 <SectionLayout background="muted">

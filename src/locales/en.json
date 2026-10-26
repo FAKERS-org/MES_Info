@@ -160,5 +160,12 @@
     "university.scholarshipsInquireNotice": "Please contact the admissions desk to inquire about governmental or partner scholarship options.",
     "university.tuitionMale": "General / Male",
     "university.tuitionFemale": "Female",
-    "university.perYear": "/ yr"
+    "university.perYear": "/ yr",
+    "university.tuitionUniformTitle": "Uniform Annual Tuition",
+    "university.tuitionUniformDesc": "All degree programs share the same annual tuition rate.",
+    "university.tuitionVariableTitle": "Major-Based Tuition",
+    "university.tuitionVariableDesc": "Tuition fees vary depending on the selected field of study.",
+    "university.tuitionUnsetTitle": "Tuition Not Specified",
+    "university.tuitionUnsetDesc": "Contact the admissions office for current tuition schedules.",
+    "university.femaleDiscountApplied": "Female student incentive rate available"
 }

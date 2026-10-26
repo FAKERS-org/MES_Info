@@ -16,6 +16,8 @@ export interface UnitListCardProps {
     /** The units listed, each with the URL that reaches it. */
     rows: UnitRow[];
     lang: Lang;
+    tuitionFee?: number;
+    tuitionFemaleFee?: number;
 }
 
 /**
@@ -27,28 +29,40 @@ export interface UnitListCardProps {
  * whole chain from the top-level unit — the card does not know that chain, and
  * used to invent one segment of it.
  */
-export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitListCardProps) {
+export function UnitListCard({ title, titleHref, subtitle, rows, lang, tuitionFee, tuitionFemaleFee }: UnitListCardProps) {
     const Header = (
-        <div className="bg-[#124f70] text-white p-5 flex items-center gap-4">
-            <div className="bg-[#0b3c56] p-2.5 rounded-lg border border-[#1e607f]">
-                <GraduationCap className="w-6 h-6 text-white" strokeWidth={1.5} />
+        <div className="bg-card border-b border-border p-5 flex items-center gap-4">
+            <div className="bg-primary/10 text-primary p-2.5 rounded-lg border border-primary/20">
+                <GraduationCap className="w-6 h-6 text-primary" strokeWidth={1.5} />
             </div>
-            <div className="flex-1">
-                <h1 className="text-lg md:text-xl font-bold font-khmer leading-tight">{localize(title, lang)}</h1>
+            <div className="flex-1 min-w-0">
+                <h2 className="text-lg md:text-xl font-bold font-khmer leading-tight text-foreground truncate">{localize(title, lang)}</h2>
                 {subtitle ? (
-                    <p className="text-blue-100 text-xs md:text-sm mt-0.5">{subtitle}</p>
+                    <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{subtitle}</p>
                 ) : (
-                    <p className="text-blue-100 text-xs md:text-sm mt-0.5">{title.en}</p>
+                    <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{title.en}</p>
                 )}
             </div>
-            {titleHref && <ChevronRight className="w-5 h-5" />}
+            {tuitionFee != null && (
+                <div className="text-right shrink-0">
+                    <Badge variant="outline" className="font-semibold text-xs border-primary/30 text-foreground">
+                        ${tuitionFee}{lang === "kh" ? "/ឆ្នាំ" : "/yr"}
+                        {tuitionFemaleFee != null && (
+                            <span className="ml-1 text-rose-600 dark:text-rose-400 font-bold">
+                                (♀ ${tuitionFemaleFee})
+                            </span>
+                        )}
+                    </Badge>
+                </div>
+            )}
+            {titleHref && <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />}
         </div>
     );
 
     return (
         <Card className="overflow-hidden border border-border shadow-sm rounded-xl bg-card" padding="none">
             {titleHref ? (
-                <Link href={titleHref} className="block hover:bg-[#0f425f] transition-colors">
+                <Link href={titleHref} className="block hover:bg-muted/40 transition-colors">
                     {Header}
                 </Link>
             ) : (
@@ -57,7 +71,9 @@ export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitLis
 
             <CardContent className="p-0">
                 {rows.length === 0 && (
-                    <p className="p-6 text-sm text-muted-foreground">មិនទាន់មានដេប៉ាតឺម៉ង់ជាក់ស្តែងទេ។</p>
+                    <p className="p-6 text-sm text-muted-foreground font-khmer">
+                        {lang === "kh" ? "មិនទាន់មានដេប៉ាតឺម៉ង់ជាក់ស្តែងទេ។" : "No departments listed yet."}
+                    </p>
                 )}
 
                 {rows.map(({ unit, href }, index) => (
@@ -74,7 +90,7 @@ export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitLis
                                     {unit.units && unit.units.length > 0 && (
                                         <Badge className="bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/60 px-2 py-0.5 rounded-md text-xs font-normal font-khmer flex items-center gap-1">
                                             <Layers className="w-3 h-3" />
-                                            ដេប៉ាតឺម៉ង់ទន្ទឹម
+                                            {lang === "kh" ? "ដេប៉ាតឺម៉ង់ទន្ទឹម" : "Sub-departments"}
                                         </Badge>
                                     )}
                                 </div>
@@ -85,9 +101,9 @@ export function UnitListCard({ title, titleHref, subtitle, rows, lang }: UnitLis
                             <div className="flex md:items-end">
                                 <Link
                                     href={href}
-                                    className="inline-flex items-center gap-1 bg-muted text-foreground hover:bg-border font-khmer rounded-lg px-4 h-9 text-sm transition-colors"
+                                    className="inline-flex items-center gap-1 bg-muted hover:bg-border text-foreground font-khmer rounded-lg px-4 h-9 text-sm transition-colors"
                                 >
-                                    ព័ត៌មានលម្អិត
+                                    {lang === "kh" ? "ព័ត៌មានលម្អិត" : "View Details"}
                                     <ChevronRight className="w-4 h-4 ml-1" />
                                 </Link>
                             </div>

@@ -7,6 +7,8 @@ import {
     getUniversityDetail,
     getUniversityUnits,
     toHeadingData,
+    type UniversityDetail,
+    type UniversityProgram,
 } from "@/lib/api/universities";
 import type { Lang } from "@/lib/language";
 import { readLang } from "@/lib/language.server";
@@ -15,6 +17,7 @@ import { notFound } from "next/navigation";
 
 export interface ResolvedUnit {
     university: UniversityHeadingData;
+    universityDetail: UniversityDetail;
     universityId: string;
     unit: Unit;
     root: Unit;
@@ -25,6 +28,7 @@ export interface ResolvedUnit {
     curriculums: CurriculumSection[];
     facilities: any[];
     scholarships: any[];
+    programs: UniversityProgram[];
     lang: Lang;
 }
 
@@ -45,6 +49,7 @@ export async function resolveUnitPage(universityId: string, pathIds: string[]): 
 
     return {
         university: toHeadingData(detail),
+        universityDetail: detail,
         universityId,
         unit,
         root: chain[0],
@@ -55,6 +60,7 @@ export async function resolveUnitPage(universityId: string, pathIds: string[]): 
         curriculums: unitDetail?.curriculum ?? [],
         facilities: unitDetail?.facilities ?? [],
         scholarships: unitDetail?.scholarships ?? [],
+        programs: unitDetail?.programs ?? [],
         lang: await readLang(),
     };
 }

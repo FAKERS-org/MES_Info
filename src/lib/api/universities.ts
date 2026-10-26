@@ -21,9 +21,17 @@ export async function getUniversityDetail(id: string): Promise<UniversityDetail 
 
 /** Map the API's detail payload onto the data the heading renders. */
 export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
+    const tuitionStat =
+        detail.stats_tuition ||
+        (detail.default_tuition_per_year
+            ? detail.default_tuition_female_per_year
+                ? `$${detail.default_tuition_per_year}/yr (♀ $${detail.default_tuition_female_per_year}/yr)`
+                : `$${detail.default_tuition_per_year}/yr`
+            : undefined);
+
     const stats = {
         students: detail.stats_students ?? undefined,
-        tuition: detail.stats_tuition ?? undefined,
+        tuition: tuitionStat,
         established:
             detail.stats_established ??
             (detail.established_year ? `Est. ${detail.established_year}` : undefined),
@@ -73,7 +81,7 @@ export async function getUniversityUnits(universityId: string): Promise<UnitSumm
 export async function getUnitDetail(
     universityId: string,
     unitId: string,
-): Promise<{ curriculum: CurriculumSection[]; facilities: Facility[]; scholarships: UnitScholarship[] } | null> {
+): Promise<{ curriculum: CurriculumSection[]; facilities: Facility[]; scholarships: UnitScholarship[]; programs: UniversityProgram[] } | null> {
     const detail = await apiFetch<UnitDetail>(
         `/public/universities/${encodeURIComponent(universityId)}/units/${encodeURIComponent(unitId)}`,
     );
@@ -118,6 +126,7 @@ export async function getUnitDetail(
         curriculum: detail.curriculum_sections.map(mapCurriculum),
         facilities,
         scholarships,
+        programs: (detail.programs as UniversityProgram[]) ?? [],
     };
 }
 
@@ -151,6 +160,8 @@ export function buildUnitTree(units: UnitSummary[]): Unit[] {
             name: { en: row.name_en, kh: row.name_kh ?? "" },
             category: { en: row.category_en, kh: row.category_kh ?? "" },
             logo: row.logo ?? undefined,
+            defaultTuition: row.default_tuition_per_year ?? undefined,
+            defaultTuitionFemale: row.default_tuition_female_per_year ?? undefined,
             requirements: [],
             units: [],
         };
