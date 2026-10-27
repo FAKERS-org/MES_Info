@@ -9,9 +9,21 @@ export interface ProgramGroup extends UnitRow {
     rows: UnitRow[];
 }
 
-export function universityHref(universityId: string): string {
-    return `/explore-universities/${universityId}`;
+export function slugify(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
 }
+
+export function universityHref(university: { name_en?: string | null; public_id: string } | string): string {
+    if (typeof university === "string") {
+        return `/explore-universities/${university}`;
+    }
+    const slug = university.name_en ? slugify(university.name_en) : university.public_id;
+    return `/explore-universities/${slug || university.public_id}`;
+}
+
 
 export function unitHref(universityId: string, pathIds: string[]): string {
     return `/explore-universities/${universityId}/programs/${pathIds.join("/")}`;

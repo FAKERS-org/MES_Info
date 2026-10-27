@@ -50,6 +50,12 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
             detail.university_category_en || detail.university_category_kh
                 ? { en: detail.university_category_en ?? "", kh: detail.university_category_kh ?? "" }
                 : undefined,
+        province: detail.province,
+        hasScholarships: detail.has_scholarships,
+        hasDormitory: detail.has_dormitory,
+        establishedYear: detail.established_year ?? undefined,
+        campusName: detail.campus_name ?? undefined,
+        isMainCampus: detail.is_main_campus,
         address: detail.address ? { en: detail.address, kh: detail.address } : undefined,
         website: detail.website ?? undefined,
         contact:

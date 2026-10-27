@@ -23,7 +23,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
     const featured = variant === "featured";
 
     const name = apiName(university, lang);
-    const href = universityHref(university.public_id);
+    const href = universityHref(university);
     const overview = apiOverview(university, lang);
 
     const surface = cn(

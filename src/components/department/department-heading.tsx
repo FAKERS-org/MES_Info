@@ -12,11 +12,14 @@ import type { Lang } from "@/lib/language";
 import { localize } from "@/lib/language";
 import {
     Award,
+    BadgeCheck,
     Bookmark,
     Building2,
+    CalendarDays,
     CheckCircle2,
     ExternalLink,
     Globe,
+    Home,
     Leaf,
     MapPin,
     MessageSquare,
@@ -42,6 +45,12 @@ export interface UniversityHeadingData {
     universityType: NamespacedText;
     moeysAccredited?: boolean;
     universityCategory?: NamespacedText;
+    province?: string;
+    hasScholarships?: boolean;
+    hasDormitory?: boolean;
+    establishedYear?: number;
+    campusName?: string;
+    isMainCampus?: boolean;
     address?: NamespacedText;
     website?: string;
     stats?: UniversityStats;
@@ -201,6 +210,66 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                     ` (${localize(university.universityCategory, lang)})`}
                             </span>
                         </Badge>
+
+                        {university.moeysAccredited && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                            >
+                                <BadgeCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <span>{lang === "kh" ? "ទទួលស្គាល់ដោយ MoEYS" : "MoEYS Accredited"}</span>
+                            </Badge>
+                        )}
+
+                        {university.province && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-muted text-foreground hover:bg-muted font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                            >
+                                <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                                <span>{university.province}</span>
+                            </Badge>
+                        )}
+
+                        {university.hasScholarships && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                            >
+                                <Award className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                                <span>{lang === "kh" ? "មានអាហារូបករណ៍" : "Scholarships"}</span>
+                            </Badge>
+                        )}
+
+                        {university.hasDormitory && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-sky-500/10 text-sky-700 dark:text-sky-400 border border-sky-500/20 font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                            >
+                                <Home className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
+                                <span>{lang === "kh" ? "មានអន្តេវាសិកដ្ឋាន" : "Dormitory"}</span>
+                            </Badge>
+                        )}
+
+                        {university.establishedYear && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-muted text-foreground hover:bg-muted font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                            >
+                                <CalendarDays className="h-3.5 w-3.5 text-muted-foreground" />
+                                <span>{lang === "kh" ? `បង្កើតឆ្នាំ ${university.establishedYear}` : `Est. ${university.establishedYear}`}</span>
+                            </Badge>
+                        )}
+
+                        {university.campusName && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/20 font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                            >
+                                <Building2 className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                                <span>{university.campusName}</span>
+                            </Badge>
+                        )}
 
                         <div className="flex-1 hidden lg:block" />
 

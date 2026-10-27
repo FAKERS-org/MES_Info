@@ -6,7 +6,7 @@ import apiClient from "@/lib/api/client";
 import { buildUnitTree, type PageUnitSummary, type UnitSummary, type UniversityDetail } from "@/lib/api/universities";
 import { useLanguage } from "@/lib/i18n";
 import { apiName, localize } from "@/lib/language";
-import { walkUnitPath } from "@/lib/unit-routes";
+import { slugify, walkUnitPath } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
@@ -45,7 +45,13 @@ function useDefaultCrumbs(): Crumb[] {
 
     const staticUniversity = param ? getUniversity(param) : undefined;
     const uniFromList = param
-        ? universities.find(u => u.public_id === param || String(u.id) === param)
+        ? universities.find(
+              u =>
+                  u.public_id === param ||
+                  String(u.id) === param ||
+                  slugify(u.name_en) === param ||
+                  (u.abbreviation && u.abbreviation.toLowerCase() === param.toLowerCase()),
+          )
         : undefined;
 
     const { data: uniDetail } = useQuery({
