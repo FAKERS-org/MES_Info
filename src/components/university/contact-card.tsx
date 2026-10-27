@@ -37,10 +37,7 @@ function AdvisorIcon({ className }: { className?: string }) {
 
 export default function AdmissionsContactCard({
     phone,
-    email,
     telegram,
-    website,
-    universityName,
     advisorName,
     advisorRole,
     advisorAvatar,
@@ -93,7 +90,10 @@ export default function AdmissionsContactCard({
                     asChild
                     className="w-full bg-[#e6f4fa] hover:bg-[#d8edf7] text-[#0d557a] dark:bg-sky-950/60 dark:hover:bg-sky-900/60 dark:text-sky-300 font-khmer font-semibold text-sm h-11.5 rounded-2xl flex items-center justify-center gap-2 transition-colors border-0 shadow-none cursor-pointer"
                 >
-                    <a href={telegramUrl} target="_blank" rel="noopener noreferrer">
+                    <a
+                        href={telegramUrl} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 w-full h-full"
+                    >
                         <MessageSquare className="h-4.5 w-4.5 shrink-0" />
                         <span>ផ្ញើសារសាកសួរ (Telegram Q&A)</span>
                     </a>
@@ -101,39 +101,16 @@ export default function AdmissionsContactCard({
 
                 <Button
                     asChild
-                    className="w-full bg-[#f1f3f5] hover:bg-[#e6e9ec] text-[#343a40] dark:bg-muted dark:hover:bg-muted/80 dark:text-foreground font-sans font-semibold text-sm h-11.5 rounded-2xl flex items-center justify-center gap-2 transition-colors border-0 shadow-none cursor-pointer"
+                    className="w-full bg-[#f1f3f5] hover:bg-[#e6e9ec] text-[#343a40] dark:bg-muted dark:hover:bg-muted/80 dark:text-foreground font-sans font-semibold text-sm h-11.5 rounded-2xl border-0 shadow-none cursor-pointer"
                 >
-                    <a href={`tel:${displayPhone.replace(/\s+/g, "")}`}>
+                    <a
+                        href={`tel:${displayPhone.replace(/\s+/g, "")}`}
+                        className="inline-flex items-center justify-center gap-2 w-full h-full"
+                    >
                         <Phone className="h-4 w-4 text-muted-foreground shrink-0" />
                         <span>Hotline: {displayPhone}</span>
                     </a>
                 </Button>
-
-                {/* Subtle auxiliary contact links if available */}
-                {(email || website) && (
-                    <div className="flex items-center justify-center gap-4 pt-1 text-xs text-muted-foreground">
-                        {email && (
-                            <a
-                                href={`mailto:${email}`}
-                                className="hover:text-primary transition-colors flex items-center gap-1"
-                            >
-                                <Mail className="h-3 w-3" />
-                                <span className="truncate max-w-[150px]">{email}</span>
-                            </a>
-                        )}
-                        {website && (
-                            <a
-                                href={website.startsWith("http") ? website : `https://${website}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:text-primary transition-colors flex items-center gap-1"
-                            >
-                                <Globe className="h-3 w-3" />
-                                <span className="truncate max-w-[150px]">{website.replace(/^https?:\/\//, "")}</span>
-                            </a>
-                        )}
-                    </div>
-                )}
             </div>
         </Card>
     );
