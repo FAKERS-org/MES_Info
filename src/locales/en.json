@@ -167,5 +167,21 @@
     "university.tuitionVariableDesc": "Tuition fees vary depending on the selected field of study.",
     "university.tuitionUnsetTitle": "Tuition Not Specified",
     "university.tuitionUnsetDesc": "Contact the admissions office for current tuition schedules.",
-    "university.femaleDiscountApplied": "Female student incentive rate available"
+    "university.femaleDiscountApplied": "Female student incentive rate available",
+    "university.filterFaculty": "Faculty",
+    "university.allFaculties": "All Faculties",
+    "university.filterTuition": "Tuition Range",
+    "university.allTuitions": "All Tuition Rates",
+    "university.freeOrUnset": "Free / Contact",
+    "university.femaleDiscountOnly": "Female Discount Available",
+    "university.under1000": "Under $1,000 / yr",
+    "university.range1000to2500": "$1,000 – $2,500 / yr",
+    "university.over2500": "Over $2,500 / yr",
+    "university.sortBy": "Sort by",
+    "university.sortDefault": "Default",
+    "university.sortPriceAsc": "Tuition: Low to High",
+    "university.sortPriceDesc": "Tuition: High to Low",
+    "university.sortDuration": "Duration",
+    "university.sortName": "Name A-Z",
+    "university.clearFilters": "Reset Filters"
 }

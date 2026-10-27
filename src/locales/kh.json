@@ -167,5 +167,21 @@
     "university.tuitionVariableDesc": "តម្លៃសិក្សាប្រែប្រួលទៅតាមមុខជំនាញដែលបានជ្រើសរើស។",
     "university.tuitionUnsetTitle": "មិនទាន់បានបញ្ជាក់តម្លៃសិក្សា",
     "university.tuitionUnsetDesc": "សូមទាក់ទងការិយាល័យចុះឈ្មោះសម្រាប់តារាងតម្លៃសិក្សាជាក់ស្តែង។",
-    "university.femaleDiscountApplied": "មានអត្រាលើកទឹកចិត្តពិសេសសម្រាប់សិស្ស-និស្សិតនារី"
+    "university.femaleDiscountApplied": "មានអត្រាលើកទឹកចិត្តពិសេសសម្រាប់សិស្ស-និស្សិតនារី",
+    "university.filterFaculty": "មហាវិទ្យាល័យ",
+    "university.allFaculties": "មហាវិទ្យាល័យទាំងអស់",
+    "university.filterTuition": "កម្រិតតម្លៃសិក្សា",
+    "university.allTuitions": "តម្លៃសិក្សាទាំងអស់",
+    "university.freeOrUnset": "មិនគិតថ្លៃ / សាកសួរ",
+    "university.femaleDiscountOnly": "បញ្ចុះតម្លៃពិសេសសម្រាប់នារី",
+    "university.under1000": "ក្រោម $1,000 / ឆ្នាំ",
+    "university.range1000to2500": "$1,000 – $2,500 / ឆ្នាំ",
+    "university.over2500": "លើសពី $2,500 / ឆ្នាំ",
+    "university.sortBy": "តម្រៀបតាម",
+    "university.sortDefault": "លំនាំដើម",
+    "university.sortPriceAsc": "តម្លៃ៖ ទាបទៅខ្ពស់",
+    "university.sortPriceDesc": "តម្លៃ៖ ខ្ពស់ទៅទាប",
+    "university.sortDuration": "រយៈពេលសិក្សា",
+    "university.sortName": "ឈ្មោះ A-Z",
+    "university.clearFilters": "សម្អាតការច្រោះ"
 }
