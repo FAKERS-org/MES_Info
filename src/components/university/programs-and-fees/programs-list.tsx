@@ -274,17 +274,17 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
 
                             return (
                                 <div key={program.id}>
-                                    <div className="p-6 flex flex-col md:flex-row justify-between gap-4 hover:bg-muted/10 transition-colors">
-                                        <div className="flex-1 space-y-2">
-                                            <div className="flex flex-wrap items-center gap-2.5">
-                                                <h3 className="text-lg font-bold text-foreground font-khmer">
+                                    <div className="p-4 sm:p-5 flex flex-col md:flex-row justify-between gap-4 hover:bg-muted/30 transition-colors">
+                                        <div className="flex-1 space-y-1.5">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <h3 className="text-base font-semibold text-foreground font-khmer">
                                                     {apiName(program, lang)}
                                                 </h3>
-                                                <Badge className="bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/60 px-2.5 py-0.5 rounded-lg text-xs font-semibold">
+                                                <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-medium">
                                                     {DEGREE_LEVELS[program.degree_level]}
                                                 </Badge>
                                                 {program.faculty && (
-                                                    <Badge className="bg-muted text-muted-foreground border-0 rounded-lg px-2.5 py-0.5 text-xs font-medium font-khmer flex items-center gap-1">
+                                                    <Badge className="bg-muted text-muted-foreground border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer flex items-center gap-1">
                                                         <Building2 className="h-3 w-3" />
                                                         {program.faculty}
                                                     </Badge>

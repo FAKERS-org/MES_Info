@@ -65,17 +65,17 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
                 }
             >
                 {/* Scholarship Overview Banner */}
-                <Card className="border border-sky-100 dark:border-sky-900/40 bg-gradient-to-br from-sky-50/70 to-card dark:from-sky-950/20 dark:to-card shadow-sm rounded-2xl">
-                    <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-sky-100 dark:bg-sky-900/50 rounded-xl text-sky-700 dark:text-sky-300">
-                                <Award className="h-6 w-6" />
+                <Card className="border border-primary/20 bg-primary/5 shadow-xs rounded-2xl">
+                    <CardContent className="p-5">
+                        <div className="flex items-start gap-3.5">
+                            <div className="p-2 bg-primary/10 rounded-xl text-primary shrink-0">
+                                <Award className="h-5 w-5" />
                             </div>
-                            <div className="space-y-1">
-                                <h1 className="text-xl font-bold text-foreground">
+                            <div className="space-y-0.5">
+                                <h1 className="text-base md:text-lg font-bold text-foreground font-khmer">
                                     {t("university.scholarshipsHeading")}
                                 </h1>
-                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-khmer">
                                     {activeDetail.scholarship_info ||
                                         t("university.scholarshipsDefaultInfo", { name: uniName })}
                                 </p>
@@ -86,7 +86,7 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
 
                 {/* Scholarships List */}
                 {scholarships.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-3.5">
                         {scholarships.map(sch => {
                             const name = lang === "kh" ? sch.name_kh || sch.name_en : sch.name_en;
                             const coverage =
@@ -95,13 +95,13 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
                                     : sch.coverage_en || sch.coverage_kh;
 
                             return (
-                                <Card key={sch.id} className="border border-border shadow-sm rounded-2xl bg-card">
-                                    <CardHeader className="pb-3">
+                                <Card key={sch.id} className="border border-border shadow-xs rounded-2xl bg-card">
+                                    <CardHeader className="p-4 sm:p-5 pb-3">
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                            <CardTitle className="text-lg font-bold text-foreground font-khmer">
+                                            <CardTitle className="text-base font-semibold text-foreground font-khmer">
                                                 {name}
                                             </CardTitle>
-                                            <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200 border-0 font-semibold px-3 py-1 text-xs w-fit">
+                                            <Badge className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-0 font-medium px-2.5 py-0.5 text-xs w-fit">
                                                 {coverage}
                                             </Badge>
                                         </div>

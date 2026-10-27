@@ -12,15 +12,15 @@ const AcademicCurriculum = ({ curriculum, lang }: AcademicCurriculumProps) => {
         <div className="max-w-4xl mx-auto rounded-2xl border border-border bg-card p-2 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.06)]">
             <div className="p-6 md:p-8 bg-card rounded-2xl font-sans">
                 {/* --- Header Section --- */}
-                <div className="flex items-start gap-4 mb-8">
-                    <div className="bg-sky-100 dark:bg-sky-950/50 p-3 rounded-xl shrink-0 mt-1 text-foreground">
-                        <Laptop className="h-7 w-7" strokeWidth={1.5} />
+                <div className="flex items-start gap-3.5 mb-6">
+                    <div className="p-2.5 rounded-xl bg-primary/10 text-primary shrink-0 mt-0.5">
+                        <Laptop className="h-5 w-5" />
                     </div>
                     <div>
-                        <h1 className="text-xl md:text-2xl font-bold text-foreground leading-tight mb-1">
+                        <h1 className="text-base md:text-xl font-bold text-foreground leading-tight mb-0.5">
                             {lang === "en" ? curriculum.headingEn : curriculum.headingKh}
                         </h1>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-xs md:text-sm text-muted-foreground">
                             {lang === "en" ? curriculum.headingKh : curriculum.headingEn}
                         </p>
                     </div>
@@ -28,9 +28,9 @@ const AcademicCurriculum = ({ curriculum, lang }: AcademicCurriculumProps) => {
 
                 {/* --- Practical Labs Banner --- */}
                 {curriculum.bannerText && (
-                    <div className="flex items-center gap-2 mb-6 bg-card border border-border px-4 py-3 rounded-xl w-fit shadow-sm">
-                        <div className="w-2.5 h-2.5 rounded-full bg-sky-500" />
-                        <span className="text-sm font-semibold text-foreground">{curriculum.bannerText}</span>
+                    <div className="flex items-center gap-2 mb-6 bg-muted/60 border border-border px-3.5 py-2 rounded-xl w-fit shadow-xs">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span className="text-xs md:text-sm font-semibold text-foreground">{curriculum.bannerText}</span>
                     </div>
                 )}
 
@@ -39,30 +39,30 @@ const AcademicCurriculum = ({ curriculum, lang }: AcademicCurriculumProps) => {
                     {curriculum.blocks.map(block => (
                         <div
                             key={`${block.badgeText}-${block.title}`}
-                            className="bg-card rounded-2xl p-5 md:p-6 shadow-[0_2px_15px_-4px_rgba(0,0,0,0.03)] border border-border"
+                            className="bg-card rounded-2xl p-5 md:p-6 shadow-xs border border-border"
                         >
                             {/* Block Header */}
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0 mb-3">
-                                <div className="flex flex-wrap items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-2.5">
                                     <span
-                                        className={`${block.badgeBg ?? "bg-[#0F4C81]"} text-white text-xs font-bold px-3 py-1 rounded-md`}
+                                        className={`${block.badgeBg ?? "bg-primary"} text-primary-foreground text-xs font-semibold px-2.5 py-0.5 rounded-md`}
                                     >
                                         {block.badgeText}
                                     </span>
-                                    <h2 className="text-[15px] md:text-base font-bold text-foreground">
+                                    <h2 className="text-sm md:text-base font-bold text-foreground">
                                         {block.title}{" "}
                                         {block.englishTitle && (
                                             <span className="font-medium text-muted-foreground">{block.englishTitle}</span>
                                         )}
                                     </h2>
                                 </div>
-                                <span className="text-sm font-bold text-muted-foreground whitespace-nowrap">
+                                <span className="text-xs md:text-sm font-semibold text-muted-foreground whitespace-nowrap">
                                     {block.credits}
                                 </span>
                             </div>
 
                             {/* Block Description */}
-                            <p className="text-[13px] text-muted-foreground leading-relaxed mb-5">{block.description}</p>
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed mb-4">{block.description}</p>
 
                             {/* Course Tags */}
                             <div className="flex flex-wrap gap-2">

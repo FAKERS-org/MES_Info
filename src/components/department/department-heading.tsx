@@ -21,6 +21,7 @@ import {
     MapPin,
     MessageSquare,
     Phone,
+    Send,
     Share2,
     Users,
     Wallet,
@@ -174,11 +175,11 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                             {ctaUrl ? (
                                 <Button
                                     asChild
-                                    className="w-full md:w-auto bg-[#2583c4] hover:bg-[#1f70a8] text-white rounded-xl h-12 px-6 flex items-center gap-2 shadow-md border-0"
+                                    className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-5 flex items-center gap-2 shadow-sm border-0 font-khmer text-sm font-semibold"
                                 >
                                     <a href={ctaUrl} target="_blank" rel="noopener noreferrer">
-                                        <MessageSquare className="w-5 h-5 fill-white" />
-                                        <span className="font-bold font-khmer text-[15px]">
+                                        <Send className="h-4 w-4" />
+                                        <span>
                                             <LocalizedText translationKey="contact.telegram" />
                                         </span>
                                     </a>
@@ -187,33 +188,19 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                         </div>
                     </div>
 
-                    {/* --- Metadata Row: the 3 badges (card area) --- */}
-                    <div className="flex flex-wrap items-center gap-3 mt-6">
+                    {/* --- Metadata Row: badges --- */}
+                    <div className="flex flex-wrap items-center gap-2.5 mt-5">
                         <Badge
                             variant="secondary"
-                            className="bg-muted text-foreground hover:bg-muted font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
+                            className="bg-muted text-foreground hover:bg-muted font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
                         >
-                            <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
-                            <span className="font-khmer">
+                            <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
+                            <span>
                                 {localize(university.universityType, lang)}
                                 {university.universityCategory &&
                                     ` (${localize(university.universityCategory, lang)})`}
                             </span>
                         </Badge>
-                        {/* <Badge
-                            variant="secondary"
-                            className="bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-200 hover:bg-green-50 dark:hover:bg-green-950/40 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
-                        >
-                            <Leaf className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
-                            <span>STEM Excellence Leader</span>
-                        </Badge>
-                        <Badge
-                            variant="secondary"
-                            className="bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950/40 font-normal rounded-full px-3 py-1 flex items-center gap-1.5 text-xs"
-                        >
-                            <Award className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                            <span>AUN-QA Accredited</span>
-                        </Badge> */}
 
                         <div className="flex-1 hidden lg:block" />
 
@@ -222,11 +209,11 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                 href={`https://${university.website.replace(/^https?:\/\//, "")}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center gap-2 text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm group"
+                                className="flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors text-xs font-medium group"
                             >
-                                <Globe className="w-4 w-4" />
-                                <span className="font-medium">{university.website}</span>
-                                <ExternalLink className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />
+                                <Globe className="h-3.5 w-3.5" />
+                                <span>{university.website}</span>
+                                <ExternalLink className="h-3 w-3 opacity-50 group-hover:opacity-100" />
                             </a>
                         )}
                     </div>
@@ -235,16 +222,16 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                 {/* =========================================
                     BOTTOM SECTION: Key Statistics
                    ========================================= */}
-                <div className="mt-6 border-t border-border bg-muted px-6 py-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="mt-5 border-t border-border bg-muted/50 px-6 py-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {stats.map(stat => (
-                            <div key={stat.key} className="flex items-start gap-3">
-                                <div className="bg-blue-50 dark:bg-blue-950/30 p-2 rounded-xl">
-                                    <stat.icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            <div key={stat.key} className="flex items-center gap-3">
+                                <div className="bg-primary/10 text-primary p-2 rounded-xl shrink-0">
+                                    <stat.icon className="h-4.5 w-4.5" />
                                 </div>
-                                <div>
-                                    <p className="text-xs text-muted-foreground font-khmer mb-0.5">{stat.label}</p>
-                                    <p className="text-sm font-semibold text-foreground">{stat.value}</p>
+                                <div className="min-w-0">
+                                    <p className="text-xs text-muted-foreground font-khmer">{stat.label}</p>
+                                    <p className="text-sm font-semibold text-foreground truncate">{stat.value}</p>
                                 </div>
                             </div>
                         ))}

@@ -49,29 +49,29 @@ const StylizedQRCode = () => {
 
 const PaymentQR = () => {
     return (
-        <div className="w-full max-w-sm mx-auto bg-card rounded-2xl shadow-sm border border-border p-5 font-sans">
+        <div className="w-full max-w-sm mx-auto bg-card rounded-2xl shadow-xs border border-border p-5 font-sans">
             {/* --- Header --- */}
             <div className="flex justify-between items-start mb-6">
                 <div>
-                    <h2 className="text-lg font-bold text-foreground leading-tight">ថ្លៃពាក្យប្រឡង និងការទុកទីតាំង</h2>
+                    <h2 className="text-base md:text-lg font-bold text-foreground leading-tight">ថ្លៃពាក្យប្រឡង និងការទុកទីតាំង</h2>
                     <p className="text-xs text-muted-foreground mt-1">Registration & Exam Fee</p>
                 </div>
-                <div className="bg-sky-50 dark:bg-sky-950/30 p-2 rounded-lg text-sky-600 dark:text-sky-400">
-                    <Wallet className="h-5 w-5" />
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                    <Wallet className="h-4.5 w-4.5" />
                 </div>
             </div>
 
             {/* --- Fee Amount Card --- */}
-            <div className="bg-muted rounded-xl p-4 flex justify-between items-center mb-6">
+            <div className="bg-muted/70 border border-border rounded-xl p-4 flex justify-between items-center mb-6">
                 <div>
                     <p className="text-xs text-muted-foreground mb-1">ទឹកប្រាក់តម្រូវឱ្យសម្រាយ</p>
                     <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-bold text-foreground">$15.00</span>
+                        <span className="text-2xl md:text-3xl font-bold text-foreground">$15.00</span>
                         <span className="text-sm font-medium text-muted-foreground/70">/</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5">៦០,០០០ រៀល</p>
                 </div>
-                <div className="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-200 text-xs font-medium px-3 py-1.5 rounded-md text-center leading-tight">
+                <div className="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-200 text-xs font-semibold px-2.5 py-1.5 rounded-md text-center leading-tight">
                     Non-
                     <br />
                     refundable
@@ -82,35 +82,35 @@ const PaymentQR = () => {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                     {/* KHQR Logo Placeholder */}
-                    <div className="w-8 h-8 bg-[#C8102E] rounded flex items-center justify-center text-white font-bold text-[10px] tracking-tighter">
+                    <div className="w-8 h-8 bg-destructive rounded-md flex items-center justify-center text-white font-bold text-xs tracking-tighter">
                         KH
                         <br />
                         QR
                     </div>
                     <div>
-                        <p className="text-sm font-bold text-foreground">Bakong KHQR</p>
+                        <p className="text-sm font-semibold text-foreground">Bakong KHQR</p>
                         <p className="text-xs text-muted-foreground">Payment</p>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-xs text-muted-foreground/70">Instant</p>
-                    <p className="text-xs text-muted-foreground/70">Verify</p>
+                    <p className="text-xs text-muted-foreground">Instant</p>
+                    <p className="text-xs text-muted-foreground font-medium text-emerald-600 dark:text-emerald-400">Verified</p>
                 </div>
             </div>
 
             {/* --- QR Code Area --- */}
-            <div className="bg-muted/50 rounded-xl p-4 flex flex-col items-center justify-center border border-border mb-6">
+            <div className="bg-muted/40 rounded-xl p-4 flex flex-col items-center justify-center border border-border mb-6">
                 <StylizedQRCode />
 
                 <div className="mt-4 text-center">
-                    <p className="text-sm font-bold text-foreground">គណនី: ITC Admissions Fund</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">ABA / ACLEDA / Canada / Wing</p>
+                    <p className="text-sm font-semibold text-foreground">គណនី: ITC Admissions Fund</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">ABA / ACLEDA / Canadia / Wing</p>
                 </div>
             </div>
 
             {/* --- Action Button --- */}
-            <Button className="w-full bg-[#0F4C81] hover:bg-[#0c3e6a] text-white font-medium py-6 rounded-xl flex items-center justify-center gap-2 text-[15px]">
-                <ScanLine className="h-5 w-5" />
+            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-xs">
+                <ScanLine className="h-4.5 w-4.5" />
                 បង់ប្រាក់តាមខ្លួនឯង (Pay $15.00)
             </Button>
         </div>

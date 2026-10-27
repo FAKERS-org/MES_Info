@@ -10,4 +10,5 @@
   --font-sans:
     var(--font-kantumruy-family), "Noto Sans Khmer", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-lexend: var(--font-lexend-family), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-khmer: var(--font-kantumruy-family), "Noto Sans Khmer", ui-sans-serif, system-ui, sans-serif;
 }

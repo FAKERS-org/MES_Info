@@ -5,31 +5,19 @@ import { ArrowRight, Building2, CheckCircle2, ChevronRight, Info, MonitorPlay } 
 const ScholarshipCard = ({ data }: { data: any }) => {
     const isMoEYS = data.type === "moEYS";
 
-    // Theme Colors
-    const theme = {
-        iconBg: isMoEYS ? "bg-sky-50 dark:bg-sky-950/30" : "bg-blue-50 dark:bg-blue-950/30",
-        iconColor: isMoEYS ? "text-sky-600 dark:text-sky-400" : "text-blue-600 dark:text-blue-400",
-        titleColor: "text-foreground",
-        subtitleColor: "text-muted-foreground",
-        buttonBg: isMoEYS ? "bg-[#15628F] hover:bg-[#114b6f]" : "bg-[#15628F] hover:bg-[#114b6f]",
-        badgeBg: isMoEYS
-            ? "bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-950/30 dark:text-orange-400 dark:border-orange-800/60"
-            : "bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-800/60",
-    };
-
     return (
-        <div className="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border font-sans mb-6">
+        <div className="bg-card rounded-2xl p-5 md:p-6 shadow-xs border border-border font-sans mb-6">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
-                <div className="flex items-start gap-4">
-                    <div className={`${theme.iconBg} ${theme.iconColor} p-3 rounded-xl shrink-0 mt-1`}>
-                        {isMoEYS ? <Building2 className="h-7 w-7" /> : <MonitorPlay className="h-7 w-7" />}
+                <div className="flex items-start gap-3.5">
+                    <div className="p-2.5 rounded-xl bg-primary/10 text-primary shrink-0 mt-0.5">
+                        {isMoEYS ? <Building2 className="h-5 w-5" /> : <MonitorPlay className="h-5 w-5" />}
                     </div>
                     <div>
-                        <h2 className={`text-xl md:text-[22px] font-bold ${theme.titleColor} leading-snug mb-1`}>
+                        <h2 className="text-base md:text-lg font-bold text-foreground leading-snug mb-1">
                             {data.title}
                         </h2>
-                        <p className={`text-sm ${theme.subtitleColor} max-w-xl leading-relaxed`}>{data.subtitle}</p>
+                        <p className="text-xs md:text-sm text-muted-foreground max-w-xl leading-relaxed">{data.subtitle}</p>
                     </div>
                 </div>
 
@@ -38,7 +26,7 @@ const ScholarshipCard = ({ data }: { data: any }) => {
                     {data.badges.map((badge: any, idx: number) => (
                         <div
                             key={idx}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold whitespace-nowrap ${badge.colorClass}`}
+                            className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold whitespace-nowrap ${badge.colorClass}`}
                         >
                             {badge.icon && <badge.icon className="h-3.5 w-3.5" />}
                             {badge.text}
@@ -48,29 +36,29 @@ const ScholarshipCard = ({ data }: { data: any }) => {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-muted/80 rounded-xl p-4 mb-6 border border-border">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 bg-muted/60 rounded-xl p-4 mb-6 border border-border">
                 {data.stats.map((stat: any, idx: number) => (
                     <div key={idx} className="flex flex-col">
                         <span className="text-xs text-muted-foreground mb-1">{stat.label}</span>
                         <span
-                            className={`text-[15px] font-bold ${stat.valueColor || "text-foreground"} leading-tight mb-0.5`}
+                            className={`text-sm font-bold ${stat.valueColor || "text-foreground"} leading-tight mb-0.5`}
                         >
                             {stat.value}
                         </span>
-                        <span className="text-[11px] text-muted-foreground/70">{stat.subValue}</span>
+                        <span className="text-xs text-muted-foreground/70">{stat.subValue}</span>
                     </div>
                 ))}
             </div>
 
             {/* Key Selection Criteria */}
-            <div className="mb-8">
-                <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <div className="mb-6">
+                <h3 className="text-xs md:text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                     {data.criteriaTitle}
                     {!isMoEYS && <Info className="h-4 w-4 text-muted-foreground/70" />}
                 </h3>
-                <ul className="space-y-2.5">
+                <ul className="space-y-2">
                     {data.criteria.map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground leading-relaxed">
+                        <li key={idx} className="flex items-start gap-2.5 text-xs md:text-sm text-muted-foreground leading-relaxed">
                             <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
                             <span dangerouslySetInnerHTML={{ __html: item }} />
                         </li>
@@ -79,17 +67,17 @@ const ScholarshipCard = ({ data }: { data: any }) => {
             </div>
 
             {/* Footer Actions */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-border">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-border">
                 <Button
                     variant="link"
-                    className="text-foreground font-semibold hover:no-underline flex items-center gap-1 p-0 h-auto text-sm"
+                    className="text-foreground font-semibold hover:no-underline flex items-center gap-1 p-0 h-auto text-xs md:text-sm"
                 >
                     {data.detailsText}
                     <ChevronRight className="h-4 w-4" />
                 </Button>
 
                 <Button
-                    className={`w-full sm:w-auto ${theme.buttonBg} text-white rounded-lg px-6 py-2.5 font-medium flex items-center gap-2 text-sm`}
+                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl px-5 py-2 font-medium flex items-center gap-2 text-xs md:text-sm"
                 >
                     {data.applyText}
                     <ArrowRight className="h-4 w-4" />

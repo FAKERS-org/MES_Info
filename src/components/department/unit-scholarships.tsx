@@ -49,13 +49,13 @@ export default function UnitScholarships({ scholarships, lang }: UnitScholarship
                             </Badge>
                         </div>
 
-                        <p className="text-muted-foreground text-[15px]">{scholarship.name.en}</p>
+                        <p className="text-muted-foreground text-sm">{scholarship.name.en}</p>
 
                         {scholarship.requirements.length > 0 && (
                             <ul className="space-y-1 pt-1">
                                 {scholarship.requirements.map(requirement => (
-                                    <li key={requirement.en} className="flex items-start gap-1.5 text-sm text-muted-foreground">
-                                        <GraduationCap className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 mt-0.5 shrink-0" strokeWidth={2} />
+                                    <li key={requirement.en} className="flex items-start gap-1.5 text-xs md:text-sm text-muted-foreground">
+                                        <GraduationCap className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
                                         <span className="font-khmer">{localize(requirement, lang)}</span>
                                     </li>
                                 ))}

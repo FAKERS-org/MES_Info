@@ -29,26 +29,26 @@ const ScholarshipBanner = () => {
   ];
 
   return (
-    <div className="w-full bg-[#0B1F3A] rounded-xl overflow-hidden font-sans shadow-lg">
+    <div className="w-full bg-gradient-to-br from-primary via-primary/95 to-primary/85 text-primary-foreground rounded-2xl overflow-hidden font-sans shadow-xs">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center p-6 md:p-8 gap-8">
         
         {/* --- Left Section: Text Content --- */}
-        <div className="flex-1 space-y-4 max-w-2xl">
+        <div className="flex-1 space-y-3.5 max-w-2xl">
           <Badge 
             variant="outline" 
-            className="bg-transparent border-sky-800/50 text-sky-200 hover:bg-transparent rounded-full px-3 py-1 text-[10px] md:text-xs font-medium flex items-center gap-2 w-fit"
+            className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/15 rounded-full px-3 py-1 text-xs font-medium flex items-center gap-2 w-fit"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground"></span>
             ផ្នែកសិក្សា ២០២៥ - ២០២៦ (ACADEMIC YEAR 2025-2026)
           </Badge>
 
-          <h1 className="text-2xl md:text-[28px] font-bold leading-snug md:leading-tight">
-            <span className="text-white">ឱកាសអាហារូបករណ៍ប្រចាំឆ្នាំសិក្សា នៅវិទ្យា</span>
+          <h1 className="text-2xl md:text-3xl font-bold leading-snug md:leading-tight">
+            <span>ឱកាសអាហារូបករណ៍ប្រចាំឆ្នាំសិក្សា នៅវិទ្យា</span>
             <br className="hidden md:block" />
-            <span className="text-sky-300">ស្ថានបច្ចេកវិទ្យាកម្ពុជា</span>
+            <span className="text-primary-foreground/90">ស្ថានបច្ចេកវិទ្យាកម្ពុជា</span>
           </h1>
 
-          <p className="text-sm md:text-[15px] text-sky-100/70 leading-relaxed max-w-xl">
+          <p className="text-xs md:text-sm text-primary-foreground/80 leading-relaxed max-w-xl">
             អាហារូបករណ៍ ផ្តល់ឱកាសដល់និស្សិតឆ្នើមដែលមានសមត្ថភាព និងការលះបង់ ដើម្បីបន្តការសិក្សាក្នុងវិស័យបច្ចេកវិទ្យា និងវិទ្យាសាស្ត្រ ដែលមានសក្តានុពលខ្ពស់បំផុត។
           </p>
         </div>
@@ -58,19 +58,19 @@ const ScholarshipBanner = () => {
           {stats.map((stat, index) => (
             <div 
               key={index} 
-              className={`${stat.bgColor} ${stat.borderColor} border rounded-xl p-4 flex flex-col justify-center min-w-[120px] md:min-w-[130px] h-full`}
+              className="bg-primary-foreground/10 border border-primary-foreground/15 rounded-xl p-4 flex flex-col justify-center min-w-[120px] md:min-w-[130px] h-full"
             >
               <div className="flex flex-col gap-1 mb-2">
-                <span className={`text-xl md:text-2xl font-bold ${stat.valueColor}`}>
+                <span className="text-xl md:text-2xl font-bold text-primary-foreground">
                   {stat.value}
                 </span>
                 {stat.secondValue && (
-                  <span className={`text-xl md:text-2xl font-bold ${stat.secondValueColor}`}>
+                  <span className="text-xl md:text-2xl font-bold text-primary-foreground/90">
                     {stat.secondValue}
                   </span>
                 )}
               </div>
-              <span className="text-[10px] md:text-xs text-sky-200/60 font-medium leading-tight">
+              <span className="text-xs text-primary-foreground/75 font-medium leading-tight">
                 {stat.label}
               </span>
             </div>

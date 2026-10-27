@@ -68,27 +68,27 @@ export default function FacultyCard() {
             {/* Main Container Card */}
             <Card className="overflow-hidden border border-border shadow-sm rounded-xl bg-card" padding="none">
                 {/* --- Header Section --- */}
-                <div className="bg-[#124f70] text-white p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
+                <div className="bg-primary/95 text-primary-foreground p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div className="flex items-center gap-3.5">
                         {/* Icon Box */}
-                        <div className="bg-[#0b3c56] p-2.5 rounded-lg border border-[#1e607f]">
-                            <MonitorPlay className="w-6 h-6 text-white" strokeWidth={1.5} />
+                        <div className="bg-primary-foreground/15 p-2 rounded-xl text-primary-foreground">
+                            <MonitorPlay className="w-5 h-5" />
                         </div>
 
                         {/* Title */}
                         <div>
-                            <h1 className="text-lg md:text-xl font-bold font-khmer leading-tight">
+                            <h1 className="text-base md:text-lg font-bold font-khmer leading-tight">
                                 មហាវិទ្យាល័យព័ត៌មានវិទ្យា និងគមនាគមន៍
                             </h1>
-                            <p className="text-blue-100 text-xs md:text-sm mt-0.5">
+                            <p className="text-primary-foreground/80 text-xs md:text-sm mt-0.5">
                                 Faculty of Information and Communication Technology (FICT)
                             </p>
                         </div>
                     </div>
 
                     {/* Top Rated Badge */}
-                    <Badge className="bg-[#3b9ae1] hover:bg-[#3b9ae1]/90 text-white border-0 px-3 py-1.5 text-xs font-medium rounded-full flex items-center gap-1.5 whitespace-nowrap">
-                        <Star className="w-3.5 h-3.5 fill-white" />
+                    <Badge className="bg-primary-foreground/20 text-primary-foreground border-0 px-3 py-1 text-xs font-medium rounded-full flex items-center gap-1.5 whitespace-nowrap">
+                        <Star className="w-3.5 h-3.5 fill-current" />
                         Top Rated in Cambodia
                     </Badge>
                 </div>
@@ -97,12 +97,12 @@ export default function FacultyCard() {
                 <CardContent className="p-0">
                     {majorsData.map((major, index) => (
                         <React.Fragment key={major.id}>
-                            <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-muted/50 transition-colors">
+                            <div className="p-5 md:p-6 flex flex-col md:flex-row justify-between gap-5 hover:bg-muted/50 transition-colors">
                                 {/* Left Side: Info */}
-                                <div className="flex-1 space-y-2">
+                                <div className="flex-1 space-y-1.5">
                                     {/* Title Row */}
-                                    <div className="flex flex-wrap items-center gap-3">
-                                        <h3 className="text-xl font-bold text-foreground font-khmer">
+                                    <div className="flex flex-wrap items-center gap-2.5">
+                                        <h3 className="text-base md:text-lg font-bold text-foreground font-khmer">
                                             {major.titleKhmer}
                                         </h3>
                                         {major.tags?.map((tag, i) => (
@@ -116,35 +116,35 @@ export default function FacultyCard() {
                                     </div>
 
                                     {/* English Subtitle */}
-                                    <p className="text-muted-foreground text-[15px]">{major.titleEng}</p>
+                                    <p className="text-muted-foreground text-sm">{major.titleEng}</p>
 
                                     {/* Meta Data (Degree, Duration) */}
-                                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground pt-1">
+                                    <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-muted-foreground pt-1">
                                         <div className="flex items-center gap-1.5">
-                                            <GraduationCap className="w-4 h-4 text-blue-500 dark:text-blue-400" strokeWidth={2} />
+                                            <GraduationCap className="w-4 h-4 text-primary" />
                                             <span className="font-khmer">
                                                 {major.degreeKhmer} ({major.degreeEng})
                                             </span>
                                         </div>
                                         <div className="w-1 h-1 bg-muted-foreground/30 rounded-full" />
                                         <div className="flex items-center gap-1.5">
-                                            <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" strokeWidth={2} />
+                                            <Clock className="w-4 h-4 text-primary" />
                                             <span className="font-khmer">រយៈពេល: {major.duration}</span>
                                         </div>
                                     </div>
 
                                     {/* Extra Info (Optional) */}
                                     {major.extraInfo && (
-                                        <p className="text-foreground text-sm pt-1">{major.extraInfo}</p>
+                                        <p className="text-foreground text-xs md:text-sm pt-1">{major.extraInfo}</p>
                                     )}
                                 </div>
 
                                 {/* Right Side: Price & Action */}
-                                <div className="flex flex-row md:flex-col justify-between md:items-end gap-4 min-w-[160px]">
+                                <div className="flex flex-row md:flex-col justify-between md:items-end gap-3 min-w-[160px]">
                                     <div className="text-right flex flex-col items-end">
                                         <div className="flex items-baseline justify-end gap-1">
-                                            <span className="text-[22px] font-bold text-foreground">{major.price}</span>
-                                            <span className="text-[13px] text-muted-foreground font-khmer">
+                                            <span className="text-lg md:text-xl font-bold text-foreground">{major.price}</span>
+                                            <span className="text-xs text-muted-foreground font-khmer">
                                                 / {major.pricePeriod}
                                             </span>
                                         </div>
@@ -160,7 +160,7 @@ export default function FacultyCard() {
 
                                     <Button
                                         variant="secondary"
-                                        className="bg-muted text-foreground hover:bg-border font-khmer gap-1 rounded-lg px-4 h-9 text-sm"
+                                        className="bg-muted text-foreground hover:bg-border font-khmer gap-1 rounded-lg px-4 h-9 text-xs md:text-sm"
                                     >
                                         ព័ត៌មានលម្អិត
                                         <ChevronRight className="w-4 h-4 ml-1" />

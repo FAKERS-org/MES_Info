@@ -11,15 +11,15 @@ const Facilities = ({ facilities }: FacilitiesProps) => {
     return (
         <div className="max-w-7xl mx-auto bg-card rounded-2xl border border-border p-6 md:p-8 font-sans">
             {/* --- Header Section --- */}
-            <div className="flex items-center gap-4 mb-8">
-                <div className="bg-emerald-100 dark:bg-emerald-950/50 p-3 rounded-xl shrink-0 text-emerald-600 dark:text-emerald-400">
-                    <FlaskConical className="h-6 w-6" strokeWidth={2} />
+            <div className="flex items-center gap-3.5 mb-6">
+                <div className="p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
+                    <FlaskConical className="h-5 w-5" />
                 </div>
                 <div>
-                    <h1 className="text-xl md:text-[22px] font-bold text-foreground leading-tight mb-0.5">
+                    <h1 className="text-base md:text-lg font-bold text-foreground leading-tight mb-0.5">
                         មជ្ឈមណ្ឌលសិក្សា & បច្ចេកវិទ្យា
                     </h1>
-                    <p className="text-[13px] text-muted-foreground font-medium">
+                    <p className="text-xs md:text-sm text-muted-foreground font-medium">
                         High-Performance Computing Facilities & Innovation Centers
                     </p>
                 </div>
@@ -31,7 +31,7 @@ const Facilities = ({ facilities }: FacilitiesProps) => {
                     <div key={item.id} className="flex flex-col">
                         {/* Image Container */}
                         {item.image && (
-                            <div className="w-full h-44 rounded-2xl overflow-hidden mb-4 shadow-sm border border-border">
+                            <div className="w-full h-44 rounded-xl overflow-hidden mb-3 shadow-xs border border-border">
                                 <img
                                     src={item.image}
                                     alt={`${item.title} ${item.subtitle ?? ""}`}
@@ -41,8 +41,8 @@ const Facilities = ({ facilities }: FacilitiesProps) => {
                         )}
 
                         {/* Text Content */}
-                        <div className="px-1">
-                            <h2 className="text-[17px] font-bold text-foreground leading-snug mb-2">
+                        <div className="px-0.5 space-y-1">
+                            <h2 className="text-sm md:text-base font-bold text-foreground leading-snug">
                                 {item.title}
                                 {item.subtitle && (
                                     <>
@@ -51,7 +51,7 @@ const Facilities = ({ facilities }: FacilitiesProps) => {
                                     </>
                                 )}
                             </h2>
-                            <p className="text-[13px] text-muted-foreground leading-relaxed">{item.description}</p>
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                         </div>
                     </div>
                 ))}

@@ -53,7 +53,7 @@ export default function CampusSwitcher({
                             <span className="opacity-75 font-normal">({c.province})</span>
                         )}
                         {c.is_main_campus && (
-                            <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-primary-foreground/20 uppercase tracking-tight">
+                            <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-primary-foreground/20 uppercase tracking-tight">
                                 Main
                             </span>
                         )}

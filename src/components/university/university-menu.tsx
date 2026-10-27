@@ -1,32 +1,25 @@
 "use client";
 
+import { Icon } from "@/components/shared/icon-renderer";
+import { Badge } from "@/components/ui/badge";
+import type { IconName } from "@/lib/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Icon } from "@/components/shared/icon-renderer";
-import type { IconName } from "@/lib/icons";
 
 export interface SimpleTab {
+  badge?: number;
   href: string;
   icon: IconName;
   label: string;
-  badge?: number;
 }
 
-/**
- * Tabs of `/explore-universities/{university}` — three real routes, so every
- * tab can be deep-linked and the back button walks between them.
- *
- * The active tab comes from the pathname, never from the caller: a page that
- * hardcoded it was one rename away from highlighting the wrong tab.
- */
 export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
   const pathname = usePathname();
 
   return (
     <nav
       aria-label="University sections"
-      className="w-full max-w-full rounded-xl border shadow-sm bg-card overflow-hidden p-1"
+      className="w-full max-w-full rounded-2xl border border-border shadow-xs bg-card overflow-hidden p-1.5"
     >
       <div className="w-full flex flex-wrap justify-start items-stretch gap-1.5">
         {tabs.map(({ href, icon, label, badge }) => {
@@ -40,19 +33,19 @@ export default function UniversityMenu({ tabs }: { tabs: SimpleTab[] }) {
               key={href}
               href={href}
               aria-current={isActive ? "page" : undefined}
-              className={`group relative flex flex-1 basis-[220px] items-center justify-center gap-2 px-3 py-3 h-full rounded-lg border-none font-medium transition-all duration-200 outline-none ${
+              className={`group relative flex flex-1 basis-[200px] items-center justify-center gap-2 px-3.5 py-2.5 h-full rounded-xl border-none transition-all duration-200 outline-none text-xs sm:text-sm font-medium ${
                 isActive
-                  ? "bg-blue-50 dark:bg-blue-950/30 text-[#0056b3] font-semibold shadow-none"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-primary/10 text-primary font-semibold shadow-none"
+                  : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
               }`}
             >
-              <Icon name={icon} className="w-4.5 h-4.5" strokeWidth={2.5} />
-              <span className="flex items-center gap-1.5 whitespace-nowrap text-sm">
+              <Icon name={icon} className="h-4 w-4 shrink-0" />
+              <span className="flex items-center gap-1.5 whitespace-nowrap">
                 {label}
                 {badge != null && (
                   <Badge
                     variant="secondary"
-                    className="bg-blue-100 dark:bg-blue-950/50 text-[#0056b3] hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded-full px-1.5 py-0.5 text-xs font-bold ml-1"
+                    className="bg-primary/15 text-primary rounded-full px-1.5 py-0 text-xs font-bold ml-0.5"
                   >
                     {badge}
                   </Badge>

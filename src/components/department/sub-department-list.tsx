@@ -49,15 +49,15 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                         <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-muted/50 transition-colors">
                             <div className="flex-1 space-y-2">
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <h3 className="text-xl font-bold text-foreground font-khmer">
+                                    <h3 className="text-base md:text-lg font-bold text-foreground font-khmer">
                                         {localize(sub.name, lang)}
                                     </h3>
-                                    <Badge className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800/60 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
+                                    <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
                                         {localize(sub.category, lang)}
                                     </Badge>
                                 </div>
 
-                                <p className="text-muted-foreground text-[15px]">{sub.name.en}</p>
+                                <p className="text-muted-foreground text-sm">{sub.name.en}</p>
 
                                 {sub.requirements.length > 0 && (
                                     <div className="pt-1">
@@ -66,11 +66,10 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                                             {sub.requirements.map(req => (
                                                 <li
                                                     key={req.en}
-                                                    className="flex items-start gap-1.5 text-sm text-muted-foreground"
+                                                    className="flex items-start gap-1.5 text-xs md:text-sm text-muted-foreground"
                                                 >
                                                     <GraduationCap
-                                                        className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 mt-0.5 shrink-0"
-                                                        strokeWidth={2}
+                                                        className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0"
                                                     />
                                                     <span className="font-khmer">{localize(req, lang)}</span>
                                                 </li>
