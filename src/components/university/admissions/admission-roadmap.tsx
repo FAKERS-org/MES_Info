@@ -5,9 +5,16 @@ import { Clock, Globe, Landmark } from "lucide-react";
 export interface AdmissionRoadmapProps {
     universityName?: string;
     website?: string | null;
+    requirementsKh?: string | null;
+    requirementsEn?: string | null;
 }
 
-const AdmissionRoadmap = ({ universityName, website }: AdmissionRoadmapProps) => {
+const AdmissionRoadmap = ({
+    universityName,
+    website,
+    requirementsKh,
+    requirementsEn,
+}: AdmissionRoadmapProps) => {
     const uniLabel = universityName || "សាកលវិទ្យាល័យ";
     const regUrl = website
         ? website.startsWith("http")
@@ -100,7 +107,10 @@ const AdmissionRoadmap = ({ universityName, website }: AdmissionRoadmapProps) =>
                             </div>
 
                             <p className="text-xs md:text-sm text-muted-foreground leading-relaxed mb-4">
-                                គណៈកម្មការពិនិត្យឯកសារសម្គាល់ខ្លួន និងសញ្ញាបត្របាក់ឌុប ឬលិខិតបញ្ជាក់ការសិក្សា។ បេក្ខជនបង់ថ្លៃរដ្ឋបាល/ពាក្យប្រឡងតាមរយៈប្រព័ន្ធធនាគារ ឬបញ្ជរផ្ទាល់។
+                                {requirementsKh || "គណៈកម្មការពិនិត្យឯកសារសម្គាល់ខ្លួន និងសញ្ញាបត្របាក់ឌុប ឬលិខិតបញ្ជាក់ការសិក្សា។ បេក្ខជនបង់ថ្លៃរដ្ឋបាល/ពាក្យប្រឡងតាមរយៈប្រព័ន្ធធនាគារ ឬបញ្ជរផ្ទាល់។"}
+                                {requirementsEn && (
+                                    <span className="block mt-1 text-muted-foreground/80 italic">{requirementsEn}</span>
+                                )}
                             </p>
 
                             <div className="flex items-center gap-2 text-xs md:text-sm text-foreground bg-muted p-3 rounded-md">

@@ -51,20 +51,28 @@ export default async function AdmissionsPage({ params, searchParams }: Admission
                 mainClassName="space-y-4"
                 aside={
                     <div className="space-y-4">
-                        <RequiredDocuments />
+                        <RequiredDocuments
+                            requirementsKh={activeDetail.admissions_requirements_kh}
+                            requirementsEn={activeDetail.admissions_requirements_en}
+                        />
                         <AdmissionsContactCard
                             phone={activeDetail.contact_phone}
-                            email={activeDetail.contact_email}
                             telegram={activeDetail.contact_telegram}
-                            website={activeDetail.website}
-                            universityName={uniName}
+                            advisorName={activeDetail.advisor_name}
+                            advisorRole={activeDetail.advisor_role}
+                            advisorAvatar={activeDetail.advisor_avatar_url}
                         />
                         <BrochureDownloadCard website={activeDetail.website} universityName={uniName} />
                     </div>
                 }
             >
                 <Card className="p-6 border border-border shadow-sm rounded-2xl bg-card">
-                    <AdmissionRoadmap universityName={uniName} website={activeDetail.website} />
+                    <AdmissionRoadmap
+                        universityName={uniName}
+                        website={activeDetail.website}
+                        requirementsKh={activeDetail.admissions_requirements_kh}
+                        requirementsEn={activeDetail.admissions_requirements_en}
+                    />
                 </Card>
             </SectionLayout>
         </div>

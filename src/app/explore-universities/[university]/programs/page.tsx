@@ -70,10 +70,10 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                         />
                         <AdmissionsContactCard
                             phone={displayDetail.contact_phone}
-                            email={displayDetail.contact_email}
                             telegram={displayDetail.contact_telegram}
-                            website={displayDetail.website}
-                            universityName={uniName}
+                            advisorName={displayDetail.advisor_name}
+                            advisorRole={displayDetail.advisor_role}
+                            advisorAvatar={displayDetail.advisor_avatar_url}
                         />
                         <BrochureDownloadCard website={displayDetail.website} universityName={uniName} />
                     </div>

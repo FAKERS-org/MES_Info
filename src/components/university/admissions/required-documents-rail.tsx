@@ -1,7 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import { Award, BookOpen, Contact, UserSquare2 } from "lucide-react";
 
-const RequiredDocumentsRail = () => {
+export interface RequiredDocumentsRailProps {
+  requirementsKh?: string | null;
+  requirementsEn?: string | null;
+}
+
+const RequiredDocumentsRail = ({
+  requirementsKh,
+  requirementsEn,
+}: RequiredDocumentsRailProps) => {
   const documents = [
     {
       id: 1,
@@ -52,6 +60,15 @@ const RequiredDocumentsRail = () => {
           ឯកសារត្រូវភ្ជាប់មកជាមួយ
         </h2>
       </div>
+
+      {/* --- Specific Requirements from API if provided --- */}
+      {(requirementsKh || requirementsEn) && (
+        <div className="mb-4 p-3 rounded-xl bg-primary/5 border border-primary/20 text-xs text-foreground space-y-1">
+          <p className="font-semibold text-primary font-khmer">លក្ខខណ្ឌតម្រូវ (Requirements):</p>
+          {requirementsKh && <p className="font-khmer leading-relaxed">{requirementsKh}</p>}
+          {requirementsEn && <p className="text-muted-foreground leading-relaxed">{requirementsEn}</p>}
+        </div>
+      )}
 
       {/* --- Stacked List (single column for rail) --- */}
       <div className="space-y-3">

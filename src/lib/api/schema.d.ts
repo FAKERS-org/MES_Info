@@ -1820,6 +1820,16 @@ export interface components {
             contact_email?: string | null;
             /** Contact Telegram */
             contact_telegram?: string | null;
+            /** Advisor Name */
+            advisor_name?: string | null;
+            /** Advisor Role */
+            advisor_role?: string | null;
+            /** Advisor Avatar Url */
+            advisor_avatar_url?: string | null;
+            /** Admissions Requirements En */
+            admissions_requirements_en?: string | null;
+            /** Admissions Requirements Kh */
+            admissions_requirements_kh?: string | null;
             /** Stats Students */
             stats_students?: string | null;
             /** Stats Tuition */

@@ -76,10 +76,10 @@ export default async function UniversityPage({ params, searchParams }: Universit
                         />
                         <AdmissionsContactCard
                             phone={activeDetail.contact_phone}
-                            email={activeDetail.contact_email}
                             telegram={activeDetail.contact_telegram}
-                            website={activeDetail.website}
-                            universityName={uniName}
+                            advisorName={activeDetail.advisor_name}
+                            advisorRole={activeDetail.advisor_role}
+                            advisorAvatar={activeDetail.advisor_avatar_url}
                         />
                         <BrochureDownloadCard website={activeDetail.website} universityName={uniName} />
                     </div>

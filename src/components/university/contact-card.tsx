@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Globe, Mail, MessageSquare, Phone } from "lucide-react";
+import { MessageSquare, Phone } from "lucide-react";
 
 export interface AdmissionsContactCardProps {
     phone?: string | null;
