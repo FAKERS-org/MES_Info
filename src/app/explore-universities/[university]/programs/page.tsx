@@ -3,8 +3,8 @@ import AdmissionsContactCard from "@/components/university/contact-card";
 import CampusSwitcher from "@/components/university/campus-switcher";
 import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
 import CampusMapCard from "@/components/university/programs-and-fees/campus-map-card";
-import { TuitionSummaryBanner } from "@/components/university/programs-and-fees/tuition-summary-banner";
-import { UnifiedProgramsView } from "@/components/university/programs-and-fees/unified-programs-view";
+import ProgramsExplorer from "@/components/university/programs-and-fees/programs-explorer";
+import ProgramsList from "@/components/university/programs-and-fees/programs-list";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import {
@@ -15,7 +15,6 @@ import {
 } from "@/lib/api/universities";
 import { apiName } from "@/lib/language";
 import { readLang } from "@/lib/language.server";
-import { resolveUniversityTuitionSummary } from "@/lib/tuition";
 import { programGroups } from "@/lib/unit-routes";
 import { universityTabs } from "@/lib/university-tabs";
 import { notFound } from "next/navigation";
@@ -51,7 +50,6 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
     const lang = await readLang();
     const uniName = apiName(displayDetail, lang);
     const tree = buildUnitTree(units);
-    const tuitionSummary = resolveUniversityTuitionSummary(displayDetail, displayDetail.programs ?? []);
 
     return (
         <div className="space-y-6">
@@ -79,14 +77,21 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                     </div>
                 }
             >
-                <TuitionSummaryBanner summary={tuitionSummary} lang={lang} />
-
-                <UnifiedProgramsView
-                    groups={programGroups(id, tree)}
-                    programs={displayDetail.programs ?? []}
-                    lang={lang}
-                    university={displayDetail}
-                />
+                {tree.length > 0 ? (
+                    <div className="space-y-6">
+                        <ProgramsExplorer groups={programGroups(id, tree)} lang={lang} />
+                        {displayDetail.programs && displayDetail.programs.length > 0 && (
+                            <div className="space-y-3 pt-4 border-t border-border">
+                                <h2 className="text-lg font-bold font-khmer text-foreground">
+                                    {lang === "kh" ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រផ្ទាល់" : "Direct Degree Programs"}
+                                </h2>
+                                <ProgramsList programs={displayDetail.programs} lang={lang} university={displayDetail} />
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <ProgramsList programs={displayDetail.programs ?? []} lang={lang} university={displayDetail} />
+                )}
             </SectionLayout>
         </div>
     );
