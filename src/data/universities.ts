@@ -11,6 +11,8 @@
 // If you need a new view, add a helper — not a new file.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import type { components } from "@/lib/api/schema";
+
 // ─── Shared primitive types ─────────────────────────────────────────────────
 
 export interface NamespacedText {
@@ -89,6 +91,7 @@ export interface Unit {
     facilities?: Facility[];
     scholarships?: UnitScholarship[];
     units?: Unit[];
+    programs?: components["schemas"]["ProgramSummary"][];
     defaultTuition?: number;
     defaultTuitionFemale?: number;
 }

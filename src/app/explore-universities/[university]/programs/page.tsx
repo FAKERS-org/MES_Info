@@ -49,7 +49,27 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
     const displayDetail = activeDetail ?? rootDetail;
     const lang = await readLang();
     const uniName = apiName(displayDetail, lang);
-    const tree = buildUnitTree(units);
+    const tree = buildUnitTree(units, displayDetail.programs ?? []);
+
+    // Identify programs attached to units to avoid duplicating them
+    const assignedProgramIds = new Set<number>();
+    const collectAssigned = (uList: typeof tree) => {
+        for (const u of uList) {
+            if (u.programs) {
+                for (const p of u.programs) {
+                    assignedProgramIds.add(p.id);
+                }
+            }
+            if (u.units && u.units.length > 0) {
+                collectAssigned(u.units);
+            }
+        }
+    };
+    collectAssigned(tree);
+
+    const unassignedPrograms = (displayDetail.programs ?? []).filter(
+        p => !assignedProgramIds.has(p.id),
+    );
 
     return (
         <div className="space-y-6">
@@ -80,12 +100,18 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                 {tree.length > 0 ? (
                     <div className="space-y-6">
                         <ProgramsExplorer groups={programGroups(id, tree)} lang={lang} />
-                        {displayDetail.programs && displayDetail.programs.length > 0 && (
+                        {unassignedPrograms.length > 0 && (
                             <div className="space-y-3 pt-4 border-t border-border">
                                 <h2 className="text-lg font-bold font-khmer text-foreground">
-                                    {lang === "kh" ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រផ្ទាល់" : "Direct Degree Programs"}
+                                    {lang === "kh"
+                                        ? "កម្មវិធីសិក្សាផ្ទាល់កម្រិតសាកលវិទ្យាល័យ"
+                                        : "University-Wide Degree Programs"}
                                 </h2>
-                                <ProgramsList programs={displayDetail.programs} lang={lang} university={displayDetail} />
+                                <ProgramsList
+                                    programs={unassignedPrograms}
+                                    lang={lang}
+                                    university={displayDetail}
+                                />
                             </div>
                         )}
                     </div>

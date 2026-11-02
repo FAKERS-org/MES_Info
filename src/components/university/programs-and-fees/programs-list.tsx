@@ -14,7 +14,14 @@ import {
 import { Separator } from "@/components/ui/separator";
 import type { UniversityDetail, UniversityProgram } from "@/lib/api/universities";
 import { useLanguage } from "@/lib/i18n";
-import { apiName, type Lang } from "@/lib/language";
+import {
+    apiName,
+    getDegreeLabel,
+    STUDY_SHIFTS,
+    STUDY_SHIFT_LABELS,
+    type Lang,
+    type StudyShift,
+} from "@/lib/language";
 import { resolveProgramTuition } from "@/lib/tuition";
 import { ArrowUpDown, Building2, Clock, FilterX, Sparkles, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -25,14 +32,6 @@ export interface ProgramsListProps {
     university?: Pick<UniversityDetail, "default_tuition_per_year" | "default_tuition_female_per_year"> | null;
 }
 
-const DEGREE_LEVELS: Record<UniversityProgram["degree_level"], string> = {
-    DIPLOMA: "Diploma",
-    ASSOCIATE: "Associate",
-    BACHELOR: "Bachelor",
-    MASTER: "Master",
-    PHD: "PhD",
-};
-
 type TuitionRangeFilter = "ALL" | "DISCOUNT" | "FREE" | "UNDER_1000" | "RANGE_1000_2500" | "OVER_2500";
 type SortOption = "DEFAULT" | "PRICE_ASC" | "PRICE_DESC" | "DURATION" | "NAME";
 
@@ -42,6 +41,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
 
     const [query, setQuery] = useState("");
     const [selectedDegree, setSelectedDegree] = useState<string>("ALL");
+    const [selectedShift, setSelectedShift] = useState<string>("ALL");
     const [selectedFaculty, setSelectedFaculty] = useState<string>("ALL");
     const [selectedTuition, setSelectedTuition] = useState<TuitionRangeFilter>("ALL");
     const [sortBy, setSortBy] = useState<SortOption>("DEFAULT");
@@ -61,6 +61,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
     const isFiltered =
         query.trim() !== "" ||
         selectedDegree !== "ALL" ||
+        selectedShift !== "ALL" ||
         selectedFaculty !== "ALL" ||
         selectedTuition !== "ALL" ||
         sortBy !== "DEFAULT";
@@ -68,6 +69,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
     const handleReset = () => {
         setQuery("");
         setSelectedDegree("ALL");
+        setSelectedShift("ALL");
         setSelectedFaculty("ALL");
         setSelectedTuition("ALL");
         setSortBy("DEFAULT");
@@ -82,6 +84,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
             if (!matchesQuery) return false;
 
             if (selectedDegree !== "ALL" && p.degree_level !== selectedDegree) return false;
+            if (selectedShift !== "ALL" && !p.shifts?.includes(selectedShift)) return false;
             if (selectedFaculty !== "ALL" && p.faculty !== selectedFaculty) return false;
 
             if (selectedTuition !== "ALL") {
@@ -121,7 +124,8 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
             }
             return 0;
         });
-    }, [programs, query, selectedDegree, selectedFaculty, selectedTuition, sortBy, university, lang]);
+    }, [programs, query, selectedDegree, selectedShift, selectedFaculty, selectedTuition, sortBy, university, lang]);
+
 
     if (programs.length === 0) {
         return <p className="p-6 text-center text-sm text-muted-foreground">{t("explore.noResults")}</p>;
@@ -157,7 +161,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                                         className="cursor-pointer px-3 py-1 text-xs rounded-lg transition-colors font-khmer"
                                         onClick={() => setSelectedDegree(deg)}
                                     >
-                                        {DEGREE_LEVELS[deg] || deg} ({count})
+                                        {getDegreeLabel(deg, lang)} ({count})
                                     </Badge>
                                 );
                             })}
@@ -188,6 +192,29 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                             </Select>
                         </div>
                     )}
+
+                    {/* Study Shift Select */}
+                    <div className="w-full sm:w-auto min-w-40">
+                        <Select value={selectedShift} onValueChange={setSelectedShift}>
+                            <SelectTrigger size="sm" className="w-full text-xs h-8 bg-muted/40 border-border">
+                                <div className="flex items-center gap-1.5 truncate">
+                                    <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                    <SelectValue placeholder={t("university.filterShift")} />
+                                </div>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="ALL">{t("university.allShifts")}</SelectItem>
+                                {STUDY_SHIFTS.map(shift => {
+                                    const info = STUDY_SHIFT_LABELS[shift];
+                                    return (
+                                        <SelectItem key={shift} value={shift}>
+                                            {isKhmer ? info.kh : info.en} ({info.time})
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
                     {/* Tuition Range Select */}
                     <div className="w-full sm:w-auto min-w-40">
@@ -275,13 +302,13 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                             return (
                                 <div key={program.id}>
                                     <div className="p-4 sm:p-5 flex flex-col md:flex-row justify-between gap-4 hover:bg-muted/30 transition-colors">
-                                        <div className="flex-1 space-y-1.5">
+                                        <div className="flex-1 space-y-2">
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <h3 className="text-base font-semibold text-foreground font-khmer">
                                                     {apiName(program, lang)}
                                                 </h3>
-                                                <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-medium">
-                                                    {DEGREE_LEVELS[program.degree_level]}
+                                                <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer">
+                                                    {getDegreeLabel(program.degree_level, lang)}
                                                 </Badge>
                                                 {program.faculty && (
                                                     <Badge className="bg-muted text-muted-foreground border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer flex items-center gap-1">
@@ -290,6 +317,31 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                                                     </Badge>
                                                 )}
                                             </div>
+
+                                            {program.shifts && program.shifts.length > 0 && (
+                                                <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                                    {program.shifts.map(shift => {
+                                                        const s = shift as StudyShift;
+                                                        const info = STUDY_SHIFT_LABELS[s];
+                                                        return (
+                                                            <Badge
+                                                                key={shift}
+                                                                variant="outline"
+                                                                className="bg-sky-50/80 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 text-[11px] px-2 py-0.5 font-normal font-khmer flex items-center gap-1"
+                                                                title={info ? `${info.en}: ${info.time}` : shift}
+                                                            >
+                                                                <Clock className="w-3 h-3 text-sky-500 shrink-0" />
+                                                                <span>{isKhmer ? info?.kh ?? shift : info?.en ?? shift}</span>
+                                                                {info?.time && (
+                                                                    <span className="opacity-75 text-[10px] hidden sm:inline font-mono">
+                                                                        ({info.time})
+                                                                    </span>
+                                                                )}
+                                                            </Badge>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground shrink-0">

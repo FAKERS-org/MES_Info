@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MapPin } from "lucide-react";
 import type { CampusSummary } from "@/lib/api/universities";
+import { useLanguage } from "@/lib/i18n";
 
 export interface CampusSwitcherProps {
     campuses: CampusSummary[];
@@ -16,6 +17,7 @@ export default function CampusSwitcher({
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const { lang, t } = useLanguage();
 
     // If only 1 or no campus, don't show the switcher to keep UI clean
     if (!campuses || campuses.length <= 1) return null;
@@ -28,19 +30,19 @@ export default function CampusSwitcher({
 
     return (
         <div className="flex flex-wrap items-center gap-2 p-3 bg-card border rounded-xl shadow-xs">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mr-1">
-                Campuses:
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mr-1 font-khmer">
+                {t("university.campuses")}:
             </span>
             {campuses.map(c => {
                 const isActive = c.public_id === activePublicId;
-                const displayName = c.campus_name || "Campus";
+                const displayName = c.campus_name || (lang === "kh" ? "សាខា" : "Campus");
 
                 return (
                     <button
                         key={c.public_id}
                         type="button"
                         onClick={() => handleSelect(c.public_id)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer font-khmer ${
                             isActive
                                 ? "bg-primary text-primary-foreground shadow-xs font-semibold"
                                 : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -54,7 +56,7 @@ export default function CampusSwitcher({
                         )}
                         {c.is_main_campus && (
                             <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-primary-foreground/20 uppercase tracking-tight">
-                                Main
+                                {t("university.mainCampus")}
                             </span>
                         )}
                     </button>

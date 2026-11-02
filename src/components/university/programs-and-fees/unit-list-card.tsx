@@ -2,10 +2,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import type { NamespacedText } from "@/data/universities";
-import type { Lang } from "@/lib/language";
-import { localize } from "@/lib/language";
+import type { components } from "@/lib/api/schema";
+import type { Lang, StudyShift } from "@/lib/language";
+import { apiName, getDegreeLabel, localize, STUDY_SHIFT_LABELS } from "@/lib/language";
 import type { UnitRow } from "@/lib/unit-routes";
-import { ChevronRight, FolderTree, GraduationCap } from "lucide-react";
+import { ChevronRight, Clock, FolderTree, GraduationCap, Wallet } from "lucide-react";
 import Link from "next/link";
 
 export interface UnitListCardProps {
@@ -16,6 +17,7 @@ export interface UnitListCardProps {
     titleHref?: string;
     tuitionFee?: number;
     tuitionFemaleFee?: number;
+    programs?: components["schemas"]["ProgramSummary"][];
 }
 
 export function UnitListCard({
@@ -26,6 +28,7 @@ export function UnitListCard({
     lang,
     tuitionFee,
     tuitionFemaleFee,
+    programs,
 }: UnitListCardProps) {
     const isKhmer = lang === "kh";
 
@@ -71,12 +74,7 @@ export function UnitListCard({
             )}
 
             <CardContent className="p-0">
-                {rows.length === 0 && (
-                    <p className="p-6 text-sm text-muted-foreground font-khmer text-center">
-                        {isKhmer ? "មិនទាន់មានដេប៉ាតឺម៉ង់ជាក់ស្តែងទេ។" : "No departments listed yet."}
-                    </p>
-                )}
-
+                {/* 1. Sub-departments if present */}
                 {rows.map(({ unit, href }, index) => (
                     <div key={unit.id}>
                         <div className="p-4 sm:p-5 flex flex-col md:flex-row justify-between gap-4 hover:bg-muted/30 transition-colors">
@@ -110,9 +108,98 @@ export function UnitListCard({
                             </div>
                         </div>
 
-                        {index < rows.length - 1 && <Separator className="bg-border/60" />}
+                        {(index < rows.length - 1 || (programs && programs.length > 0)) && (
+                            <Separator className="bg-border/60" />
+                        )}
                     </div>
                 ))}
+
+                {/* 2. Direct Programs in this unit */}
+                {programs && programs.length > 0 && (
+                    <div className="divide-y divide-border/60">
+                        {programs.map(program => {
+                            const tuition = program.tuition_per_year ?? tuitionFee;
+                            const femaleTuition = program.tuition_female_per_year ?? tuitionFemaleFee;
+                            return (
+                                <div
+                                    key={program.id}
+                                    className="p-4 sm:p-5 flex flex-col md:flex-row justify-between gap-4 hover:bg-muted/20 transition-colors"
+                                >
+                                    <div className="flex-1 space-y-1.5">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <h3 className="text-base font-semibold text-foreground font-khmer">
+                                                {apiName(program, lang)}
+                                            </h3>
+                                            <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer">
+                                                {getDegreeLabel(program.degree_level, lang)}
+                                            </Badge>
+                                        </div>
+                                        {program.name_kh && (
+                                            <p className="text-muted-foreground text-xs">{program.name_en}</p>
+                                        )}
+
+                                        {program.shifts && program.shifts.length > 0 && (
+                                            <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                                {program.shifts.map(shift => {
+                                                    const s = shift as StudyShift;
+                                                    const info = STUDY_SHIFT_LABELS[s];
+                                                    return (
+                                                        <Badge
+                                                            key={shift}
+                                                            variant="outline"
+                                                            className="bg-sky-50/80 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 text-[11px] px-2 py-0.5 font-normal font-khmer flex items-center gap-1"
+                                                        >
+                                                            <Clock className="w-3 h-3 text-sky-500 shrink-0" />
+                                                            <span>{isKhmer ? info?.kh ?? shift : info?.en ?? shift}</span>
+                                                        </Badge>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center gap-3.5 text-sm text-muted-foreground shrink-0">
+                                        {program.duration_years != null && (
+                                            <span className="inline-flex items-center gap-1.5 text-xs font-medium">
+                                                <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                                                {program.duration_years} {isKhmer ? "ឆ្នាំ" : "yrs"}
+                                            </span>
+                                        )}
+                                        {tuition != null && (
+                                            <Badge
+                                                variant="outline"
+                                                className="font-semibold text-xs border-primary/30 text-foreground"
+                                            >
+                                                <Wallet className="h-3 w-3 mr-1 text-primary" />
+                                                ${tuition}{isKhmer ? "/ឆ្នាំ" : "/yr"}
+                                                {femaleTuition != null && femaleTuition < tuition && (
+                                                    <span className="ml-1 text-rose-600 dark:text-rose-400 font-bold">
+                                                        (♀ ${femaleTuition})
+                                                    </span>
+                                                )}
+                                            </Badge>
+                                        )}
+                                        {program.tuition_per_credit != null && tuition == null && (
+                                            <Badge
+                                                variant="outline"
+                                                className="font-semibold text-xs border-primary/30 text-foreground"
+                                            >
+                                                ${program.tuition_per_credit}{isKhmer ? "/ក្រេឌីត" : "/credit"}
+                                            </Badge>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {/* 3. Empty state only when neither sub-units nor programs exist */}
+                {rows.length === 0 && (!programs || programs.length === 0) && (
+                    <p className="p-6 text-sm text-muted-foreground font-khmer text-center">
+                        {isKhmer ? "មិនទាន់មានព័ត៌មានកម្មវិធីសិក្សាជាក់ស្តែងទេ។" : "No programs listed yet."}
+                    </p>
+                )}
             </CardContent>
         </Card>
     );

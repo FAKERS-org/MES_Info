@@ -9,7 +9,7 @@ import CampusMapCard from "@/components/university/programs-and-fees/campus-map-
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import { getUniversityDetail, toHeadingData } from "@/lib/api/universities";
-import { apiDescription, apiName, apiOverview } from "@/lib/language";
+import { apiDescription, apiName, apiOverview, getMinistryLabel } from "@/lib/language";
 import { getServerTranslator, readLang } from "@/lib/language.server";
 import { universityTabs } from "@/lib/university-tabs";
 import {
@@ -22,6 +22,7 @@ import {
     GraduationCap,
     Home,
     MapPin,
+    Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -138,6 +139,22 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                 </div>
                             </div>
 
+                            {activeDetail.ministry && (
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 border border-border/50">
+                                    <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5">
+                                        <Building2 className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-muted-foreground font-khmer">
+                                            {t("university.ministry")}
+                                        </p>
+                                        <p className="font-semibold text-xs sm:text-sm text-foreground">
+                                            {getMinistryLabel(activeDetail.ministry, lang)?.full ?? activeDetail.ministry}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 border border-border/50">
                                 <div className="p-1.5 rounded-lg bg-primary/10 text-primary shrink-0 mt-0.5">
                                     <MapPin className="h-4 w-4" />
@@ -183,6 +200,41 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                     </p>
                                 </div>
                             </div>
+
+                            {campuses.length > 1 && (
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 border border-border/50">
+                                    <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5">
+                                        <Building2 className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-muted-foreground font-khmer">
+                                            {t("university.campuses")}
+                                        </p>
+                                        <p className="font-semibold text-xs sm:text-sm text-foreground">
+                                            {campuses.length} {lang === "kh" ? "សាខាទីតាំង" : "Campuses / Branches"}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {(activeDetail.has_female_tuition_discount || activeDetail.default_tuition_female_per_year) && (
+                                <div className="flex items-start gap-3 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 sm:col-span-2">
+                                    <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5">
+                                        <Sparkles className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-semibold text-rose-600 dark:text-rose-400 font-khmer">
+                                            {t("university.femaleDiscountOnly")}
+                                        </p>
+                                        <p className="text-xs text-foreground font-medium mt-0.5">
+                                            {t("university.femaleDiscountApplied")}
+                                            {activeDetail.default_tuition_female_per_year
+                                                ? ` ($${activeDetail.default_tuition_female_per_year}/yr)`
+                                                : ""}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </CardContent>
                 </Card>

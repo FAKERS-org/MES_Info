@@ -1,4 +1,5 @@
 import type { Unit } from "@/data/universities";
+import type { components } from "@/lib/api/schema";
 
 export interface UnitRow {
     unit: Unit;
@@ -7,6 +8,7 @@ export interface UnitRow {
 
 export interface ProgramGroup extends UnitRow {
     rows: UnitRow[];
+    programs?: components["schemas"]["ProgramSummary"][];
 }
 
 export function slugify(text: string): string {
@@ -67,5 +69,6 @@ export function programGroups(universityId: string, units: Unit[]): ProgramGroup
         unit,
         href: unitHref(universityId, [unit.id]),
         rows: rows(unit, [unit.id]),
+        programs: unit.programs ?? [],
     }));
 }

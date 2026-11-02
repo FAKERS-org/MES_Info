@@ -15,17 +15,18 @@ export interface SubDepartmentListProps {
     lang: Lang;
 }
 
-const KIND_LABEL: Record<Unit["kind"], { kh: string; en: string }> = {
+const KIND_LABEL: Record<string, { kh: string; en: string }> = {
     faculty: { kh: "មហាវិទ្យាល័យ", en: "Faculties" },
     department: { kh: "ដេប៉ាតឺម៉ង់", en: "Departments" },
     "sub-department": { kh: "ដេប៉ាតឺម៉ង់ទន្ទឹម", en: "Sub-departments" },
-    foundation: { kh: "មូលដ្ឋាន", en: "Foundation" },
+    foundation: { kh: "ឆ្នាំសិក្សាមូលដ្ឋាន", en: "Foundation Year" },
 };
 
 export default function SubDepartmentList({ subDepartments, parentDepartment, lang }: SubDepartmentListProps) {
     if (subDepartments.length === 0) return null;
 
-    const label = KIND_LABEL[subDepartments[0].unit.kind];
+    const firstKind = subDepartments[0]?.unit?.kind;
+    const label = (firstKind && KIND_LABEL[firstKind]) || { kh: "ផ្នែក", en: "Sub-units" };
 
     return (
         <Card className="overflow-hidden border border-border shadow-sm rounded-xl bg-card" padding="none">

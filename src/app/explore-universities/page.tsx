@@ -10,7 +10,7 @@ import UniversityPagination from "@/components/university/university-pagination"
 import { UniversityTile } from "@/components/university/university-tile";
 import { useUniversities } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
-import { apiName } from "@/lib/language";
+import { apiName, MINISTRIES, MINISTRY_LABELS } from "@/lib/language";
 import { RotateCcw } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -24,6 +24,7 @@ export default function ExploreUniversitiesPage() {
 
     const [query, setQuery] = useState("");
     const [selectedType, setSelectedType] = useState<TypeFilter>("ALL");
+    const [selectedMinistry, setSelectedMinistry] = useState<string>("ALL");
     const [selectedProvince, setSelectedProvince] = useState<string>("ALL");
     const [sort, setSort] = useState<SortKey>("name-asc");
     const [currentPage, setCurrentPage] = useState(1);
@@ -47,9 +48,10 @@ export default function ExploreUniversitiesPage() {
             const abbrev = (u.abbreviation || "").toLowerCase();
             const matchesQuery = !q || name.includes(q) || province.includes(q) || abbrev.includes(q);
             const matchesType = selectedType === "ALL" || u.type === selectedType;
+            const matchesMinistry = selectedMinistry === "ALL" || u.ministry === selectedMinistry;
             const matchesProvince = selectedProvince === "ALL" || u.province === selectedProvince;
 
-            return matchesQuery && matchesType && matchesProvince;
+            return matchesQuery && matchesType && matchesMinistry && matchesProvince;
         });
 
         return [...items].sort((a, b) => {
@@ -59,7 +61,7 @@ export default function ExploreUniversitiesPage() {
                 ? nameA.localeCompare(nameB)
                 : nameB.localeCompare(nameA);
         });
-    }, [universities, lang, query, selectedType, selectedProvince, sort]);
+    }, [universities, lang, query, selectedType, selectedMinistry, selectedProvince, sort]);
 
     const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
     const safeCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
@@ -79,6 +81,11 @@ export default function ExploreUniversitiesPage() {
         setCurrentPage(1);
     };
 
+    const handleMinistryChange = (val: string) => {
+        setSelectedMinistry(val);
+        setCurrentPage(1);
+    };
+
     const handleProvinceChange = (val: string) => {
         setSelectedProvince(val);
         setCurrentPage(1);
@@ -92,6 +99,7 @@ export default function ExploreUniversitiesPage() {
     const handleResetFilters = () => {
         setQuery("");
         setSelectedType("ALL");
+        setSelectedMinistry("ALL");
         setSelectedProvince("ALL");
         setSort("name-asc");
         setCurrentPage(1);
@@ -113,7 +121,7 @@ export default function ExploreUniversitiesPage() {
         return <ErrorState onRetry={refresh} />;
     }
 
-    const hasActiveFilters = query || selectedType !== "ALL" || selectedProvince !== "ALL";
+    const hasActiveFilters = query || selectedType !== "ALL" || selectedMinistry !== "ALL" || selectedProvince !== "ALL";
 
     return (
         <div className="space-y-6">
@@ -150,6 +158,23 @@ export default function ExploreUniversitiesPage() {
                             <SelectItem value="PRIVATE">
                                 {t("miscellaneous.private")}
                             </SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    {/* Ministry Filter */}
+                    <Select value={selectedMinistry} onValueChange={handleMinistryChange}>
+                        <SelectTrigger className="w-44">
+                            <SelectValue placeholder="All Ministries" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="ALL">
+                                {lang === "kh" ? "គ្រប់ក្រសួង" : "All Ministries"}
+                            </SelectItem>
+                            {MINISTRIES.map(m => (
+                                <SelectItem key={m} value={m}>
+                                    {MINISTRY_LABELS[m].short} — {lang === "kh" ? MINISTRY_LABELS[m].kh : MINISTRY_LABELS[m].en}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
 

@@ -183,5 +183,15 @@
     "university.sortPriceDesc": "Tuition: High to Low",
     "university.sortDuration": "Duration",
     "university.sortName": "Name A-Z",
-    "university.clearFilters": "Reset Filters"
+    "university.clearFilters": "Reset Filters",
+    "university.ministry": "Supervising Ministry",
+    "university.campuses": "Campuses",
+    "university.mainCampus": "Main Campus",
+    "university.branchCampus": "Branch Location",
+    "university.filterShift": "Study Shift",
+    "university.allShifts": "All Shifts",
+    "shift.morning": "Morning",
+    "shift.afternoon": "Afternoon",
+    "shift.evening": "Evening",
+    "shift.weekend": "Weekend"
 }

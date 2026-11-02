@@ -5,9 +5,9 @@ import Facilities from "@/components/department/facilities";
 import SubDepartmentList from "@/components/department/sub-department-list";
 import UnitScholarships from "@/components/department/unit-scholarships";
 import ProgramsList from "@/components/university/programs-and-fees/programs-list";
-import LocalizedText from "@/components/shared/localized-text";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getFacilitiesFor } from "@/data/universities";
+import { getUnitKindLabel } from "@/lib/language";
 import { resolveUnitPage } from "@/lib/resolve-unit-page";
 import { childRows } from "@/lib/unit-routes";
 
@@ -44,7 +44,9 @@ export default async function UnitPage({ params }: UnitPageProps) {
                 <SectionLayout background="muted">
                     <div className="space-y-3">
                         <h2 className="text-xl font-bold font-khmer text-foreground">
-                            {lang === "kh" ? "សញ្ញាបត្រ និងកម្មវិធីសិក្សាក្នុងដេប៉ាតឺម៉ង់នេះ" : "Degrees & Majors in this Department"}
+                            {lang === "kh"
+                                ? `សញ្ញាបត្រ និងកម្មវិធីសិក្សាក្នុង${getUnitKindLabel(unit.kind, "kh")}នេះ`
+                                : `Degrees & Majors in this ${getUnitKindLabel(unit.kind, "en")}`}
                         </h2>
                         <ProgramsList programs={programs} lang={lang} university={universityDetail} />
                     </div>
@@ -61,21 +63,19 @@ export default async function UnitPage({ params }: UnitPageProps) {
                 </SectionLayout>
             )}
 
-            <SectionLayout background="muted" aside={<AdmissionContact university={uni} lang={lang} />}>
-                {curriculums.length > 0 ? (
+            {(curriculums.length > 0 || curriculum) && (
+                <SectionLayout background="muted" aside={<AdmissionContact university={uni} lang={lang} />}>
                     <div className="space-y-6">
-                        {curriculums.map((curr, idx) => (
-                            <AcademicCurriculum key={idx} curriculum={curr} lang={lang} />
-                        ))}
+                        {curriculums.length > 0 ? (
+                            curriculums.map((curr, idx) => (
+                                <AcademicCurriculum key={idx} curriculum={curr} lang={lang} />
+                            ))
+                        ) : curriculum ? (
+                            <AcademicCurriculum curriculum={curriculum} lang={lang} />
+                        ) : null}
                     </div>
-                ) : curriculum ? (
-                    <AcademicCurriculum curriculum={curriculum} lang={lang} />
-                ) : (
-                    <div className="max-w-4xl mx-auto p-8 text-center text-muted-foreground">
-                        <LocalizedText translationKey="miscellaneous.noAvailableProgramsForThisDepartment" />
-                    </div>
-                )}
-            </SectionLayout>
+                </SectionLayout>
+            )}
 
             {displayFacilities.length > 0 && (
                 <SectionLayout background="muted">

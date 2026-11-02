@@ -45,6 +45,7 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
             en: detail.type === "PUBLIC" ? "Public" : "Private",
             kh: detail.type === "PUBLIC" ? "សាធារណៈ" : "ឯកជន",
         },
+        ministry: detail.ministry,
         moeysAccredited: detail.moeys_accredited,
         universityCategory:
             detail.university_category_en || detail.university_category_kh
@@ -152,7 +153,7 @@ const KIND_TO_UI: Record<UnitSummary["kind"], UnitKind> = {
  * admission requirements yet (stage 3b); SubDepartmentList hides that
  * section when the list is empty.
  */
-export function buildUnitTree(units: UnitSummary[]): Unit[] {
+export function buildUnitTree(units: UnitSummary[], programs?: UniversityProgram[]): Unit[] {
     // Rows are linked by the integer `parent_id`, but the public URLs carry
     // `public_id` - so nodes are keyed by public_id for routing, and a second
     // map by the integer PK is kept purely to reassemble the parent chain.
@@ -170,9 +171,31 @@ export function buildUnitTree(units: UnitSummary[]): Unit[] {
             defaultTuitionFemale: row.default_tuition_female_per_year ?? undefined,
             requirements: [],
             units: [],
+            programs: [],
         };
         byPublicId.set(row.public_id, node);
         byPk.set(row.id, node);
+    }
+
+    if (programs && programs.length > 0) {
+        for (const prog of programs) {
+            let targetUnit: Unit | undefined;
+            if (prog.unit_id != null) {
+                targetUnit = byPk.get(prog.unit_id);
+            } else if (prog.faculty) {
+                const facLower = prog.faculty.trim().toLowerCase();
+                for (const u of byPublicId.values()) {
+                    if (u.name.en.toLowerCase() === facLower) {
+                        targetUnit = u;
+                        break;
+                    }
+                }
+            }
+            if (targetUnit) {
+                targetUnit.programs = targetUnit.programs || [];
+                targetUnit.programs.push(prog);
+            }
+        }
     }
 
     const roots: Unit[] = [];

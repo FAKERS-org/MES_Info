@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { UniversitySummary } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
-import { apiName, apiOverview } from "@/lib/language";
+import { apiName, apiOverview, getMinistryLabel } from "@/lib/language";
 import { universityHref } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, BadgeCheck, Bookmark, CalendarDays, MapPin } from "lucide-react";
@@ -25,6 +25,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
     const name = apiName(university, lang);
     const href = universityHref(university);
     const overview = apiOverview(university, lang);
+    const ministryLabel = getMinistryLabel(university.ministry, lang);
 
     const surface = cn(
         "relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg transition-shadow",
@@ -73,7 +74,7 @@ export function UniversityTile({ university, variant = "compact", className }: U
                         />
                     </Link>
                     {featured && (
-                        <div className="flex flex-row items-end gap-1 pb-1">
+                        <div className="flex flex-row flex-wrap items-end gap-1 pb-1">
                             <Badge
                                 className={cn(
                                     "border-0 font-medium",
@@ -84,12 +85,48 @@ export function UniversityTile({ university, variant = "compact", className }: U
                             >
                                 {university.type === "PUBLIC" ? t("miscellaneous.public") : t("miscellaneous.private")}
                             </Badge>
+                            {ministryLabel && (
+                                <Badge
+                                    className="border-0 font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300"
+                                    title={ministryLabel.full}
+                                >
+                                    {ministryLabel.short}
+                                </Badge>
+                            )}
                         </div>
                     )}
                 </div>
             </div>
 
             <div className="flex flex-1 flex-col px-6 pb-6 pt-14">
+                <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                    {!featured && (
+                        <Badge
+                            className={cn(
+                                "border-0 font-medium text-[11px] py-0 px-2",
+                                university.type === "PUBLIC"
+                                    ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
+                                    : "bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300",
+                            )}
+                        >
+                            {university.type === "PUBLIC" ? t("miscellaneous.public") : t("miscellaneous.private")}
+                        </Badge>
+                    )}
+                    {ministryLabel && !featured && (
+                        <Badge
+                            className="border-0 font-medium text-[11px] py-0 px-2 bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300"
+                            title={ministryLabel.full}
+                        >
+                            {ministryLabel.short}
+                        </Badge>
+                    )}
+                    {university.campus_name && (
+                        <Badge variant="outline" className="text-[11px] py-0 px-1.5 font-normal">
+                            {university.campus_name}
+                        </Badge>
+                    )}
+                </div>
+
                 <Link href={href} className="group/title">
                     <h2 className="text-xl font-bold leading-snug text-foreground group-hover/title:text-sky-600 dark:group-hover/title:text-sky-400 transition-colors">
                         {name}

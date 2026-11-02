@@ -183,5 +183,15 @@
     "university.sortPriceDesc": "តម្លៃ៖ ខ្ពស់ទៅទាប",
     "university.sortDuration": "រយៈពេលសិក្សា",
     "university.sortName": "ឈ្មោះ A-Z",
-    "university.clearFilters": "សម្អាតការច្រោះ"
+    "university.clearFilters": "សម្អាតការច្រោះ",
+    "university.ministry": "ក្រសួងអាណាព្យាបាល",
+    "university.campuses": "សាខាគ្រឹះស្ថាន",
+    "university.mainCampus": "ទីតាំងគោល",
+    "university.branchCampus": "សាខាខេត្ត",
+    "university.filterShift": "វេនសិក្សា",
+    "university.allShifts": "គ្រប់វេនសិក្សា",
+    "shift.morning": "ព្រឹក",
+    "shift.afternoon": "រសៀល",
+    "shift.evening": "យប់",
+    "shift.weekend": "ចុងសប្តាហ៍"
 }

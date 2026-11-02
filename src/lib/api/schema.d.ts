@@ -91,7 +91,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Universities */
+        /**
+         * List Universities
+         * @description List published universities with optional filtering and pagination.
+         */
         get: operations["list_universities_api_v1_public_universities__get"];
         put?: never;
         post?: never;
@@ -110,8 +113,7 @@ export interface paths {
         };
         /**
          * Get University Detail
-         * @description Get detailed information about a specific published university,
-         *     including the scholarships the university itself offers and its campuses.
+         * @description Get detailed information about a specific published university.
          */
         get: operations["get_university_detail_api_v1_public_universities__university_id__get"];
         put?: never;
@@ -426,10 +428,7 @@ export interface paths {
         delete: operations["delete_row_api_v1_admin_units__unit_id__facilities__row_id__delete"];
         options?: never;
         head?: never;
-        /**
-         * Update Row
-         * @description Partial update - only send fields you want to change.
-         */
+        /** Update Row */
         patch: operations["update_row_api_v1_admin_units__unit_id__facilities__row_id__patch"];
         trace?: never;
     };
@@ -465,10 +464,7 @@ export interface paths {
         delete: operations["delete_row_api_v1_admin_units__unit_id__curriculum_sections__row_id__delete"];
         options?: never;
         head?: never;
-        /**
-         * Update Row
-         * @description Partial update - only send fields you want to change.
-         */
+        /** Update Row */
         patch: operations["update_row_api_v1_admin_units__unit_id__curriculum_sections__row_id__patch"];
         trace?: never;
     };
@@ -485,7 +481,10 @@ export interface paths {
          */
         get: operations["list_all_scholarships_api_v1_admin_scholarships__get"];
         put?: never;
-        /** Create Direct Scholarship */
+        /**
+         * Create Direct Scholarship
+         * @description Create a scholarship under a university or unit directly.
+         */
         post: operations["create_direct_scholarship_api_v1_admin_scholarships__post"];
         delete?: never;
         options?: never;
@@ -500,14 +499,24 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * Get Direct Scholarship
+         * @description Get a scholarship by ID.
+         */
+        get: operations["get_direct_scholarship_api_v1_admin_scholarships__scholarship_id__get"];
         put?: never;
         post?: never;
-        /** Delete Direct Scholarship */
+        /**
+         * Delete Direct Scholarship
+         * @description Soft delete a scholarship.
+         */
         delete: operations["delete_direct_scholarship_api_v1_admin_scholarships__scholarship_id__delete"];
         options?: never;
         head?: never;
-        /** Update Direct Scholarship */
+        /**
+         * Update Direct Scholarship
+         * @description Update a scholarship.
+         */
         patch: operations["update_direct_scholarship_api_v1_admin_scholarships__scholarship_id__patch"];
         trace?: never;
     };
@@ -674,15 +683,24 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get User */
+        /**
+         * Get User
+         * @description Retrieve user details by ID.
+         */
         get: operations["get_user_api_v1_admin_users__user_id__get"];
         put?: never;
         post?: never;
-        /** Delete User */
+        /**
+         * Delete User
+         * @description Soft delete a user.
+         */
         delete: operations["delete_user_api_v1_admin_users__user_id__delete"];
         options?: never;
         head?: never;
-        /** Update User */
+        /**
+         * Update User
+         * @description Update user information.
+         */
         patch: operations["update_user_api_v1_admin_users__user_id__patch"];
         trace?: never;
     };
@@ -898,7 +916,7 @@ export interface components {
          * DegreeLevel
          * @enum {string}
          */
-        DegreeLevel: "DIPLOMA" | "ASSOCIATE" | "BACHELOR" | "MASTER" | "PHD";
+        DegreeLevel: "DIPLOMA" | "ASSOCIATE" | "BACHELOR" | "ENGINEERING" | "MASTER" | "PHD";
         /**
          * Facilities
          * @description A lab or centre of a unit.
@@ -991,6 +1009,11 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /**
+         * Ministry
+         * @enum {string}
+         */
+        Ministry: "MOEYS" | "MLVT" | "MOH" | "MAFF" | "MPTC" | "MCFA" | "MEF" | "OTHER";
         /** Page[ProgramListItem] */
         Page_ProgramListItem_: {
             /**
@@ -1185,7 +1208,7 @@ export interface components {
              * Purpose
              * @enum {string}
              */
-            purpose: "logo" | "cover";
+            purpose: "logo" | "cover" | "avatar";
         };
         /**
          * ProgramCreate
@@ -1198,6 +1221,8 @@ export interface components {
             name_kh?: string | null;
             /** Faculty */
             faculty?: string | null;
+            /** Unit Id */
+            unit_id?: number | null;
             degree_level: components["schemas"]["DegreeLevel"];
             /** Duration Years */
             duration_years: number;
@@ -1207,14 +1232,10 @@ export interface components {
             tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
-            /** Effective Tuition Per Year */
-            effective_tuition_per_year?: number | null;
-            /** Effective Tuition Female Per Year */
-            effective_tuition_female_per_year?: number | null;
-            /** Tuition Discount Percent */
-            tuition_discount_percent?: number | null;
             /** @default USD */
             fee_currency: components["schemas"]["Currency"];
+            /** Shifts */
+            shifts?: string[] | null;
         };
         /**
          * ProgramListItem
@@ -1255,10 +1276,18 @@ export interface components {
             effective_tuition_female_per_year?: number | null;
             /** Tuition Discount Percent */
             tuition_discount_percent?: number | null;
+            /** Admission Req En */
+            admission_req_en?: string | null;
+            /** Admission Req Kh */
+            admission_req_kh?: string | null;
+            /** Shifts */
+            shifts?: string[] | null;
             /** University Name */
             university_name?: string | null;
             /** University Abbreviation */
             university_abbreviation?: string | null;
+            /** Curriculum Sections */
+            curriculum_sections?: components["schemas"]["CurriculumSection"][];
         };
         /**
          * ProgramSummary
@@ -1299,6 +1328,14 @@ export interface components {
             effective_tuition_female_per_year?: number | null;
             /** Tuition Discount Percent */
             tuition_discount_percent?: number | null;
+            /** Admission Req En */
+            admission_req_en?: string | null;
+            /** Admission Req Kh */
+            admission_req_kh?: string | null;
+            /** Shifts */
+            shifts?: string[] | null;
+            /** Curriculum Sections */
+            curriculum_sections?: components["schemas"]["CurriculumSection"][];
         };
         /**
          * ProgramUpdate
@@ -1311,6 +1348,8 @@ export interface components {
             name_kh?: string | null;
             /** Faculty */
             faculty?: string | null;
+            /** Unit Id */
+            unit_id?: number | null;
             degree_level?: components["schemas"]["DegreeLevel"] | null;
             /** Duration Years */
             duration_years?: number | null;
@@ -1320,12 +1359,6 @@ export interface components {
             tuition_female_per_year?: number | null;
             /** Tuition Per Credit */
             tuition_per_credit?: number | null;
-            /** Effective Tuition Per Year */
-            effective_tuition_per_year?: number | null;
-            /** Effective Tuition Female Per Year */
-            effective_tuition_female_per_year?: number | null;
-            /** Tuition Discount Percent */
-            tuition_discount_percent?: number | null;
             fee_currency?: components["schemas"]["Currency"] | null;
             /** Overview En */
             overview_en?: string | null;
@@ -1335,6 +1368,8 @@ export interface components {
             admission_req_en?: string | null;
             /** Admission Req Kh */
             admission_req_kh?: string | null;
+            /** Shifts */
+            shifts?: string[] | null;
         };
         /** RoleRead */
         RoleRead: {
@@ -1419,8 +1454,6 @@ export interface components {
             university_id?: number | null;
             /** Unit Id */
             unit_id?: number | null;
-            /** Unit Id */
-            unit_id?: number | null;
         };
         /**
          * ScholarshipListItem
@@ -1455,8 +1488,6 @@ export interface components {
             unit_id?: number | null;
             /** University Id */
             university_id?: number | null;
-            /** Unit Id */
-            unit_id?: number | null;
             /** University Name */
             university_name?: string | null;
             /** Unit Name */
@@ -1495,8 +1526,6 @@ export interface components {
             unit_id?: number | null;
             /** University Id */
             university_id?: number | null;
-            /** Unit Id */
-            unit_id?: number | null;
         };
         /**
          * ScholarshipUpdate
@@ -1566,18 +1595,15 @@ export interface components {
             category_kh?: string | null;
             /** Logo */
             logo?: string | null;
+            /**
+             * Position
+             * @default 0
+             */
+            position: number;
             /** Default Tuition Per Year */
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
-            /** Tuition Model */
-            tuition_model?: string | null;
-            /** Tuition Min Per Year */
-            tuition_min_per_year?: number | null;
-            /** Tuition Max Per Year */
-            tuition_max_per_year?: number | null;
-            /** Has Female Tuition Discount */
-            has_female_tuition_discount?: boolean;
         };
         /**
          * UnitDetail
@@ -1607,6 +1633,15 @@ export interface components {
             /** Logo */
             logo?: string | null;
             /**
+             * Position
+             * @default 0
+             */
+            position: number;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /**
              * Curriculum Sections
              * @default []
              */
@@ -1632,7 +1667,7 @@ export interface components {
              * Programs
              * @default []
              */
-            programs?: components["schemas"]["ProgramSummary"][];
+            programs: components["schemas"]["ProgramSummary"][];
         };
         /**
          * UnitKind
@@ -1666,18 +1701,15 @@ export interface components {
             category_kh?: string | null;
             /** Logo */
             logo?: string | null;
+            /**
+             * Position
+             * @default 0
+             */
+            position: number;
             /** Default Tuition Per Year */
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
-            /** Tuition Model */
-            tuition_model?: string | null;
-            /** Tuition Min Per Year */
-            tuition_min_per_year?: number | null;
-            /** Tuition Max Per Year */
-            tuition_max_per_year?: number | null;
-            /** Has Female Tuition Discount */
-            has_female_tuition_discount?: boolean;
         };
         /**
          * UnitUpdate
@@ -1698,18 +1730,12 @@ export interface components {
             category_kh?: string | null;
             /** Logo */
             logo?: string | null;
+            /** Position */
+            position?: number | null;
             /** Default Tuition Per Year */
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
-            /** Tuition Model */
-            tuition_model?: string | null;
-            /** Tuition Min Per Year */
-            tuition_min_per_year?: number | null;
-            /** Tuition Max Per Year */
-            tuition_max_per_year?: number | null;
-            /** Has Female Tuition Discount */
-            has_female_tuition_discount?: boolean;
         };
         /**
          * UniversityCreate
@@ -1723,6 +1749,10 @@ export interface components {
             /** Abbreviation */
             abbreviation: string;
             type: components["schemas"]["UniversityType"];
+            /** @default MOEYS */
+            ministry: components["schemas"]["Ministry"];
+            /** @default DRAFT */
+            status: components["schemas"]["Status"];
             /** Province */
             province: string;
             /** Parent Id */
@@ -1754,6 +1784,10 @@ export interface components {
             /** Abbreviation */
             abbreviation?: string | null;
             type: components["schemas"]["UniversityType"];
+            /** @default MOEYS */
+            ministry: components["schemas"]["Ministry"];
+            /** @default DRAFT */
+            status: components["schemas"]["Status"];
             /** Province */
             province: string;
             /** Logo Url */
@@ -1846,8 +1880,11 @@ export interface components {
             tuition_min_per_year?: number | null;
             /** Tuition Max Per Year */
             tuition_max_per_year?: number | null;
-            /** Has Female Tuition Discount */
-            has_female_tuition_discount?: boolean;
+            /**
+             * Has Female Tuition Discount
+             * @default false
+             */
+            has_female_tuition_discount: boolean;
         };
         /**
          * UniversitySummary
@@ -1868,6 +1905,10 @@ export interface components {
             /** Abbreviation */
             abbreviation?: string | null;
             type: components["schemas"]["UniversityType"];
+            /** @default MOEYS */
+            ministry: components["schemas"]["Ministry"];
+            /** @default DRAFT */
+            status: components["schemas"]["Status"];
             /** Province */
             province: string;
             /** Logo Url */
@@ -1907,6 +1948,7 @@ export interface components {
             /** Abbreviation */
             abbreviation?: string | null;
             type?: components["schemas"]["UniversityType"] | null;
+            ministry?: components["schemas"]["Ministry"] | null;
             status?: components["schemas"]["Status"] | null;
             /** Moeys Accredited */
             moeys_accredited?: boolean | null;
@@ -1950,6 +1992,16 @@ export interface components {
             contact_email?: string | null;
             /** Contact Telegram */
             contact_telegram?: string | null;
+            /** Advisor Name */
+            advisor_name?: string | null;
+            /** Advisor Role */
+            advisor_role?: string | null;
+            /** Advisor Avatar Url */
+            advisor_avatar_url?: string | null;
+            /** Admissions Requirements En */
+            admissions_requirements_en?: string | null;
+            /** Admissions Requirements Kh */
+            admissions_requirements_kh?: string | null;
             /** Stats Students */
             stats_students?: string | null;
             /** Stats Tuition */
@@ -2223,6 +2275,8 @@ export interface operations {
                 province?: string | null;
                 /** @description Filter by type, PUBLIC or PRIVATE */
                 type?: string | null;
+                /** @description Filter by ministry (MOEYS, MLVT, MOH, MAFF, MPTC, MCFA, MEF, OTHER) */
+                ministry?: string | null;
                 /** @description Page number */
                 page?: number;
                 /** @description Items per page (capped at MAX_PAGE_SIZE) */
@@ -2374,10 +2428,16 @@ export interface operations {
                 q?: string | null;
                 /** @description Filter by type (PUBLIC / PRIVATE) */
                 type?: string | null;
+                /** @description Filter by ministry (MOEYS, MLVT, MOH, MAFF, MPTC, MCFA, MEF, OTHER) */
+                ministry?: string | null;
                 /** @description Filter by status (PUBLISHED / DRAFT / ARCHIVED) */
                 status?: string | null;
                 /** @description Filter by province */
                 province?: string | null;
+                /** @description Filter by parent university ID */
+                parent_id?: number | null;
+                /** @description Filter root universities only (parent_id is None) */
+                is_root?: boolean | null;
                 /** @description Sort field: name_en, created_at, established_year */
                 sort_by?: string;
                 /** @description Sort direction: asc or desc */
@@ -2452,7 +2512,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
             };
             cookie?: never;
         };
@@ -2578,7 +2638,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
             };
             cookie?: never;
         };
@@ -2621,6 +2681,10 @@ export interface operations {
                 degree_level?: components["schemas"]["DegreeLevel"] | null;
                 /** @description Filter by university ID */
                 university_id?: number | null;
+                /** @description Filter by faculty */
+                faculty?: string | null;
+                /** @description Filter by shift: MORNING, AFTERNOON, EVENING, WEEKEND */
+                shift?: string | null;
                 /** @description Admin filter: set to true to include soft-deleted records */
                 include_deleted?: boolean;
             };
@@ -2801,7 +2865,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
             };
             cookie?: never;
         };
@@ -2832,7 +2896,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
             };
             cookie?: never;
         };
@@ -2870,7 +2934,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
                 unit_id: number;
             };
             cookie?: never;
@@ -2902,7 +2966,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
                 unit_id: number;
             };
             cookie?: never;
@@ -2932,7 +2996,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
                 unit_id: number;
             };
             cookie?: never;
@@ -2968,7 +3032,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                university_id: number;
+                university_id: string;
                 unit_id: number;
             };
             cookie?: never;
@@ -3319,6 +3383,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ScholarshipRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_direct_scholarship_api_v1_admin_scholarships__scholarship_id__get: {
+        parameters: {
+            query?: {
+                /** @description Allow admin to retrieve a soft-deleted scholarship */
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path: {
+                scholarship_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScholarshipListItem"];
                 };
             };
             /** @description Validation Error */

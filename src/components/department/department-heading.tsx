@@ -9,7 +9,7 @@ import type {
     Unit,
 } from "@/data/universities";
 import type { Lang } from "@/lib/language";
-import { localize } from "@/lib/language";
+import { getMinistryLabel, localize } from "@/lib/language";
 import {
     Award,
     BadgeCheck,
@@ -43,6 +43,7 @@ export interface UniversityHeadingData {
     name: NamespacedText;
     logo?: string;
     universityType: NamespacedText;
+    ministry?: string;
     moeysAccredited?: boolean;
     universityCategory?: NamespacedText;
     province?: string;
@@ -218,6 +219,17 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                             >
                                 <BadgeCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                                 <span>{lang === "kh" ? "ទទួលស្គាល់ដោយ MoEYS" : "MoEYS Accredited"}</span>
+                            </Badge>
+                        )}
+
+                        {university.ministry && (
+                            <Badge
+                                variant="secondary"
+                                className="bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-500/20 font-medium rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-khmer"
+                                title={getMinistryLabel(university.ministry, lang)?.full ?? university.ministry}
+                            >
+                                <Building2 className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                                <span>{getMinistryLabel(university.ministry, lang)?.short ?? university.ministry}</span>
                             </Badge>
                         )}
 
