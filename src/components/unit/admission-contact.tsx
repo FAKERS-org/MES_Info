@@ -4,7 +4,7 @@
  * Preserved for backward compatibility.
  */
 import MetadataRenderer from "@/components/shared/metadata-renderer";
-import type { UniversityHeadingData } from "@/components/department/department-heading";
+import type { UniversityHeadingData } from "@/components/unit/unit-heading";
 import type { Lang } from "@/lib/language";
 
 export interface AdmissionContactProps {

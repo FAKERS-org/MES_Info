@@ -1,10 +1,10 @@
 import { SectionLayout } from "@/components/shared/section-layout";
 import AdmissionsContactCard from "@/components/university/contact-card";
 import CampusSwitcher from "@/components/university/campus-switcher";
-import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
-import CampusMapCard from "@/components/university/programs-and-fees/campus-map-card";
-import ProgramsExplorer from "@/components/university/programs-and-fees/programs-explorer";
-import ProgramsList from "@/components/university/programs-and-fees/programs-list";
+import BrochureDownloadCard from "@/components/university/brochure-download-card";
+import CampusMapCard from "@/components/university/campus-map-card";
+import ProgramsExplorer from "@/components/university/programs/programs-explorer";
+import ProgramsList from "@/components/university/programs/programs-list";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import {

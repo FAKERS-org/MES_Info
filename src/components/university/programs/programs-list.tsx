@@ -1,6 +1,6 @@
 "use client";
 
-import { ProgramRowItem } from "@/components/university/programs-and-fees/program-row-item";
+import { ProgramRowItem } from "@/components/university/programs/program-row-item";
 import { SearchInput } from "@/components/shared/search-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

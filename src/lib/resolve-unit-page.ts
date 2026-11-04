@@ -1,4 +1,4 @@
-import type { UniversityHeadingData } from "@/components/department/department-heading";
+import type { UniversityHeadingData } from "@/components/unit/unit-heading";
 import type { CurriculumSection, Unit } from "@/data/universities";
 import { getChildren } from "@/data/universities";
 import {

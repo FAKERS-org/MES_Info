@@ -58,14 +58,16 @@ export interface UniversityHeadingData {
     contact?: UniversityContact;
 }
 
-export interface DepartmentHeadingProps {
+export interface UnitHeadingProps {
     university: UniversityHeadingData;
     unit?: Unit;
     faculty?: Unit;
     lang: Lang;
 }
 
-export default function DepartmentHeading({ university, unit, faculty, lang }: DepartmentHeadingProps) {
+export type DepartmentHeadingProps = UnitHeadingProps;
+
+export default function UnitHeading({ university, unit, faculty, lang }: UnitHeadingProps) {
     const name = unit?.name ?? university.name;
     const code = (unit?.id ?? university.code ?? university.id).toUpperCase();
     const logo = unit?.logo ?? university.logo;
@@ -333,3 +335,5 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
         </div>
     );
 }
+
+export { UnitHeading as DepartmentHeading };

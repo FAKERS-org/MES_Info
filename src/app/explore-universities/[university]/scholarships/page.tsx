@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CampusSwitcher from "@/components/university/campus-switcher";
 import MetadataRenderer from "@/components/shared/metadata-renderer";
-import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
+import BrochureDownloadCard from "@/components/university/brochure-download-card";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
 import { getUniversityDetail, toHeadingData } from "@/lib/api/universities";

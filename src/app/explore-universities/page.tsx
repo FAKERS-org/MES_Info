@@ -7,7 +7,7 @@ import { ExploreFilterBar } from "@/components/university/explore/explore-filter
 import { PAGE_SIZE, useExploreFilters } from "@/components/university/explore/use-explore-filters";
 import UniversityHeader from "@/components/university/university-header";
 import UniversityPagination from "@/components/university/university-pagination";
-import { UniversityTile } from "@/components/university/university-tile";
+import { UniversityCard } from "@/components/university/university-card";
 import { useUniversities } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
 
@@ -59,7 +59,7 @@ export default function ExploreUniversitiesPage() {
                 <>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                         {filter.paginated.map(university => (
-                            <UniversityTile key={university.id} university={university} variant="featured" />
+                            <UniversityCard key={university.id} university={university} variant="featured" />
                         ))}
                     </div>
 

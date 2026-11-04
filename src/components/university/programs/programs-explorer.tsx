@@ -1,7 +1,7 @@
 "use client";
 
 import { SearchFilterBar } from "@/components/shared/search-filter-bar";
-import { UnitListCard } from "@/components/university/programs-and-fees/unit-list-card";
+import { UnitListCard } from "@/components/university/programs/unit-list-card";
 import type { Unit } from "@/data/universities";
 import type { components } from "@/lib/api/schema";
 import type { Lang } from "@/lib/language";

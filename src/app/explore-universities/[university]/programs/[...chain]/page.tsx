@@ -1,10 +1,10 @@
-import AcademicCurriculum from "@/components/department/academic-curriculum";
+import AcademicCurriculum from "@/components/unit/academic-curriculum";
 import MetadataRenderer from "@/components/shared/metadata-renderer";
-import DepartmentHeading from "@/components/department/department-heading";
-import Facilities from "@/components/department/facilities";
-import SubDepartmentList from "@/components/department/sub-department-list";
-import UnitScholarships from "@/components/department/unit-scholarships";
-import ProgramsList from "@/components/university/programs-and-fees/programs-list";
+import UnitHeading from "@/components/unit/unit-heading";
+import Facilities from "@/components/unit/facilities";
+import SubUnitList from "@/components/unit/sub-unit-list";
+import UnitScholarships from "@/components/unit/unit-scholarships";
+import ProgramsList from "@/components/university/programs/programs-list";
 import { SectionLayout } from "@/components/shared/section-layout";
 import { getFacilitiesFor } from "@/data/universities";
 import { getUnitKindLabel } from "@/lib/language";
@@ -37,7 +37,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
     return (
         <div>
             <SectionLayout background="muted">
-                <DepartmentHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
+                <UnitHeading university={uni} unit={unit} faculty={faculty} lang={lang} />
             </SectionLayout>
 
             {programs && programs.length > 0 && (
@@ -55,7 +55,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
 
             {unit.units && unit.units.length > 0 && (
                 <SectionLayout background="muted">
-                    <SubDepartmentList
+                    <SubUnitList
                         subDepartments={childRows(universityId, unit, pathIds)}
                         parentDepartment={unit}
                         lang={lang}

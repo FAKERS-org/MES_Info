@@ -9,7 +9,7 @@
 //
 // import { ErrorState } from "@/components/shared/error-state";
 // import { SkeletonGrid } from "@/components/shared/skeleton";
-// import { UniversityTile } from "@/components/university/university-tile";
+// import { UniversityCard } from "@/components/university/university-card";
 // import { useUniversities } from "@/hooks/use-universities";
 // import { useLanguage } from "@/lib/i18n";
 //
@@ -33,7 +33,7 @@
 //
 //             <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 //                 {universities.map(university => (
-//                     <UniversityTile key={university.id} university={university} />
+//                     <UniversityCard key={university.id} university={university} />
 //                 ))}
 //             </div>
 //         </div>

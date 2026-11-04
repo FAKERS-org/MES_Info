@@ -2,7 +2,7 @@
 
 import ComingSoon from "@/components/shared/coming-soon";
 import { SkeletonGrid } from "@/components/shared/skeleton";
-import { UniversityTile } from "@/components/university/university-tile";
+import { UniversityCard } from "@/components/university/university-card";
 import { useUniversities } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
 import {
@@ -115,7 +115,7 @@ export default function ComingSoonFeature({ feature }: ComingSoonFeatureProps) {
                 ) : (
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {universities.map(university => (
-                            <UniversityTile key={university.id} university={university} />
+                            <UniversityCard key={university.id} university={university} />
                         ))}
                     </div>
                 ))}

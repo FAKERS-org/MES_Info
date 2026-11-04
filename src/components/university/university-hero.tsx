@@ -1,5 +1,5 @@
-import DepartmentHeading from "@/components/department/department-heading";
-import type { UniversityHeadingData } from "@/components/department/department-heading";
+import UnitHeading from "@/components/unit/unit-heading";
+import type { UniversityHeadingData } from "@/components/unit/unit-heading";
 import type { Lang } from "@/lib/language";
 
 export interface UniversityHeroProps {
@@ -10,7 +10,7 @@ export interface UniversityHeroProps {
 export default function UniversityHero({ university, lang }: UniversityHeroProps) {
     return (
         <div className="w-full max-w-full mt-auto font-sans">
-            <DepartmentHeading university={university} lang={lang} />
+            <UnitHeading university={university} lang={lang} />
         </div>
     );
 }

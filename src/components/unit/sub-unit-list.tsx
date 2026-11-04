@@ -9,11 +9,13 @@ import type { UnitRow } from "@/lib/unit-routes";
 import { ChevronRight, GraduationCap, Layers } from "lucide-react";
 import Link from "next/link";
 
-export interface SubDepartmentListProps {
+export interface SubUnitListProps {
     subDepartments: UnitRow[];
     parentDepartment: Unit;
     lang: Lang;
 }
+
+export type SubDepartmentListProps = SubUnitListProps;
 
 const KIND_LABEL: Record<string, { kh: string; en: string }> = {
     faculty: { kh: "មហាវិទ្យាល័យ", en: "Faculties" },
@@ -29,7 +31,7 @@ const KIND_LABEL: Record<string, { kh: string; en: string }> = {
     other: { kh: "ផ្នែកផ្សេងៗ", en: "Other Units" },
 };
 
-export default function SubDepartmentList({ subDepartments, parentDepartment, lang }: SubDepartmentListProps) {
+export default function SubUnitList({ subDepartments, parentDepartment, lang }: SubUnitListProps) {
     if (subDepartments.length === 0) return null;
 
     const firstKind = subDepartments[0]?.unit?.kind;
@@ -119,3 +121,5 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
         </Card>
     );
 }
+
+export { SubUnitList as SubDepartmentList };

@@ -1,4 +1,4 @@
-import type { UniversityHeadingData } from "@/components/department/department-heading";
+import type { UniversityHeadingData } from "@/components/unit/unit-heading";
 import type { CurriculumSection, Facility, Unit, UnitKind, UnitScholarship } from "@/data/universities";
 import { apiFetch } from "@/lib/api/fetch";
 import type { components } from "@/lib/api/schema";
