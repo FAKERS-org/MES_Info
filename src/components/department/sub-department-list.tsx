@@ -17,9 +17,16 @@ export interface SubDepartmentListProps {
 
 const KIND_LABEL: Record<string, { kh: string; en: string }> = {
     faculty: { kh: "មហាវិទ្យាល័យ", en: "Faculties" },
+    institute: { kh: "វិទ្យាស្ថាន", en: "Institutes" },
+    school: { kh: "សាលា", en: "Schools" },
+    college: { kh: "ខូឡេក / មហាវិទ្យាល័យ", en: "Colleges" },
     department: { kh: "ដេប៉ាតឺម៉ង់", en: "Departments" },
-    "sub-department": { kh: "ដេប៉ាតឺម៉ង់ទន្ទឹម", en: "Sub-departments" },
+    "sub-department": { kh: "ដេប៉ាតឺម៉ង់រង / ផ្នែក", en: "Sub-departments" },
+    center: { kh: "មជ្ឈមណ្ឌល", en: "Centers" },
+    academy: { kh: "បណ្ឌិត្យសភា", en: "Academies" },
+    division: { kh: "ផ្នែក", en: "Divisions" },
     foundation: { kh: "ឆ្នាំសិក្សាមូលដ្ឋាន", en: "Foundation Year" },
+    other: { kh: "ផ្នែកផ្សេងៗ", en: "Other Units" },
 };
 
 export default function SubDepartmentList({ subDepartments, parentDepartment, lang }: SubDepartmentListProps) {
@@ -50,8 +57,18 @@ export default function SubDepartmentList({ subDepartments, parentDepartment, la
                         <div className="p-6 flex flex-col md:flex-row justify-between gap-6 hover:bg-muted/50 transition-colors">
                             <div className="flex-1 space-y-2">
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <h3 className="text-base md:text-lg font-bold text-foreground font-khmer">
-                                        {localize(sub.name, lang)}
+                                    <h3 className="text-base md:text-lg font-bold text-foreground font-khmer flex items-center gap-1.5 flex-wrap">
+                                        <span>{localize(sub.name, lang)}</span>
+                                        {sub.acronym && (
+                                            <span className="text-2xs font-mono font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                                                [{sub.acronym}]
+                                            </span>
+                                        )}
+                                        {sub.is_autonomous && (
+                                            <span className="text-2xs font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded">
+                                                {lang === "kh" ? "ស្ថាប័នស្វ័យភាព" : "Autonomous"}
+                                            </span>
+                                        )}
                                     </h3>
                                     <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-normal font-khmer">
                                         {localize(sub.category, lang)}

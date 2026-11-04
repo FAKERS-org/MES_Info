@@ -142,6 +142,17 @@ export default function DepartmentHeading({ university, unit, faculty, lang }: D
                                 <Badge className="bg-white text-[#0d3b5c] border border-white/40 rounded-md font-bold px-1.5 py-0.5 text-xs shadow-sm">
                                     {code}
                                 </Badge>
+                                {unit?.is_autonomous && (
+                                    <Badge className="bg-amber-400 text-amber-950 font-bold border border-amber-300 rounded-md px-2 py-0.5 text-xs shadow-sm flex items-center gap-1">
+                                        <Award className="w-3.5 h-3.5 text-amber-950" />
+                                        <span>{lang === "kh" ? "ស្ថាប័នស្វ័យភាព" : "Autonomous Unit"}</span>
+                                    </Badge>
+                                )}
+                                {unit?.acronym && (
+                                    <Badge className="bg-sky-400/20 text-sky-200 border border-sky-400/40 rounded-md font-mono font-bold px-2 py-0.5 text-xs">
+                                        {unit.acronym}
+                                    </Badge>
+                                )}
                             </div>
                             <p className="text-blue-100/80 text-sm leading-tight">
                                 {unit ? localize(university.name, lang) : localize(university.name, "en")}

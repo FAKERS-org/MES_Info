@@ -18,6 +18,7 @@ type ProgramSummary = components["schemas"]["ProgramSummary"];
 function matches(unit: Unit, query: string): boolean {
     return (
         unit.id.includes(query) ||
+        (unit.acronym ? unit.acronym.toLowerCase().includes(query) : false) ||
         unit.name.en.toLowerCase().includes(query) ||
         unit.name.kh.toLowerCase().includes(query) ||
         unit.category.en.toLowerCase().includes(query) ||
@@ -92,6 +93,8 @@ export default function ProgramsExplorer({ groups, lang }: ProgramsExplorerProps
                     lang={lang}
                     tuitionFee={group.unit.defaultTuition}
                     tuitionFemaleFee={group.unit.defaultTuitionFemale}
+                    isAutonomous={group.unit.is_autonomous}
+                    acronym={group.unit.acronym}
                 />
             ))}
         </div>

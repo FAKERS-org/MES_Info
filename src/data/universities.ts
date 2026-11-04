@@ -21,7 +21,18 @@ export interface NamespacedText {
 }
 
 /** What a Unit is at its own level. */
-export type UnitKind = "faculty" | "department" | "sub-department" | "foundation";
+export type UnitKind =
+    | "faculty"
+    | "department"
+    | "sub-department"
+    | "foundation"
+    | "institute"
+    | "school"
+    | "college"
+    | "center"
+    | "academy"
+    | "division"
+    | "other";
 
 /** A single curriculum block, rendered as one card. */
 export interface CurriculumBlock {
@@ -86,6 +97,8 @@ export interface Unit {
     name: NamespacedText;
     category: NamespacedText;
     logo?: string;
+    is_autonomous?: boolean;
+    acronym?: string;
     requirements: NamespacedText[];
     curriculum?: CurriculumSection;
     facilities?: Facility[];

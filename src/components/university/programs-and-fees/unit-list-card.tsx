@@ -18,6 +18,8 @@ export interface UnitListCardProps {
     tuitionFee?: number;
     tuitionFemaleFee?: number;
     programs?: components["schemas"]["ProgramSummary"][];
+    isAutonomous?: boolean;
+    acronym?: string;
 }
 
 export function UnitListCard({
@@ -29,6 +31,8 @@ export function UnitListCard({
     tuitionFee,
     tuitionFemaleFee,
     programs,
+    isAutonomous,
+    acronym,
 }: UnitListCardProps) {
     const isKhmer = lang === "kh";
 
@@ -38,9 +42,21 @@ export function UnitListCard({
                 <GraduationCap className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-                <h2 className="text-base md:text-lg font-bold font-khmer leading-tight text-foreground truncate">
-                    {localize(title, lang)}
-                </h2>
+                <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-base md:text-lg font-bold font-khmer leading-tight text-foreground truncate">
+                        {localize(title, lang)}
+                    </h2>
+                    {acronym && (
+                        <span className="text-2xs font-mono font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                            [{acronym}]
+                        </span>
+                    )}
+                    {isAutonomous && (
+                        <span className="text-2xs font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded">
+                            {isKhmer ? "ស្ថាប័នស្វ័យភាព" : "Autonomous Unit"}
+                        </span>
+                    )}
+                </div>
                 {subtitle ? (
                     <p className="text-muted-foreground text-xs mt-0.5">{subtitle}</p>
                 ) : (
@@ -80,8 +96,18 @@ export function UnitListCard({
                         <div className="p-4 sm:p-5 flex flex-col md:flex-row justify-between gap-4 hover:bg-muted/30 transition-colors">
                             <div className="flex-1 space-y-1.5">
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <h3 className="text-base font-semibold text-foreground font-khmer">
-                                        {localize(unit.name, lang)}
+                                    <h3 className="text-base font-semibold text-foreground font-khmer flex items-center gap-1.5">
+                                        <span>{localize(unit.name, lang)}</span>
+                                        {unit.acronym && (
+                                            <span className="text-2xs font-mono font-bold bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                                                [{unit.acronym}]
+                                            </span>
+                                        )}
+                                        {unit.is_autonomous && (
+                                            <span className="text-2xs font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded">
+                                                {isKhmer ? "ស្ថាប័នស្វ័យភាព" : "Autonomous"}
+                                            </span>
+                                        )}
                                     </h3>
                                     <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer">
                                         {localize(unit.category, lang)}
@@ -89,7 +115,7 @@ export function UnitListCard({
                                     {unit.units && unit.units.length > 0 && (
                                         <Badge className="bg-muted text-muted-foreground border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer flex items-center gap-1">
                                             <FolderTree className="h-3 w-3" />
-                                            {isKhmer ? "ដេប៉ាតឺម៉ង់ទន្ទឹម" : "Sub-departments"}
+                                            {isKhmer ? "ផ្នែក/ដេប៉ាតឺម៉ង់ចំណុះ" : "Sub-units / Departments"}
                                         </Badge>
                                     )}
                                 </div>

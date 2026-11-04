@@ -173,6 +173,11 @@ export const DEGREE_LABELS: Record<string, { en: string; kh: string }> = {
     ENGINEERING: { en: "Engineering", kh: "វិស្វករ" },
     MASTER: { en: "Master", kh: "បរិញ្ញាបត្រជាន់ខ្ពស់" },
     PHD: { en: "PhD", kh: "បណ្ឌិត" },
+    CERTIFICATE: { en: "Certificate", kh: "វិញ្ញាបនបត្របញ្ជាក់ការសិក្សា" },
+    VOCATIONAL: { en: "Vocational", kh: "បណ្តុះបណ្តាលវិជ្ជាជីវៈ" },
+    POSTGRADUATE_DIPLOMA: { en: "Postgraduate Diploma", kh: "សញ្ញាបត្រក្រោយបរិញ្ញាបត្រ" },
+    RESIDENCY: { en: "Residency (Medical)", kh: "វេជ្ជបណ្ឌិតឯកទេស" },
+    OTHER: { en: "Other", kh: "ផ្សេងៗ" },
 };
 
 export function getDegreeLabel(degree: string | undefined | null, lang: Lang): string {
@@ -185,12 +190,26 @@ export function getDegreeLabel(degree: string | undefined | null, lang: Lang): s
 export const UNIT_KIND_LABELS: Record<string, { en: string; kh: string }> = {
     FACULTY: { en: "Faculty", kh: "មហាវិទ្យាល័យ" },
     faculty: { en: "Faculty", kh: "មហាវិទ្យាល័យ" },
+    INSTITUTE: { en: "Institute", kh: "វិទ្យាស្ថាន" },
+    institute: { en: "Institute", kh: "វិទ្យាស្ថាន" },
+    SCHOOL: { en: "School", kh: "សាលា" },
+    school: { en: "School", kh: "សាលា" },
+    COLLEGE: { en: "College", kh: "ខូឡេក / មហាវិទ្យាល័យ" },
+    college: { en: "College", kh: "ខូឡេក / មហាវិទ្យាល័យ" },
     DEPARTMENT: { en: "Department", kh: "ដេប៉ាតឺម៉ង់" },
     department: { en: "Department", kh: "ដេប៉ាតឺម៉ង់" },
-    SUB_DEPARTMENT: { en: "Section / Sub-department", kh: "ផ្នែក" },
-    "sub-department": { en: "Section / Sub-department", kh: "ផ្នែក" },
+    SUB_DEPARTMENT: { en: "Sub-Department / Lab", kh: "ដេប៉ាតឺម៉ង់រង / ផ្នែក" },
+    "sub-department": { en: "Sub-Department / Lab", kh: "ដេប៉ាតឺម៉ង់រង / ផ្នែក" },
+    CENTER: { en: "Center", kh: "មជ្ឈមណ្ឌល" },
+    center: { en: "Center", kh: "មជ្ឈមណ្ឌល" },
+    ACADEMY: { en: "Academy", kh: "បណ្ឌិត្យសភា" },
+    academy: { en: "Academy", kh: "បណ្ឌិត្យសភា" },
+    DIVISION: { en: "Division", kh: "ផ្នែក" },
+    division: { en: "Division", kh: "ផ្នែក" },
     FOUNDATION: { en: "Foundation Year", kh: "ឆ្នាំសិក្សាមូលដ្ឋាន" },
     foundation: { en: "Foundation Year", kh: "ឆ្នាំសិក្សាមូលដ្ឋាន" },
+    OTHER: { en: "Other", kh: "ផ្សេងៗ" },
+    other: { en: "Other", kh: "ផ្សេងៗ" },
 };
 
 export function getUnitKindLabel(kind: string | undefined | null, lang: Lang): string {

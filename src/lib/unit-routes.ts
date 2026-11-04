@@ -62,7 +62,7 @@ export function programGroups(universityId: string, units: Unit[]): ProgramGroup
         getChildren(unit).flatMap(child => {
             const childPath = [...pathIds, child.id];
             const row = { unit: child, href: unitHref(universityId, childPath) };
-            return child.kind === "faculty" ? rows(child, childPath) : [row, ...rows(child, childPath)];
+            return [row, ...rows(child, childPath)];
         });
 
     return units.map(unit => ({

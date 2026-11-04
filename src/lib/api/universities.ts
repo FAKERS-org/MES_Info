@@ -140,12 +140,47 @@ export async function getUnitDetail(
 }
 
 /** API kind → the UI's unit kind; the tree components match on these. */
-const KIND_TO_UI: Record<UnitSummary["kind"], UnitKind> = {
+const KIND_TO_UI: Record<string, UnitKind> = {
     FACULTY: "faculty",
     DEPARTMENT: "department",
     SUB_DEPARTMENT: "sub-department",
     FOUNDATION: "foundation",
+    INSTITUTE: "institute",
+    SCHOOL: "school",
+    COLLEGE: "college",
+    CENTER: "center",
+    ACADEMY: "academy",
+    DIVISION: "division",
+    OTHER: "other",
 };
+
+export interface FeeScheduleItem {
+    title?: string;
+    name?: string;
+    amount: number;
+    currency?: string;
+    frequency?: string;
+    billing_metric?: string;
+    mandatory_level?: string;
+    tag?: string;
+    notes?: string;
+}
+
+export interface AdmissionRuleItem {
+    type?: string;
+    title: string;
+    summary?: string;
+    cutoff?: string;
+}
+
+export interface ScholarshipRuleItem {
+    category?: string;
+    title: string;
+    award_tier?: string;
+    scope_duration?: string;
+    condition?: string;
+    quota?: string;
+}
 
 /**
  * Build the nested unit tree from the API's flat list. Siblings keep
@@ -171,6 +206,14 @@ export function buildUnitTree(units: UnitSummary[], programs?: UniversityProgram
             logo: row.logo ?? undefined,
             defaultTuition: row.default_tuition_per_year ?? undefined,
             defaultTuitionFemale: row.default_tuition_female_per_year ?? undefined,
+            is_autonomous: Boolean(
+                (row as any).is_autonomous ??
+                ((row as any).metadata_json as any)?.is_autonomous
+            ),
+            acronym:
+                (row as any).acronym ??
+                ((row as any).metadata_json as any)?.acronym ??
+                undefined,
             requirements: [],
             units: [],
             programs: [],
