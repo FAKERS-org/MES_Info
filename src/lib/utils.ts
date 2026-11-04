@@ -39,6 +39,16 @@ export function formatNumber(num: number): string {
 }
 
 /**
+ * Format currency amount with currency symbol ($ or ៛).
+ */
+export function formatCurrency(amount?: number | null, currency?: string | null): string {
+  if (amount === null || amount === undefined || Number.isNaN(amount)) return "—";
+  const symbol = currency === "KHR" ? "៛" : "$";
+  const value = amount.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  return currency === "KHR" ? `${value} ${symbol}` : `${symbol}${value}`;
+}
+
+/**
  * Debounce a function call.
  * @param fn - Function to debounce
  * @param delay - Delay in milliseconds

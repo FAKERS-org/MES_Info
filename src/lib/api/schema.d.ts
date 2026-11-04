@@ -2083,6 +2083,16 @@ export interface components {
             moeys_accredited: boolean;
             /** Established Year */
             established_year?: number | null;
+            /** Has Scholarships */
+            has_scholarships?: boolean;
+            /** Has Dormitory */
+            has_dormitory?: boolean;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Fee Schedule */
+            fee_schedule?: ({ [key: string]: unknown })[] | null;
             /** Parent Id */
             parent_id?: number | null;
             /** Campus Name */
@@ -2198,6 +2208,16 @@ export interface components {
             moeys_accredited: boolean;
             /** Established Year */
             established_year?: number | null;
+            /** Has Scholarships */
+            has_scholarships?: boolean;
+            /** Has Dormitory */
+            has_dormitory?: boolean;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Fee Schedule */
+            fee_schedule?: ({ [key: string]: unknown })[] | null;
             /** Parent Id */
             parent_id?: number | null;
             /** Campus Name */

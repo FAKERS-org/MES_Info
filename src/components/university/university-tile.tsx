@@ -8,8 +8,8 @@ import type { UniversitySummary } from "@/hooks/use-universities";
 import { useLanguage } from "@/lib/i18n";
 import { apiName, apiOverview, getMinistryLabel } from "@/lib/language";
 import { universityHref } from "@/lib/unit-routes";
-import { cn } from "@/lib/utils";
-import { ArrowUpRight, BadgeCheck, Bookmark, CalendarDays, MapPin } from "lucide-react";
+import { cn, formatCurrency } from "@/lib/utils";
+import { ArrowUpRight, Award, BadgeCheck, Bookmark, CalendarDays, Home, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export interface UniversityTileProps {
@@ -153,6 +153,49 @@ export function UniversityTile({ university, variant = "compact", className }: U
                         </IconListItem>
                     )}
                 </IconList>
+
+                {/* Feature tags */}
+                {(university.has_scholarships || university.has_dormitory) && (
+                    <div className="flex flex-wrap items-center gap-1.5 mt-3">
+                        {university.has_scholarships && (
+                            <Badge
+                                variant="outline"
+                                className="text-3xs font-medium gap-1 text-amber-700 bg-amber-50/80 border-amber-200 dark:bg-amber-950/30 dark:text-amber-300 dark:border-amber-900/50"
+                            >
+                                <Award className="size-3" />
+                                {t("explore.filterScholarships")}
+                            </Badge>
+                        )}
+                        {university.has_dormitory && (
+                            <Badge
+                                variant="outline"
+                                className="text-3xs font-medium gap-1 text-teal-700 bg-teal-50/80 border-teal-200 dark:bg-teal-950/30 dark:text-teal-300 dark:border-teal-900/50"
+                            >
+                                <Home className="size-3" />
+                                {t("explore.filterDormitory")}
+                            </Badge>
+                        )}
+                    </div>
+                )}
+
+                {/* Base Tuition Benchmark */}
+                {university.default_tuition_per_year != null && (
+                    <div className="mt-3 flex items-center justify-between rounded-xl bg-muted/40 p-2 px-3 border border-border/60">
+                        <span className="text-2xs font-medium text-muted-foreground">
+                            {t("explore.tuitionBenchmark")}
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="font-semibold text-xs text-foreground">
+                                {formatCurrency(university.default_tuition_per_year, "USD")}/yr
+                            </span>
+                            {university.default_tuition_female_per_year != null && (
+                                <span className="text-rose-600 dark:text-rose-400 font-medium text-3xs bg-rose-50 dark:bg-rose-950/40 px-1.5 py-0.5 rounded-md border border-rose-200 dark:border-rose-900/50">
+                                    ♀ {formatCurrency(university.default_tuition_female_per_year, "USD")}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 {featured && (
                     <div className="mt-auto flex items-center gap-3 pt-5">
