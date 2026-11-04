@@ -1,3 +1,8 @@
+/**
+ * @deprecated Deprecated as part of Two-Bucket Architecture Refactor.
+ * Custom fee structures and payment methods must be passed through `metadata_json`
+ * and rendered via generic `<MetadataRenderer />`.
+ */
 import { Button } from "@/components/ui/button";
 import { ScanLine, Wallet } from "lucide-react";
 

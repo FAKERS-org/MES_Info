@@ -1,3 +1,8 @@
+/**
+ * @deprecated Deprecated as part of Two-Bucket Architecture Refactor.
+ * Eligibility matrices and entry criteria must be passed through `metadata_json`
+ * and rendered via generic `<MetadataRenderer />`.
+ */
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ClipboardList, Info } from "lucide-react";

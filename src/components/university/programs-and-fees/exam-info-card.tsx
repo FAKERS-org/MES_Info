@@ -1,3 +1,8 @@
+/**
+ * @deprecated Deprecated as part of Two-Bucket Architecture Refactor.
+ * Examination and admissions criteria must be passed through `metadata_json`
+ * and rendered via generic `<MetadataRenderer />`.
+ */
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Info, Languages, ShieldCheck, TrendingUp, Users } from "lucide-react";

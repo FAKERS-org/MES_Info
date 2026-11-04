@@ -1,3 +1,8 @@
+/**
+ * @deprecated Deprecated as part of Two-Bucket Architecture Refactor.
+ * Important institutional deadlines and timelines must be passed through `metadata_json`
+ * and rendered via generic `<MetadataRenderer />`.
+ */
 import { Button } from "@/components/ui/button";
 import { CalendarDays, CalendarPlus, Clock, GraduationCap, Send } from "lucide-react";
 

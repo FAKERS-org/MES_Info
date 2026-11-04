@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import AdmissionRoadmap from "@/components/university/admissions/admission-roadmap";
 import RequiredDocuments from "@/components/university/admissions/required-documents-rail";
 import CampusSwitcher from "@/components/university/campus-switcher";
-import AdmissionsContactCard from "@/components/university/contact-card";
+import MetadataRenderer from "@/components/shared/metadata-renderer";
 import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
@@ -55,12 +55,9 @@ export default async function AdmissionsPage({ params, searchParams }: Admission
                             requirementsKh={activeDetail.admissions_requirements_kh}
                             requirementsEn={activeDetail.admissions_requirements_en}
                         />
-                        <AdmissionsContactCard
-                            phone={activeDetail.contact_phone}
-                            telegram={activeDetail.contact_telegram}
-                            advisorName={activeDetail.advisor_name}
-                            advisorRole={activeDetail.advisor_role}
-                            advisorAvatar={activeDetail.advisor_avatar_url}
+                        <MetadataRenderer
+                            data={activeDetail.metadata_json}
+                            title="Admissions & Contact Information"
                         />
                         <BrochureDownloadCard website={activeDetail.website} universityName={uniName} />
                     </div>

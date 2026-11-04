@@ -2,7 +2,7 @@ import { SectionLayout } from "@/components/shared/section-layout";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CampusSwitcher from "@/components/university/campus-switcher";
-import AdmissionsContactCard from "@/components/university/contact-card";
+import MetadataRenderer from "@/components/shared/metadata-renderer";
 import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
 import UniversityHero from "@/components/university/university-hero";
 import UniversityMenu from "@/components/university/university-menu";
@@ -53,12 +53,9 @@ export default async function UniversityScholarshipsPage({ params, searchParams 
                 mainClassName="space-y-6"
                 aside={
                     <div className="space-y-4">
-                        <AdmissionsContactCard
-                            phone={activeDetail.contact_phone}
-                            telegram={activeDetail.contact_telegram}
-                            advisorName={activeDetail.advisor_name}
-                            advisorRole={activeDetail.advisor_role}
-                            advisorAvatar={activeDetail.advisor_avatar_url}
+                        <MetadataRenderer
+                            data={activeDetail.metadata_json}
+                            title="Scholarship Inquiries"
                         />
                         <BrochureDownloadCard website={activeDetail.website} universityName={uniName} />
                     </div>

@@ -1,5 +1,5 @@
 import AcademicCurriculum from "@/components/department/academic-curriculum";
-import AdmissionContact from "@/components/department/admission-contact";
+import MetadataRenderer from "@/components/shared/metadata-renderer";
 import DepartmentHeading from "@/components/department/department-heading";
 import Facilities from "@/components/department/facilities";
 import SubDepartmentList from "@/components/department/sub-department-list";
@@ -64,7 +64,15 @@ export default async function UnitPage({ params }: UnitPageProps) {
             )}
 
             {(curriculums.length > 0 || curriculum) && (
-                <SectionLayout background="muted" aside={<AdmissionContact university={uni} lang={lang} />}>
+                <SectionLayout
+                    background="muted"
+                    aside={
+                        <MetadataRenderer
+                            data={(unit as any).metadata_json || universityDetail.metadata_json}
+                            title="Academic Inquiries"
+                        />
+                    }
+                >
                     <div className="space-y-6">
                         {curriculums.length > 0 ? (
                             curriculums.map((curr, idx) => (

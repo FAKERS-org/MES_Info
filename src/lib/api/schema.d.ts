@@ -324,6 +324,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/programs/{program_id}/curriculum-sections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Program Curriculum Sections
+         * @description List curriculum sections of a program.
+         */
+        get: operations["list_program_curriculum_sections_api_v1_admin_programs__program_id__curriculum_sections_get"];
+        put?: never;
+        /**
+         * Create Program Curriculum Section
+         * @description Add a curriculum section to a program.
+         */
+        post: operations["create_program_curriculum_section_api_v1_admin_programs__program_id__curriculum_sections_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/programs/{program_id}/curriculum-sections/{section_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete Program Curriculum Section
+         * @description Delete a curriculum section of a program.
+         */
+        delete: operations["delete_program_curriculum_section_api_v1_admin_programs__program_id__curriculum_sections__section_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Program Curriculum Section
+         * @description Update a curriculum section of a program.
+         */
+        patch: operations["update_program_curriculum_section_api_v1_admin_programs__program_id__curriculum_sections__section_id__patch"];
+        trace?: never;
+    };
     "/api/v1/admin/universities/{university_id}/units/": {
         parameters: {
             query?: never;
@@ -466,6 +514,54 @@ export interface paths {
         head?: never;
         /** Update Row */
         patch: operations["update_row_api_v1_admin_units__unit_id__curriculum_sections__row_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/units/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List All Units Endpoint
+         * @description List all units across all universities, paginated with filtering.
+         */
+        get: operations["list_all_units_endpoint_api_v1_admin_units__get"];
+        put?: never;
+        /**
+         * Create Direct Unit Endpoint
+         * @description Create a new unit directly specifying university_id.
+         */
+        post: operations["create_direct_unit_endpoint_api_v1_admin_units__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/units/{unit_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete Direct Unit Endpoint
+         * @description Delete a unit directly by ID.
+         */
+        delete: operations["delete_direct_unit_endpoint_api_v1_admin_units__unit_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Direct Unit Endpoint
+         * @description Update a unit directly by ID.
+         */
+        patch: operations["update_direct_unit_endpoint_api_v1_admin_units__unit_id__patch"];
         trace?: never;
     };
     "/api/v1/admin/scholarships/": {
@@ -803,7 +899,7 @@ export interface components {
         Currency: "USD" | "KHR";
         /**
          * CurriculumBlock
-         * @description One block of a curriculum section, e.g. a paragraph or a video.
+         * @description One block of a curriculum section, e.g. a paragraph, course, or module.
          */
         CurriculumBlock: {
             /** Badge Text */
@@ -828,7 +924,7 @@ export interface components {
         };
         /**
          * CurriculumSection
-         * @description One curriculum section of a unit — a heading plus its blocks.
+         * @description One curriculum section — a heading plus its course blocks.
          */
         CurriculumSection: {
             /** Heading Kh */
@@ -845,7 +941,7 @@ export interface components {
         };
         /**
          * CurriculumSectionCreate
-         * @description Create payload for one curriculum section of a unit.
+         * @description Create payload for one curriculum section of a program or unit.
          */
         CurriculumSectionCreate: {
             /** Heading En */
@@ -894,7 +990,9 @@ export interface components {
              */
             public_id: string;
             /** Unit Id */
-            unit_id: number;
+            unit_id?: number | null;
+            /** Program Id */
+            program_id?: number | null;
         };
         /**
          * CurriculumSectionUpdate
@@ -1084,6 +1182,41 @@ export interface components {
             /** Items */
             items: components["schemas"]["ScholarshipListItem"][];
         };
+        /** Page[UnitListItem] */
+        Page_UnitListItem_: {
+            /**
+             * Page
+             * @description Current page number (1-based)
+             */
+            page: number;
+            /**
+             * Limit
+             * @description Items per page
+             */
+            limit: number;
+            /**
+             * Total Items
+             * @description Total number of matching rows
+             */
+            total_items: number;
+            /**
+             * Total Pages
+             * @description Ceil(total_items / limit)
+             */
+            total_pages: number;
+            /**
+             * Has Next
+             * @description Whether a next page exists
+             */
+            has_next: boolean;
+            /**
+             * Has Prev
+             * @description Whether a previous page exists
+             */
+            has_prev: boolean;
+            /** Items */
+            items: components["schemas"]["UnitListItem"][];
+        };
         /** Page[UnitSummary] */
         Page_UnitSummary_: {
             /**
@@ -1236,6 +1369,12 @@ export interface components {
             fee_currency: components["schemas"]["Currency"];
             /** Shifts */
             shifts?: string[] | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * ProgramListItem
@@ -1253,6 +1392,8 @@ export interface components {
             university_id?: number | null;
             /** Unit Id */
             unit_id?: number | null;
+            /** Unit Name */
+            unit_name?: string | null;
             /** Name En */
             name_en: string;
             /** Name Kh */
@@ -1282,12 +1423,19 @@ export interface components {
             admission_req_kh?: string | null;
             /** Shifts */
             shifts?: string[] | null;
+            /**
+             * Curriculum Sections
+             * @default []
+             */
+            curriculum_sections: components["schemas"]["CurriculumSection"][];
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
             /** University Name */
             university_name?: string | null;
             /** University Abbreviation */
             university_abbreviation?: string | null;
-            /** Curriculum Sections */
-            curriculum_sections?: components["schemas"]["CurriculumSection"][];
         };
         /**
          * ProgramSummary
@@ -1305,6 +1453,8 @@ export interface components {
             university_id?: number | null;
             /** Unit Id */
             unit_id?: number | null;
+            /** Unit Name */
+            unit_name?: string | null;
             /** Name En */
             name_en: string;
             /** Name Kh */
@@ -1334,8 +1484,15 @@ export interface components {
             admission_req_kh?: string | null;
             /** Shifts */
             shifts?: string[] | null;
-            /** Curriculum Sections */
-            curriculum_sections?: components["schemas"]["CurriculumSection"][];
+            /**
+             * Curriculum Sections
+             * @default []
+             */
+            curriculum_sections: components["schemas"]["CurriculumSection"][];
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
         };
         /**
          * ProgramUpdate
@@ -1370,6 +1527,12 @@ export interface components {
             admission_req_kh?: string | null;
             /** Shifts */
             shifts?: string[] | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
         };
         /** RoleRead */
         RoleRead: {
@@ -1604,6 +1767,52 @@ export interface components {
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * UnitCreateDirect
+         * @description Direct create payload specifying university_id.
+         */
+        UnitCreateDirect: {
+            /** Name En */
+            name_en: string;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** @default FACULTY */
+            kind: components["schemas"]["UnitKind"];
+            /** Parent Id */
+            parent_id?: number | null;
+            /**
+             * Category En
+             * @default
+             */
+            category_en: string | null;
+            /** Category Kh */
+            category_kh?: string | null;
+            /** Logo */
+            logo?: string | null;
+            /**
+             * Position
+             * @default 0
+             */
+            position: number;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+            /** University Id */
+            university_id: number;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * UnitDetail
@@ -1617,6 +1826,8 @@ export interface components {
              * Format: uuid
              */
             public_id: string;
+            /** University Id */
+            university_id?: number | null;
             /** Slug */
             slug: string;
             /** Parent Id */
@@ -1641,6 +1852,10 @@ export interface components {
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Curriculum Sections
              * @default []
@@ -1675,10 +1890,10 @@ export interface components {
          */
         UnitKind: "FACULTY" | "DEPARTMENT" | "SUB_DEPARTMENT" | "FOUNDATION";
         /**
-         * UnitSummary
-         * @description Summary of a unit.
+         * UnitListItem
+         * @description Schema for unit list view with university context.
          */
-        UnitSummary: {
+        UnitListItem: {
             /** Id */
             id: number;
             /**
@@ -1686,6 +1901,8 @@ export interface components {
              * Format: uuid
              */
             public_id: string;
+            /** University Id */
+            university_id?: number | null;
             /** Slug */
             slug: string;
             /** Parent Id */
@@ -1710,6 +1927,64 @@ export interface components {
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+            /** University Name */
+            university_name?: string | null;
+            /** University Abbreviation */
+            university_abbreviation?: string | null;
+            /** Parent Name */
+            parent_name?: string | null;
+            /**
+             * Programs Count
+             * @default 0
+             */
+            programs_count: number;
+        };
+        /**
+         * UnitSummary
+         * @description Summary of a unit.
+         */
+        UnitSummary: {
+            /** Id */
+            id: number;
+            /**
+             * Public Id
+             * Format: uuid
+             */
+            public_id: string;
+            /** University Id */
+            university_id?: number | null;
+            /** Slug */
+            slug: string;
+            /** Parent Id */
+            parent_id?: number | null;
+            kind: components["schemas"]["UnitKind"];
+            /** Name En */
+            name_en: string;
+            /** Name Kh */
+            name_kh?: string | null;
+            /** Category En */
+            category_en: string;
+            /** Category Kh */
+            category_kh?: string | null;
+            /** Logo */
+            logo?: string | null;
+            /**
+             * Position
+             * @default 0
+             */
+            position: number;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
         };
         /**
          * UnitUpdate
@@ -1736,6 +2011,12 @@ export interface components {
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
             default_tuition_female_per_year?: number | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * UniversityCreate
@@ -1764,6 +2045,12 @@ export interface components {
              * @default false
              */
             is_main_campus: boolean;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * UniversityDetail
@@ -1792,10 +2079,6 @@ export interface components {
             province: string;
             /** Logo Url */
             logo_url?: string | null;
-            /** Overview En */
-            overview_en?: string | null;
-            /** Overview Kh */
-            overview_kh?: string | null;
             /** Moeys Accredited */
             moeys_accredited: boolean;
             /** Established Year */
@@ -1809,6 +2092,10 @@ export interface components {
              * @default false
              */
             is_main_campus: boolean;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
             /** Address */
             address?: string | null;
             /** Website */
@@ -1817,12 +2104,8 @@ export interface components {
             cover_image_url?: string | null;
             /** Has Scholarships */
             has_scholarships: boolean;
-            /** Scholarship Info */
-            scholarship_info?: string | null;
             /** Has Dormitory */
             has_dormitory: boolean;
-            /** Dormitory Details */
-            dormitory_details?: string | null;
             /**
              * Programs
              * @default []
@@ -1838,16 +2121,35 @@ export interface components {
              * @default []
              */
             campuses: components["schemas"]["CampusSummary"][];
-            /** University Category En */
-            university_category_en?: string | null;
-            /** University Category Kh */
-            university_category_kh?: string | null;
+            /** Embed Map Url */
+            embed_map_url?: string | null;
+            /** Default Tuition Per Year */
+            default_tuition_per_year?: number | null;
+            /** Default Tuition Female Per Year */
+            default_tuition_female_per_year?: number | null;
+            /** Tuition Model */
+            tuition_model?: string | null;
+            /** Tuition Min Per Year */
+            tuition_min_per_year?: number | null;
+            /** Tuition Max Per Year */
+            tuition_max_per_year?: number | null;
+            /**
+             * Has Female Tuition Discount
+             * @default false
+             */
+            has_female_tuition_discount: boolean;
+            /** Overview En */
+            overview_en?: string | null;
+            /** Overview Kh */
+            overview_kh?: string | null;
             /** Description En */
             description_en?: string | null;
             /** Description Kh */
             description_kh?: string | null;
-            /** Embed Map Url */
-            embed_map_url?: string | null;
+            /** Dormitory Details */
+            dormitory_details?: string | null;
+            /** Scholarship Info */
+            scholarship_info?: string | null;
             /** Contact Phone */
             contact_phone?: string | null;
             /** Contact Email */
@@ -1864,27 +2166,6 @@ export interface components {
             admissions_requirements_en?: string | null;
             /** Admissions Requirements Kh */
             admissions_requirements_kh?: string | null;
-            /** Stats Students */
-            stats_students?: string | null;
-            /** Stats Tuition */
-            stats_tuition?: string | null;
-            /** Stats Established */
-            stats_established?: string | null;
-            /** Default Tuition Per Year */
-            default_tuition_per_year?: number | null;
-            /** Default Tuition Female Per Year */
-            default_tuition_female_per_year?: number | null;
-            /** Tuition Model */
-            tuition_model?: string | null;
-            /** Tuition Min Per Year */
-            tuition_min_per_year?: number | null;
-            /** Tuition Max Per Year */
-            tuition_max_per_year?: number | null;
-            /**
-             * Has Female Tuition Discount
-             * @default false
-             */
-            has_female_tuition_discount: boolean;
         };
         /**
          * UniversitySummary
@@ -1913,10 +2194,6 @@ export interface components {
             province: string;
             /** Logo Url */
             logo_url?: string | null;
-            /** Overview En */
-            overview_en?: string | null;
-            /** Overview Kh */
-            overview_kh?: string | null;
             /** Moeys Accredited */
             moeys_accredited: boolean;
             /** Established Year */
@@ -1930,6 +2207,14 @@ export interface components {
              * @default false
              */
             is_main_campus: boolean;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+            /** Overview En */
+            overview_en?: string | null;
+            /** Overview Kh */
+            overview_kh?: string | null;
         };
         /**
          * UniversityType
@@ -1962,52 +2247,14 @@ export interface components {
             logo_url?: string | null;
             /** Cover Image Url */
             cover_image_url?: string | null;
-            /** Overview En */
-            overview_en?: string | null;
-            /** Overview Kh */
-            overview_kh?: string | null;
             /** Established Year */
             established_year?: number | null;
             /** Has Scholarships */
             has_scholarships?: boolean | null;
-            /** Scholarship Info */
-            scholarship_info?: string | null;
             /** Has Dormitory */
             has_dormitory?: boolean | null;
-            /** Dormitory Details */
-            dormitory_details?: string | null;
-            /** University Category En */
-            university_category_en?: string | null;
-            /** University Category Kh */
-            university_category_kh?: string | null;
-            /** Description En */
-            description_en?: string | null;
-            /** Description Kh */
-            description_kh?: string | null;
             /** Embed Map Url */
             embed_map_url?: string | null;
-            /** Contact Phone */
-            contact_phone?: string | null;
-            /** Contact Email */
-            contact_email?: string | null;
-            /** Contact Telegram */
-            contact_telegram?: string | null;
-            /** Advisor Name */
-            advisor_name?: string | null;
-            /** Advisor Role */
-            advisor_role?: string | null;
-            /** Advisor Avatar Url */
-            advisor_avatar_url?: string | null;
-            /** Admissions Requirements En */
-            admissions_requirements_en?: string | null;
-            /** Admissions Requirements Kh */
-            admissions_requirements_kh?: string | null;
-            /** Stats Students */
-            stats_students?: string | null;
-            /** Stats Tuition */
-            stats_tuition?: string | null;
-            /** Stats Established */
-            stats_established?: string | null;
             /** Default Tuition Per Year */
             default_tuition_per_year?: number | null;
             /** Default Tuition Female Per Year */
@@ -2018,6 +2265,12 @@ export interface components {
             campus_name?: string | null;
             /** Is Main Campus */
             is_main_campus?: boolean | null;
+            /** Metadata Json */
+            metadata_json?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
         };
         /** UserCreate */
         UserCreate: {
@@ -2843,6 +3096,138 @@ export interface operations {
             };
         };
     };
+    list_program_curriculum_sections_api_v1_admin_programs__program_id__curriculum_sections_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                program_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumSectionRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_program_curriculum_section_api_v1_admin_programs__program_id__curriculum_sections_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                program_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CurriculumSectionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumSectionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_program_curriculum_section_api_v1_admin_programs__program_id__curriculum_sections__section_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                program_id: number;
+                section_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_program_curriculum_section_api_v1_admin_programs__program_id__curriculum_sections__section_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                program_id: number;
+                section_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CurriculumSectionUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurriculumSectionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_units_endpoint_api_v1_admin_universities__university_id__units__get: {
         parameters: {
             query?: {
@@ -3310,6 +3695,147 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CurriculumSectionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_all_units_endpoint_api_v1_admin_units__get: {
+        parameters: {
+            query?: {
+                /** @description Page number */
+                page?: number;
+                /** @description Items per page */
+                limit?: number;
+                /** @description Search term for name, category, or university */
+                q?: string | null;
+                /** @description Filter by university ID */
+                university_id?: number | null;
+                /** @description Filter by unit kind */
+                kind?: components["schemas"]["UnitKind"] | null;
+                /** @description Filter by parent unit ID */
+                parent_id?: number | null;
+                /** @description Admin filter: set to true to include soft-deleted records */
+                include_deleted?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Page_UnitListItem_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_direct_unit_endpoint_api_v1_admin_units__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnitCreateDirect"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_direct_unit_endpoint_api_v1_admin_units__unit_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                unit_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_direct_unit_endpoint_api_v1_admin_units__unit_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                unit_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnitUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitSummary"];
                 };
             };
             /** @description Validation Error */

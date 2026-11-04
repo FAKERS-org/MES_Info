@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CampusSwitcher from "@/components/university/campus-switcher";
-import AdmissionsContactCard from "@/components/university/contact-card";
+import MetadataRenderer from "@/components/shared/metadata-renderer";
 import BrochureDownloadCard from "@/components/university/programs-and-fees/brochure-download-card";
 import CampusMapCard from "@/components/university/programs-and-fees/campus-map-card";
 import UniversityHero from "@/components/university/university-hero";
@@ -22,7 +22,6 @@ import {
     GraduationCap,
     Home,
     MapPin,
-    Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -75,12 +74,9 @@ export default async function UniversityPage({ params, searchParams }: Universit
                             mapUrl={activeDetail.embed_map_url}
                             locationName={activeDetail.campus_name || activeDetail.province}
                         />
-                        <AdmissionsContactCard
-                            phone={activeDetail.contact_phone}
-                            telegram={activeDetail.contact_telegram}
-                            advisorName={activeDetail.advisor_name}
-                            advisorRole={activeDetail.advisor_role}
-                            advisorAvatar={activeDetail.advisor_avatar_url}
+                        <MetadataRenderer
+                            data={activeDetail.metadata_json}
+                            title="University Details & Admissions Contact"
                         />
                         <BrochureDownloadCard website={activeDetail.website} universityName={uniName} />
                     </div>
@@ -212,25 +208,6 @@ export default async function UniversityPage({ params, searchParams }: Universit
                                         </p>
                                         <p className="font-semibold text-xs sm:text-sm text-foreground">
                                             {campuses.length} {lang === "kh" ? "សាខាទីតាំង" : "Campuses / Branches"}
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {(activeDetail.has_female_tuition_discount || activeDetail.default_tuition_female_per_year) && (
-                                <div className="flex items-start gap-3 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 sm:col-span-2">
-                                    <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5">
-                                        <Sparkles className="h-4 w-4" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-semibold text-rose-600 dark:text-rose-400 font-khmer">
-                                            {t("university.femaleDiscountOnly")}
-                                        </p>
-                                        <p className="text-xs text-foreground font-medium mt-0.5">
-                                            {t("university.femaleDiscountApplied")}
-                                            {activeDetail.default_tuition_female_per_year
-                                                ? ` ($${activeDetail.default_tuition_female_per_year}/yr)`
-                                                : ""}
                                         </p>
                                     </div>
                                 </div>

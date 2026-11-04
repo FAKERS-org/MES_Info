@@ -21,20 +21,19 @@ export async function getUniversityDetail(id: string): Promise<UniversityDetail 
 
 /** Map the API's detail payload onto the data the heading renders. */
 export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
-    const tuitionStat =
-        detail.stats_tuition ||
-        (detail.default_tuition_per_year
-            ? detail.default_tuition_female_per_year
-                ? `$${detail.default_tuition_per_year}/yr (♀ $${detail.default_tuition_female_per_year}/yr)`
-                : `$${detail.default_tuition_per_year}/yr`
-            : undefined);
+    const meta = (detail.metadata_json as Record<string, unknown> | null | undefined) ?? undefined;
+    const contactPhone = typeof meta?.contact_phone === "string" ? meta.contact_phone : undefined;
+    const contactEmail = typeof meta?.contact_email === "string" ? meta.contact_email : undefined;
+    const contactTelegram = typeof meta?.contact_telegram === "string" ? meta.contact_telegram : undefined;
+
+    const tuitionStat = detail.default_tuition_per_year
+        ? `$${detail.default_tuition_per_year}/yr`
+        : undefined;
 
     const stats = {
-        students: detail.stats_students ?? undefined,
+        students: undefined,
         tuition: tuitionStat,
-        established:
-            detail.stats_established ??
-            (detail.established_year ? `Est. ${detail.established_year}` : undefined),
+        established: detail.established_year ? `Est. ${detail.established_year}` : undefined,
     };
     return {
         id: detail.public_id,
@@ -48,8 +47,11 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
         ministry: detail.ministry,
         moeysAccredited: detail.moeys_accredited,
         universityCategory:
-            detail.university_category_en || detail.university_category_kh
-                ? { en: detail.university_category_en ?? "", kh: detail.university_category_kh ?? "" }
+            typeof meta?.university_category_en === "string" || typeof meta?.university_category_kh === "string"
+                ? {
+                      en: (meta?.university_category_en as string) ?? "",
+                      kh: (meta?.university_category_kh as string) ?? "",
+                  }
                 : undefined,
         province: detail.province,
         hasScholarships: detail.has_scholarships,
@@ -60,14 +62,14 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
         address: detail.address ? { en: detail.address, kh: detail.address } : undefined,
         website: detail.website ?? undefined,
         contact:
-            detail.contact_phone || detail.contact_email || detail.contact_telegram
+            contactPhone || contactEmail || contactTelegram
                 ? {
-                      phone: detail.contact_phone ?? undefined,
-                      email: detail.contact_email ?? undefined,
-                      telegram: detail.contact_telegram ?? undefined,
+                      phone: contactPhone,
+                      email: contactEmail,
+                      telegram: contactTelegram,
                   }
                 : undefined,
-        stats: stats.students || stats.tuition || stats.established ? stats : undefined,
+        stats: stats.tuition || stats.established ? stats : undefined,
     };
 }
 
@@ -172,6 +174,7 @@ export function buildUnitTree(units: UnitSummary[], programs?: UniversityProgram
             requirements: [],
             units: [],
             programs: [],
+            ...((row as any).metadata_json ? { metadata_json: (row as any).metadata_json } : {}),
         };
         byPublicId.set(row.public_id, node);
         byPk.set(row.id, node);
