@@ -38,12 +38,21 @@ export function apiName(row: { name_en: string; name_kh?: string | null }, lang:
 
 /** Bilingual overview from the API; English fallback, `undefined` when absent. */
 export function apiOverview(
-    row: { overview_en?: string | null; overview_kh?: string | null },
+    row: {
+        overview_en?: string | null;
+        overview_kh?: string | null;
+        metadata_json?: Record<string, unknown> | null;
+    },
     lang: Lang,
 ): string | undefined {
-    return lang === "kh"
-        ? row.overview_kh || row.overview_en || undefined
-        : row.overview_en || undefined;
+    const meta = row.metadata_json as Record<string, unknown> | undefined;
+    const en =
+        row.overview_en ||
+        (typeof meta?.overview_en === "string" ? (meta.overview_en as string) : undefined);
+    const kh =
+        row.overview_kh ||
+        (typeof meta?.overview_kh === "string" ? (meta.overview_kh as string) : undefined);
+    return lang === "kh" ? kh || en || undefined : en || undefined;
 }
 
 /** Bilingual description or overview from the API. */
@@ -53,13 +62,18 @@ export function apiDescription(
         description_kh?: string | null;
         overview_en?: string | null;
         overview_kh?: string | null;
+        metadata_json?: Record<string, unknown> | null;
     },
     lang: Lang,
 ): string | undefined {
-    const desc =
-        lang === "kh"
-            ? row.description_kh || row.description_en
-            : row.description_en || row.description_kh;
+    const meta = row.metadata_json as Record<string, unknown> | undefined;
+    const descEn =
+        row.description_en ||
+        (typeof meta?.description_en === "string" ? (meta.description_en as string) : undefined);
+    const descKh =
+        row.description_kh ||
+        (typeof meta?.description_kh === "string" ? (meta.description_kh as string) : undefined);
+    const desc = lang === "kh" ? descKh || descEn : descEn || descKh;
     return desc || apiOverview(row, lang);
 }
 
