@@ -198,10 +198,15 @@ export default function UnitHeading({ university, unit, faculty, lang }: UnitHea
                             {ctaUrl ? (
                                 <Button
                                     asChild
-                                    className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-5 flex items-center gap-2 shadow-sm border-0 font-khmer text-sm font-semibold"
+                                    className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-11 px-5 flex items-center justify-center gap-2 shadow-sm border-0 font-khmer text-sm font-semibold"
                                 >
-                                    <a href={ctaUrl} target="_blank" rel="noopener noreferrer">
-                                        <Send className="h-4 w-4" />
+                                    <a
+                                        href={ctaUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center justify-center gap-2"
+                                    >
+                                        <Send className="h-4 w-4 shrink-0" />
                                         <span>
                                             <LocalizedText translationKey="contact.telegram" />
                                         </span>

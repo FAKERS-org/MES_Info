@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import { forwardRef, type ReactNode } from "react";
 
@@ -45,10 +46,21 @@ interface ButtonProps
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, loading, icon, iconPosition = "start", children, ...props }, ref) => {
-    const Comp = asChild ? "span" : "button";
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref as React.Ref<any>}
+          data-slot="button"
+          className={cn(buttonVariants({ variant, size, className }))}
+          {...(props as any)}
+        >
+          {children}
+        </Slot>
+      );
+    }
 
     return (
-      <Comp
+      <button
         ref={ref}
         data-slot="button"
         className={cn(buttonVariants({ variant, size, className }))}
@@ -70,7 +82,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             {icon && iconPosition === "end" && <span className="flex items-center">{icon}</span>}
           </>
         )}
-      </Comp>
+      </button>
     );
   }
 );

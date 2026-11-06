@@ -36,9 +36,14 @@ export default function BrochureDownloadCard({ website, universityName }: Brochu
                     asChild
                     className="w-full bg-white text-primary hover:bg-white/90 h-10 rounded-xl flex items-center justify-center gap-2 mt-1 transition-colors border-0 text-xs font-semibold"
                 >
-                    <a href={targetUrl} target="_blank" rel="noopener noreferrer">
+                    <a
+                        href={targetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2"
+                    >
                         <span className="font-khmer">ចូលទៅកាន់គេហទំព័រផ្លូវការ</span>
-                        <ExternalLink className="h-3.5 w-3.5 text-primary" />
+                        <ExternalLink className="h-3.5 w-3.5 text-primary shrink-0" />
                     </a>
                 </Button>
             </div>
