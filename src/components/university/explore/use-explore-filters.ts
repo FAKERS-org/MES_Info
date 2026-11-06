@@ -1,11 +1,27 @@
 import type { UniversitySummary } from "@/hooks/use-universities";
+import {
+    calculateBac2Tuition,
+    getUniversityKhan,
+    getUniversityShifts,
+    hasQualification,
+    type Bac2Grade,
+    type DeliveryShift,
+} from "@/lib/bac2";
 import { useLanguage } from "@/lib/i18n";
 import { apiName } from "@/lib/language";
 import { useMemo, useState } from "react";
 
-export type SortKey = "name-asc" | "name-desc" | "tuition-asc" | "tuition-desc" | "established-desc" | "established-asc";
+export type SortKey =
+    | "name-asc"
+    | "name-desc"
+    | "tuition-asc"
+    | "tuition-desc"
+    | "established-desc"
+    | "established-asc";
+
 export type TypeFilter = "ALL" | "PUBLIC" | "PRIVATE";
 export type BudgetFilter = "ALL" | "UNDER_600" | "600_TO_1200" | "OVER_1200";
+export type QualificationFilter = "ALL" | "BACHELOR" | "ASSOCIATE";
 
 export const PAGE_SIZE = 9;
 
@@ -13,9 +29,13 @@ export function useExploreFilters(universities: UniversitySummary[]) {
     const { lang } = useLanguage();
 
     const [query, setQuery] = useState("");
+    const [selectedGrade, setSelectedGrade] = useState<Bac2Grade>("ALL");
     const [selectedType, setSelectedType] = useState<TypeFilter>("ALL");
     const [selectedMinistry, setSelectedMinistry] = useState<string>("ALL");
     const [selectedProvince, setSelectedProvince] = useState<string>("ALL");
+    const [selectedKhan, setSelectedKhan] = useState<string>("ALL");
+    const [selectedShifts, setSelectedShifts] = useState<DeliveryShift[]>([]);
+    const [selectedQualification, setSelectedQualification] = useState<QualificationFilter>("ALL");
     const [selectedBudget, setSelectedBudget] = useState<BudgetFilter>("ALL");
     const [onlyScholarships, setOnlyScholarships] = useState(false);
     const [onlyDormitory, setOnlyDormitory] = useState(false);
@@ -31,8 +51,30 @@ export function useExploreFilters(universities: UniversitySummary[]) {
         return Array.from(set).sort();
     }, [universities]);
 
-    const publicCount = useMemo(() => universities.filter(u => u.type === "PUBLIC").length, [universities]);
-    const privateCount = useMemo(() => universities.filter(u => u.type === "PRIVATE").length, [universities]);
+    const khans = useMemo(() => {
+        const set = new Set<string>();
+        for (const u of universities) {
+            const k = getUniversityKhan(u);
+            if (k) set.add(k);
+        }
+        return Array.from(set).sort();
+    }, [universities]);
+
+    const publicCount = useMemo(
+        () => universities.filter(u => u.type === "PUBLIC").length,
+        [universities],
+    );
+    const privateCount = useMemo(
+        () => universities.filter(u => u.type === "PRIVATE").length,
+        [universities],
+    );
+
+    const toggleShift = (shift: DeliveryShift) => {
+        setSelectedShifts(prev =>
+            prev.includes(shift) ? prev.filter(s => s !== shift) : [...prev, shift],
+        );
+        setCurrentPage(1);
+    };
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -40,21 +82,42 @@ export function useExploreFilters(universities: UniversitySummary[]) {
             const name = apiName(u, lang).toLowerCase();
             const province = (u.province || "").toLowerCase();
             const abbrev = (u.abbreviation || "").toLowerCase();
-            const matchesQuery = !q || name.includes(q) || province.includes(q) || abbrev.includes(q);
+            const matchesQuery =
+                !q || name.includes(q) || province.includes(q) || abbrev.includes(q);
+
             const matchesType = selectedType === "ALL" || u.type === selectedType;
-            const matchesMinistry = selectedMinistry === "ALL" || u.ministry === selectedMinistry;
-            const matchesProvince = selectedProvince === "ALL" || u.province === selectedProvince;
+            const matchesMinistry =
+                selectedMinistry === "ALL" || u.ministry === selectedMinistry;
+            const matchesProvince =
+                selectedProvince === "ALL" || u.province === selectedProvince;
 
-            const tuition = u.default_tuition_per_year;
-            const matchesBudget = selectedBudget === "ALL" || (
-                selectedBudget === "UNDER_600"
-                    ? (tuition != null && tuition < 600)
+            // Khan district filter
+            const uKhan = getUniversityKhan(u);
+            const matchesKhan = selectedKhan === "ALL" || uKhan === selectedKhan;
+
+            // Delivery Shift filter
+            const uShifts = getUniversityShifts(u);
+            const matchesShifts =
+                selectedShifts.length === 0 ||
+                selectedShifts.some(shift => uShifts.includes(shift));
+
+            // Qualification level filter (CQF Level 5 / 6)
+            const matchesQual = hasQualification(u, selectedQualification);
+
+            // Cost calculation & budget filter
+            const bac2Result = calculateBac2Tuition(u, selectedGrade);
+            const effectiveFee = bac2Result.adjustedAmount ?? u.default_tuition_per_year;
+
+            const matchesBudget =
+                selectedBudget === "ALL" ||
+                (selectedBudget === "UNDER_600"
+                    ? effectiveFee != null && effectiveFee < 600
                     : selectedBudget === "600_TO_1200"
-                    ? (tuition != null && tuition >= 600 && tuition <= 1200)
-                    : (tuition != null && tuition > 1200)
-            );
+                      ? effectiveFee != null && effectiveFee >= 600 && effectiveFee <= 1200
+                      : effectiveFee != null && effectiveFee > 1200);
 
-            const matchesScholarships = !onlyScholarships || Boolean(u.has_scholarships);
+            const matchesScholarships =
+                !onlyScholarships || Boolean(u.has_scholarships) || bac2Result.hasWaiver;
             const matchesDormitory = !onlyDormitory || Boolean(u.has_dormitory);
             const matchesAccredited = !onlyAccredited || Boolean(u.moeys_accredited);
 
@@ -63,6 +126,9 @@ export function useExploreFilters(universities: UniversitySummary[]) {
                 matchesType &&
                 matchesMinistry &&
                 matchesProvince &&
+                matchesKhan &&
+                matchesShifts &&
+                matchesQual &&
                 matchesBudget &&
                 matchesScholarships &&
                 matchesDormitory &&
@@ -72,13 +138,25 @@ export function useExploreFilters(universities: UniversitySummary[]) {
 
         return [...items].sort((a, b) => {
             if (sort === "tuition-asc") {
-                const tA = a.default_tuition_per_year ?? 999999;
-                const tB = b.default_tuition_per_year ?? 999999;
+                const tA =
+                    calculateBac2Tuition(a, selectedGrade).adjustedAmount ??
+                    a.default_tuition_per_year ??
+                    999999;
+                const tB =
+                    calculateBac2Tuition(b, selectedGrade).adjustedAmount ??
+                    b.default_tuition_per_year ??
+                    999999;
                 return tA - tB;
             }
             if (sort === "tuition-desc") {
-                const tA = a.default_tuition_per_year ?? 0;
-                const tB = b.default_tuition_per_year ?? 0;
+                const tA =
+                    calculateBac2Tuition(a, selectedGrade).adjustedAmount ??
+                    a.default_tuition_per_year ??
+                    0;
+                const tB =
+                    calculateBac2Tuition(b, selectedGrade).adjustedAmount ??
+                    b.default_tuition_per_year ??
+                    0;
                 return tB - tA;
             }
             if (sort === "established-desc") {
@@ -97,9 +175,13 @@ export function useExploreFilters(universities: UniversitySummary[]) {
         universities,
         lang,
         query,
+        selectedGrade,
         selectedType,
         selectedMinistry,
         selectedProvince,
+        selectedKhan,
+        selectedShifts,
+        selectedQualification,
         selectedBudget,
         onlyScholarships,
         onlyDormitory,
@@ -117,9 +199,13 @@ export function useExploreFilters(universities: UniversitySummary[]) {
 
     const handleResetFilters = () => {
         setQuery("");
+        setSelectedGrade("ALL");
         setSelectedType("ALL");
         setSelectedMinistry("ALL");
         setSelectedProvince("ALL");
+        setSelectedKhan("ALL");
+        setSelectedShifts([]);
+        setSelectedQualification("ALL");
         setSelectedBudget("ALL");
         setOnlyScholarships(false);
         setOnlyDormitory(false);
@@ -130,9 +216,13 @@ export function useExploreFilters(universities: UniversitySummary[]) {
 
     const hasActiveFilters =
         Boolean(query) ||
+        selectedGrade !== "ALL" ||
         selectedType !== "ALL" ||
         selectedMinistry !== "ALL" ||
         selectedProvince !== "ALL" ||
+        selectedKhan !== "ALL" ||
+        selectedShifts.length > 0 ||
+        selectedQualification !== "ALL" ||
         selectedBudget !== "ALL" ||
         onlyScholarships ||
         onlyDormitory ||
@@ -141,12 +231,21 @@ export function useExploreFilters(universities: UniversitySummary[]) {
     return {
         query,
         setQuery,
+        selectedGrade,
+        setSelectedGrade,
         selectedType,
         setSelectedType,
         selectedMinistry,
         setSelectedMinistry,
         selectedProvince,
         setSelectedProvince,
+        selectedKhan,
+        setSelectedKhan,
+        selectedShifts,
+        setSelectedShifts,
+        toggleShift,
+        selectedQualification,
+        setSelectedQualification,
         selectedBudget,
         setSelectedBudget,
         onlyScholarships,
@@ -160,6 +259,7 @@ export function useExploreFilters(universities: UniversitySummary[]) {
         currentPage,
         setCurrentPage,
         provinces,
+        khans,
         publicCount,
         privateCount,
         filtered,

@@ -59,7 +59,12 @@ export default function ExploreUniversitiesPage() {
                 <>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                         {filter.paginated.map(university => (
-                            <UniversityCard key={university.id} university={university} variant="featured" />
+                            <UniversityCard
+                                key={university.id}
+                                university={university}
+                                variant="featured"
+                                selectedGrade={filter.selectedGrade}
+                            />
                         ))}
                     </div>
 

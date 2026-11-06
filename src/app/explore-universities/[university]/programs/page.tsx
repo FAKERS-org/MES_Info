@@ -97,27 +97,26 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                     </div>
                 }
             >
-                {tree.length > 0 ? (
-                    <div className="space-y-6">
-                        <ProgramsExplorer groups={programGroups(id, tree)} lang={lang} />
-                        {unassignedPrograms.length > 0 && (
-                            <div className="space-y-3 pt-4 border-t border-border">
-                                <h2 className="text-lg font-bold font-khmer text-foreground">
-                                    {lang === "kh"
-                                        ? "កម្មវិធីសិក្សាផ្ទាល់កម្រិតសាកលវិទ្យាល័យ"
-                                        : "University-Wide Degree Programs"}
-                                </h2>
-                                <ProgramsList
-                                    programs={unassignedPrograms}
-                                    lang={lang}
-                                    university={displayDetail}
-                                />
-                            </div>
-                        )}
+                <div className="space-y-6">
+                    <div>
+                        <h2 className="text-xl font-bold font-khmer text-foreground">
+                            {lang === "kh"
+                                ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រ (Academic Program Offerings)"
+                                : "Degree Program Offerings"}
+                        </h2>
+                        <p className="text-xs text-muted-foreground font-khmer mt-1">
+                            {lang === "kh"
+                                ? "ស្វែងរក និងត្រងតាមកម្រិតសញ្ញាបត្រ វេនសិក្សា និងតម្លៃសិក្សាប្រចាំឆ្នាំ"
+                                : "Filter by degree level, delivery shifts, and annual tuition."}
+                        </p>
                     </div>
-                ) : (
-                    <ProgramsList programs={displayDetail.programs ?? []} lang={lang} university={displayDetail} />
-                )}
+
+                    <ProgramsList
+                        programs={displayDetail.programs ?? []}
+                        lang={lang}
+                        university={displayDetail}
+                    />
+                </div>
             </SectionLayout>
         </div>
     );

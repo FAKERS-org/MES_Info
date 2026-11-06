@@ -1,5 +1,6 @@
 "use client";
 
+import { MVP_FALLBACK_UNIVERSITIES } from "@/data/mvp-universities";
 import apiClient from "@/lib/api/client";
 import type { components } from "@/lib/api/schema";
 import { useQuery } from "@tanstack/react-query";
@@ -17,8 +18,15 @@ type UniversitiesContextType = {
 const UniversitiesContext = createContext<UniversitiesContextType | undefined>(undefined);
 
 async function fetchUniversities(): Promise<UniversitySummary[]> {
-    const response = await apiClient.get<{ items: UniversitySummary[] }>("/public/universities/?limit=100");
-    return response.data.items;
+    try {
+        const response = await apiClient.get<{ items: UniversitySummary[] }>("/public/universities/?limit=100");
+        if (response.data?.items?.length) {
+            return response.data.items;
+        }
+    } catch {
+        // Fallback to MVP initial universities when backend is offline
+    }
+    return MVP_FALLBACK_UNIVERSITIES;
 }
 
 export function UniversitiesProvider({ children }: { children: React.ReactNode }) {

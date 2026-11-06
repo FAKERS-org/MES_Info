@@ -58,6 +58,20 @@ export default async function UniversityPage({ params, searchParams }: Universit
     const description = apiDescription(activeDetail, lang);
     const programsCount = activeDetail.programs?.length ?? 0;
 
+    const meta = (activeDetail.metadata_json as Record<string, unknown> | null | undefined) ?? {};
+    const bac2Data = (meta.bac2_waivers || meta.bac2_discounts || meta.merit_waivers) as Record<string, unknown> | undefined;
+    const foundationData = (meta.foundation_year || meta.foundation_year_fee || meta.foundation_year_economics) as Record<string, unknown> | undefined;
+    const admissionData = (meta.admission_requirements || meta.special_admissions || meta.admissions_criteria) as Record<string, unknown> | undefined;
+
+    const reservedKeys = new Set([
+        "bac2_waivers", "bac2_discounts", "merit_waivers",
+        "foundation_year", "foundation_year_fee", "foundation_year_economics",
+        "admission_requirements", "special_admissions", "admissions_criteria",
+    ]);
+    const asideMeta = Object.fromEntries(
+        Object.entries(meta).filter(([k]) => !reservedKeys.has(k))
+    );
+
     return (
         <div className="space-y-6">
             <UniversityHero university={toHeadingData(activeDetail)} lang={lang} />
@@ -75,7 +89,7 @@ export default async function UniversityPage({ params, searchParams }: Universit
                             locationName={activeDetail.campus_name || activeDetail.province}
                         />
                         <MetadataRenderer
-                            data={activeDetail.metadata_json}
+                            data={asideMeta}
                             title="University Details & Admissions Contact"
                         />
                         <BrochureDownloadCard website={activeDetail.website} universityName={uniName} />
@@ -215,6 +229,28 @@ export default async function UniversityPage({ params, searchParams }: Universit
                         </div>
                     </CardContent>
                 </Card>
+
+                {/* ── MVP Distinct Rich Blocks (Rendered conditionally via MetadataRenderer) ── */}
+                {bac2Data && (
+                    <MetadataRenderer
+                        data={bac2Data}
+                        title={lang === "kh" ? "ការបញ្ចុះតម្លៃ និងអាហារូបករណ៍និទ្ទេសបាក់ឌុប (Bac II Merit Discounts)" : "Bac II Merit Discounts"}
+                    />
+                )}
+
+                {foundationData && (
+                    <MetadataRenderer
+                        data={foundationData}
+                        title={lang === "kh" ? "ថ្លៃសិក្សា និងព័ត៌មានឆ្នាំសិក្សាមូលដ្ឋាន (Foundation Year Economics)" : "Foundation Year (Year 1) Economics"}
+                    />
+                )}
+
+                {admissionData && (
+                    <MetadataRenderer
+                        data={admissionData}
+                        title={lang === "kh" ? "លក្ខខណ្ឌចូលរៀនពិសេស (Special Admissions Criteria)" : "Special Admissions Criteria"}
+                    />
+                )}
 
                 {/* Quick Pathways Hub */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
