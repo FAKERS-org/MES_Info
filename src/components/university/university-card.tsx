@@ -298,12 +298,9 @@ export function UniversityCard({
                         <Button
                             asChild
                             variant="secondary"
-                            className="h-12 flex-1 rounded-2xl bg-sky-50 dark:bg-sky-950/30 p-0 font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-950/50"
+                            className="h-11 flex-1 rounded-2xl bg-sky-50 dark:bg-sky-950/30 font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-950/50"
                         >
-                            <Link
-                                href={href}
-                                className="flex h-full w-full items-center justify-center"
-                            >
+                            <Link href={href}>
                                 {t("explore.viewUniversity")}
                             </Link>
                         </Button>
@@ -311,12 +308,9 @@ export function UniversityCard({
                             asChild
                             variant="outline"
                             size="icon"
-                            className="h-11 w-11 shrink-0 rounded-2xl border-border p-0 text-muted-foreground"
+                            className="h-11 w-11 shrink-0 rounded-2xl border-border text-muted-foreground"
                         >
-                            <Link
-                                href={href}
-                                className="flex h-full w-full items-center justify-center"
-                            >
+                            <Link href={href} aria-label={t("explore.viewUniversity")}>
                                 <ArrowUpRight className="h-4 w-4" />
                             </Link>
                         </Button>
