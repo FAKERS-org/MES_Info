@@ -20,6 +20,7 @@ import {
     STUDY_SHIFT_LABELS,
     type StudyShift,
 } from "@/lib/language";
+import { getShiftBadgeConfig } from "@/lib/shift-styles";
 import { universityHref } from "@/lib/unit-routes";
 import { cn } from "@/lib/utils";
 import {
@@ -252,14 +253,20 @@ export function UniversityCard({
                 {shifts.length > 0 && (
                     <div className="flex flex-wrap items-center gap-1 mt-2.5">
                         {shifts.map(s => {
-                            const info = STUDY_SHIFT_LABELS[s as StudyShift];
+                            const upperKey = s.toUpperCase() as StudyShift;
+                            const info = STUDY_SHIFT_LABELS[upperKey];
+                            const cfg = getShiftBadgeConfig(s);
+                            const Icon = cfg.icon;
                             return (
                                 <Badge
                                     key={s}
                                     variant="outline"
-                                    className="text-[10px] px-1.5 py-0 bg-muted/40 font-normal text-muted-foreground border-border/60"
+                                    className={cn(
+                                        "text-[10px] px-1.5 py-0 font-normal border",
+                                        cfg.badge,
+                                    )}
                                 >
-                                    <Clock className="size-2.5 mr-0.5 text-muted-foreground/70" />
+                                    <Icon className={cn("size-2.5 mr-1 shrink-0", cfg.iconColor)} />
                                     {isKhmer ? info?.kh ?? s : info?.en ?? s}
                                 </Badge>
                             );

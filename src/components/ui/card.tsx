@@ -55,7 +55,7 @@ interface CardHeaderProps {
 
 function CardHeader({ children, className, actions }: CardHeaderProps) {
   return (
-    <div className={cn("flex items-center justify-between px-5 pb-3", className)}>
+    <div className={cn("flex items-center justify-between pb-3", className)}>
       {children}
       {actions}
     </div>
@@ -77,7 +77,7 @@ interface CardContentProps {
 }
 
 function CardContent({ children, className }: CardContentProps) {
-  return <div className={cn("px-5 pt-2", className)}>{children}</div>;
+  return <div className={cn("pt-2", className)}>{children}</div>;
 }
 
 interface CardFooterProps {
@@ -86,7 +86,7 @@ interface CardFooterProps {
 }
 
 function CardFooter({ children, className }: CardFooterProps) {
-  return <div className={cn("flex items-center justify-between px-5 pt-3", className)}>{children}</div>;
+  return <div className={cn("flex items-center justify-between pt-3", className)}>{children}</div>;
 }
 
 export { CardHeader, CardTitle, CardContent, CardFooter };

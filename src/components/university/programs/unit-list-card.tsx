@@ -5,7 +5,9 @@ import type { NamespacedText } from "@/data/universities";
 import type { components } from "@/lib/api/schema";
 import type { Lang, StudyShift } from "@/lib/language";
 import { apiName, getDegreeLabel, localize, STUDY_SHIFT_LABELS } from "@/lib/language";
+import { getShiftBadgeConfig } from "@/lib/shift-styles";
 import type { UnitRow } from "@/lib/unit-routes";
+import { cn } from "@/lib/utils";
 import { ChevronRight, Clock, FolderTree, GraduationCap, Wallet } from "lucide-react";
 import Link from "next/link";
 
@@ -169,13 +171,18 @@ export function UnitListCard({
                                                 {program.shifts.map(shift => {
                                                     const s = shift as StudyShift;
                                                     const info = STUDY_SHIFT_LABELS[s];
+                                                    const cfg = getShiftBadgeConfig(shift);
+                                                    const Icon = cfg.icon;
                                                     return (
                                                         <Badge
                                                             key={shift}
                                                             variant="outline"
-                                                            className="bg-sky-50/80 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 text-[11px] px-2 py-0.5 font-normal font-khmer flex items-center gap-1"
+                                                            className={cn(
+                                                                "text-[11px] px-2 py-0.5 font-normal font-khmer flex items-center gap-1 border",
+                                                                cfg.badge,
+                                                            )}
                                                         >
-                                                            <Clock className="w-3 h-3 text-sky-500 shrink-0" />
+                                                            <Icon className={cn("w-3 h-3 shrink-0", cfg.iconColor)} />
                                                             <span>{isKhmer ? info?.kh ?? shift : info?.en ?? shift}</span>
                                                         </Badge>
                                                     );

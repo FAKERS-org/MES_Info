@@ -11,7 +11,9 @@ import {
     type Lang,
     type StudyShift,
 } from "@/lib/language";
+import { getShiftBadgeConfig } from "@/lib/shift-styles";
 import { resolveProgramTuition } from "@/lib/tuition";
+import { cn } from "@/lib/utils";
 import {
     Building2,
     ChevronDown,
@@ -115,14 +117,19 @@ export function ProgramRowItem({
                             {program.shifts.map(shift => {
                                 const s = shift as StudyShift;
                                 const info = STUDY_SHIFT_LABELS[s];
+                                const cfg = getShiftBadgeConfig(shift);
+                                const Icon = cfg.icon;
                                 return (
                                     <Badge
                                         key={shift}
                                         variant="outline"
-                                        className="bg-sky-50/80 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800 text-[11px] px-2 py-0.5 font-normal font-khmer flex items-center gap-1"
+                                        className={cn(
+                                            "text-[11px] px-2 py-0.5 font-normal font-khmer flex items-center gap-1 border",
+                                            cfg.badge,
+                                        )}
                                         title={info ? `${info.en}: ${info.time}` : shift}
                                     >
-                                        <Clock className="w-3 h-3 text-sky-500 shrink-0" />
+                                        <Icon className={cn("w-3 h-3 shrink-0", cfg.iconColor)} />
                                         <span>{isKhmer ? info?.kh ?? shift : info?.en ?? shift}</span>
                                         {info?.time && (
                                             <span className="opacity-75 text-[10px] hidden sm:inline font-mono">
@@ -212,7 +219,7 @@ export function ProgramRowItem({
                                 <span className="text-foreground font-mono text-xs">
                                     Est. ${(program as any).estimated_annual_min_usd}
                                     {(program as any).estimated_annual_max_usd &&
-                                    (program as any).estimated_annual_max_usd !== (program as any).estimated_annual_min_usd
+                                        (program as any).estimated_annual_max_usd !== (program as any).estimated_annual_min_usd
                                         ? ` - $${(program as any).estimated_annual_max_usd}`
                                         : ""}
                                     /yr
@@ -244,11 +251,10 @@ export function ProgramRowItem({
                                             </div>
                                         </div>
                                         <span
-                                            className={`font-mono font-semibold ${
-                                                isDiscount
+                                            className={`font-mono font-semibold ${isDiscount
                                                     ? "text-rose-600 dark:text-rose-400"
                                                     : "text-foreground"
-                                            }`}
+                                                }`}
                                         >
                                             {isDiscount ? "" : "+"}
                                             {item.amount} {item.currency || "USD"}

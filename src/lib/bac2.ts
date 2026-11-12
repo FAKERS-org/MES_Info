@@ -28,11 +28,11 @@ export const PHNOM_PENH_KHANS = [
 
 export type DeliveryShift = "Morning" | "Afternoon" | "Evening" | "Weekend";
 
-export const DELIVERY_SHIFTS: { id: DeliveryShift; labelEn: string; labelKh: string; icon: string }[] = [
-    { id: "Morning", labelEn: "Morning", labelKh: "ព្រឹក", icon: "☀️" },
-    { id: "Afternoon", labelEn: "Afternoon", labelKh: "រសៀល", icon: "🌤️" },
-    { id: "Evening", labelEn: "Evening", labelKh: "យប់", icon: "🌙" },
-    { id: "Weekend", labelEn: "Weekend", labelKh: "ចុងសប្តាហ៍", icon: "📅" },
+export const DELIVERY_SHIFTS: { id: DeliveryShift; labelEn: string; labelKh: string; icon?: string }[] = [
+    { id: "Morning", labelEn: "Morning", labelKh: "ព្រឹក" },
+    { id: "Afternoon", labelEn: "Afternoon", labelKh: "រសៀល" },
+    { id: "Evening", labelEn: "Evening", labelKh: "យប់" },
+    { id: "Weekend", labelEn: "Weekend", labelKh: "ចុងសប្តាហ៍" },
 ];
 
 /**

@@ -13,6 +13,7 @@ import {
 import { DELIVERY_SHIFTS, type Bac2Grade, type DeliveryShift } from "@/lib/bac2";
 import { useLanguage } from "@/lib/i18n";
 import { MINISTRIES, MINISTRY_LABELS } from "@/lib/language";
+import { SHIFT_FILTER_CONFIG } from "@/lib/shift-styles";
 import { cn } from "@/lib/utils";
 import {
     Award,
@@ -339,24 +340,31 @@ export function ExploreFilterBar({ filter }: ExploreFilterBarProps) {
                     {/* Delivery Shifts */}
                     <div className="flex flex-wrap items-center gap-2">
                         <span className="text-2xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1 mr-1">
-                            <Clock className="size-3" />
+                            <Clock className="size-3 text-muted-foreground/80" />
                             {isKhmer ? "វេនសិក្សា៖" : "Shifts:"}
                         </span>
                         {DELIVERY_SHIFTS.map(s => {
                             const isSelected = selectedShifts.includes(s.id);
+                            const cfg = SHIFT_FILTER_CONFIG[s.id];
+                            const Icon = cfg.icon;
                             return (
                                 <button
                                     key={s.id}
                                     type="button"
                                     onClick={() => toggleShift(s.id)}
                                     className={cn(
-                                        "inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer border",
+                                        "group inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer border",
                                         isSelected
-                                            ? "bg-sky-600 text-white border-sky-600 shadow-2xs"
-                                            : "bg-card text-muted-foreground border-border hover:bg-muted/70",
+                                            ? cfg.active
+                                            : cn("bg-card text-foreground/80 border-border shadow-2xs", cfg.hover),
                                     )}
                                 >
-                                    <span>{s.icon}</span>
+                                    <Icon
+                                        className={cn(
+                                            "size-3.5 shrink-0 transition-transform group-hover:scale-110",
+                                            isSelected ? "text-white" : cfg.iconColor,
+                                        )}
+                                    />
                                     <span>{isKhmer ? s.labelKh : s.labelEn}</span>
                                 </button>
                             );

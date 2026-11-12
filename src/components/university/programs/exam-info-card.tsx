@@ -9,8 +9,10 @@ import { Info, Languages, ShieldCheck, TrendingUp, Users } from "lucide-react";
 
 export default function ExamInfoCard() {
     return (
-        <Card className="w-full rounded-2xl border border-border shadow-xs bg-card overflow-hidden">
-            <div className="p-5 flex flex-col gap-5">
+        <Card
+            padding="none"
+            className="w-full rounded-2xl border border-border shadow-xs bg-card overflow-hidden p-4 sm:p-5 flex flex-col gap-5"
+        >
                     {/* --- Header --- */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
@@ -102,7 +104,6 @@ export default function ExamInfoCard() {
                             </div>
                         </div>
                     </div>
-                </div>
             </Card>
     );
 }
