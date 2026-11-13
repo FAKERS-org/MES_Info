@@ -13,7 +13,7 @@ import { API_CONFIG } from "@/config";
 export async function apiFetch<T>(path: string): Promise<T | null> {
     const res = await fetch(`${API_CONFIG.baseUrl}${path}`, {
         headers: { Accept: "application/json" },
-        next: { revalidate: 60 },
+        cache: "no-store",
     });
     if (res.status === 404 || res.status === 403) return null;
     if (!res.ok) throw new Error(`API ${path} failed: ${res.status}`);

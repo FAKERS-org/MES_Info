@@ -1,5 +1,6 @@
 "use client";
 
+import MetadataRenderer from "@/components/shared/metadata-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { UniversityDetail, UniversityProgram } from "@/lib/api/universities";
@@ -55,6 +56,9 @@ export function ProgramRowItem({
         : [];
     const cqfLevel = (program as any).cqf_level;
     const languageTrack = (program as any).language_track;
+    const meta = ((program as any).metadata_json as Record<string, unknown> | undefined) ?? {};
+    const hasMeta = Object.keys(meta).length > 0;
+    const hasDetails = feeSchedule.length > 0 || hasMeta;
 
     return (
         <div>
@@ -188,17 +192,19 @@ export function ProgramRowItem({
                         </span>
                     )}
 
-                    {feeSchedule.length > 0 && (
+                    {hasDetails && (
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={onToggleExpand}
                             className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer w-fit mt-1"
                         >
-                            <span>{isKhmer ? "កម្រៃលម្អិត" : "Itemized Fees"}</span>
-                            <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-full font-mono">
-                                {feeSchedule.length}
-                            </span>
+                            <span>{isKhmer ? "ព័ត៌មានលម្អិត" : "Details"}</span>
+                            {feeSchedule.length > 0 && (
+                                <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-full font-mono">
+                                    {feeSchedule.length}
+                                </span>
+                            )}
                             {isExpanded ? (
                                 <ChevronUp className="w-3.5 h-3.5" />
                             ) : (
@@ -209,61 +215,70 @@ export function ProgramRowItem({
                 </div>
             </div>
 
-            {/* Itemized Fee Breakdown Drawer */}
-            {isExpanded && feeSchedule.length > 0 && (
-                <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0">
-                    <div className="p-3.5 rounded-xl bg-muted/40 border border-border/60 space-y-2.5">
-                        <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground pb-1.5 border-b border-border/40">
-                            <span>{isKhmer ? "កម្រៃសិក្សានិងថ្លៃផ្សេងៗ (Line Items)" : "Fee Breakdown"}</span>
-                            {(program as any).estimated_annual_min_usd != null && (
-                                <span className="text-foreground font-mono text-xs">
-                                    Est. ${(program as any).estimated_annual_min_usd}
-                                    {(program as any).estimated_annual_max_usd &&
-                                        (program as any).estimated_annual_max_usd !== (program as any).estimated_annual_min_usd
-                                        ? ` - $${(program as any).estimated_annual_max_usd}`
-                                        : ""}
-                                    /yr
-                                </span>
-                            )}
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                            {feeSchedule.map((item, fIdx) => {
-                                const isDiscount = Number(item.amount) < 0 || String(item.tag).toUpperCase() === "DISCOUNT";
-                                return (
-                                    <div
-                                        key={fIdx}
-                                        className="flex items-center justify-between p-2 rounded-lg bg-background/80 border border-border/40"
-                                    >
-                                        <div className="space-y-0.5">
-                                            <span className="font-medium text-foreground">
-                                                {item.title || item.name}
-                                            </span>
-                                            <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                                                <span>{item.frequency || item.billing_metric || "YEARLY"}</span>
-                                                {item.mandatory_level && (
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="text-[9px] px-1 py-0 uppercase"
-                                                    >
-                                                        {item.mandatory_level}
-                                                    </Badge>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <span
-                                            className={`font-mono font-semibold ${isDiscount
-                                                    ? "text-rose-600 dark:text-rose-400"
-                                                    : "text-foreground"
-                                                }`}
+            {/* Details Drawer */}
+            {isExpanded && hasDetails && (
+                <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 space-y-3">
+                    {feeSchedule.length > 0 && (
+                        <div className="p-3.5 rounded-xl bg-muted/40 border border-border/60 space-y-2.5">
+                            <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground pb-1.5 border-b border-border/40">
+                                <span>{isKhmer ? "កម្រៃសិក្សានិងថ្លៃផ្សេងៗ (Line Items)" : "Fee Breakdown"}</span>
+                                {(program as any).estimated_annual_min_usd != null && (
+                                    <span className="text-foreground font-mono text-xs">
+                                        Est. ${(program as any).estimated_annual_min_usd}
+                                        {(program as any).estimated_annual_max_usd &&
+                                            (program as any).estimated_annual_max_usd !== (program as any).estimated_annual_min_usd
+                                            ? ` - $${(program as any).estimated_annual_max_usd}`
+                                            : ""}
+                                        /yr
+                                    </span>
+                                )}
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                {feeSchedule.map((item, fIdx) => {
+                                    const isDiscount = Number(item.amount) < 0 || String(item.tag).toUpperCase() === "DISCOUNT";
+                                    return (
+                                        <div
+                                            key={fIdx}
+                                            className="flex items-center justify-between p-2 rounded-lg bg-background/80 border border-border/40"
                                         >
-                                            {isDiscount ? "" : "+"}
-                                            {item.amount} {item.currency || "USD"}
-                                        </span>
-                                    </div>
-                                );
-                            })}
+                                            <div className="space-y-0.5">
+                                                <span className="font-medium text-foreground">
+                                                    {item.title || item.name}
+                                                </span>
+                                                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                                    <span>{item.frequency || item.billing_metric || "YEARLY"}</span>
+                                                    {item.mandatory_level && (
+                                                        <Badge
+                                                            variant="outline"
+                                                            className="text-[9px] px-1 py-0 uppercase"
+                                                        >
+                                                            {item.mandatory_level}
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <span
+                                                className={`font-mono font-semibold ${isDiscount
+                                                        ? "text-rose-600 dark:text-rose-400"
+                                                        : "text-foreground"
+                                                    }`}
+                                            >
+                                                {isDiscount ? "" : "+"}
+                                                {item.amount} {item.currency || "USD"}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
+
+                    {hasMeta && (
+                        <MetadataRenderer
+                            data={meta}
+                            title={isKhmer ? "ព័ត៌មានលម្អិតបន្ថែម" : "Additional Program Details"}
+                        />
+                    )}
                 </div>
             )}
         </div>

@@ -7,7 +7,6 @@ import SubUnitList from "@/components/unit/sub-unit-list";
 import UnitScholarships from "@/components/unit/unit-scholarships";
 import ProgramsList from "@/components/university/programs/programs-list";
 import { SectionLayout } from "@/components/shared/section-layout";
-import { getFacilitiesFor } from "@/data/universities";
 import { getUnitKindLabel } from "@/lib/language";
 import { resolveUnitPage } from "@/lib/resolve-unit-page";
 import { childRows } from "@/lib/unit-routes";
@@ -33,7 +32,7 @@ export default async function UnitPage({ params }: UnitPageProps) {
         lang,
     } = await resolveUnitPage(university, chain);
 
-    const displayFacilities = facilities.length > 0 ? facilities : getFacilitiesFor(universityId, unit.id);
+    const displayFacilities = facilities;
 
     return (
         <div>

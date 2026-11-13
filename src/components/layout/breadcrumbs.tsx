@@ -1,6 +1,5 @@
 "use client";
 
-import { getUniversity } from "@/data";
 import { useUniversities } from "@/hooks/use-universities";
 import apiClient from "@/lib/api/client";
 import { buildUnitTree, type PageUnitSummary, type UnitSummary, type UniversityDetail } from "@/lib/api/universities";
@@ -39,7 +38,6 @@ function useDefaultCrumbs(): Crumb[] {
 
     const isUniSection = safeSection === "explore-universities" && Boolean(param);
 
-    const staticUniversity = param ? getUniversity(param) : undefined;
     const uniFromList = param
         ? universities.find(
               u =>
@@ -56,7 +54,7 @@ function useDefaultCrumbs(): Crumb[] {
             const res = await apiClient.get<UniversityDetail>(`/public/universities/${encodeURIComponent(param!)}`);
             return res.data;
         },
-        enabled: Boolean(isUniSection && !uniFromList && !staticUniversity),
+        enabled: Boolean(isUniSection && !uniFromList),
     });
 
     const { data: units = [] } = useQuery({
@@ -90,8 +88,6 @@ function useDefaultCrumbs(): Crumb[] {
             paramLabel = apiName(uniFromList, lang);
         } else if (uniDetail) {
             paramLabel = apiName(uniDetail, lang);
-        } else if (staticUniversity) {
-            paramLabel = localize(staticUniversity.name, lang);
         } else if (param && isUuid(param)) {
             paramLabel = "...";
         }
@@ -113,7 +109,7 @@ function useDefaultCrumbs(): Crumb[] {
                 ];
 
                 if (unitIds.length > 0) {
-                    const tree = units.length > 0 ? buildUnitTree(units) : staticUniversity?.units ?? [];
+                    const tree = buildUnitTree(units);
                     const chain = walkUnitPath(tree, unitIds);
                     const base = `/${safeSection}/${param}/${subParam}`;
 

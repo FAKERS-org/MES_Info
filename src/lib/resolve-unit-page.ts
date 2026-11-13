@@ -1,6 +1,5 @@
 import type { UniversityHeadingData } from "@/components/unit/unit-heading";
 import type { CurriculumSection, Unit } from "@/data/universities";
-import { getChildren } from "@/data/universities";
 import {
     buildUnitTree,
     getUnitDetail,
@@ -55,7 +54,7 @@ export async function resolveUnitPage(universityId: string, pathIds: string[]): 
         root: chain[0],
         pathIds,
         faculty: chain.find(candidate => candidate.kind === "faculty"),
-        children: getChildren(unit),
+        children: unit.units ?? [],
         curriculum: unitDetail?.curriculum?.[0],
         curriculums: unitDetail?.curriculum ?? [],
         facilities: unitDetail?.facilities ?? [],
