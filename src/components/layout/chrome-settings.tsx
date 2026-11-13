@@ -13,8 +13,8 @@ import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const flagByLang: Record<string, string> = {
-  kh: "fi-kh",
-  en: "fi-gb",
+  kh: "fi-kh fis",
+  en: "fi-gb fis",
 };
 
 /**
@@ -36,7 +36,7 @@ export default function ChromeSettings({ className }: { className?: string }) {
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             aria-label={t("topbar.selectLanguage")}
           >
-            <span className={`fi ${flagByLang[lang]} size-5 rounded-full`} />
+            <span className={`fi ${flagByLang[lang]} !size-5 rounded-full`} />
             <span>{lang.toUpperCase()}</span>
             <ChevronDown className="size-4 text-muted-foreground" />
           </button>
@@ -47,11 +47,11 @@ export default function ChromeSettings({ className }: { className?: string }) {
             onValueChange={(value) => setLang(value === "en" ? "en" : "kh")}
           >
             <DropdownMenuRadioItem value="kh">
-              <span className={`fi ${flagByLang.kh} size-4 rounded-full`} />
+              <span className={`fi ${flagByLang.kh} !size-4 rounded-full`} />
               {t("lang.kh")}
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="en">
-              <span className={`fi ${flagByLang.en} size-4 rounded-full`} />
+              <span className={`fi ${flagByLang.en} !size-4 rounded-full`} />
               {t("lang.en")}
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>

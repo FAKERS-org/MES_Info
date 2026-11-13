@@ -98,7 +98,10 @@ export function ExploreFilterBar({ filter }: ExploreFilterBarProps) {
                                         ? "គណនាថ្លៃសិក្សាតាមនិទ្ទេសបាក់ឌុប (Bac II Calculator)"
                                         : "Bac II Calculator & Merit Waivers"}
                                 </h3>
-                                <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 text-[10px] px-1.5 py-0 font-medium">
+                                <Badge
+                                    variant="outline"
+                                    className="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 text-[10px] px-2 py-0.5 font-medium transition-colors cursor-default select-none"
+                                >
                                     MVP Live
                                 </Badge>
                             </div>
