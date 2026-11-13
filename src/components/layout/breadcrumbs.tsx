@@ -33,10 +33,6 @@ function useDefaultCrumbs(): Crumb[] {
     const { universities } = useUniversities();
     const segments = pathname.split("/").filter(Boolean);
 
-    if (segments.length === 0) {
-        return [{ label: t("nav.exploreUniversities") }];
-    }
-
     const [section, param, subParam] = segments;
     const safeSection = section ?? "";
     const unitIds = segments.slice(3);
@@ -57,7 +53,7 @@ function useDefaultCrumbs(): Crumb[] {
     const { data: uniDetail } = useQuery({
         queryKey: ["university-detail", param],
         queryFn: async () => {
-            const res = await apiClient.get<UniversityDetail>(`/public/universities/${encodeURIComponent(param)}`);
+            const res = await apiClient.get<UniversityDetail>(`/public/universities/${encodeURIComponent(param!)}`);
             return res.data;
         },
         enabled: Boolean(isUniSection && !uniFromList && !staticUniversity),
@@ -67,13 +63,17 @@ function useDefaultCrumbs(): Crumb[] {
         queryKey: ["university-units", param],
         queryFn: async () => {
             const res = await apiClient.get<PageUnitSummary | UnitSummary[]>(
-                `/public/universities/${encodeURIComponent(param)}/units?limit=100`,
+                `/public/universities/${encodeURIComponent(param!)}/units?limit=100`,
             );
             const data = res.data;
             return Array.isArray(data) ? data : (data.items ?? []);
         },
         enabled: Boolean(isUniSection && unitIds.length > 0),
     });
+
+    if (segments.length === 0) {
+        return [{ label: t("nav.exploreUniversities") }];
+    }
 
     const sectionLabels: Record<string, string> = {
         "explore-universities": t("nav.exploreUniversities"),

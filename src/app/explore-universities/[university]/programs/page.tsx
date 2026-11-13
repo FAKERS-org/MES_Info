@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { SectionLayout } from "@/components/shared/section-layout";
 import AdmissionsContactCard from "@/components/university/contact-card";
 import CampusSwitcher from "@/components/university/campus-switcher";
@@ -97,26 +98,28 @@ export default async function ProgramsPage({ params, searchParams }: ProgramsPag
                     </div>
                 }
             >
-                <div className="space-y-6">
-                    <div>
-                        <h2 className="text-xl font-bold font-khmer text-foreground">
-                            {lang === "kh"
-                                ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រ (Academic Program Offerings)"
-                                : "Degree Program Offerings"}
-                        </h2>
-                        <p className="text-xs text-muted-foreground font-khmer mt-1">
-                            {lang === "kh"
-                                ? "ស្វែងរក និងត្រងតាមកម្រិតសញ្ញាបត្រ វេនសិក្សា និងតម្លៃសិក្សាប្រចាំឆ្នាំ"
-                                : "Filter by degree level, delivery shifts, and annual tuition."}
-                        </p>
-                    </div>
+                <Card className="p-6 border border-border shadow-sm rounded-2xl bg-card">
+                    <div className="space-y-6">
+                        <div>
+                            <h2 className="text-xl font-bold font-khmer text-foreground">
+                                {lang === "kh"
+                                    ? "កម្មវិធីសិក្សា និងសញ្ញាបត្រ (Academic Program Offerings)"
+                                    : "Degree Program Offerings"}
+                            </h2>
+                            <p className="text-xs text-muted-foreground font-khmer mt-1">
+                                {lang === "kh"
+                                    ? "ស្វែងរក និងត្រងតាមកម្រិតសញ្ញាបត្រ វេនសិក្សា និងតម្លៃសិក្សាប្រចាំឆ្នាំ"
+                                    : "Filter by degree level, delivery shifts, and annual tuition."}
+                            </p>
+                        </div>
 
-                    <ProgramsList
-                        programs={displayDetail.programs ?? []}
-                        lang={lang}
-                        university={displayDetail}
-                    />
-                </div>
+                        <ProgramsList
+                            programs={displayDetail.programs ?? []}
+                            lang={lang}
+                            university={displayDetail}
+                        />
+                    </div>
+                </Card>
             </SectionLayout>
         </div>
     );

@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import AcademicCurriculum from "@/components/unit/academic-curriculum";
 import MetadataRenderer from "@/components/shared/metadata-renderer";
 import UnitHeading from "@/components/unit/unit-heading";
@@ -42,14 +43,16 @@ export default async function UnitPage({ params }: UnitPageProps) {
 
             {programs && programs.length > 0 && (
                 <SectionLayout background="muted">
-                    <div className="space-y-3">
-                        <h2 className="text-xl font-bold font-khmer text-foreground">
-                            {lang === "kh"
-                                ? `សញ្ញាបត្រ និងកម្មវិធីសិក្សាក្នុង${getUnitKindLabel(unit.kind, "kh")}នេះ`
-                                : `Degrees & Majors in this ${getUnitKindLabel(unit.kind, "en")}`}
-                        </h2>
-                        <ProgramsList programs={programs} lang={lang} university={universityDetail} />
-                    </div>
+                    <Card className="p-6 border border-border shadow-sm rounded-2xl bg-card">
+                        <div className="space-y-3">
+                            <h2 className="text-xl font-bold font-khmer text-foreground">
+                                {lang === "kh"
+                                    ? `សញ្ញាបត្រ និងកម្មវិធីសិក្សាក្នុង${getUnitKindLabel(unit.kind, "kh")}នេះ`
+                                    : `Degrees & Majors in this ${getUnitKindLabel(unit.kind, "en")}`}
+                            </h2>
+                            <ProgramsList programs={programs} lang={lang} university={universityDetail} />
+                        </div>
+                    </Card>
                 </SectionLayout>
             )}
 
