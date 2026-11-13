@@ -52,11 +52,6 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
     const [selectedFaculty, setSelectedFaculty] = useState<string>("ALL");
     const [selectedTuition, setSelectedTuition] = useState<TuitionRangeFilter>("ALL");
     const [sortBy, setSortBy] = useState<SortOption>("DEFAULT");
-    const [expandedFees, setExpandedFees] = useState<Record<string | number, boolean>>({});
-
-    const toggleFeeDetails = (id: string | number) => {
-        setExpandedFees(prev => ({ ...prev, [id]: !prev[id] }));
-    };
 
     const availableDegrees = useMemo(() => {
         return Array.from(new Set(programs.map(p => p.degree_level).filter(Boolean)));
@@ -314,8 +309,6 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                                     program={program}
                                     university={university}
                                     lang={lang}
-                                    isExpanded={Boolean(expandedFees[program.id])}
-                                    onToggleExpand={() => toggleFeeDetails(program.id)}
                                 />
                                 {index < filteredAndSorted.length - 1 && <Separator className="bg-muted" />}
                             </div>
