@@ -34,7 +34,7 @@ export function ProgramRowItem({
 
     return (
         <div className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-muted/30 transition-colors">
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2">
                     <h3 className="text-base font-semibold text-foreground font-khmer">
                         {apiName(program, lang)}
@@ -42,13 +42,16 @@ export function ProgramRowItem({
                     <Badge className="bg-primary/10 text-primary border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer">
                         {getDegreeLabel(program.degree_level, lang)}
                     </Badge>
-                    {program.faculty && (
-                        <Badge className="bg-muted text-muted-foreground border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer flex items-center gap-1">
+                </div>
+
+                {program.faculty && (
+                    <div>
+                        <Badge className="bg-muted text-muted-foreground border-0 px-2 py-0.5 rounded-md text-xs font-medium font-khmer inline-flex items-center gap-1">
                             <Building2 className="h-3 w-3" />
                             {program.faculty}
                         </Badge>
-                    )}
-                </div>
+                    </div>
+                )}
 
                 {program.shifts && program.shifts.length > 0 && (
                     <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
