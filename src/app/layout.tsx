@@ -1,6 +1,7 @@
 import { langAttributes } from "@/lib/language";
 import { readLang } from "@/lib/language.server";
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Kantumruy_Pro, Lexend } from "next/font/google";
 import type { CSSProperties } from "react";
 import AppShell from "./app-shell";
@@ -43,7 +44,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             suppressHydrationWarning
         >
             <body>
-                <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+                <Script
+                    id="theme-init"
+                    strategy="beforeInteractive"
+                    dangerouslySetInnerHTML={{ __html: themeScript }}
+                />
                 <AppShell initialLang={lang}>{children}</AppShell>
             </body>
         </html>
