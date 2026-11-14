@@ -30,10 +30,27 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
         ? `$${detail.default_tuition_per_year}/yr`
         : undefined;
 
+    const rawShifts: string[] = Array.from(
+        new Set(
+            (detail.programs ?? [])
+                .flatMap(p => p.shifts || [])
+                .concat(
+                    Array.isArray(meta?.shifts)
+                        ? (meta.shifts as string[])
+                        : Array.isArray(meta?.delivery_shifts)
+                          ? (meta.delivery_shifts as string[])
+                          : []
+                )
+                .filter((s): s is string => typeof s === "string" && s.trim().length > 0)
+        )
+    );
+
     const stats = {
-        students: undefined,
+        students: typeof meta?.total_students === "string" ? meta.total_students : undefined,
         tuition: tuitionStat,
         established: detail.established_year ? `Est. ${detail.established_year}` : undefined,
+        programsCount: detail.programs?.length ?? 0,
+        shifts: rawShifts.length > 0 ? rawShifts : undefined,
     };
     return {
         id: detail.public_id,
@@ -69,7 +86,10 @@ export function toHeadingData(detail: UniversityDetail): UniversityHeadingData {
                       telegram: contactTelegram,
                   }
                 : undefined,
-        stats: stats.tuition || stats.established ? stats : undefined,
+        stats:
+            stats.tuition || stats.established || (stats.programsCount && stats.programsCount > 0) || stats.shifts
+                ? stats
+                : undefined,
     };
 }
 

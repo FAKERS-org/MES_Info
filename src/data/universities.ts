@@ -72,6 +72,8 @@ export interface UniversityStats {
     students?: string;
     tuition?: string;
     established?: string;
+    programsCount?: number;
+    shifts?: string[];
 }
 
 // ─── The recursive Unit ─────────────────────────────────────────────────────

@@ -9,18 +9,21 @@ import type {
     Unit,
 } from "@/data/universities";
 import type { Lang } from "@/lib/language";
-import { getMinistryLabel, localize } from "@/lib/language";
+import { getMinistryLabel, getStudyShiftLabel, localize } from "@/lib/language";
 import {
     Award,
     BadgeCheck,
     Bookmark,
+    BookOpen,
     Building2,
     CalendarDays,
     CheckCircle2,
+    Clock,
     ExternalLink,
     Globe,
     Home,
     Leaf,
+    Mail,
     MapPin,
     MessageSquare,
     Phone,
@@ -71,12 +74,80 @@ export default function UnitHeading({ university, unit, faculty, lang }: UnitHea
     const name = unit?.name ?? university.name;
     const code = (unit?.id ?? university.code ?? university.id).toUpperCase();
     const logo = unit?.logo ?? university.logo;
+    const phone = university.contact?.phone;
+    const email = university.contact?.email;
+    const contactValue = phone || email;
+    const contactLabel = phone ? (
+        <LocalizedText translationKey="contact.phone" />
+    ) : (
+        lang === "kh" ? "អ៊ីមែលផ្លូវការ" : "Official Email"
+    );
+
+    const programsCount = unit?.programs?.length ?? university.stats?.programsCount;
+    const programsValue =
+        programsCount && programsCount > 0
+            ? `${programsCount} ${lang === "kh" ? "ជំនាញសិក្សា" : "Programs"}`
+            : undefined;
+
+    const rawShifts = university.stats?.shifts;
+    const formattedShifts =
+        rawShifts && rawShifts.length > 0
+            ? rawShifts
+                  .map(s => getStudyShiftLabel(s.toUpperCase(), lang)?.label ?? s)
+                  .join(", ")
+            : undefined;
+
+    const fourthSlot = formattedShifts
+        ? {
+              key: "shifts",
+              icon: Clock,
+              label: <LocalizedText translationKey="university.filterShift" />,
+              value: formattedShifts,
+          }
+        : email && contactValue !== email
+          ? {
+                key: "email",
+                icon: Mail,
+                label: lang === "kh" ? "អ៊ីមែលផ្លូវការ" : "Official Email",
+                value: email,
+            }
+          : university.stats?.tuition
+            ? {
+                  key: "tuition",
+                  icon: Wallet,
+                  label: <LocalizedText translationKey="miscellaneous.tuitionFee" />,
+                  value: university.stats.tuition,
+              }
+            : university.stats?.students
+              ? {
+                    key: "students",
+                    icon: Users,
+                    label: <LocalizedText translationKey="miscellaneous.students.plural" />,
+                    value: university.stats.students,
+                }
+              : null;
+
     const stats = [
-        { key: "location", icon: MapPin, label: <LocalizedText translationKey="miscellaneous.location" />, value: localize(university.address, lang) },
-        { key: "students", icon: Users, label: <LocalizedText translationKey="miscellaneous.students.plural" />, value: university.stats?.students },
-        { key: "tuition", icon: Wallet, label: <LocalizedText translationKey="miscellaneous.tuitionFee" />, value: university.stats?.tuition },
-        { key: "phone", icon: Phone, label: <LocalizedText translationKey="contact.phone" />, value: university.contact?.phone },
-    ].filter(stat => Boolean(stat.value));
+        {
+            key: "location",
+            icon: MapPin,
+            label: <LocalizedText translationKey="miscellaneous.location" />,
+            value: localize(university.address, lang),
+        },
+        {
+            key: "contact",
+            icon: phone ? Phone : Mail,
+            label: contactLabel,
+            value: contactValue,
+        },
+        {
+            key: "programs",
+            icon: BookOpen,
+            label: <LocalizedText translationKey="miscellaneous.programs.plural" />,
+            value: programsValue,
+        },
+        fourthSlot,
+    ].filter((stat): stat is NonNullable<typeof stat> => Boolean(stat?.value));
 
     const telegramUser = university.contact?.telegram?.replace(/^@/, "").trim();
     const ctaUrl = telegramUser
