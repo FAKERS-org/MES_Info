@@ -1,6 +1,7 @@
 "use client";
 
 import { ProgramRowItem } from "@/components/university/programs/program-row-item";
+import { ProgramDetailSheet } from "@/components/university/programs/program-detail-sheet";
 import { SearchInput } from "@/components/shared/search-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
     const [selectedFaculty, setSelectedFaculty] = useState<string>("ALL");
     const [selectedTuition, setSelectedTuition] = useState<TuitionRangeFilter>("ALL");
     const [sortBy, setSortBy] = useState<SortOption>("DEFAULT");
+    const [selectedProgram, setSelectedProgram] = useState<UniversityProgram | null>(null);
 
     const availableDegrees = useMemo(() => {
         return Array.from(new Set(programs.map(p => p.degree_level).filter(Boolean)));
@@ -309,6 +311,7 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                                     program={program}
                                     university={university}
                                     lang={lang}
+                                    onSelect={setSelectedProgram}
                                 />
                                 {index < filteredAndSorted.length - 1 && <Separator className="bg-muted" />}
                             </div>
@@ -316,6 +319,16 @@ export default function ProgramsList({ programs, lang, university }: ProgramsLis
                     )}
                 </CardContent>
             </Card>
+
+            <ProgramDetailSheet
+                program={selectedProgram}
+                university={university}
+                lang={lang}
+                open={Boolean(selectedProgram)}
+                onOpenChange={(open) => {
+                    if (!open) setSelectedProgram(null);
+                }}
+            />
         </div>
     );
 }
